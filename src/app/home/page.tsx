@@ -1,8 +1,8 @@
 import "./home.css";
 import { FaPlayCircle } from "react-icons/fa";
-import Header from "@/components/HomeHeader";
-import HomeSlider from "@/components/HomeSlider";
-import Sidebar from "@/components/Sidebar";
+import Header from "@components/HomeHeader";
+import HomeSlider from "@components/HomeSlider";
+import Sidebar from "@components/Sidebar";
 export default function Home() {
     return (<>
         <div className="w-full">

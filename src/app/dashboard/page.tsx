@@ -1,6 +1,6 @@
 import { IoMdArrowDroprightCircle } from "react-icons/io";
 import "./homeEnter.css";
-import Searchbar from "@/components/Searchbar";
+import Searchbar from "@components/Searchbar";
 export default function Home() {
     return (<>
         <div className="enterHome h-full w-full p-6 py-10">
