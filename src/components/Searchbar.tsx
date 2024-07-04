@@ -6,9 +6,9 @@ export default function Searchbar() {
         <form>
         <section className="flex justify-between bg-black/70 rounded-full max-w-[700px] m-auto">
             <span className="p-2">
-                <button className="rounded-full p-1 px-2 text-sm bg-white/30 hover:bg-white/40 transition text-white/60 flex items-center">
+                <a href="/filters" className="rounded-full p-1 px-2 text-sm bg-white/30 hover:bg-white/40 transition text-white/60 flex items-center">
                     <CiFilter className="mr-1" /> Filter
-                </button>
+                </a>
             </span>
             <input className="text-white w-full bg-white/0 px-2 border-l border-white/10" placeholder="Search..." type="text" />
             

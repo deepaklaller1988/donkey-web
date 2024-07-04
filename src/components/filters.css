@@ -1,0 +1,56 @@
+.customSelect {
+    padding: 8px 15px;
+    color: white;
+}
+.p-multiselect-label.p-placeholder, .p-multiselect-label.p-multiselect-items-label, .p-multiselect-label{
+    @apply text-[14px];
+}
+.p-multiselect-panel {
+    background:rgb(51 51 51);
+    margin-top: 4px;
+    border-radius: 6px;
+    padding: 15px;
+}
+.p-multiselect-trigger{
+    @apply ml-2;
+}
+.p-multiselect-header {
+    display: none;
+}
+ul.p-multiselect-items {
+    display: flex;
+    flex-wrap: wrap;
+    @apply gap-2;
+}
+ul.p-multiselect-items li span {
+    padding-top: 1px;
+    @apply text-[14px];
+}
+ul.p-multiselect-items li {
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+    color: white;
+    width: 33.33%;
+}
+input.p-checkbox-input + div.p-checkbox-box {position: absolute;left: 0;top: 4px;border: 1px solid silver;border-radius: 4px;width: 16px;height: 16px;}
+
+input.p-checkbox-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+input.p-checkbox-input:checked + div.p-checkbox-box {
+    background: #fea500;
+    color: white;
+    border-color: #fea500;
+}
+
+input.p-checkbox-input:checked + div.p-checkbox-box svg {
+    width: 12px;
+    margin-left: 1px;
+}
