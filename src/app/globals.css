@@ -119,9 +119,11 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#88abfc",endCo
 /* Our Customize css */
 .cardSet{padding:10px;}
 .cardSet:hover b{
-  color: #e99700;
+  color: #fea500;
  @apply transition;
 }
+.albumDetail{display: none;}
+.cardSet:hover .albumDetail{display: block;}
 .cardSet span:before {
   background: rgb(0,0,0);
   background: -moz-linear-gradient(180deg, rgba(0,0,0,0) 43%, rgba(233,200,37,1) 100%);
@@ -142,23 +144,34 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#88abfc",endCo
   opacity: 1;
 }
 section.listTop10:hover h4 {
-  color: #e99700 !important;
+  color: #fea500 !important;
 }
 section.listTop10 label {
   color: #666;
   background-color: #222;;
 }
 section.listTop10:hover label {
-  background-color: #e99700;
+  background-color: #fea500;
   color: #000;
 }
 section.listTop10 b {
-  color: #e99700;
-  border: 1px solid #e99700;
+  color: #fea500;
+  border: 1px solid #fea500;
   background-color: #222;;
 }
 section.listTop10:hover b {
-  background-color: #e99700;
+  background-color: #fea500;
   color: #000;
+}
+.footerSet{
+  background-image:url(/assets/images/footer.jpg);
+  height: 425px;
+  background-size: cover;
+}
+.f-Links a:hover{color:#fea500;}
+.borderSet {
+  border-top: 2px solid #fea500;
+  margin-top: 15px;
+  padding-top: 15px;
 }
 

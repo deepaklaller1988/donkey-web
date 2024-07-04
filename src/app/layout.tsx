@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 // import { Inter } from "next/font/google";
 import "./globals.css";
 // const inter = Inter({ subsets: ["latin"] });
+import MainLayout from "@components/core/MainLayout";
+import Provider from "@components/core/Provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Provider>
+          <MainLayout>{children}</MainLayout>
+        </Provider>
+      </body>
     </html>
   );
 }

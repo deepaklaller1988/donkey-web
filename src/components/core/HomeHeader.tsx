@@ -1,5 +1,5 @@
 import { HiMenuAlt1 } from "react-icons/hi";
-import HomeSearchbar from "./HomeSearchbar";
+import HomeSearchbar from "../HomeSearchbar";
 export default function Header() {
     return (
         <>
