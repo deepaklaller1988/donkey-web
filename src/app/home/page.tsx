@@ -1,14 +1,54 @@
+"use client";
 import "./home.css";
 import { FaPlayCircle } from "react-icons/fa";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { IoIosAddCircleOutline } from "react-icons/io";
+
+import {useQuery, useQueries} from '@tanstack/react-query';
 import { FaStar } from "react-icons/fa";
 import Header from "@components/core/HomeHeader";
 import HomeSlider from "@components/HomeSlider";
 import Sidebar from "@components/Sidebar";
 import Footer from "@components/core/Footer";
 import Card from "@components/core/Card";
+import FetchApi from "@lib/FetchApi";
+import { useState } from "react";
+
+const fetchPopularLists = async (mediaType: string) => {
+    try {
+      const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/top_rated?language=en-US&page=1`);
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+
+  const fetchLatestList = async (mediaType: string) => {
+    try {
+      const response = await FetchApi.get(`https://vidsrc.to/vapi/tv/new/1`);
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
 export default function Home() {
+    const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
+    const {
+        isLoading,
+        error,
+        data: popularList,
+    } = useQuery({
+        queryKey: ['popular', selectedMedia],
+        queryFn: () => fetchPopularLists(selectedMedia),
+    });
+
+    console.log(popularList)
+
+
     return (
         <div className="w-full">
             <HomeSlider />
@@ -18,16 +58,16 @@ export default function Home() {
                         <div className="w-full">
                             <div className="w-full">
                                 <div className="flex items-center gap-4">
-                                    <h3 className="text-white text-[35px] font-semibold">RECOMMENDED</h3>
+                                    <h3 className="text-white text-[35px] font-semibold">POPULAR</h3>
                                     <section className="flex gap-2">
-                                        <button className="pbgColor rounded-full text-black px-2">Movies</button>
-                                        <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition">TV Shows</button>
+                                        <button className={`${selectedMedia === 'Movie' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" }`} onClick={()=> setSelectedMedia("Movie")}>Movies</button>
+                                        <button className={`${selectedMedia === 'TV' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" }`} onClick={()=> setSelectedMedia("TV")}>TV Shows</button>
                                     </section>
                                 </div>
                                 <div className="w-full py-2">
                                     <ul className="w-full flex flex-wrap gap-y-10">
                                         {
-                                            new Array(5).fill("").map((item: any) =>(<Card />))
+                                           popularList && popularList.length > 0 ? popularList.map((item: any) =>(<Card movieId={item.id} mediaType={selectedMedia} />)) : ""
                                         } 
                                     </ul>
                                 </div>
