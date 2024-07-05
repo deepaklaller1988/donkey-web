@@ -1,0 +1,61 @@
+span.p-dropdown-label.p-inputtext.p-placeholder, span.p-dropdown-label.p-inputtext {
+    margin-right: 10px;
+}
+.p-dropdown-items-wrapper {
+    background: #161616;
+    border-radius: 6px;
+    padding: 10px 0;
+    margin-top: 5px;
+    color: #999;
+}
+
+li.p-dropdown-item {
+    padding: 5px 75px;
+    text-align: center;
+}
+
+li.p-dropdown-item.p-highlight.p-focus, li.p-dropdown-item.p-highlight, li.p-dropdown-item:hover {
+    background: black;
+    color: #fea500;
+    transition:.5s;
+}
+section.episodeLists ul li:nth-child(even) {
+    background: #1e1e1e;
+}
+section.episodeLists ul li:hover{background-color: #595959;}
+.episodeActive {
+    background: #fea500;
+    color: black;
+}
+li{transition:.5s;}
+
+section.episodeLists ul li {
+    position: relative;
+}
+section.episodeLists ul li:hover span{display: block;}
+
+section.episodeLists ul li span {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 0px;
+    background: #fff;
+    color: black;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    display: none;
+}
+
+section.episodeLists ul li span:before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    background: white;
+    transform: rotate(45deg);
+    bottom: -3px;
+    left: 50%;
+    margin-left: -4px;
+    z-index: 0;
+}
