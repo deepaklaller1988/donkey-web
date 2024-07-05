@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.49.2",
+    "dropdown": "^0.2.0",
     "moment": "^2.30.1",
     "next": "14.2.4",
     "primereact": "^10.7.0",

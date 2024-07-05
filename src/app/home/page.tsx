@@ -1,12 +1,7 @@
 import "./home.css";
 import { FaPlayCircle } from "react-icons/fa";
-import { FaRegCirclePlay } from "react-icons/fa6";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { FaStar } from "react-icons/fa";
-import Header from "@components/core/HomeHeader";
 import HomeSlider from "@components/HomeSlider";
 import Sidebar from "@components/Sidebar";
-import Footer from "@components/core/Footer";
 import Card from "@components/core/Card";
 export default function Home() {
     return (
