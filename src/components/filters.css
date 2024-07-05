@@ -20,7 +20,6 @@
 ul.p-multiselect-items {
     display: flex;
     flex-wrap: wrap;
-    @apply gap-2;
 }
 ul.p-multiselect-items li span {
     padding-top: 1px;
@@ -29,9 +28,10 @@ ul.p-multiselect-items li span {
 ul.p-multiselect-items li {
     position: relative;
     padding-left: 25px;
+    padding-right: 5px;
     cursor: pointer;
     color: white;
-    width: 33.33%;
+    width: 50%;
 }
 input.p-checkbox-input + div.p-checkbox-box {position: absolute;left: 0;top: 4px;border: 1px solid silver;border-radius: 4px;width: 16px;height: 16px;}
 

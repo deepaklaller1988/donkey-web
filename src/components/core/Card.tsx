@@ -1,7 +1,7 @@
 import { FaPlayCircle } from "react-icons/fa";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import {useQuery, useQueries} from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
 import { FaStar } from "react-icons/fa";
 import FetchApi from "@lib/FetchApi";
 import Loader from "./Loader";
@@ -11,7 +11,6 @@ const fetchDetails = async (movieId: number, mediaType:string) => {
   try {
     const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US`);
     const data = await response.json();
-    console.log(data)
     return data;
   } catch (error) {
     console.log(error)
@@ -34,7 +33,6 @@ if(isLoading){
   </>
   )
 }
-console.log(movieDetials, movieId)
 
 
   return (
@@ -45,7 +43,7 @@ console.log(movieDetials, movieId)
           <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
           <img
             className="rounded-xl w-full"
-            src={`https://image.tmdb.org/t/p/original${movieDetials.poster_path}`}
+            src={`https://image.tmdb.org/t/p/original${movieDetials?.poster_path}`}
             alt="album"
           />
           <label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
@@ -53,10 +51,10 @@ console.log(movieDetials, movieId)
           </label>
         </span>
         <section className="py-2">
-          <b className="text-white font-semibold">{movieDetials?.title || movieDetials?.name }</b>
+          <b className="text-white font-semibold">{(movieDetials?.title && movieDetials.title.length > 40) ? movieDetials?.title?.slice(0,40) + "..." : (movieDetials?.name && movieDetials?.name.length > 40 ) ? movieDetials?.name?.slice(0,40) + "..." : movieDetials?.name ? movieDetials?.name : movieDetials?.title}</b>
           <ul className="text-gray-500 flex gap-2">
-            <li className="text-sm">{mediaType}</li>.<li className="text-sm">{mediaType === 'Movie' ? moment(movieDetials?.release_date).year() : "EP1"}</li>.
-            <li className="text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP1"}</li>
+            <li className="text-sm">{mediaType}</li>.<li className="text-sm">{mediaType === 'Movie' ? moment(movieDetials?.release_date).year() : "SS" + movieDetials?.last_episode_to_air?.season_number}</li>.
+            <li className="text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>
           </ul>
         </section>
         <div className="albumDetail absolute bg-zinc-900 rounded-lg top-10 left-10 z-50 w-[350px]">
@@ -100,7 +98,7 @@ console.log(movieDetials, movieId)
               </label>
             </p>
             <p className="text-white/50 font-light pt-2">
-              {movieDetials?.overview}
+              {movieDetials?.overview && movieDetials?.overview.length > 150 ? movieDetials?.overview.slice(0,150) + "..." : movieDetials?.overview}
             </p>
             <button className="text-black flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition m-auto mt-4 mb-2">
               Watch Now <FaRegCirclePlay className="text-xl" />

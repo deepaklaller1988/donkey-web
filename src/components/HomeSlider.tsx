@@ -96,7 +96,7 @@ if(products && products.length > 0 && movieDetail){
                       <li><span className='flex items-center gap-2 pColor font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
                       <li><label className='rounded-full pbgColor text-black font-bold px-2'>HD</label></li>
                       </ul>
-                      <p className='text-lg text-white font-light'>{item?.overview}</p>
+                      <p className='text-lg text-white font-light'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
                   <section className='flex mt-4 gap-4'>
                     <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition'>Watch Now <FaRegCirclePlay className='text-xl'/></button>
                     <button className='flex items-center gap-2 border borde-2 border-white hover:border-white/50 transition text-white px-6 py-2 rounded-full'><FaBookmark /> Bookmark</button>

@@ -1,183 +1,45 @@
-export default function Sidebar() {
+"use client";
+import {useQuery, useQueries} from '@tanstack/react-query';
+import FetchApi from "@lib/FetchApi";
+import SidebarCard from "./core/SidebarCard";
+import { useState } from 'react';
+
+const fetchTop10List = async (mediaType: string, interval:string = "day") => {
+    try {
+      const response = await FetchApi.get(`https://api.themoviedb.org/3/trending/${mediaType.toLowerCase()}/${interval}?language=en-US`);
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+
+export default function Sidebar({mediaType}: any) {
+    const [interval,setInterval] = useState<string>("day")
+    const {
+        isLoading,
+        data: topList,
+    } = useQuery({
+        queryKey: ['top-10', mediaType, interval],
+        queryFn: () => fetchTop10List(mediaType, interval),
+    });
     return (
         <div className="w-full">
             <div className="flex items-center gap-4">
-                <h3 className="text-white text-[35px] font-semibold">TOP 10</h3>
+                <h3 className="text-white text-[35px] font-semibold">TOP 10 {mediaType === 'Movie' ? 'MOVIES' : 'TV SHOWS'}</h3>
                 <section className="flex gap-2">
-                    <button className="pbgColor rounded-full text-black px-2">Day</button>
-                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition">Week</button>
-                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition">Month</button>
+                    <button className={`${interval === 'day' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"}`} onClick={()=>setInterval("day")} >Day</button>
+                    <button className={`${interval === 'week' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"}`} onClick={()=>setInterval("week")} >Week</button>
+                    {/* <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition">Month</button> */}
                 </section>
             </div>
             <ul className="flex flex-col gap-3 py-2 mt-[10px]">
-                <li className="pl-[15px]">
-                    <section className="flex items-center relative listTop10 bg-white/5  hover:bg-white/10 transition rounded-md">
-                        <span className="relative min-w-[50px] w-[50px]">
-                            <img className="rounded-md w-full" src="/assets/images/album1.jpg" alt="album" />
-                        </span>
-                        <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">1</b>
-                        <div className="w-full relative pr-16 pl-4">
-                            <h4 className="text-white uppercase font-semibold transition">Day out match</h4>
-                            <ul className="text-white/40 flex gap-2">
-                                <li className="text-sm">TV</li>.
-                                <li className="text-sm">EP1</li>.
-                                <li className="text-sm">SS1</li>
-                            </ul>
-                            <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">2024</label>
-                        </div>
-                    </section>
-                </li>
-                <li className="pl-[15px]">
-                    <section className="flex items-center relative listTop10 bg-white/5 hover:bg-white/10 transition rounded-md">
-                        <span className="relative min-w-[50px] w-[50px]">
-                            <img className="rounded-md w-full" src="/assets/images/album1.jpg" alt="album" />
-                        </span>
-                        <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">1</b>
-                        <div className="w-full relative pr-16 pl-4">
-                            <h4 className="text-white uppercase font-semibold transition">100 Days</h4>
-                            <ul className="text-white/40 flex gap-2">
-                                <li className="text-sm">Movie</li>
-                            </ul>
-                            <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">2024</label>
-                        </div>
-                    </section>
-                </li>
-                <li className="pl-[15px]">
-                    <section className="flex items-center relative listTop10 bg-white/5 hover:bg-white/10 transition rounded-md">
-                        <span className="relative min-w-[50px] w-[50px]">
-                            <img className="rounded-md w-full" src="/assets/images/album1.jpg" alt="album" />
-                        </span>
-                        <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">1</b>
-                        <div className="w-full relative pr-16 pl-4">
-                            <h4 className="text-white uppercase font-semibold transition">Wealth Health is mine</h4>
-                            <ul className="text-white/40 flex gap-2">
-                                <li className="text-sm">TV</li>.
-                                <li className="text-sm">EP1</li>.
-                                <li className="text-sm">SS1</li>
-                            </ul>
-                            <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">2024</label>
-                        </div>
-                    </section>
-                </li>
-                <li className="pl-[15px]">
-                    <section className="flex items-center relative listTop10 bg-white/5 hover:bg-white/10 transition rounded-md">
-                        <span className="relative min-w-[50px] w-[50px]">
-                            <img className="rounded-md w-full" src="/assets/images/album1.jpg" alt="album" />
-                        </span>
-                        <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">1</b>
-                        <div className="w-full relative pr-16 pl-4">
-                            <h4 className="text-white uppercase font-semibold transition">Wealth Health is mine</h4>
-                            <ul className="text-white/40 flex gap-2">
-                                <li className="text-sm">TV</li>.
-                                <li className="text-sm">EP1</li>.
-                                <li className="text-sm">SS1</li>
-                            </ul>
-                            <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">2024</label>
-                        </div>
-                    </section>
-                </li>
-                <li className="pl-[15px]">
-                    <section className="flex items-center relative listTop10 bg-white/5 hover:bg-white/10 transition rounded-md">
-                        <span className="relative min-w-[50px] w-[50px]">
-                            <img className="rounded-md w-full" src="/assets/images/album1.jpg" alt="album" />
-                        </span>
-                        <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">1</b>
-                        <div className="w-full relative pr-16 pl-4">
-                            <h4 className="text-white uppercase font-semibold transition">Wealth Health is mine</h4>
-                            <ul className="text-white/40 flex gap-2">
-                                <li className="text-sm">TV</li>.
-                                <li className="text-sm">EP1</li>.
-                                <li className="text-sm">SS1</li>
-                            </ul>
-                            <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">2024</label>
-                        </div>
-                    </section>
-                </li>
-                <li className="pl-[15px]">
-                    <section className="flex items-center relative listTop10 bg-white/5 hover:bg-white/10 transition rounded-md">
-                        <span className="relative min-w-[50px] w-[50px]">
-                            <img className="rounded-md w-full" src="/assets/images/album1.jpg" alt="album" />
-                        </span>
-                        <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">1</b>
-                        <div className="w-full relative pr-16 pl-4">
-                            <h4 className="text-white uppercase font-semibold transition">Wealth Health is mine</h4>
-                            <ul className="text-white/40 flex gap-2">
-                                <li className="text-sm">TV</li>.
-                                <li className="text-sm">EP1</li>.
-                                <li className="text-sm">SS1</li>
-                            </ul>
-                            <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">2024</label>
-                        </div>
-                    </section>
-                </li>
-                <li className="pl-[15px]">
-                    <section className="flex items-center relative listTop10 bg-white/5 hover:bg-white/10 transition rounded-md">
-                        <span className="relative min-w-[50px] w-[50px]">
-                            <img className="rounded-md w-full" src="/assets/images/album1.jpg" alt="album" />
-                        </span>
-                        <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">1</b>
-                        <div className="w-full relative pr-16 pl-4">
-                            <h4 className="text-white uppercase font-semibold transition">Wealth Health is mine</h4>
-                            <ul className="text-white/40 flex gap-2">
-                                <li className="text-sm">TV</li>.
-                                <li className="text-sm">EP1</li>.
-                                <li className="text-sm">SS1</li>
-                            </ul>
-                            <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">2024</label>
-                        </div>
-                    </section>
-                </li>
-                <li className="pl-[15px]">
-                    <section className="flex items-center relative listTop10 bg-white/5 hover:bg-white/10 transition rounded-md">
-                        <span className="relative min-w-[50px] w-[50px]">
-                            <img className="rounded-md w-full" src="/assets/images/album1.jpg" alt="album" />
-                        </span>
-                        <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">1</b>
-                        <div className="w-full relative pr-16 pl-4">
-                            <h4 className="text-white uppercase font-semibold transition">Wealth Health is mine</h4>
-                            <ul className="text-white/40 flex gap-2">
-                                <li className="text-sm">TV</li>.
-                                <li className="text-sm">EP1</li>.
-                                <li className="text-sm">SS1</li>
-                            </ul>
-                            <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">2024</label>
-                        </div>
-                    </section>
-                </li>
-                <li className="pl-[15px]">
-                    <section className="flex items-center relative listTop10 bg-white/5 hover:bg-white/10 transition rounded-md">
-                        <span className="relative min-w-[50px] w-[50px]">
-                            <img className="rounded-md w-full" src="/assets/images/album1.jpg" alt="album" />
-                        </span>
-                        <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">1</b>
-                        <div className="w-full relative pr-16 pl-4">
-                            <h4 className="text-white uppercase font-semibold transition">Wealth Health is mine</h4>
-                            <ul className="text-white/40 flex gap-2">
-                                <li className="text-sm">TV</li>.
-                                <li className="text-sm">EP1</li>.
-                                <li className="text-sm">SS1</li>
-                            </ul>
-                            <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">2024</label>
-                        </div>
-                    </section>
-                </li>
-                <li className="pl-[15px]">
-                    <section className="flex items-center relative listTop10 bg-white/5 hover:bg-white/10 transition rounded-md">
-                        <span className="relative min-w-[50px] w-[50px]">
-                            <img className="rounded-md w-full" src="/assets/images/album1.jpg" alt="album" />
-                        </span>
-                        <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">1</b>
-                        <div className="w-full relative pr-16 pl-4">
-                            <h4 className="text-white uppercase font-semibold transition">Wealth Health is mine</h4>
-                            <ul className="text-white/40 flex gap-2">
-                                <li className="text-sm">TV</li>.
-                                <li className="text-sm">EP1</li>.
-                                <li className="text-sm">SS1</li>
-                            </ul>
-                            <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">2024</label>
-                        </div>
-                    </section>
-                </li>
+                {topList && topList.length > 0 ? topList.slice(0,10).map((item: any, index:number) => (
+                    <>
+                    <SidebarCard movieId={item.id} mediaType={mediaType} index={index+1} />
+                    </>
+                )) : ""}
             </ul>
         </div>
     );
