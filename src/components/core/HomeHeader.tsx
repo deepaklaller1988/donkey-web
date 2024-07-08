@@ -34,7 +34,7 @@ export default function Header() {
             </div >
 
             <div className="navSet fixed top-0 left-0 z-20 w-full h-screen bg-black/70">
-                {/* navSetOpen */}
+                {/* navSetOpen class add remove */}
                 <div className="fixed top-0 w-[300px] h-screen bg-white flex flex-col">
                     <section className="p-2 flex items-center justify-between">
                         <a href="" className="w-[170px] block"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
@@ -52,7 +52,7 @@ export default function Header() {
             </div>
             <div className="loginRegisterForgotForm hidden items-center justify-center fixed top-0 left-0 z-20 w-full h-screen bg-black/70">
                 <section className="max-h-[90vh] overflow-auto p-6 w-full max-w-[400px] bg-zinc-800 rounded-lg">
-                    <h2 className="text-white text-[30px] pb-2 flex items-center justify-between">Welcome Back! <IoMdClose className="text-white w-6 h-6 cursor-pointer transition hover:text-amber-500" /></h2>
+                    <h2 className="text-white text-[30px] pb-2 flex items-center justify-between">Login Welcome Back! <IoMdClose className="text-white w-6 h-6 cursor-pointer transition hover:text-amber-500" /></h2>
                     <form className="flex flex-col gap-2">
                         <div className="w-full flex flex-col gap-1">
                             <label className="text-white/50">Account</label>
