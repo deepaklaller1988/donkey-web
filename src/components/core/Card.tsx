@@ -6,6 +6,7 @@ import { FaStar } from "react-icons/fa";
 import FetchApi from "@lib/FetchApi";
 import Loader from "./Loader";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 
 const fetchDetails = async (movieId: number, mediaType:string) => {
   try {
@@ -18,6 +19,7 @@ const fetchDetails = async (movieId: number, mediaType:string) => {
 };
 
 function Card({movieId, mediaType}: any) {
+  const router = useRouter();
   const {
     isLoading,
     error,
@@ -68,7 +70,7 @@ if(isLoading){
                 <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP1"}</li>
                 <li>
                   <label className="flex items-center gap-2 pColor font-semibold text-sm">
-                    <FaStar /> {movieDetials?.vote_average.toFixed(1)}
+                    <FaStar /> {movieDetials?.vote_average?.toFixed(1)}
                   </label>
                 </li>
                 <li>
@@ -94,13 +96,13 @@ if(isLoading){
             <p>
               Scores:{" "}
               <label className="text-white font-light">
-              {movieDetials?.vote_average.toFixed(2)} by {movieDetials?.vote_count} reviews
+              {movieDetials?.vote_average?.toFixed(2)} by {movieDetials?.vote_count} reviews
               </label>
             </p>
             <p className="text-white/50 font-light pt-2">
               {movieDetials?.overview && movieDetials?.overview.length > 150 ? movieDetials?.overview.slice(0,150) + "..." : movieDetials?.overview}
             </p>
-            <button className="text-black flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition m-auto mt-4 mb-2">
+            <button className="text-black flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition m-auto mt-4 mb-2" onClick={()=>router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
               Watch Now <FaRegCirclePlay className="text-xl" />
             </button>
           </div>
