@@ -17,7 +17,7 @@ export default function SocialButton() {
     const url = "url"
     return (
         <div className="share-container max-w-screen-lg mx-auto mb-20">
-            <p className="text-center text-white">If you enjoy the website, please consider sharing it with your friends. Thank you!</p>
+            <p className="text-center text-white">Share Donkey with your Friends!</p>
             <div className="flex justify-center gap-4 mt-4">
 
                 <FacebookShareButton url={`${process.env.NEXT_PUBLIC_API_URL}`}>

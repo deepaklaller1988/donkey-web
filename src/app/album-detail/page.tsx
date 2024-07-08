@@ -48,7 +48,7 @@ export default function FiltersPage() {
                                 <div className="w-full flex gap-5 justify-between">
                                     <section>
                                         <h3 className="text-white text-[30px] font-semibold">Craig of the Creek</h3>
-                                        <ul className="py-1 flex flex-wrap text-white gap-4 font-light"><li><b className="font-bold">2024</b></li><li>118 min</li><li>Action</li><li>Comedy</li><li>Crime</li><li><span className="flex items-center gap-2 pColor font-semibold"><FaStar /> 7.2</span></li><li><label className="rounded-full pbgColor text-black font-bold px-2">HD</label></li></ul>
+                                        <ul className="py-1 flex flex-wrap text-white gap-4 font-light"><li><b className="font-bold">2024</b></li><li>118 min</li><li>Action</li><li>Comedy</li><li>Crime</li><li><span className="flex items-center gap-2 text-white font-semibold"><FaStar /> 7.2</span></li><li><label className="rounded-full pbgColor text-black font-bold px-2">HD</label></li></ul>
                                     </section>
                                     <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
                                         <span className="flex gap-1">
@@ -71,8 +71,8 @@ export default function FiltersPage() {
                                         <p>Country: <label className="text-white font-light">
                                             <a href="" className="transition hover:text-amber-500">
                                                 United States</a>,
-                                            <a href="" className="transition hover:text-amber-500"> 
-                                                 Spain</a></label></p>
+                                            <a href="" className="transition hover:text-amber-500">
+                                                Spain</a></label></p>
                                         <p>Genre: <label className="text-white font-light">
                                             <a href="" className="transition hover:text-amber-500">Animation</a>, <a href="" className="transition hover:text-amber-500">Comedy</a></label></p>
                                         <p>Release: <label className="text-white font-light">Mar 30, 2018</label></p>
@@ -82,9 +82,9 @@ export default function FiltersPage() {
                                                 Cartoon Network Studios</a>, <a href="" className="transition hover:text-amber-500">
                                                 Network Studios</a></label></p>
                                         <p>Cast: <label className="text-white font-light">
-                                            <a href="" className="transition hover:text-amber-500">Philip Solomon</a>,  
-                                             <a href="" className="transition hover:text-amber-500">
-                                                 Noël Wells</a>
+                                            <a href="" className="transition hover:text-amber-500">Philip Solomon</a>,
+                                            <a href="" className="transition hover:text-amber-500">
+                                                Noël Wells</a>
                                         </label></p>
                                         <p>Tags: <label className="text-white font-light">
                                             <a href="" className="transition hover:text-amber-500">N/A</a></label></p>
@@ -94,40 +94,40 @@ export default function FiltersPage() {
                             </section>
                         </div>
                         <div className="min-w-[376px]">
-                         <div className="w-full bg-white/10 rounded-lg">
-<section className="episodeSelectionMain flex items-center justify-center text-white">
-<Dropdown value={selectedSeason} onChange={(e: DropdownChangeEvent) => setSelectedSeason(e.value)} options={seasons} optionLabel="name" 
-                placeholder="Season 1" className="episodeSelection p-3 px-20"/>
-</section>
-<section className="episodeLists bg-neutral-950 max-h-[500px] overflow-auto">
-    <ul className="text-white/50">
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 1: Itch To Explore</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 2: You're It</a><span>12/04/2024</span></li>
-        <li className="episodeActive"><a className="text-[14px] py-3 px-4 block" href="">Episode 3: Jessica Goes to the Creek</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 4: The Final Book</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 5: Too Many Treasures</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 6: Wildernessa</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 7: Sunday Clothes</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 1: Itch To Explore</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 2: You're It</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 3: Jessica Goes to the Creek</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 4: The Final Book</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 5: Too Many Treasures</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 6: Wildernessa</a><span>12/04/2024</span></li>
-        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 7: Sunday Clothes</a><span>12/04/2024</span></li>
-    </ul>
-</section>
-<section className="flex text-white gap-5 justify-between items-center p-2 px-4">
-    <label>Go to episode</label>
-    <div className="nextPrev flex gap-3 items-center text-white/50">
-    <a href=""><IoIosArrowRoundBack className="w-8 h-8"/></a>
-        <a href="">1</a>
-        <a href="">2</a>
-        <a href=""><IoIosArrowRoundForward className="w-8 h-8 text-amber-500"/></a>
-    </div>
-</section>
+                            <div className="w-full bg-white/10 rounded-lg">
+                                <section className="episodeSelectionMain flex items-center justify-center text-white">
+                                    <Dropdown value={selectedSeason} onChange={(e: DropdownChangeEvent) => setSelectedSeason(e.value)} options={seasons} optionLabel="name"
+                                        placeholder="Season 1" className="episodeSelection p-3 px-20" />
+                                </section>
+                                <section className="episodeLists bg-neutral-950 max-h-[500px] overflow-auto">
+                                    <ul className="text-white/50">
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 1: Itch To Explore</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 2: You're It</a><span>12/04/2024</span></li>
+                                        <li className="episodeActive"><a className="text-[14px] py-3 px-4 block" href="">Episode 3: Jessica Goes to the Creek</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 4: The Final Book</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 5: Too Many Treasures</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 6: Wildernessa</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 7: Sunday Clothes</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 1: Itch To Explore</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 2: You're It</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 3: Jessica Goes to the Creek</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 4: The Final Book</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 5: Too Many Treasures</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 6: Wildernessa</a><span>12/04/2024</span></li>
+                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 7: Sunday Clothes</a><span>12/04/2024</span></li>
+                                    </ul>
+                                </section>
+                                <section className="flex text-white gap-5 justify-between items-center p-2 px-4">
+                                    <label>Go to episode</label>
+                                    <div className="nextPrev flex gap-3 items-center text-white/50">
+                                        <a href=""><IoIosArrowRoundBack className="w-8 h-8" /></a>
+                                        <a href="">1</a>
+                                        <a href="">2</a>
+                                        <a href=""><IoIosArrowRoundForward className="w-8 h-8 text-amber-500" /></a>
+                                    </div>
+                                </section>
 
-                         </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -157,14 +157,14 @@ export default function FiltersPage() {
                                                         <li className="text-sm">SS1</li>
                                                     </ul>
                                                 </section>
-                                                <div className="albumDetail absolute bg-zinc-900 rounded-lg top-20 left-full z-50 w-[350px]">
+                                                <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]">
                                                     <div className="w-full p-5 relative">
                                                         <section className="pr-12">
                                                             <h2 className="text-white text-lg">Presumed Innocent</h2>
                                                             <ul className='py-1 flex items-center text-white gap-4 font-light'>
                                                                 <li><b className='font-bold text-sm'>2024</b></li>
                                                                 <li className=" text-sm">102min</li>
-                                                                <li><label className='flex items-center gap-2 pColor font-semibold text-sm'><FaStar /> 4.4</label></li>
+                                                                <li><label className='flex items-center gap-2 text-white text-sm font-semibold'><FaStar /> 4.4</label></li>
                                                                 <li><label className=' text-sm rounded-full pbgColor text-black font-bold px-2'>HD</label></li>
                                                             </ul>
                                                         </section>

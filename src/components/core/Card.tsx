@@ -57,7 +57,7 @@ if(isLoading){
             <li className="text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>
           </ul>
         </section>
-        <div className="albumDetail absolute bg-zinc-900 rounded-lg top-20 left-full z-50 w-[350px]">
+        <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]">
           <div className="w-full p-5 relative">
             <section className="pr-12">
               <h2 className="text-white text-lg">{movieDetials?.title || movieDetials?.name }</h2>
@@ -67,7 +67,7 @@ if(isLoading){
                 </li>
                 <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP1"}</li>
                 <li>
-                  <label className="flex items-center gap-2 pColor font-semibold text-sm">
+                  <label className="flex items-center gap-2 text-white text-sm font-semibold">
                     <FaStar /> {movieDetials?.vote_average.toFixed(1)}
                   </label>
                 </li>
