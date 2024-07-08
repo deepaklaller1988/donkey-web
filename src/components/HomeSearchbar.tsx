@@ -10,7 +10,7 @@ export default function HomeSearchbar() {
                     <CiFilter className="mr-1" /> Filter
                 </a>
             </span>
-            <input className="text-white w-full bg-white/0 px-2 border-l border-white/10" placeholder="Search..." type="text" />
+            <input className="text-white w-full bg-white/0 text-center pr-10" placeholder="Search..." type="text" />
             <button className="pColor mr-1 p-3">
                 <IoSearch className="text-xl" />
             </button>
