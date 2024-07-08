@@ -11,6 +11,7 @@ import Sidebar from "@components/Sidebar";
 import Card from "@components/core/Card";
 import FetchApi from "@lib/FetchApi";
 import { useState } from "react";
+import useTitle from "@hooks/useTitle";
 
 const fetchPopularLists = async (mediaType: string) => {
     try {
@@ -39,6 +40,7 @@ const fetchPopularLists = async (mediaType: string) => {
   };
 
 export default function Home() {
+    useTitle("Home");
     const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
     const {
         isLoading,

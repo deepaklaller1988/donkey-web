@@ -1,7 +1,10 @@
+"use client";
 import { IoMdArrowDroprightCircle } from "react-icons/io";
 import "./homeEnter.css";
 import Searchbar from "@components/Searchbar";
+import useTitle from "@hooks/useTitle";
 export default function Home() {
+    useTitle("Dashboard");
     return (<>
         <div className="enterHome h-full w-full p-6 py-10">
             <div className="wrapper">
