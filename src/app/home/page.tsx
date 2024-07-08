@@ -78,7 +78,7 @@ export default function Home() {
                         <div className="w-full">
                             <div className="w-full">
                                 <div className="flex items-center gap-4">
-                                    <h3 className="text-white text-[35px] font-semibold">POPULAR</h3>
+                                    <h3 className="text-white text-[30px] font-semibold">POPULAR</h3>
                                     <section className="flex gap-2">
                                         <button className={`${selectedMedia === 'Movie' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" }`} onClick={()=> setSelectedMedia("Movie")}>Movies</button>
                                         <button className={`${selectedMedia === 'TV' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" }`} onClick={()=> setSelectedMedia("TV")}>TV Shows</button>
@@ -94,7 +94,7 @@ export default function Home() {
                             </div>
                             <div className="w-full pt-10">
                                 <div className="flex items-center gap-4">
-                                    <h3 className="text-white text-[35px] font-semibold">LATEST MOVIES</h3>
+                                    <h3 className="text-white text-[30px] font-semibold">LATEST MOVIES</h3>
                                 </div>
                                 <div className="w-full py-2">
                                     <ul className="w-full flex flex-wrap gap-y-10">
@@ -110,7 +110,7 @@ export default function Home() {
                             </div>
                             <div className="w-full pt-10">
                                 <div className="flex items-center gap-4">
-                                    <h3 className="text-white text-[35px] font-semibold">LATEST TV SHOWS</h3>
+                                    <h3 className="text-white text-[30px] font-semibold">LATEST TV SHOWS</h3>
                                 </div>
                                 <div className="w-full py-2">
                                     <ul className="w-full flex flex-wrap gap-y-10">

@@ -16,7 +16,7 @@ export default function FiltersPage() {
                             <div className="w-full">
                                 <div className="w-full">
                                     <div className="flex items-center gap-4">
-                                        <h3 className="text-white text-[35px] font-semibold">FILTER</h3>
+                                        <h3 className="text-white text-[30px] font-semibold">FILTER</h3>
                                     </div>
                                 <Filters />
                                     <div className="w-full py-2">
@@ -116,7 +116,7 @@ export default function FiltersPage() {
                                 </div>
                                 <div className="w-full pt-10">
                                     <div className="flex items-center gap-4">
-                                        <h3 className="text-white text-[35px] font-semibold">LATEST MOVIES</h3>
+                                        <h3 className="text-white text-[30px] font-semibold">LATEST MOVIES</h3>
                                     </div>
                                     <div className="w-full py-2">
                                         <ul className="w-full flex flex-wrap gap-y-10">
@@ -195,7 +195,7 @@ export default function FiltersPage() {
                                 </div>
                                 <div className="w-full pt-10">
                                     <div className="flex items-center gap-4">
-                                        <h3 className="text-white text-[35px] font-semibold">LATEST TV SHOWS</h3>
+                                        <h3 className="text-white text-[30px] font-semibold">LATEST TV SHOWS</h3>
                                     </div>
                                     <div className="w-full py-2">
                                         <ul className="w-full flex flex-wrap gap-y-10">

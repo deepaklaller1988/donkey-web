@@ -40,7 +40,7 @@ if(isLoading){
     {movieDetials && (<>
       <li key={movieId} className="w-1/5 cardSet relative">
         <span className="relative">
-          <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
+          <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" />
           <img
             className="rounded-xl w-full"
             src={`https://image.tmdb.org/t/p/original${movieDetials?.poster_path}`}

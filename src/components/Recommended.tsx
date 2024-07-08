@@ -2,7 +2,7 @@ export default function Recommended() {
     return (
         <div className="w-full">
             <div className="flex items-center gap-4">
-                <h3 className="text-white text-[35px] font-semibold">RECOMMENDED</h3>
+                <h3 className="text-white text-[30px] font-semibold">RECOMMENDED</h3>
             </div>
             <ul className="flex flex-col gap-3 py-2 mt-[10px]">
                 <li>
