@@ -113,6 +113,15 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#88abfc",endCo
 .sliderContentSet {
   max-width: 800px;
 }
+ul.indicators {
+  top: 94vh;
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+ul.indicators .indicator.active div {
+@apply px-3 pbgColor transition;
+}
 .react-slideshow-container button.nav.default-nav {
   visibility: hidden;
 }

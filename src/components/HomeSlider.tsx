@@ -69,7 +69,7 @@ if(products && products.length > 0 && movieDetail){
 
 const indicators = (index:any) => (
   <div className="indicator">
-    <span className='p-1 bg-white rounded-full mx-1 cursor-pointer'></span>
+    <div className='transition p-1 bg-white rounded-full mx-1 cursor-pointer'></div>
   </div>
 );
 

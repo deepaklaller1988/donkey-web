@@ -57,7 +57,7 @@ if(isLoading){
             <li className="text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>
           </ul>
         </section>
-        <div className="albumDetail absolute bg-zinc-900 rounded-lg top-10 left-10 z-50 w-[350px]">
+        <div className="albumDetail absolute bg-zinc-900 rounded-lg top-20 left-full z-50 w-[350px]">
           <div className="w-full p-5 relative">
             <section className="pr-12">
               <h2 className="text-white text-lg">{movieDetials?.title || movieDetials?.name }</h2>
