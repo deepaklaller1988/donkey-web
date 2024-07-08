@@ -67,6 +67,13 @@ if(products && products.length > 0 && movieDetail){
 
 }
 
+const indicators = (index:any) => (
+  <div className="indicator mb-20 mt-[-20]">
+    <span className='px-2 py-0.1 pbgColor rounded-full mx-1 cursor-pointer'></span>
+  </div>
+);
+
+
   if(isLoading){
     return(
       <div>
@@ -79,7 +86,7 @@ if(products && products.length > 0 && movieDetail){
   return (
     <>
       <div className="w-full relative">
-        <Slide>
+        <Slide indicators={indicators}>
           {combinedList && combinedList.length > 0 && combinedList.map((item: any, index: number) => (
             <div key={item.id} className="each-slide-effect slideMain">
             <img src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`} alt="slide" />

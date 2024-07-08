@@ -179,4 +179,23 @@ img.bgAlbumDetail {
   max-height: 1200px;
   object-fit: cover;
 }
+.react-slideshow-container .indicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  padding: 20px;
+}
 
+.react-slideshow-container .indicators div {
+  width: 10px;
+  height: 10px;
+  margin: 0 3px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.react-slideshow-container .indicators .active {
+  background-color: white;
+}

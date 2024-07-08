@@ -12,6 +12,7 @@ import Card from "@components/core/Card";
 import FetchApi from "@lib/FetchApi";
 import { useState } from "react";
 import useTitle from "@hooks/useTitle";
+import SocialButton from "@components/SocialButton";
 
 const fetchPopularLists = async (mediaType: string) => {
     try {
@@ -66,11 +67,12 @@ export default function Home() {
         queryKey: ['latest-movies', "movie"],
         queryFn: () => fetchLatestList("movie"),
     });
-
+   
     return (
         <div className="w-full">
             <HomeSlider />
             <div className="w-full">
+                <SocialButton/>
                 <div className="homewrapper">
                     <div className="containerHub flex gap-5">
                         <div className="w-full">
