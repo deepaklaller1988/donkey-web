@@ -5,24 +5,25 @@ headers.append("Authorization", `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNTg0OGN
 // headers.append("Access-Control-Allow-Origin", `*`);
 
 export default {
-    get: async (path: string) => {
-        let options: any = {
-            headers: headers,
-            method: "GET",
-            // credentials: "include",
-            // mode: "cors",
-          };
-          let res = await fetch(path,options);
-        return res;
+  get: async (path: string) => {
+    let options: any = {
+      headers: headers,
+      method: "GET",
+      // credentials: "include",
+      // mode: "cors",
+    };
+    let res = await fetch(path, options);
+    return res;
+  },
+  post: async (path: string, body: any) => {
+    let options: any = {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
       },
-    post: async (path: string, body: any) => {
-        let options: any = {
-            method: "POST",
-            credentials: "include",
-            headers: headers,
-            body: JSON.stringify(body)
-          };
-
-        return await fetch(path,options);
-      },
+      body: JSON.stringify(body)
+    };
+    return await fetch(path, options);
+  },
 }

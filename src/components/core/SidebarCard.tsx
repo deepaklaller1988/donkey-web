@@ -2,6 +2,7 @@ import FetchApi from '@lib/FetchApi';
 import React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import moment from 'moment';
+import { useRouter } from 'next/navigation';
 
 const fetchDetails = async (movieId: number, mediaType:string) => {
     try {
@@ -14,6 +15,7 @@ const fetchDetails = async (movieId: number, mediaType:string) => {
   };
 
 function SidebarCard({movieId,mediaType,index}: any) {
+  const router = useRouter();
     const {
         isLoading,
         error,
@@ -25,7 +27,7 @@ function SidebarCard({movieId,mediaType,index}: any) {
 
   return (
     <>
-      <li key={movieId} className="pl-[15px]">
+      <li key={movieId} className={`${index ? "pl-[15px]" : ""}`} onClick={() =>router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)} >
         <section className="flex items-center relative listTop10 bg-white/5  hover:bg-white/10 transition rounded-md">
           <span className="relative min-w-[50px] w-[50px]">
             <img
@@ -34,9 +36,11 @@ function SidebarCard({movieId,mediaType,index}: any) {
               alt="album"
             />
           </span>
+          {index && (
           <b className="transition -left-[15px] absolute rounded-full w-[30px] h-[30px] flex items-center justify-center">
             {index}
           </b>
+          )}
           <div className="w-full relative pr-16 pl-4">
             <h4 className="text-white uppercase font-semibold transition">
                 {(cardDetials?.title && cardDetials.title.length > 20) ? cardDetials?.title?.slice(0,20) + "..." : (cardDetials?.name && cardDetials?.name.length > 20 ) ? cardDetials?.name?.slice(0,20) + "..." : cardDetials?.name ? cardDetials?.name : cardDetials?.title}
