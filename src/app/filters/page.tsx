@@ -35,14 +35,14 @@ export default function FiltersPage() {
                                                     </ul>
                                                 </section>
                                                 </a>
-                                                <div className="albumDetail absolute bg-zinc-900 rounded-lg top-20 left-full z-50 w-[350px]">
+                                                <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]">
                                                     <div className="w-full p-5 relative">
                                                         <section className="pr-12">
                                                             <h2 className="text-white text-lg">Presumed Innocent</h2>
                                                             <ul className='py-1 flex items-center text-white gap-4 font-light'>
                                                                 <li><b className='font-bold text-sm'>2024</b></li>
                                                                 <li className=" text-sm">102min</li>
-                                                                <li><label className='flex items-center gap-2 pColor font-semibold text-sm'><FaStar /> 4.4</label></li>
+                                                                <li><label className='flex items-center gap-2 text-white text-sm font-semibold'><FaStar /> 4.4</label></li>
                                                                 <li><label className=' text-sm rounded-full pbgColor text-black font-bold px-2'>HD</label></li>
                                                             </ul>
                                                         </section>

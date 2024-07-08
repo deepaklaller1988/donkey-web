@@ -11,12 +11,12 @@ export default function Home() {
                 <div className="enterHomeInner bg-zinc-900 rounded-xl">
                     <div className="w-full p-10">
                         <div className="enterHeader">
-                            <a href="" className="w-[170px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
+                            <a href="" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
                         </div>
                         <h1 className="text-[26px] font-medium text-center py-5 text-white/40">Watch HD Movies & TV Shows online for Free!</h1>
                         <Searchbar />
                         <div className="w-full text-center">
-                            <a href="/home" className="transition text-lg font-medium p-2 px-6 rounded-full inline-flex items-center pbgColor m-auto mt-5">Go to Homepage <IoMdArrowDroprightCircle className="ml-1 text-xl" /></a>
+                            <a href="/home" className="transition text-lg font-medium p-2 px-6 rounded-lg inline-flex items-center pbgColor m-auto mt-5">Go to Homepage <IoMdArrowDroprightCircle className="ml-1 text-xl" /></a>
                         </div>
                     </div>
                     <div className="w-full p-6 bg-black/50">

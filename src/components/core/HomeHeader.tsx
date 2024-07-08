@@ -1,11 +1,10 @@
 import { HiMenuAlt1 } from "react-icons/hi";
 import HomeSearchbar from "../HomeSearchbar";
-import { FaUserCircle } from "react-icons/fa";
-import { IoIosArrowRoundForward, IoIosNotifications, IoMdClose } from "react-icons/io";
+import { FaRegUser, FaUserCircle } from "react-icons/fa";
+import { IoIosNotifications } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
+import { IoIosArrowRoundForward } from "react-icons/io";
 import { usePathname, useSearchParams } from "next/navigation";
-import Link from "next/link";
-
-
 export default function Header() {
     const path = usePathname();
     const searchParams: any = useSearchParams();
@@ -24,7 +23,7 @@ export default function Header() {
                     <div className="headerInner flex items-center justify-between">
                         <section className="flex items-center">
                             <a href="" className="mr-4"><HiMenuAlt1 className="text-[30px] text-white" /></a>
-                            <Link href="/home" className="w-[170px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></Link>
+                            <a href="" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
                         </section>
                         <HomeSearchbar />
                         {/* <section className="flex justify-end w-[216px]">
@@ -32,12 +31,12 @@ export default function Header() {
                         <button className="text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black">Signup</button>
                     </section> */}
                         <section className="flex justify-end w-[216px]">
-                            <div className="relative">
+                            {/* <div className="relative">
                                 <button className="mr-4 text-white font-semibold p-2 rounded-full border border-2 border-white transition hover:bg-white hover:text-black"><IoIosNotifications /></button>
                                 <div className="openNotifications"></div>
-                            </div>
+                            </div> */}
                             <div className="relative">
-                                <button className="text-white font-semibold p-2 rounded-full border border-2 border-white transition hover:bg-white hover:text-black"><FaUserCircle /></button>
+                                <button><FaRegUser className="text-white/70 w-6 h-6 transition hover:text-amber-500"/></button>
                                 <div className="openNotifications"></div>
                             </div>
                         </section>
@@ -49,7 +48,7 @@ export default function Header() {
                 {/* navSetOpen class add remove */}
                 <div className="fixed top-0 w-[300px] h-screen bg-white flex flex-col">
                     <section className="p-2 flex items-center justify-between">
-                        <a href="" className="w-[170px] block"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
+                        <a href="" className="w-[150px] block"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
                         <IoMdClose className="text-black w-6 h-6 cursor-pointer transition hover:text-amber-500" />
                     </section>
                     <a href="" className="pbgColor p-2 px-4 hover:bg-amber-500 transition">Home</a>

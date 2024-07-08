@@ -1,8 +1,7 @@
 "use client"
 import '../../node_modules/react-slideshow-image/dist/styles.css';
 import { FaRegCirclePlay } from "react-icons/fa6";
-import { FaBookmark } from "react-icons/fa";
-import { MdWhatshot } from "react-icons/md";
+import { FaRegBookmark } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import React, { useEffect, useState } from 'react';
 import { Slide } from 'react-slideshow-image';
@@ -96,19 +95,25 @@ const indicators = (index:any) => (
               <div className='sliderContent relative z-10'>
                 <div className='homewrapper'>
                   <div className='sliderContentSet'>
-                    <span className='text-gray-400 flex items-center'><MdWhatshot className='mr-1 text-lg'/> Trending</span>
+                    <span className='text-white/70 flex items-center'>
+                    <img src="/assets/images/slides/hot.png" alt="trending" className='mr-1 w-[14px]'/> Trending</span>
                     <h2 className='text-[50px] font-bold text-white'>{item.title ? item.title : item.name}</h2>
                     <ul className='py-1 flex items-center text-white gap-4 font-light'>
                       <li><b className='font-bold'>{item.release_date ? moment(item.release_date).year() : ""}</b></li>
                       {item.runtime && (<li>{item.runtime} min</li>)}
                       {item.genres && item.genres.length > 0 ? item.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
-                      <li><span className='flex items-center gap-2 pColor font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
+                      <li><span className='flex items-center gap-2 text-white text-sm font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
                       <li><label className='rounded-full pbgColor text-black font-bold px-2'>HD</label></li>
                       </ul>
                       <p className='text-lg text-white font-light'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
                   <section className='flex mt-4 gap-4'>
+<<<<<<< HEAD
                     <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition' onClick={()=> router.push(`/watch-now?type=${item.media_type?.toLowerCase()}&id=${item.id}`)}>Watch Now <FaRegCirclePlay className='text-xl'/></button>
                     <button className='flex items-center gap-2 border borde-2 border-white hover:border-white/50 transition text-white px-6 py-2 rounded-full'><FaBookmark /> Bookmark</button>
+=======
+                    <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition'>Watch Now <FaRegCirclePlay className='text-xl'/></button>
+                    <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold'><FaRegBookmark className='w-5 h-5'/> Bookmark</button>
+>>>>>>> 358a6e830a4305a7b1acdf589b4e73d12c88a730
                     </section>
                   </div>
                 </div>
