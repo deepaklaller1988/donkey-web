@@ -4,10 +4,14 @@ import Button from '@components/buttons/Button';
 import { IoMdClose, IoIosArrowRoundForward } from 'react-icons/io';
 import FetchApi from '@lib/FetchApi';
 import { useMutation } from '@tanstack/react-query';
+import { useAuth } from 'context/AuthContext';
 
 const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
+  const { setToken }: any = useAuth();
   const [type, setType] = useState("login");
   const [captchaValue, setCaptchaValue] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   let endpoint = '';
 
@@ -17,32 +21,61 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
     endpoint = 'http://localhost:5000/login';
   } else if (type === 'forgot') {
     endpoint = 'http://localhost:5000/forgot-password';
-  } else {
-
   }
-  
+
   const mutation = useMutation({
     mutationFn: async (formData: any) => {
       const data = Object.fromEntries(formData.entries());
       return await FetchApi.post(endpoint, data);
     },
-    onSuccess:async (data:any) => {
-      localStorage.setItem("token",data.data?.accessToken)
-      handleClose();
+    onSuccess: async (data: any) => {
+      if (data?.data?.accessToken) {
+        localStorage.setItem("token", data.data?.accessToken);
+        setToken(data.data?.accessToken);
+        setSuccessMessage('Login successful!');
+        handleClose();
+      } else if (type === 'forgot') {
+        setSuccessMessage('Please check your email for further instructions.');
+      } else if (type === 'register') {
+        setSuccessMessage('Registration successful! You can now log in.');
+        setType('login');
+      }
     },
-    onError: (error) => {
-      console.error('Error:', error);
+    onError: (error: any) => {
+      setErrorMessage(error?.response?.data?.message || 'An error occurred. Please try again.');
     }
   });
-  
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
+    setErrorMessage('');
+    setSuccessMessage('');
+
     if (!captchaValue) {
-      alert('Please complete the CAPTCHA');
+      setErrorMessage('Please complete the CAPTCHA');
       return;
     }
+
     const formData: any = new FormData(event.target);
+    const username = formData.get('username');
+    const password = formData.get('password');
+    const repeatPassword = formData.get('repeatPassword');
+
+    if (type === 'register') {
+      if (username.length < 4) {
+        setErrorMessage('Username must be at least 4 characters.');
+        return;
+      }
+      if (password.length < 6) {
+        setErrorMessage('Password must be at least 6 characters.');
+        return;
+      }
+      if (password !== repeatPassword) {
+        setErrorMessage('Password confirmation does not match.');
+        return;
+      }
+    }
+
     formData.append('captcha', captchaValue);
     mutation.mutate(formData);
   };
@@ -128,6 +161,8 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
               )}
             </>
           )}
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          {successMessage && <p className="text-green-500">{successMessage}</p>}
           <div className="w-full text-white py-3">
             <ReCAPTCHA
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}

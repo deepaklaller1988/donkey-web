@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import { Slide } from 'react-slideshow-image';
 import {useQuery, useQueries} from '@tanstack/react-query';
 import moment from 'moment';
-import Link from 'next/link';
 
 import FetchApi from '@lib/FetchApi';
 import Loader from './core/Loader';
