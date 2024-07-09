@@ -24,10 +24,10 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const mutation = useMutation({
     mutationFn: async (formData: any) => {
       const data = Object.fromEntries(formData.entries());
-      return FetchApi.post(endpoint, data);
+      return await FetchApi.post(endpoint, data);
     },
-    onSuccess: (data) => {
-      console.log('Success:', data);
+    onSuccess:async (data:any) => {
+      localStorage.setItem("token",data.data?.accessToken)
       handleClose();
     },
     onError: (error) => {

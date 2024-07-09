@@ -24,6 +24,7 @@ export default {
       },
       body: JSON.stringify(body)
     };
-    return await fetch(path, options);
-  },
+    let res = await fetch(path, options);
+    return await res.json();
+    },
 }
