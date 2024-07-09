@@ -11,6 +11,7 @@ import Link from 'next/link';
 
 import FetchApi from '@lib/FetchApi';
 import Loader from './core/Loader';
+import { useRouter } from 'next/navigation';
 
 const fetchTopAll = async () => {
   try {
@@ -34,6 +35,7 @@ const getDetail = async (item : any) => {
 
 
 export default function HomeSlider() {
+  const router = useRouter();
   // const [combinedList,setCombinedList] =useState([])
   const {
     isLoading,
