@@ -38,7 +38,7 @@ export const errorCodes: { [key: string]: IErrorHandler } = {
   ERR_AUTH_WRONG_OLD_PASSWORD: toast("Old Password is incorrect"),
   ERR_AUTH_WRONG_USERNAME_OR_PASSWORD: toast("Wrong email or password"),
   ERR_AUTH_WRONG_PASSWORD_RESET_TOKEN: toast("Reset Token expired"),
-  // ERR_AUTH_USERNAME_OR_EMAIL_ALREADY_EXIST: toast("Email already exists"),
+  ERR_AUTH_USERNAME_OR_EMAIL_ALREADY_EXIST: toast("Email already exists"),
   ERR_AUTH_PASSWORD_RESET_WRONG_EMAIL: toast("Email does not exist"),
   ERR_AUTH_REFRESH_EXPIRED: signOut(),
   ERR_VALIDATION: { validation: true },

@@ -1,4 +1,3 @@
-import { handleError } from "util/errorHandler";
 
 let headers = new Headers();
 headers.append("Accept", "application/json");
@@ -31,13 +30,12 @@ export default {
       let res: any = await fetch(path, options);
       if (!res.ok) {
         let errorData = await res.json();
-         throw Error(handleError(errorData.error.code))
-         
+        //  throw Error(handleError(errorData.error.code))
       }
       let data: any = await res.json();
       return data;
     } catch (error: any) {
-      return error  
+      throw error
     }
   }
 };
