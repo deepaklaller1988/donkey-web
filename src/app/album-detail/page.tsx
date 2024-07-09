@@ -7,7 +7,7 @@ import { FaStar } from "react-icons/fa";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import Recommended from "@components/Recommended";
-import "./album-detail.css";
+// import "./album-detail.css";
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 interface Season {
     name: string;

@@ -8,6 +8,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import AuthForm from "./AuthForm";
 import { useState } from "react";
 import { useAuth } from "context/AuthContext";
+import Link from "next/link";
 
 export default function Header() {
     const { token }: any = useAuth();
@@ -33,7 +34,7 @@ export default function Header() {
                     <div className="headerInner flex items-center justify-between">
                         <section className="flex items-center">
                             <a href="" className="mr-4"><HiMenuAlt1 className="text-[30px] text-white" /></a>
-                            <a href="" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
+                            <Link href="/home" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></Link>
                         </section>
                         <HomeSearchbar />
                         {/* <section className="flex justify-end w-[216px]">

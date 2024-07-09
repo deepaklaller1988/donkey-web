@@ -3,55 +3,171 @@ import "./filters.css";
 import React, { useState } from 'react';
 import { MdFilterList } from "react-icons/md";
 import { MultiSelect } from 'primereact/multiselect';
-export default function Filters() {
-    const [selectedCities, setSelectedCities] = useState(null);
-    const cities = [
-        { name: 'New York', code: 'NY' },
-        { name: 'Rome', code: 'RM' },
-        { name: 'London', code: 'LDN' },
+import FetchApi from "@lib/FetchApi";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
+
+
+const fetchGenre = async (mediaType:string) => {
+    try {
+      const response = await FetchApi.get(`https://api.themoviedb.org/3/genre/${mediaType.toLowerCase()}/list?language=en-US`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+
+  const fetchCountries = async () => {
+    try {
+      const response = await FetchApi.get(`https://api.themoviedb.org/3/configuration/countries?language=en-US`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+
+export default function Filters({handleFilters}:any) {
+    const [selectedType, setSelectedType] = useState<any>(null);
+    const [selectedGenre, setSelectedGenre] = useState<any>(null);
+    const [selectedCountry, setSelectedCountry] = useState<any>(null);
+    const [selectedYear, setSelectedYear] = useState<any>(null);
+    const [selectedFilter, setSelectedFilter] = useState<any>(null);
+
+    const {
+        data: movieGenre,
+    } = useQuery<any>({
+        queryKey: ['get-genre', 'movie'],
+        queryFn: () =>fetchGenre('movie'),
+    });
+
+    const {
+        data: tvGenre,
+    } = useQuery<any>({
+        queryKey: ['get-genre', 'tv'],
+        queryFn: () =>fetchGenre('tv'),
+    });
+
+    const {
+        data: countries,
+    } = useQuery<any>({
+        queryKey: ['get-country'],
+        queryFn: fetchCountries,
+    });
+
+    const popularOptions = [
+        { name: 'Popular', code: 'popularity.desc' },
+        { name: 'Latest', code: 'primary_release_date.desc' },
+        { name: 'Name A-Z', code: 'title.asc' },
+        { name: 'Name Z-A', code: 'title.desc' },
+        { name: 'Highest Earning', code: 'revenue.desc' },
+        { name: 'Most Voted', code: 'vote_count.desc' },
     ];
+
+    const currentYear = moment().year();
+
+    const startYear = currentYear - 25;
+
+    // Create an array of objects for the years in between
+    const yearsArray = [];
+    for (let year = currentYear; year >= startYear; year--) {
+    yearsArray.push({ year: year });
+    }
+
+    const type = [
+        { name: 'Movie', code: 'movie' },
+        { name: 'TV-Shows', code: 'tv' },
+    ];
+
+    const allGenres = [...(movieGenre?.genres || []), ...(tvGenre?.genres || [])];
+    let genres = Array.from(new Map(allGenres.map(genre => [genre.id, genre])).values()).sort((a,b) => a.name.localeCompare(b.name));
+
+    const handleSelection = (e: any) =>{
+        const {name,value} = e.target;
+        if(name=== 'type'){
+            setSelectedType(value)
+        }
+        if(name=== 'year'){
+            setSelectedYear(value)
+        }
+        if(name=== 'genre'){
+            setSelectedGenre(value)
+        }
+        if(name=== 'country'){
+            setSelectedCountry(value)
+        }
+        if(name=== 'filter'){
+            setSelectedFilter(value)
+        }
+    }
+
+
+    const onSubmit = () =>{
+        const selected = {
+            selectedType: selectedType ? selectedType.map((val: any)=>val.code).join(",") : "",
+            selectedGenre: selectedGenre ? selectedGenre.map((val: any)=>val.id).join(",") : "",
+            selectedCountry:selectedCountry ? selectedCountry.map((val: any)=>val.iso_3166_1).join(",") : "",
+            selectedYear: selectedYear ? selectedYear.map((val: any)=>val.year).join(",") : "",
+            selectedFilter:selectedFilter ? selectedFilter.map((val: any)=>val.code).join(",") : ""
+        }
+
+        console.log(selected)
+
+        handleFilters(selected);
+    }
+    
+
     return (
         <>
          <div className="w-full my-3">
-                <form className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2">
                     <input className="text-[14px] rounded-md px-3 bg-white/20 transition text-white" type="text" placeholder="Search..."/>
                 <MultiSelect
-                    value={selectedCities}
-                    onChange={(e) => setSelectedCities(e.value)}
-                    options={cities}
+                    value={selectedType}
+                    onChange={(e) => handleSelection(e)}
+                    name="type"
+                    options={type}
                     optionLabel="name"
                     placeholder="Type"
                     maxSelectedLabels={1}
+                    selectionLimit={1}
                     className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
                 />
                 <MultiSelect
-                    value={selectedCities}
-                    onChange={(e) => setSelectedCities(e.value)}
-                    options={cities}
+                    value={selectedGenre}
+                    onChange={(e) => setSelectedGenre(e.value)}
+                    options={genres}
+                    name="genre"
                     optionLabel="name"
                     placeholder="Genre"
                     maxSelectedLabels={1}
                     className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
                 />
                  <MultiSelect
-                    value={selectedCities}
-                    onChange={(e) => setSelectedCities(e.value)}
-                    options={cities}
-                    optionLabel="name"
+                    value={selectedCountry}
+                    onChange={(e) => setSelectedCountry(e.value)}
+                    options={countries}
+                    name="country"
+                    optionLabel="english_name"
                     placeholder="Country"
                     maxSelectedLabels={1}
                     className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
                 />
                  <MultiSelect
-                    value={selectedCities}
-                    onChange={(e) => setSelectedCities(e.value)}
-                    options={cities}
-                    optionLabel="name"
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(e.value)}
+                    options={yearsArray}
+                    name="year"
+                    optionLabel="year"
                     placeholder="Year"
                     maxSelectedLabels={1}
+                    selectionLimit={1}
                     className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
                 />
-                 <MultiSelect
+                 {/* <MultiSelect
                     value={selectedCities}
                     onChange={(e) => setSelectedCities(e.value)}
                     options={cities}
@@ -68,18 +184,20 @@ export default function Filters() {
                     placeholder="Quality"
                     maxSelectedLabels={1}
                     className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
-                />
+                /> */}
                  <MultiSelect
-                    value={selectedCities}
-                    onChange={(e) => setSelectedCities(e.value)}
-                    options={cities}
+                    value={selectedFilter}
+                    onChange={(e) => setSelectedFilter(e.value)}
+                    options={popularOptions}
+                    name="filter"
                     optionLabel="name"
-                    placeholder="Recently Updated"
+                    placeholder="Popular"
                     maxSelectedLabels={1}
+                    selectionLimit={1}
                     className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
                 />
-                <button className="pbgColor flex items-center rounded-full text-white transition p-2 px-4 gap-2"><MdFilterList /> Filter</button>
-                </form>
+                <button className="pbgColor flex items-center rounded-full text-white transition p-2 px-4 gap-2" onClick={onSubmit} ><MdFilterList /> Filter</button>
+                </div>
             </div>
         </>
     );

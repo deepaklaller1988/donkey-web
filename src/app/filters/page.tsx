@@ -5,12 +5,57 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
 import Sidebar from "@components/Sidebar";
 import Filters from "@components/Filters";
+import FetchApi from "@lib/FetchApi";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import Card from "@components/core/Card";
+
+const fetchFilteredData = async (selectedOptions: any) => {
+    try {
+        const response = await FetchApi.get(`https://api.themoviedb.org/3/discover/${selectedOptions.selectedMedia}?include_adult=false&include_video=false&language=en-US&page=1&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&with_origin_country=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
+        const data = await response.json();
+        return data.results;
+    } catch (error) {
+        console.log(error)
+    }
+    };
+
 export default function FiltersPage() {
+    const [selectedOptions, setSelectedOptions] =  useState<any>({
+        selectedMedia: "movie",
+        selectedYear:"",
+        selectedCountry:"",
+        selectedGenres:"",
+        selectedFilter:"popularity.desc"
+    })
+
+    const {
+        isLoading,
+        error,
+        data: filteredData,
+    } = useQuery<any>({
+        queryKey: ['filtered-data', selectedOptions.selectedMedia, selectedOptions.selectedYear, selectedOptions.selectedCountry, selectedOptions.selectedGenres,selectedOptions.selectedFilter],
+        queryFn: () =>fetchFilteredData(selectedOptions),
+        enabled: !!selectedOptions,
+    });
+
+    const handleFilters = (selectedOptions: any) =>{
+        setSelectedOptions({
+            selectedMedia: selectedOptions.selectedType,
+            selectedYear:selectedOptions.selectedYear,
+            selectedCountry:selectedOptions.selectedCountry,
+            selectedGenres:selectedOptions.selectedGenre,
+            selectedFilter:selectedOptions.selectedFilter  
+        })
+    }
+
+    console.log(filteredData)
+
     return (
         <div className="w-full">
             <div className="w-full">
                 {/* <div className="bg-white/10 h-[80px]"><Header /></div> */}
-                <div className="w-full mt-20">
+                <div className="w-full mt-40">
                     <div className="homewrapper">
                         <div className="containerHub flex gap-5">
                             <div className="w-full">
@@ -18,9 +63,14 @@ export default function FiltersPage() {
                                     <div className="flex items-center gap-4">
                                         <h3 className="text-white text-[30px] font-semibold">FILTER</h3>
                                     </div>
-                                <Filters />
+                                <Filters handleFilters={handleFilters} />
                                     <div className="w-full py-2">
-                                        <ul className="w-full flex flex-wrap gap-y-10">
+                                    <ul className="w-full flex flex-wrap gap-y-10">
+                                            {
+                                                filteredData && filteredData.length > 0 ? filteredData.map((item: any) =>(<Card movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />)) : ""
+                                            } 
+                                        </ul>
+                                                            {/* <ul className="w-full flex flex-wrap gap-y-10">
 
                                             <li className="w-1/5 cardSet relative">
                                                 <a href="/album-detail"><span className="relative">
@@ -111,170 +161,12 @@ export default function FiltersPage() {
                                                     </ul>
                                                 </section>
                                             </li>
-                                        </ul>
+                                        </ul> */}
                                     </div>
-                                </div>
-                                <div className="w-full pt-10">
-                                    <div className="flex items-center gap-4">
-                                        <h3 className="text-white text-[30px] font-semibold">LATEST MOVIES</h3>
-                                    </div>
-                                    <div className="w-full py-2">
-                                        <ul className="w-full flex flex-wrap gap-y-10">
-
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <section className="flex justify-center pt-10">
-                                        <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition">View More</button>
-                                    </section>
-                                </div>
-                                <div className="w-full pt-10">
-                                    <div className="flex items-center gap-4">
-                                        <h3 className="text-white text-[30px] font-semibold">LATEST TV SHOWS</h3>
-                                    </div>
-                                    <div className="w-full py-2">
-                                        <ul className="w-full flex flex-wrap gap-y-10">
-
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <section className="flex justify-center pt-10">
-                                        <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition">View More</button>
-                                    </section>
                                 </div>
                             </div>
                             <div className="min-w-[376px]">
-                                <Sidebar />
+                                {/* <Sidebar /> */}
                             </div>
                         </div>
                     </div>
