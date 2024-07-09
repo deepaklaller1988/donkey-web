@@ -1,6 +1,10 @@
 import { HiMenuAlt1 } from "react-icons/hi";
 import HomeSearchbar from "../HomeSearchbar";
 import { FaRegUser, FaUserCircle } from "react-icons/fa";
+import { GoVideo } from "react-icons/go";
+import { FaRegBookmark } from "react-icons/fa";
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoLogOutOutline } from "react-icons/io5";
 import { IoIosNotifications } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import { IoIosArrowRoundForward } from "react-icons/io";

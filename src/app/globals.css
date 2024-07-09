@@ -179,8 +179,8 @@ section.listTop10:hover b {
 }
 .f-Links a:hover{color:#fea500;}
 .borderSet {
-  border-top: 2px solid #fea500;
-  margin-top: 15px;
+  /* border-top: 2px solid #fea500; */
+  /* margin-top: 15px; */
   padding-top: 15px;
 }
 img.bgAlbumDetail {
@@ -222,3 +222,11 @@ img.bgAlbumDetail {
   10% {left:-300px;}
   100% {left:0;}
 }
+.profileLinks{
+max-height: 0px;
+transition: .5s;
+overflow: hidden;
+}
+.openProfileLinks.profileLinks{
+  max-height: 500px;
+  }

@@ -113,7 +113,7 @@ const indicators = (index:any) => (
                 </div>
               </div>
               <div className='absolute w-full z-0 left-0 bottom-0'>
-          <img src="/assets/images/slides/shadow.png" alt="shadow"/>
+          <img className='w-full h-[280px]' src="/assets/images/slides/shadow.png" alt="shadow"/>
         </div>
             </div>
           </div>

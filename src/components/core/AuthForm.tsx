@@ -163,7 +163,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
           )}
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           {successMessage && <p className="text-green-500">{successMessage}</p>}
-          <div className="w-full text-white py-3">
+          <div className="w-full text-white py-3 flex justify-center captachSet">
             <ReCAPTCHA
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
               onChange={onCaptchaChange}
