@@ -128,7 +128,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
               )}
             </>
           )}
-          <div className="w-full text-white py-3">
+          <div className="w-full text-white py-3 flex justify-center captachSet">
             <ReCAPTCHA
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
               onChange={onCaptchaChange}

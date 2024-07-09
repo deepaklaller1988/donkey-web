@@ -222,3 +222,11 @@ img.bgAlbumDetail {
   10% {left:-300px;}
   100% {left:0;}
 }
+.profileLinks{
+max-height: 0px;
+transition: .5s;
+overflow: hidden;
+}
+.openProfileLinks.profileLinks{
+  max-height: 500px;
+  }
