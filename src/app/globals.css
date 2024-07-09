@@ -179,8 +179,8 @@ section.listTop10:hover b {
 }
 .f-Links a:hover{color:#fea500;}
 .borderSet {
-  border-top: 2px solid #fea500;
-  margin-top: 15px;
+  /* border-top: 2px solid #fea500; */
+  /* margin-top: 15px; */
   padding-top: 15px;
 }
 img.bgAlbumDetail {
