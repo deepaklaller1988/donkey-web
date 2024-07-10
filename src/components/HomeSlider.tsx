@@ -3,6 +3,7 @@ import '../../node_modules/react-slideshow-image/dist/styles.css';
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
+import { BsFire } from "react-icons/bs";
 import React, { useEffect, useState } from 'react';
 import { Slide } from 'react-slideshow-image';
 import {useQuery, useQueries} from '@tanstack/react-query';
@@ -95,16 +96,16 @@ const indicators = (index:any) => (
                 <div className='homewrapper'>
                   <div className='sliderContentSet'>
                     <span className='text-white/70 flex items-center'>
-                    <img src="/assets/images/slides/hot.png" alt="trending" className='mr-1 w-[14px]'/> Trending</span>
-                    <h2 className='text-[50px] font-bold text-white'>{item.title ? item.title : item.name}</h2>
-                    <ul className='py-1 flex items-center text-white gap-4 font-light'>
+                    <BsFire className='mr-1'/> Trending</span>
+                    <h2 className='text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:py-2 lg:py-3'>{item.title ? item.title : item.name}</h2>
+                    <ul className='py-1 flex flex-wrap items-center text-white gap-x-4 lg:gap-4 font-light'>
                       <li><b className='font-bold'>{item.release_date ? moment(item.release_date).year() : ""}</b></li>
                       {item.runtime && (<li>{item.runtime} min</li>)}
                       {item.genres && item.genres.length > 0 ? item.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       <li><span className='flex items-center gap-2 text-white text-sm font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
                       <li><label className='rounded-full pbgColor text-black font-bold px-2'>HD</label></li>
                       </ul>
-                      <p className='text-lg text-white font-light'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
+                      <p className='md:text-[16px] lg:text-lg text-white font-light hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
                   <section className='flex mt-4 gap-4'>
                     <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition' onClick={()=> router.push(`/watch-now?type=${item.media_type?.toLowerCase()}&id=${item.id}`)}>Watch Now <FaRegCirclePlay className='text-xl'/></button>
                     <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold'><FaRegBookmark className='w-5 h-5'/> Bookmark</button>
@@ -113,7 +114,7 @@ const indicators = (index:any) => (
                 </div>
               </div>
               <div className='absolute w-full z-0 left-0 bottom-0'>
-          <img className='w-full h-[280px]' src="/assets/images/slides/shadow.png" alt="shadow"/>
+          <img className='w-full h-[100px] md:h-[280px]' src="/assets/images/slides/shadow.png" alt="shadow"/>
         </div>
             </div>
           </div>

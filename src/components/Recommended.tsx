@@ -8,8 +8,8 @@ export default function Recommended({title, data, movieId,mediaType}: any) {
             </div>
             <ul className="flex flex-col gap-3 py-2 mt-[10px]">
                 {data && data.length > 0 ? data.map((item: any)=>(
-                    <div key={item.id}>
-                    <SidebarCard movieId={item.id} mediaType={mediaType}  />
+                    <div key={item.id ? item.id : item.tmdb_id}>
+                    <SidebarCard movieId={item.id ? item.id : item.tmdb_id} mediaType={mediaType}  />
                     </div>
                 )): ""}
                 {/* <li>

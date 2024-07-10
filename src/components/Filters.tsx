@@ -36,6 +36,7 @@ export default function Filters({handleFilters, initiallySelected}:any) {
     const [selectedCountry, setSelectedCountry] = useState<any>(null);
     const [selectedYear, setSelectedYear] = useState<any>(null);
     const [selectedFilter, setSelectedFilter] = useState<any>(null);
+    const [searchQuery, setSearchQuery] =  useState<string>("");
 
     const {
         data: movieGenre,
@@ -153,9 +154,7 @@ export default function Filters({handleFilters, initiallySelected}:any) {
             }
         }
 
-        console.log(selected)
-
-        handleFilters(selected);
+        handleFilters(selected, searchQuery);
     }
     
 
@@ -163,7 +162,7 @@ export default function Filters({handleFilters, initiallySelected}:any) {
         <>
          <div className="w-full my-3">
                 <div className="flex flex-wrap gap-2">
-                    <input className="text-[14px] rounded-md px-3 bg-white/20 transition text-white" type="text" placeholder="Search..."/>
+                    <input className="text-[14px] rounded-md px-3 bg-white/20 transition text-white" type="text" placeholder="Search..." onChange={(e)=>{setSearchQuery(e.target.value)}} />
                 <MultiSelect
                     value={selectedType}
                     onChange={(e) => handleSelection(e)}

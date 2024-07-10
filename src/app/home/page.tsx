@@ -72,9 +72,11 @@ export default function Home() {
         <div className="w-full">
             <HomeSlider />
             <div className="w-full">
+            <div className="w-full mb-10 md:mb-20">
                 <SocialButton/>
+                </div>
                 <div className="homewrapper">
-                    <div className="containerHub flex gap-5">
+                    <div className="containerHub flex gap-5 flex-col lg:flex-row">
                         <div className="w-full">
                             <div className="w-full">
                                 <div className="flex items-center gap-4">
@@ -85,7 +87,7 @@ export default function Home() {
                                     </section>
                                 </div>
                                 <div className="w-full py-2">
-                                    <ul className="w-full flex flex-wrap gap-y-10">
+                                    <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                         {
                                            popularList && popularList.length > 0 ? popularList.map((item: any) =>(<Card movieId={item.id} mediaType={selectedMedia} />)) : ""
                                         } 
@@ -97,7 +99,7 @@ export default function Home() {
                                     <h3 className="text-white text-[25px] font-semibold">LATEST MOVIES</h3>
                                 </div>
                                 <div className="w-full py-2">
-                                    <ul className="w-full flex flex-wrap gap-y-10">
+                                    <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                      {
                                            latestMovieList && latestMovieList.length > 0 ? latestMovieList.map((item: any) =>(<Card movieId={item.tmdb_id} mediaType={"Movie"} />)) : ""
                                         } 
@@ -113,7 +115,7 @@ export default function Home() {
                                     <h3 className="text-white text-[25px] font-semibold">LATEST TV SHOWS</h3>
                                 </div>
                                 <div className="w-full py-2">
-                                    <ul className="w-full flex flex-wrap gap-y-10">
+                                    <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
 
                                     {
                                            latestTVList && latestTVList.length > 0 ? latestTVList.map((item: any) =>(<Card movieId={item.tmdb_id} mediaType={"TV"} />)) : ""
@@ -126,7 +128,7 @@ export default function Home() {
                                 </section>
                             </div>
                         </div>
-                        <div className="min-w-[376px]">
+                        <div className="w-full  min-w-full md:min-w-[376px]">
                             <div><Sidebar mediaType={"Movie"} /></div>
                             <div className="mt-20"><Sidebar mediaType={"TV"} /></div>
                         </div>

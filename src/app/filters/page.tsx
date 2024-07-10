@@ -9,6 +9,7 @@ import FetchApi from "@lib/FetchApi";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Card from "@components/core/Card";
+import Recommended from "@components/Recommended";
 
 const fetchFilteredData = async (selectedOptions: any) => {
     try {
@@ -20,6 +21,27 @@ const fetchFilteredData = async (selectedOptions: any) => {
     }
     };
 
+const fetchSearchedData = async (selectedOptions: any, searched:string) => {
+    try {
+        const response = await FetchApi.get(`https://api.themoviedb.org/3/search/${selectedOptions.selectedMedia}?query=${searched}&include_adult=false&include_video=false&language=en-US&page=1&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&region=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
+        const data = await response.json();
+        return data.results;
+    } catch (error) {
+        console.log(error)
+    }
+    };
+
+
+    const fetchRecentlyUpdated = async (mediaType: any) => {
+        try {
+            const response = await fetch(`https://vidsrc.xyz/${mediaType === 'movie' ? 'movies' : 'tvshows'}/latest/page-1.json`);
+            const data = await response.json();
+            return data.result;
+        } catch (error) {
+            console.log(error)
+        }
+        };
+
 export default function FiltersPage() {
     const [selectedOptions, setSelectedOptions] =  useState<any>({
         selectedMedia: "movie",
@@ -27,7 +49,8 @@ export default function FiltersPage() {
         selectedCountry:"",
         selectedGenres:"",
         selectedFilter:"popularity.desc"
-    })
+    });
+    const [searchQuery, setSearchQuery] =  useState<any>("");
 
     const {
         isLoading,
@@ -39,8 +62,26 @@ export default function FiltersPage() {
         enabled: !!selectedOptions,
     });
 
-    const handleFilters = (selectedOptions: any) =>{
-        console.log(selectedOptions)
+    const {
+        isLoading: isRecentLoaded,
+        data: recentData,
+    } = useQuery<any>({
+        queryKey: ['recently-updated', selectedOptions.selectedMedia],
+        queryFn: () =>fetchRecentlyUpdated(selectedOptions.selectedMedia),
+        enabled: !!selectedOptions.selectedMedia,
+    });
+
+    const {
+        isLoading: isSearchLoading,
+        data: searchedData,
+    } = useQuery<any>({
+        queryKey: ['searched-data', searchQuery],
+        queryFn: () =>fetchSearchedData(selectedOptions, searchQuery),
+        enabled: !!searchQuery,
+    });
+
+
+    const handleFilters = (selectedOptions: any, search:string) =>{
         setSelectedOptions({
             selectedMedia: selectedOptions.selectedType,
             selectedYear:selectedOptions.selectedYear,
@@ -48,6 +89,7 @@ export default function FiltersPage() {
             selectedGenres:selectedOptions.selectedGenre,
             selectedFilter:selectedOptions.selectedFilter  
         })
+        setSearchQuery(search)
     }
 
     return (
@@ -64,108 +106,27 @@ export default function FiltersPage() {
                                     </div>
                                 <Filters handleFilters={handleFilters} initiallySelected={selectedOptions} />
                                     <div className="w-full py-2">
-                                    <ul className="w-full flex flex-wrap gap-y-10">
+                                        {searchQuery ? (
+                                            <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+                                            {
+                                                searchedData && searchedData.length > 0 ? searchedData.map((item: any) =>(<Card movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />)) : ""
+                                            } 
+                                        </ul>
+                                        ) : (
+                                            <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                             {
                                                 filteredData && filteredData.length > 0 ? filteredData.map((item: any) =>(<Card movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />)) : ""
                                             } 
                                         </ul>
-                                                            {/* <ul className="w-full flex flex-wrap gap-y-10">
-
-                                            <li className="w-1/5 cardSet relative">
-                                                <a href="/album-detail"><span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                                </a>
-                                                <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]">
-                                                    <div className="w-full p-5 relative">
-                                                        <section className="pr-12">
-                                                            <h2 className="text-white text-lg">Presumed Innocent</h2>
-                                                            <ul className='py-1 flex items-center text-white gap-4 font-light'>
-                                                                <li><b className='font-bold text-sm'>2024</b></li>
-                                                                <li className=" text-sm">102min</li>
-                                                                <li><label className='flex items-center gap-2 text-white text-sm font-semibold'><FaStar /> 4.4</label></li>
-                                                                <li><label className=' text-sm rounded-full pbgColor text-black font-bold px-2'>HD</label></li>
-                                                            </ul>
-                                                        </section>
-                                                        <label className="absolute right-5 top-1/2">
-                                                            <IoIosAddCircleOutline className="text-white w-6 h-6 -mt-3" />
-                                                        </label>
-                                                    </div>
-                                                    <div className="w-full p-5 border-t border-1 border-white/5 text-white/50">
-                                                        <p>Country: <label className="text-white font-light">United States</label></p>
-                                                        <p>Genre: <label className="text-white font-light">United States</label></p>
-                                                        <p>Scores: <label className="text-white font-light">8.38 by 740 reviews</label></p>
-                                                        <p className='text-white/50 font-light pt-2'>A group of high-end professional thieves start to feel the heat from the LAPD when they unknowingly leave a verbal clue at their latest heist.</p>
-                                                        <button className='text-black flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition m-auto mt-4 mb-2'>Watch Now <FaRegCirclePlay className='text-xl' /></button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                            <li className="w-1/5 cardSet">
-                                                <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
-                                                <section className="py-2">
-                                                    <b className="text-white font-semibold">Faraway Downs 100</b>
-                                                    <ul className="text-gray-500 flex gap-2">
-                                                        <li className="text-sm">TV</li>.
-                                                        <li className="text-sm">EP1</li>.
-                                                        <li className="text-sm">SS1</li>
-                                                    </ul>
-                                                </section>
-                                            </li>
-                                        </ul> */}
+                                        )}
+                                    
                                     </div>
+
                                 </div>
                             </div>
-                            <div className="min-w-[376px]">
+                            <div className="w-full  min-w-full md:min-w-[376px]">
                                 {/* <Sidebar /> */}
+                                <Recommended title={"RECENTLY UPDATED"} data={recentData && recentData.length > 0 ? recentData.slice(0,10) : []}  mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
                             </div>
                         </div>
                     </div>

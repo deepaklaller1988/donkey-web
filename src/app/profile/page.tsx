@@ -32,7 +32,7 @@ export default function Profile() {
                     </div>
                     {/* Continue Watching */}
                     <div className="w-full mt-10">
-                        <ul className="w-full flex flex-wrap gap-y-10">
+                        <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                             <li className="w-1/6 cardSet relative">
                                 <span className="relative">
                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
@@ -133,7 +133,7 @@ export default function Profile() {
                             <a href=""><FaRegFolderOpen className="text-white/60 hover:text-white transition" /></a>
                         </div>
                         <Filters />
-                        <ul className="w-full flex flex-wrap gap-y-10">
+                        <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                             <li className="w-1/6 cardSet relative">
                                 <span className="relative">
                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
