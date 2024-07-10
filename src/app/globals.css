@@ -148,6 +148,7 @@ ul.indicators .indicator.active div {
   transition: .5s;
   opacity: 0;
 }
+.profileActive{ color: #fea500  ; border-color:#fea500 }
 
 .cardSet:hover span:before, .cardSet:hover svg {
   opacity: 1;
