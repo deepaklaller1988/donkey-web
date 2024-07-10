@@ -46,7 +46,7 @@ export default function Header() {
 
     return (
         <>
-            <div className={`header ${isHome() ? "" : "bg-white/10 h-[80px]"} p-2 absolute z-10 w-full top-0 right-0`}>
+            <div className={`header ${isHome() ? "" : "bg-white/10 h-[80px]"} p-2 pt-3 absolute z-10 w-full top-0 right-0`}>
                 <div className="homewrapper">
                     <div className="headerInner flex items-center justify-between">
                         <section className="flex items-center">

@@ -8,7 +8,7 @@ export default function Home() {
     return (<>
         <div className="enterHome h-full w-full p-6 py-10">
             <div className="wrapper">
-                <div className="enterHomeInner bg-zinc-900 rounded-xl">
+                <div className="enterHomeInner bg-zinc-900 rounded-[30px]">
                     <div className="w-full p-10">
                         <div className="enterHeader">
                             <a href="" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
@@ -30,12 +30,8 @@ export default function Home() {
                     <div className="w-full p-6 py-10">
                         <div className="wrapper">
                             <h2 className="text-white/80 text-xl mb-1">Watch HD Movies & TV Shows online for Free!</h2>
-                            <p className="text-white/50 py-2">Welcome to Donkey – your ultimate destination for global entertainment! Immerse yourself in a diverse collection of movies and TV shows spanning numerous genres and countries, from Hollywood blockbusters to international hidden gems.</p>
-                            <p className="text-white/50 py-1">Our library is updated regularly with the latest releases and is compatible with any device, ensuring there's something for everyone!</p>
-                            <p className="text-white/50 py-1">Experience seamless, high-quality streaming with crisp audio and subtitles available in multiple languages. Our advanced algorithm ensures that content tailored to your tastes takes the spotlight, making your viewing experience truly personalized. Plus, even without an account, our platform remembers where you left off, ensuring uninterrupted enjoyment every time you return.</p>
-                            <p className="text-white/50 py-1">For added convenience and customization, we offer the option to create a free account, where you can bookmark your favorite flicks, and curate your 'Continue Watching' list.</p>
-                            <p className="text-white/50 py-1">We're dedicated to revolutionizing your streaming experience. We don't just offer entertainment; we provide a gateway to a world of cinematic wonders. Whether you're seeking the latest blockbuster or an indie masterpiece, we've got you covered. Explore, indulge, and join us in celebrating the magic of storytelling from around the globe.</p>
-                            <p className="text-white/50 py-1">Join our vibrant community of fellow enthusiasts today and embark on an endless journey of cinematic discovery, where entertainment knows no bounds! The world of entertainment awaits!</p>
+                            <p className="text-white/50 py-2">Welcome to Donkey – the ultimate destination for global entertainment! Enjoy a diverse collection of movies and TV shows from various genres, with regular updates and compatibility on any device. Experience high-quality, buffer-free streaming with multiple language subtitles. For added convenience, create a free account to bookmark favorites and keep a 'Continue Watching' list. Join our vibrant community and explore a world of cinematic wonders today!
+                            </p>
                         </div>
                     </div>
                 </div>
