@@ -70,7 +70,7 @@ if(isLoading){
                 <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP1"}</li>
                 <li>
                   <label className="flex items-center gap-2 text-white text-sm font-semibold">
-                    <FaStar /> {movieDetials?.vote_average.toFixed(1)}
+                    <FaStar /> {movieDetials?.vote_average?.toFixed(1)}
                   </label>
                 </li>
                 <li>

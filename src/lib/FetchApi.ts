@@ -24,7 +24,10 @@ export default {
       },
       body: JSON.stringify(body)
     };
-    let res = await fetch(path, options);
+    let res :any= await fetch(path, options);
+    // localStorage.setItem("token",res.data?.accessToken)
+
     return await res.json();
+
     },
 }

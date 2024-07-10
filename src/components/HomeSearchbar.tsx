@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CiFilter } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
 export default function HomeSearchbar() {
@@ -6,9 +7,9 @@ export default function HomeSearchbar() {
         <form>
         <section className="flex justify-between bg-black/30 rounded-full max-w-[520px] m-auto">
             <span className="p-2">
-                <a href="/filters" className="rounded-full p-1 px-2 text-sm bg-black/30 transition text-white/60 hover:text-white flex items-center">
+                <Link href="/filters" className="rounded-full p-1 px-2 text-sm bg-black/30 transition text-white/60 hover:text-white flex items-center">
                     <CiFilter className="mr-1" /> Filter
-                </a>
+                </Link>
             </span>
             <input className="text-white w-full bg-white/0 text-center pr-10" placeholder="Search..." type="text" />
             

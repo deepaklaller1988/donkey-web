@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react';
 import { Slide } from 'react-slideshow-image';
 import {useQuery, useQueries} from '@tanstack/react-query';
 import moment from 'moment';
-import Link from 'next/link';
 
 import FetchApi from '@lib/FetchApi';
 import Loader from './core/Loader';
@@ -108,7 +107,7 @@ const indicators = (index:any) => (
                       </ul>
                       <p className='text-lg text-white font-light'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
                   <section className='flex mt-4 gap-4'>
-                    <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition'>Watch Now <FaRegCirclePlay className='text-xl'/></button>
+                    <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition' onClick={()=> router.push(`/watch-now?type=${item.media_type?.toLowerCase()}&id=${item.id}`)}>Watch Now <FaRegCirclePlay className='text-xl'/></button>
                     <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold'><FaRegBookmark className='w-5 h-5'/> Bookmark</button>
                     </section>
                   </div>

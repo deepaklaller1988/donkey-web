@@ -11,11 +11,11 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import { usePathname, useSearchParams } from "next/navigation";
 import AuthForm from "./AuthForm";
 import { useState } from "react";
-import { getToken } from '@lib/userToken';
-
+import { useAuth } from "context/AuthContext";
+import Link from "next/link";
 
 export default function Header() {
-
+    const { token }: any = useAuth();
     const [isOpen, isClose] = useState(false)
 
     const handleClose = () => {
@@ -31,7 +31,6 @@ export default function Header() {
             : false
     };
 
-
     return (
         <>
             <div className={`header ${isHome() ? "" : "bg-white/10 h-[80px]"} p-2 pt-3 absolute z-10 w-full top-0 right-0`}>
@@ -39,29 +38,18 @@ export default function Header() {
                     <div className="headerInner flex items-center justify-between">
                         <section className="flex items-center">
                             <a href="" className="mr-4"><HiMenuAlt1 className="text-[30px] text-white" /></a>
-                            <a href="" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
+                            <Link href="/home" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></Link>
                         </section>
                         <HomeSearchbar />
                         {/* <section className="flex justify-end w-[216px]">
                         <button className="mr-4 text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black">Login</button>
                         <button className="text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black">Signup</button>
                     </section> */}
-
-
-
                         <section className="flex justify-end w-[216px]">
-                            {getToken ? (
+                            {token ? (
                                 <>
                                     {/* <button className="mr-4 text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black"><IoIosNotifications /></button>
                                      <div className="openNotifications"></div> */}
-                                    <div className="relative">
-                                        <button className="text-white font-semibold p-2 rounded-full border border-2 border-white transition hover:bg-white hover:text-black"><FaUserCircle /></button>
-                                        <div className="openNotifications"></div>
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    {/* <button className="mr-4 text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black" onClick={() => isClose(true)}>Login</button> */}
                                     <div className="relative">
                                         <button className="text-white"><FaRegUser className="w-5 h-5 hover:text-amber-500 transition" /></button>
                                         <div className="openProfileLinks profileLinks absolute bg-zinc-800 rounded-lg right-0 min-w-[200px]">
@@ -73,9 +61,11 @@ export default function Header() {
                                         </div>
                                     </div>
                                 </>
+                            ) : (
+                                <>
+                                    <button className="mr-4 text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black" onClick={() => isClose(true)}>Login</button>
+                                </>
                             )}
-
-
                         </section>
                     </div>
                 </div >
