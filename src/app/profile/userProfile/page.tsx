@@ -26,7 +26,7 @@ export default function UserProfile() {
                                 <input className="p-2 px-4 rounded-lg bg-white/5 text-white" type="text" placeholder="Your Email" />
                             </div>
 
-                            <button className="text-left p-2 px-4 rounded-lg bg-white/5 text-white mt-1" type="button" onClick={toggleChangePassword}>Change Password</button>
+                            <button className="text-left p-1 px-4 rounded-lg bg-white/5 text-white mt-1" type="button" onClick={toggleChangePassword}>Change Password</button>
 
                             {showChangePassword && (
                                 <>
