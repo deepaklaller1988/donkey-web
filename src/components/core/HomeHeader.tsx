@@ -78,7 +78,7 @@ export default function Header() {
                             ) : (
                                 <>
                                 <div className="flex gap-4">
-                                <button onClick={toggleSearch} className="text-white"><IoSearch className="w-6 h-6 hover:text-amber-500 transition" /></button>
+                                <button onClick={toggleSearch} className="text-white block md:hidden"><IoSearch className="w-6 h-6 hover:text-amber-500 transition" /></button>
                                 <button className="text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black" onClick={() => isClose(true)}>Login</button>
                                 </div>
                                 </>
