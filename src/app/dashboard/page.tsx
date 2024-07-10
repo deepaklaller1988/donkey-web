@@ -3,6 +3,7 @@ import { IoMdArrowDroprightCircle } from "react-icons/io";
 import "./homeEnter.css";
 import Searchbar from "@components/Searchbar";
 import useTitle from "@hooks/useTitle";
+import SocialButton from "@components/SocialButton";
 export default function Home() {
     useTitle("Dashboard");
     return (<>
@@ -23,7 +24,7 @@ export default function Home() {
                         <div className="wrapper">
                             <h3 className="text-white/30 text-center">Share Donkey with your Friends!</h3>
                             <div className="w-full mt-2 text-white text-center">
-                                Put All Social Here
+                              <SocialButton/>
                             </div>
                         </div>
                     </div>
