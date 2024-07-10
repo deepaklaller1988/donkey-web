@@ -51,7 +51,7 @@ export default function Header() {
                     <div className="headerInner flex items-center justify-between">
                         <section className="flex items-center">
                             <button onClick={toggleSidebar} className="mr-4"><HiMenuAlt1 className="text-[30px] text-white" /></button>
-                            <a href="" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
+                            <Link href="/home" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></Link>
                         </section>
                         <HomeSearchbar />
 

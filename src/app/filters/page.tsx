@@ -40,6 +40,7 @@ export default function FiltersPage() {
     });
 
     const handleFilters = (selectedOptions: any) =>{
+        console.log(selectedOptions)
         setSelectedOptions({
             selectedMedia: selectedOptions.selectedType,
             selectedYear:selectedOptions.selectedYear,
@@ -48,8 +49,6 @@ export default function FiltersPage() {
             selectedFilter:selectedOptions.selectedFilter  
         })
     }
-
-    console.log(filteredData)
 
     return (
         <div className="w-full">
@@ -63,7 +62,7 @@ export default function FiltersPage() {
                                     <div className="flex items-center gap-4">
                                         <h3 className="text-white text-[25px] font-semibold">FILTER</h3>
                                     </div>
-                                <Filters handleFilters={handleFilters} />
+                                <Filters handleFilters={handleFilters} initiallySelected={selectedOptions} />
                                     <div className="w-full py-2">
                                     <ul className="w-full flex flex-wrap gap-y-10">
                                             {
