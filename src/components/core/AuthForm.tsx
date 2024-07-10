@@ -12,6 +12,8 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const [captchaValue, setCaptchaValue] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [showChangePassword, setShowChangePassword] = useState(false);
+
 
   useEffect(() => {
     setErrorMessage('');
@@ -22,7 +24,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const endpoints: any = {
     register: "signup",
     login: "login",
-    forgot: "forgot-password"
+    forgot: "forgot-password",
   };
 
 
@@ -43,6 +45,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
         setSuccessMessage('Registration successful! You can now log in.');
         setType('login');
       }
+
     },
     onError: async (error: any) => {
       setErrorMessage(error?.error?.code);
@@ -62,19 +65,21 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
     const username: any = formData.get('username')?.toString().trim();
     const password: any = formData.get('password')?.toString().trim();
     const repeatPassword = formData.get('repeatPassword')?.toString().trim();
-    const type = 'register'
+
+    const type = formData.get('type')?.toString().trim();
+
 
     const validations: any = {
       username: {
-        condition: type && username?.length < 4,
+        condition: type == 'register' && username?.length < 4,
         message: 'Username must be at least 4 characters.'
       },
       password: {
-        condition: type && password?.length < 6,
+        condition: type == 'register' && password?.length < 6,
         message: 'Password must be at least 6 characters.'
       },
       repeatPassword: {
-        condition: type && password !== repeatPassword,
+        condition: type == 'register' && password !== repeatPassword,
         message: 'Password confirmation does not match.'
       }
     };
@@ -82,6 +87,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
     const validationErrors: any = Object.keys(validations)
       .filter(field => validations[field].condition)
       .map(field => validations[field].message);
+    console.log(validationErrors);
 
     // Handle validation errors
     if (validationErrors.length > 0) {
@@ -107,7 +113,10 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
           {type === 'login' && 'Login'}
           {type === 'forgot' && 'Forgot Password'}
           {type === 'register' && 'Account Sign up'}
-          <IoMdClose className="text-white w-6 h-6 cursor-pointer transition hover:text-amber-500" onClick={handleClose} />
+          {type === 'profile' && 'Info'}
+          {type !== 'profile' && (
+            <IoMdClose className="text-white w-6 h-6 cursor-pointer transition hover:text-amber-500" onClick={handleClose} />
+          )}
         </h2>
         {type === 'forgot' && (
           <p className="text-sm text-white/50 pb-4">
@@ -115,18 +124,20 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
           </p>
         )}
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          {(type === 'login' || type === 'register' || type === 'forgot') && (
+          {(type === 'login' || type === 'register' || type === 'forgot' || type === 'profile') && (
             <>
-              <div className="w-full flex flex-col gap-1">
-                <label className="text-white/50">Email</label>
-                <input
-                  className="p-2 px-4 rounded-lg bg-white/5 text-white"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  required
-                />
-              </div>
+              {type !== 'profile' && (
+                <div className="w-full flex flex-col gap-1">
+                  <label className="text-white/50">Email</label>
+                  <input
+                    className="p-2 px-4 rounded-lg bg-white/5 text-white"
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                  />
+                </div>
+              )}
 
               {type === 'login' && (
                 <div className="w-full flex flex-col gap-1">
@@ -159,7 +170,6 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
                   ))}
                 </>
               )}
-
             </>
           )}
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
