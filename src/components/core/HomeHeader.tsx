@@ -11,12 +11,14 @@ import { useState } from "react";
 import { useAuth } from "context/AuthContext";
 import Link from "next/link";
 import { logOut } from "@lib/userToken";
+import Sidebar from "@components/core/Sidebar";
 
 export default function Header() {
-    const router=useRouter()
+    const router = useRouter()
     const { token }: any = useAuth();
     const [isOpen, isClose] = useState(false)
     const [OpenProfile, setOpenProfile] = useState(false)
+    const [openSideBar, setOpenSidebar] = useState(false)
 
     const handleClose = () => {
         isClose(false);
@@ -34,12 +36,13 @@ export default function Header() {
     const toggleProfile = () => {
         setOpenProfile(!OpenProfile)
     }
-
-    const handleLogOut=()=>{
-        logOut(), 
-        router.push("/dashboard")
+    const toggleSidebar = () => {
+        setOpenSidebar(!openSideBar)
     }
-
+    const handleLogOut = () => {
+        logOut(),
+            router.push("/dashboard")
+    }
 
     return (
         <>
@@ -47,7 +50,7 @@ export default function Header() {
                 <div className="homewrapper">
                     <div className="headerInner flex items-center justify-between">
                         <section className="flex items-center">
-                            <a href="" className="mr-4"><HiMenuAlt1 className="text-[30px] text-white" /></a>
+                            <button onClick={toggleSidebar} className="mr-4"><HiMenuAlt1 className="text-[30px] text-white" /></button>
                             <a href="" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
                         </section>
                         <HomeSearchbar />
@@ -61,7 +64,7 @@ export default function Header() {
                                             <Link href="" className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"><GoVideo /> Continue Watching </Link>
                                             <Link href="" className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"><FaRegBookmark /> Bookmark </Link>
                                             <Link href="" className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"><IoSettingsOutline /> Settings</Link>
-                                            <button type ="button" className="border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 " onClick={handleLogOut}><IoLogOutOutline /> Logout</button>
+                                            <button type="button" className="border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 " onClick={handleLogOut}><IoLogOutOutline /> Logout</button>
                                         </div>
                                     </div>
                                 </>
@@ -78,6 +81,9 @@ export default function Header() {
             {isOpen ?
                 <AuthForm isOpen={isOpen} handleClose={handleClose} />
                 : null}
+
+            <Sidebar openSideBar={openSideBar} toggleSidebar={toggleSidebar}/>
+
 
         </>
     );

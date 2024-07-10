@@ -53,26 +53,24 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
     setErrorMessage('');
     setSuccessMessage('');
 
-    // Validate CAPTCHA
     if (!captchaValue) {
       setErrorMessage('Please complete the CAPTCHA');
       return;
     }
 
-    // Extract form data
     const formData = new FormData(event.target);
     const username: any = formData.get('username')?.toString().trim();
     const password: any = formData.get('password')?.toString().trim();
     const repeatPassword = formData.get('repeatPassword')?.toString().trim();
     const type = 'register'
-    // Define validation rules
+
     const validations: any = {
       username: {
-        condition: type && username.length < 4,
+        condition: type && username?.length < 4,
         message: 'Username must be at least 4 characters.'
       },
       password: {
-        condition: type && password.length < 6,
+        condition: type && password?.length < 6,
         message: 'Password must be at least 6 characters.'
       },
       repeatPassword: {
