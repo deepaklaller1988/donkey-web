@@ -162,7 +162,7 @@ export default function Filters({handleFilters, initiallySelected}:any) {
         <>
          <div className="w-full my-3">
                 <div className="flex flex-wrap gap-2">
-                    <input className="text-[14px] rounded-md px-3 bg-white/20 transition text-white" type="text" placeholder="Search..." onChange={(e)=>{setSearchQuery(e.target.value)}} />
+                    <input className="text-[14px] rounded-md px-3 bg-white/20 transition text-white" type="text" placeholder="Search..." onChange={(e)=>setSearchQuery(e.target.value)} />
                 <MultiSelect
                     value={selectedType}
                     onChange={(e) => handleSelection(e)}
