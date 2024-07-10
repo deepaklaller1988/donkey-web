@@ -42,7 +42,7 @@ function SidebarCard({movieId,mediaType,index}: any) {
           </b>
           )}
           <div className="w-full relative pr-16 pl-4">
-            <h4 className="text-white uppercase font-semibold transition">
+            <h4 className="text-sm md:text-[16px] text-white uppercase font-semibold transition">
                 {(cardDetials?.title && cardDetials.title.length > 20) ? cardDetials?.title?.slice(0,20) + "..." : (cardDetials?.name && cardDetials?.name.length > 20 ) ? cardDetials?.name?.slice(0,20) + "..." : cardDetials?.name ? cardDetials?.name : cardDetials?.title}
             </h4>
             <ul className="text-white/40 flex gap-2">

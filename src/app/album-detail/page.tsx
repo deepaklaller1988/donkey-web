@@ -93,7 +93,7 @@ export default function FiltersPage() {
                                 </div>
                             </section>
                         </div>
-                        <div className="min-w-[376px]">
+                        <div className="w-full  min-w-full md:min-w-[376px]">
                             <div className="w-full bg-white/10 rounded-lg">
                                 <section className="episodeSelectionMain flex items-center justify-center text-white">
                                     <Dropdown value={selectedSeason} onChange={(e: DropdownChangeEvent) => setSelectedSeason(e.value)} options={seasons} optionLabel="name"
@@ -143,7 +143,7 @@ export default function FiltersPage() {
                                         <h3 className="text-white text-[25px] font-semibold">LATEST MOVIES</h3>
                                     </div>
                                     <div className="w-full py-2">
-                                        <ul className="w-full flex flex-wrap gap-y-10">
+                                        <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
 
                                             <li className="w-1/5 cardSet relative">
                                                 <span className="relative">
@@ -302,7 +302,7 @@ export default function FiltersPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="min-w-[376px]">
+                            <div className="w-full  min-w-full md:min-w-[376px]">
                                 <Recommended />
                             </div>
                         </div>

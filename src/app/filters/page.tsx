@@ -65,7 +65,7 @@ export default function FiltersPage() {
                                     </div>
                                 <Filters handleFilters={handleFilters} />
                                     <div className="w-full py-2">
-                                    <ul className="w-full flex flex-wrap gap-y-10">
+                                    <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                             {
                                                 filteredData && filteredData.length > 0 ? filteredData.map((item: any) =>(<Card movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />)) : ""
                                             } 
@@ -165,7 +165,7 @@ export default function FiltersPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="min-w-[376px]">
+                            <div className="w-full  min-w-full md:min-w-[376px]">
                                 {/* <Sidebar /> */}
                             </div>
                         </div>
