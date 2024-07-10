@@ -1,3 +1,4 @@
+
 let headers = new Headers();
 headers.append("Accept", "application/json");
 // headers.append("Content-Type", "text/plain");
@@ -24,10 +25,17 @@ export default {
       },
       body: JSON.stringify(body)
     };
-    let res :any= await fetch(path, options);
-    // localStorage.setItem("token",res.data?.accessToken)
 
-    return await res.json();
-
-    },
-}
+    try {
+      let res: any = await fetch(path, options);
+      if (!res.ok) {
+        let errorData = await res.json();
+        //  throw Error(handleError(errorData.error.code))
+      }
+      let data: any = await res.json();
+      return data;
+    } catch (error: any) {
+      throw error
+    }
+  }
+};

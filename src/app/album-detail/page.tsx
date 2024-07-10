@@ -47,7 +47,7 @@ export default function FiltersPage() {
                             <section>
                                 <div className="w-full flex gap-5 justify-between">
                                     <section>
-                                        <h3 className="text-white text-[30px] font-semibold">Craig of the Creek</h3>
+                                        <h3 className="text-white text-[25px] font-semibold">Craig of the Creek</h3>
                                         <ul className="py-1 flex flex-wrap text-white gap-4 font-light"><li><b className="font-bold">2024</b></li><li>118 min</li><li>Action</li><li>Comedy</li><li>Crime</li><li><span className="flex items-center gap-2 text-white font-semibold"><FaStar /> 7.2</span></li><li><label className="rounded-full pbgColor text-black font-bold px-2">HD</label></li></ul>
                                     </section>
                                     <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
@@ -140,7 +140,7 @@ export default function FiltersPage() {
                             <div className="w-full">
                                 <div className="w-full">
                                     <div className="flex items-center gap-4">
-                                        <h3 className="text-white text-[30px] font-semibold">LATEST MOVIES</h3>
+                                        <h3 className="text-white text-[25px] font-semibold">LATEST MOVIES</h3>
                                     </div>
                                     <div className="w-full py-2">
                                         <ul className="w-full flex flex-wrap gap-y-10">

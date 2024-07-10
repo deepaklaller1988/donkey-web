@@ -1,5 +1,6 @@
 import User from "./User";
 import Error from "./Error";
+import { handleError } from "util/errorHandler";
 
 export interface Res {
   success: boolean;
@@ -22,10 +23,10 @@ class API {
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
 
-      if (User.accessToken){
+      if (User.accessToken) {
         headers.append("Authorization", `Bearer ${User.accessToken}`);
       }
-      else if(localStorage.getItem("accessToken")){
+      else if (localStorage.getItem("accessToken")) {
         headers.append("Authorization", `Bearer ${localStorage.getItem("accessToken")}`);
       }
 
@@ -64,12 +65,12 @@ class API {
     body: any,
     resent: boolean = false
   ): Promise<Res> {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       // Join path array
       if (Array.isArray(path)) path = path.join("/");
-
+  
       let headers = new Headers();
-
+  
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
       if (User.accessToken) {
@@ -80,33 +81,34 @@ class API {
           `Bearer ${localStorage.getItem("accessToken")}`
         );
       }
-
-      await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
-        method: "POST",
-        credentials: "include",
-        headers: headers,
-        body: JSON.stringify(body),
-      })
-        .then(async (res: Response) => {
-          let parsed = await this.parseRes(
-            res,
-            () => this.post(path, body, true),
-            resent,
-            path
-          );
-
-          // if (Process.isDev) console.log("POST", path, "\n", parsed);
-
-          resolve(parsed);
-        })
-        .catch((err: any) => {
-          if (err.status == undefined) {
-            // Route.load("/maintenance");
-          }
-          console.error(err);
+  
+      try {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
+          method: "POST",
+          credentials: "include",
+          headers: headers,
+          body: JSON.stringify(body),
         });
+  
+        const parsed = await this.parseRes(
+          response,
+          () => this.post(path, body, true),
+          resent,
+          path
+        );
+  
+        if (!parsed.success) {
+          return reject(parsed);
+        }
+        
+        resolve(parsed);
+      } catch (error) {
+        reject(error);
+        throw error
+      }
     });
   }
+  
 
   static async postFile(
     path: string | string[],
@@ -257,16 +259,26 @@ class API {
     resend: Function,
     resent: boolean,
     path: string | string[]
-  ) {
-    let res: Res = await raw?.json();
-    res.success = raw.status >= 200 && raw.status < 300;
-    res.status = raw.status;
-    res.resend = resend;
-    res.resent = resent;
+  ): Promise<Res> {
+    try {
+      let res: Res = await raw.json();
+      res.success = raw.status >= 200 && raw.status < 300;
+      res.status = raw.status;
+      res.resend = resend;
+      res.resent = resent;
 
-    if (!res.success) return await Error.handle(res, path);
-    return res;
+      if (!res.success) {
+        return await Error.handle(res, path);
+      }
+
+      return res;
+    } catch (error) {
+      console.error("Error parsing response:", error);
+      throw handleError (error); // Rethrow the error to propagate it
+      
+    }
   }
+
 }
 
 export default API;
