@@ -102,10 +102,10 @@ class API {
         }
         
         resolve(parsed);
-      } catch (error) {
+      } catch (error:any) {
         reject(error);
-        throw error
-      }
+        console.log(error,"err")
+        throw handleError(error.code);      }
     });
   }
   
