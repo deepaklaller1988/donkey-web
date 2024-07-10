@@ -3,6 +3,7 @@ import '../../node_modules/react-slideshow-image/dist/styles.css';
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
+import { BsFire } from "react-icons/bs";
 import React, { useEffect, useState } from 'react';
 import { Slide } from 'react-slideshow-image';
 import {useQuery, useQueries} from '@tanstack/react-query';
@@ -96,7 +97,7 @@ const indicators = (index:any) => (
                 <div className='homewrapper'>
                   <div className='sliderContentSet'>
                     <span className='text-white/70 flex items-center'>
-                    <img src="/assets/images/slides/hot.png" alt="trending" className='mr-1 w-[14px]'/> Trending</span>
+                    <BsFire className='mr-1'/> Trending</span>
                     <h2 className='text-[50px] font-bold text-white'>{item.title ? item.title : item.name}</h2>
                     <ul className='py-1 flex items-center text-white gap-4 font-light'>
                       <li><b className='font-bold'>{item.release_date ? moment(item.release_date).year() : ""}</b></li>
