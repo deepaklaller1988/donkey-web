@@ -325,8 +325,8 @@ section.closeMenu {
   z-index: 0;
   cursor: pointer;
 }
-.navSet {z-index:0;}
-.navSet.navSetOpen {z-index:1;}
+.navSet {z-index:-1;}
+.navSet.navSetOpen {z-index:20;}
 .navSet div {transition:.5s; max-height: 0px; opacity: 0;}
 .navSet.navSetOpen div {max-height:100vh; opacity: 1;}
 .navInners section {

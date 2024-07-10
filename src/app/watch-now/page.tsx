@@ -288,7 +288,7 @@ const {
                 </div>
               </section>
             </div>
-            <div className="w-full  min-w-full md:min-w-[376px]">
+            <div className="min-w-full md:min-w-[376px]">
               <div className="w-full bg-white/10 rounded-lg">
                 <section className="episodeSelectionMain flex items-center justify-center text-white">
                   <Dropdown
@@ -430,7 +430,7 @@ const {
                   </div>
                 </div>
               </div>
-              <div className="w-full  min-w-full md:min-w-[376px]">
+              <div className="min-w-full md:min-w-[376px]">
                 <Recommended title={"SIMILAR"} data={similarMovies && similarMovies.length > 0 ? similarMovies.slice(0,10) : []} movieId={movieId} mediaType={mediaType === 'movie' ? 'Movie' : 'TV'} />
               </div>
             </div>

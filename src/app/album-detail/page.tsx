@@ -93,7 +93,7 @@ export default function FiltersPage() {
                                 </div>
                             </section>
                         </div>
-                        <div className="w-full  min-w-full md:min-w-[376px]">
+                        <div className="min-w-full md:min-w-[376px]">
                             <div className="w-full bg-white/10 rounded-lg">
                                 <section className="episodeSelectionMain flex items-center justify-center text-white">
                                     <Dropdown value={selectedSeason} onChange={(e: DropdownChangeEvent) => setSelectedSeason(e.value)} options={seasons} optionLabel="name"
@@ -302,7 +302,7 @@ export default function FiltersPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-full  min-w-full md:min-w-[376px]">
+                            <div className="min-w-full md:min-w-[376px]">
                                 <Recommended />
                             </div>
                         </div>

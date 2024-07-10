@@ -128,7 +128,7 @@ export default function Home() {
                                 </section>
                             </div>
                         </div>
-                        <div className="w-full  min-w-full md:min-w-[376px]">
+                        <div className="min-w-full md:min-w-[376px]">
                             <div><Sidebar mediaType={"Movie"} /></div>
                             <div className="mt-20"><Sidebar mediaType={"TV"} /></div>
                         </div>

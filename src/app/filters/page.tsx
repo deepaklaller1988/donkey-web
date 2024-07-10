@@ -165,7 +165,7 @@ export default function FiltersPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-full  min-w-full md:min-w-[376px]">
+                            <div className="min-w-full md:min-w-[376px]">
                                 {/* <Sidebar /> */}
                             </div>
                         </div>

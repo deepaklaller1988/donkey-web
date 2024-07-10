@@ -65,13 +65,13 @@ export default function Header() {
                             {token ? (
                                 <>
                                     <div className="relative flex gap-4">
-                                        <button onClick={toggleSearch} className="text-white"><IoSearch className="w-6 h-6 hover:text-amber-500 transition" /></button>
+                                        <button onClick={toggleSearch} className="text-white block md:hidden"><IoSearch className="w-6 h-6 hover:text-amber-500 transition" /></button>
                                         <button onClick={toggleProfile} className="text-white"><FaRegUser className="w-5 h-5 hover:text-amber-500 transition" /></button>
-                                        <div className={`profileLinks absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${OpenProfile ? 'openProfileLinks' : ''}`}>
+                                        <div className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${OpenProfile ? 'openProfileLinks' : ''}`}>
                                             <Link href="" className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"><GoVideo /> Continue Watching </Link>
                                             <Link href="" className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"><FaRegBookmark /> Bookmark </Link>
                                             <Link href="" className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"><IoSettingsOutline /> Settings</Link>
-                                            <button type="button" className="border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 " onClick={handleLogOut}><IoLogOutOutline /> Logout</button>
+                                            <button type="button" className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 " onClick={handleLogOut}><IoLogOutOutline /> Logout</button>
                                         </div>
                                     </div>
                                 </>
