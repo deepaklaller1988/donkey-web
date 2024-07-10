@@ -40,7 +40,7 @@ if(isLoading){
   return (
     <>
     {movieDetials && (<>
-      <li key={movieId} className="w-1/5 cardSet relative">
+      <li key={movieId} className="w-1/5 cursor-pointer cardSet relative">
         <span className="relative">
           <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" />
           <img

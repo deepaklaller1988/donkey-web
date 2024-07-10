@@ -27,7 +27,7 @@ function SidebarCard({movieId,mediaType,index}: any) {
 
   return (
     <>
-      <li key={movieId} className={`${index ? "pl-[15px]" : ""}`} onClick={() =>router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)} >
+      <li key={movieId} className={`cursor-pointer ${index ? "pl-[15px]" : ""}`} onClick={() =>router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)} >
         <section className="flex items-center relative listTop10 bg-white/5  hover:bg-white/10 transition rounded-md">
           <span className="relative min-w-[50px] w-[50px]">
             <img

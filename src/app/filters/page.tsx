@@ -61,7 +61,7 @@ export default function FiltersPage() {
                             <div className="w-full">
                                 <div className="w-full">
                                     <div className="flex items-center gap-4">
-                                        <h3 className="text-white text-[30px] font-semibold">FILTER</h3>
+                                        <h3 className="text-white text-[25px] font-semibold">FILTER</h3>
                                     </div>
                                 <Filters handleFilters={handleFilters} />
                                     <div className="w-full py-2">
