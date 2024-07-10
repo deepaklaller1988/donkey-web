@@ -83,8 +83,6 @@ export default function Header() {
                 : null}
 
             <Sidebar openSideBar={openSideBar} toggleSidebar={toggleSidebar}/>
-
-
         </>
     );
 }
