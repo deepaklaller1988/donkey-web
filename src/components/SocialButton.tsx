@@ -5,7 +5,6 @@ import { FaFacebook } from "react-icons/fa";
 import { PiXLogoBold } from "react-icons/pi";
 import {
     FacebookShareButton,
-    InstapaperShareButton,
     TwitterShareButton,
     RedditShareButton,
     WhatsappShareButton,
@@ -17,7 +16,6 @@ export default function SocialButton() {
     const url = "url"
     return (
         <div className="share-container max-w-screen-lg mx-auto mb-20">
-            <p className="text-center text-white">Share Donkey with your Friends!</p>
             <div className="flex justify-center gap-4 mt-4">
 
                 <FacebookShareButton url={`${process.env.NEXT_PUBLIC_API_URL}`}>
