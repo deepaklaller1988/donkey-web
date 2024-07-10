@@ -288,7 +288,7 @@ const {
                 </div>
               </section>
             </div>
-            <div className="min-w-[376px]">
+            <div className="w-full  min-w-full md:min-w-[376px]">
               <div className="w-full bg-white/10 rounded-lg">
                 <section className="episodeSelectionMain flex items-center justify-center text-white">
                   <Dropdown
@@ -422,7 +422,7 @@ const {
                     </h3>
                   </div>
                   <div className="w-full py-2">
-                  <ul className="w-full flex flex-wrap gap-y-10">
+                  <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                         {
                             popularList && popularList.length > 0 ? popularList.map((item: any) =>(<Card movieId={item.id} mediaType={mediaType === 'movie' ? 'Movie' : 'TV'} />)) : ""
                         } 
@@ -430,7 +430,7 @@ const {
                   </div>
                 </div>
               </div>
-              <div className="min-w-[376px]">
+              <div className="w-full  min-w-full md:min-w-[376px]">
                 <Recommended title={"SIMILAR"} data={similarMovies && similarMovies.length > 0 ? similarMovies.slice(0,10) : []} movieId={movieId} mediaType={mediaType === 'movie' ? 'Movie' : 'TV'} />
               </div>
             </div>

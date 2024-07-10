@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useAuth } from "context/AuthContext";
 import Link from "next/link";
 import { logOut } from "@lib/userToken";
+import { IoSearch } from "react-icons/io5";
 import Sidebar from "@components/core/Sidebar";
 
 export default function Header() {
@@ -18,6 +19,7 @@ export default function Header() {
     const { token }: any = useAuth();
     const [isOpen, isClose] = useState(false)
     const [OpenProfile, setOpenProfile] = useState(false)
+    const [OpenSearch, setOpenSearch] = useState(false)
     const [openSideBar, setOpenSidebar] = useState(false)
 
     const handleClose = () => {
@@ -36,6 +38,9 @@ export default function Header() {
     const toggleProfile = () => {
         setOpenProfile(!OpenProfile)
     }
+    const toggleSearch = () => {
+        setOpenSearch(!OpenSearch)
+    }
     const toggleSidebar = () => {
         setOpenSidebar(!openSideBar)
     }
@@ -48,16 +53,19 @@ export default function Header() {
         <>
             <div className={`header ${isHome() ? "" : "bg-white/10 h-[80px]"} p-2 pt-3 absolute z-10 w-full top-0 right-0`}>
                 <div className="homewrapper">
-                    <div className="headerInner flex items-center justify-between">
+                    <div className="headerInner flex items-center justify-between relative">
                         <section className="flex items-center">
                             <button onClick={toggleSidebar} className="mr-4"><HiMenuAlt1 className="text-[30px] text-white" /></button>
-                            <a href="" className="w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
+                            <a href="" className="w-[120px] md:w-[150px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
                         </section>
-                        <HomeSearchbar />
-                        <section className="flex justify-end w-[216px]">
+                        <div className={`mobileSearch w-full ${OpenSearch ? 'openMobileSearch' : ''}`}>
+                            <HomeSearchbar />
+                            </div>
+                        <section className="flex justify-end min-w-auto md:min-w-[196px]">
                             {token ? (
                                 <>
-                                    <div className="relative">
+                                    <div className="relative flex gap-4">
+                                        <button onClick={toggleSearch} className="text-white"><IoSearch className="w-6 h-6 hover:text-amber-500 transition" /></button>
                                         <button onClick={toggleProfile} className="text-white"><FaRegUser className="w-5 h-5 hover:text-amber-500 transition" /></button>
                                         <div className={`profileLinks absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${OpenProfile ? 'openProfileLinks' : ''}`}>
                                             <Link href="" className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"><GoVideo /> Continue Watching </Link>
@@ -69,8 +77,10 @@ export default function Header() {
                                 </>
                             ) : (
                                 <>
-                                    <button className="mr-4 text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black" onClick={() => isClose(true)}>Login</button>
-
+                                <div className="flex gap-4">
+                                <button onClick={toggleSearch} className="text-white"><IoSearch className="w-6 h-6 hover:text-amber-500 transition" /></button>
+                                <button className="text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black" onClick={() => isClose(true)}>Login</button>
+                                </div>
                                 </>
                             )}
                         </section>

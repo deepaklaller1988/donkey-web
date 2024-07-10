@@ -40,7 +40,7 @@ if(isLoading){
   return (
     <>
     {movieDetials && (<>
-      <li key={movieId} className="w-1/5 cursor-pointer cardSet relative">
+      <li key={movieId} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 cursor-pointer cardSet relative">
         <span className="relative">
           <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" />
           <img
@@ -55,8 +55,8 @@ if(isLoading){
         <section className="py-2">
           <b className="text-white font-semibold">{(movieDetials?.title && movieDetials.title.length > 40) ? movieDetials?.title?.slice(0,40) + "..." : (movieDetials?.name && movieDetials?.name.length > 40 ) ? movieDetials?.name?.slice(0,40) + "..." : movieDetials?.name ? movieDetials?.name : movieDetials?.title}</b>
           <ul className="text-gray-500 flex gap-2">
-            <li className="text-sm">{mediaType}</li>.<li className="text-sm">{mediaType === 'Movie' ? moment(movieDetials?.release_date).year() : "SS" + movieDetials?.last_episode_to_air?.season_number}</li>.
-            <li className="text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>
+            <li className="text-sm">{mediaType}</li>.<li className="text-sm">{mediaType === 'Movie' ? moment(movieDetials?.release_date).year() : "SS" + movieDetials?.last_episode_to_air?.season_number}</li>
+            {/* . <li className="text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li> */}
           </ul>
         </section>
         <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]">
