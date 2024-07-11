@@ -1,18 +1,14 @@
 "use client"
 import ProfileTab from '@components/core/ProfileTab';
 import React, { useState } from 'react'
-
-
 export default function UserProfile() {
     const [showChangePassword, setShowChangePassword] = useState(false);
-
     const toggleChangePassword = () => {
         setShowChangePassword(!showChangePassword);
     };
     return (
         <div>
             <ProfileTab activeTab="profile"/>
-
             <div className="w-full mt-28">
                 <div className="w-full max-w-[500px] rounded-lg bg-black/50 m-auto p-10">
                         <h2 className="text-white text-[30px] pb-2 flex items-center justify-between">Info </h2>

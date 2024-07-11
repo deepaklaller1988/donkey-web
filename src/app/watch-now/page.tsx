@@ -167,7 +167,7 @@ const {
               <section>
                 <div className="w-full flex gap-5 justify-between">
                   <section>
-                    <h3 className="text-white text-[35px] font-semibold">
+                    <h3 className="text-white text-[25px] font-semibold">
                       {watchDetials?.title || watchDetials?.name}
                     </h3>
                     <ul className="py-1 flex flex-wrap text-white gap-4 font-light">
@@ -413,11 +413,11 @@ const {
         {/* <div className="bg-white/10 h-[80px]"><Header /></div> */}
         <div className="w-full mt-20">
           <div className="homewrapper">
-            <div className="containerHub flex gap-5">
+          <div className="containerHub flex gap-5 flex-col lg:flex-row">
               <div className="w-full">
                 <div className="w-full">
                   <div className="flex items-center gap-4">
-                    <h3 className="text-white text-[35px] font-semibold">
+                    <h3 className="text-white text-[25px] font-semibold">
                       RECOMMENDED MOVIES
                     </h3>
                   </div>

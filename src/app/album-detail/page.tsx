@@ -136,7 +136,7 @@ export default function FiltersPage() {
                 {/* <div className="bg-white/10 h-[80px]"><Header /></div> */}
                 <div className="w-full mt-20">
                     <div className="homewrapper">
-                        <div className="containerHub flex gap-5">
+                    <div className="containerHub flex gap-5 flex-col lg:flex-row">
                             <div className="w-full">
                                 <div className="w-full">
                                     <div className="flex items-center gap-4">
@@ -148,7 +148,7 @@ export default function FiltersPage() {
                                             <li className="w-1/5 cardSet relative">
                                                 <span className="relative">
                                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
                                                     <ul className="text-gray-500 flex gap-2">
@@ -184,7 +184,7 @@ export default function FiltersPage() {
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
                                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
                                                     <ul className="text-gray-500 flex gap-2">
@@ -197,7 +197,7 @@ export default function FiltersPage() {
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
                                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
                                                     <ul className="text-gray-500 flex gap-2">
@@ -210,7 +210,7 @@ export default function FiltersPage() {
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
                                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
                                                     <ul className="text-gray-500 flex gap-2">
@@ -223,7 +223,7 @@ export default function FiltersPage() {
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
                                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
                                                     <ul className="text-gray-500 flex gap-2">
@@ -236,7 +236,7 @@ export default function FiltersPage() {
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
                                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
                                                     <ul className="text-gray-500 flex gap-2">
@@ -249,7 +249,7 @@ export default function FiltersPage() {
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
                                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
                                                     <ul className="text-gray-500 flex gap-2">
@@ -262,7 +262,7 @@ export default function FiltersPage() {
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
                                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
                                                     <ul className="text-gray-500 flex gap-2">
@@ -275,7 +275,7 @@ export default function FiltersPage() {
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
                                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
                                                     <ul className="text-gray-500 flex gap-2">
@@ -288,7 +288,7 @@ export default function FiltersPage() {
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
                                                     <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                                                    <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
                                                     <ul className="text-gray-500 flex gap-2">

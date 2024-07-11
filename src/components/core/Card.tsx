@@ -48,7 +48,7 @@ if(isLoading){
             src={`https://image.tmdb.org/t/p/original${movieDetials?.poster_path}`}
             alt="album"
           />
-          <label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
+          <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
             HD
           </label>
         </span>
