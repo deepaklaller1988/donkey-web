@@ -1,6 +1,6 @@
 "use client"
 import "./filters.css";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdFilterList } from "react-icons/md";
 import { MultiSelect } from 'primereact/multiselect';
 import FetchApi from "@lib/FetchApi";
@@ -30,12 +30,13 @@ const fetchGenre = async (mediaType:string) => {
   };
 
 
-export default function Filters({handleFilters}:any) {
+export default function Filters({handleFilters, initiallySelected}:any) {
     const [selectedType, setSelectedType] = useState<any>(null);
     const [selectedGenre, setSelectedGenre] = useState<any>(null);
     const [selectedCountry, setSelectedCountry] = useState<any>(null);
     const [selectedYear, setSelectedYear] = useState<any>(null);
     const [selectedFilter, setSelectedFilter] = useState<any>(null);
+    const [searchQuery, setSearchQuery] =  useState<string>("");
 
     const {
         data: movieGenre,
@@ -63,7 +64,7 @@ export default function Filters({handleFilters}:any) {
         { name: 'Latest', code: 'primary_release_date.desc' },
         { name: 'Name A-Z', code: 'title.asc' },
         { name: 'Name Z-A', code: 'title.desc' },
-        { name: 'Highest Earning', code: 'revenue.desc' },
+        // { name: 'Highest Earning', code: 'revenue.desc' },
         { name: 'Most Voted', code: 'vote_count.desc' },
     ];
 
@@ -72,7 +73,7 @@ export default function Filters({handleFilters}:any) {
     const startYear = currentYear - 25;
 
     // Create an array of objects for the years in between
-    const yearsArray = [];
+    const yearsArray: any = [];
     for (let year = currentYear; year >= startYear; year--) {
     yearsArray.push({ year: year });
     }
@@ -84,6 +85,31 @@ export default function Filters({handleFilters}:any) {
 
     const allGenres = [...(movieGenre?.genres || []), ...(tvGenre?.genres || [])];
     let genres = Array.from(new Map(allGenres.map(genre => [genre.id, genre])).values()).sort((a,b) => a.name.localeCompare(b.name));
+
+
+
+    useEffect(()=>{
+        if(initiallySelected){
+            if(initiallySelected.selectedMedia){
+                setSelectedType(type.filter((item:any) => item?.code === initiallySelected.selectedMedia))
+            }
+            if(initiallySelected.selectedFilter){
+                setSelectedFilter(popularOptions.filter((item:any) => item?.code === initiallySelected.selectedFilter))
+            }
+            if(initiallySelected.selectedYear){
+                setSelectedYear(yearsArray.filter((item:any) => item?.year === initiallySelected.selectedYear))
+            }
+            if(initiallySelected.selectedGenres && genres && genres.length > 0){
+                let genArr = initiallySelected?.selectedGenres.split(",").map((arr:any)=> parseInt(arr));
+                setSelectedYear(genres.filter((item:any) => genArr.includes(item.id)))
+            }
+            if(initiallySelected.selectedCountry){
+                let genArr = initiallySelected?.selectedCountry.split(",");
+                setSelectedYear(countries.filter((item:any) => genArr.includes(item.iso_3166_1)));
+            }
+        }
+
+    },[initiallySelected]);
 
     const handleSelection = (e: any) =>{
         const {name,value} = e.target;
@@ -114,9 +140,21 @@ export default function Filters({handleFilters}:any) {
             selectedFilter:selectedFilter ? selectedFilter.map((val: any)=>val.code).join(",") : ""
         }
 
-        console.log(selected)
+        if(selected.selectedType === 'tv'){
+            if(selectedFilter && selectedFilter.length > 0){
+                if(selectedFilter[0].name === 'Latest'){
+                    selected.selectedFilter = 'first_air_date.desc'
+                }
+                if(selectedFilter[0].name === 'Name A-Z'){
+                    selected.selectedFilter = 'name.asc'
+                }
+                if(selectedFilter[0].name === 'Name Z-A'){
+                    selected.selectedFilter = 'name.desc'
+                }
+            }
+        }
 
-        handleFilters(selected);
+        handleFilters(selected, searchQuery);
     }
     
 
@@ -124,7 +162,7 @@ export default function Filters({handleFilters}:any) {
         <>
          <div className="w-full my-3">
                 <div className="flex flex-wrap gap-2">
-                    <input className="text-[14px] rounded-md px-3 bg-white/20 transition text-white" type="text" placeholder="Search..."/>
+                    <input className="text-[14px] rounded-md px-3 bg-white/20 transition text-white" type="text" placeholder="Search..." onChange={(e)=>setSearchQuery(e.target.value)} />
                 <MultiSelect
                     value={selectedType}
                     onChange={(e) => handleSelection(e)}
