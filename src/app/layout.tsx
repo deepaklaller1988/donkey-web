@@ -5,6 +5,7 @@ import "./globals.css";
 import MainLayout from "@components/core/MainLayout";
 import Provider from "@components/core/Provider";
 import Head from "next/head";
+import User from "@lib/User";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,12 +17,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
        
       <body>
         <Provider>
-          <MainLayout>{children}</MainLayout>
+          <MainLayout>{children}
+          
+          </MainLayout>
         </Provider>
       </body>
     </html>

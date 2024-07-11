@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import Card from "@components/core/Card";
 import Recommended from "@components/Recommended";
 import useTitle from "@hooks/useTitle";
+import Loader from "@components/core/Loader";
 import Pagination from "@components/core/Pagination";
 
 const fetchFilteredData = async (selectedOptions: any, page: number) => {
@@ -132,6 +133,14 @@ export default function FiltersPage() {
             setCurrentPage(page);
         }
     };
+
+    if(isLoading || isRecentLoaded || isSearchLoading){
+        return(
+            <div>
+            <Loader />
+          </div> 
+        )
+    }
 
     return (
         <div className="w-full">

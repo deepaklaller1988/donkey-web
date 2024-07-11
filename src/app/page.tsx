@@ -12,7 +12,27 @@ export default function page() {
   //   router.push("/dashboard");
   // }, []);
 
+  const [userData, setUserData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        await User.role(); // Call the async method to fetch user details
+        setUserData({
+          id: User.id,
+          email: User.email,
+          username: User.username,
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
   return (
     <div>
       <Loader />

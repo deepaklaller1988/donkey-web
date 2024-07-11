@@ -23,11 +23,8 @@ class API {
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
 
-      if (User.accessToken) {
-        headers.append("Authorization", `Bearer ${User.accessToken}`);
-      }
-      else if (localStorage.getItem("accessToken")) {
-        headers.append("Authorization", `Bearer ${localStorage.getItem("accessToken")}`);
+    if (localStorage.getItem("token")) {
+        headers.append("Authorization", `Bearer ${localStorage.getItem("token")}`);
       }
 
       let options: any = {
@@ -73,12 +70,10 @@ class API {
   
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
-      if (User.accessToken) {
-        headers.append("Authorization", `Bearer ${User.accessToken}`);
-      } else if (localStorage.getItem("accessToken")) {
+     if (localStorage.getItem("token")) {
         headers.append(
           "Authorization",
-          `Bearer ${localStorage.getItem("accessToken")}`
+          `Bearer ${localStorage.getItem("token")}`
         );
       }
   
@@ -121,12 +116,10 @@ class API {
 
       let headers = new Headers();
 
-      if (User.accessToken) {
-        headers.append("Authorization", `Bearer ${User.accessToken}`);
-      } else if (localStorage.getItem("accessToken")) {
+     if (localStorage.getItem("token")) {
         headers.append(
           "Authorization",
-          `Bearer ${localStorage.getItem("accessToken")}`
+          `Bearer ${localStorage.getItem("token")}`
         );
       }
 
@@ -169,12 +162,10 @@ class API {
 
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
-      if (User.accessToken) {
-        headers.append("Authorization", `Bearer ${User.accessToken}`);
-      } else if (localStorage.getItem("accessToken")) {
+    if (localStorage.getItem("token")) {
         headers.append(
           "Authorization",
-          `Bearer ${localStorage.getItem("accessToken")}`
+          `Bearer ${localStorage.getItem("token")}`
         );
       }
 
@@ -218,12 +209,10 @@ class API {
 
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
-      if (User.accessToken) {
-        headers.append("Authorization", `Bearer ${User.accessToken}`);
-      } else if (localStorage.getItem("accessToken")) {
+     if (localStorage.getItem("token")) {
         headers.append(
           "Authorization",
-          `Bearer ${localStorage.getItem("accessToken")}`
+          `Bearer ${localStorage.getItem("token")}`
         );
       }
 

@@ -100,7 +100,6 @@ export default function Filters({handleFilters, initiallySelected}:any) {
                 setSelectedYear(yearsArray.filter((item:any) => item?.year == initiallySelected.selectedYear))
             }
             if(genres && genres.length > 0){
-                console.log("initiallySelected gen", genres)
                 let genArr = initiallySelected?.selectedGenres.split(",").map((arr:any)=> parseInt(arr));
                 setSelectedGenre(genres.filter((item:any) => genArr.includes(item.id)))
             }
@@ -111,7 +110,6 @@ export default function Filters({handleFilters, initiallySelected}:any) {
         }
 
     },[initiallySelected, countries, movieGenre, tvGenre]);
-    console.log("initiallySelected", initiallySelected)
 
     const handleSelection = (e: any) =>{
         const {name,value} = e.target;
