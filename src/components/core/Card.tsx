@@ -40,15 +40,15 @@ if(isLoading){
   return (
     <>
     {movieDetials && (<>
-      <li key={movieId} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 cursor-pointer cardSet relative" onClick={()=>router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
-        <span className="relative">
+      <li key={movieId} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 cursor-pointer cardSet relative" >
+        <span className="relative" onClick={()=>router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
           <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" />
           <img
             className="rounded-xl w-full"
             src={`https://image.tmdb.org/t/p/original${movieDetials?.poster_path}`}
             alt="album"
           />
-          <label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
+          <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
             HD
           </label>
         </span>

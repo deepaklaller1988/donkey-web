@@ -4,7 +4,7 @@ export default function Recommended({title, data, movieId,mediaType}: any) {
     return (
         <div className="w-full">
             <div className="flex items-center gap-4">
-                <h3 className="text-white text-[35px] font-semibold">{title}</h3>
+                <h3 className="text-white text-[25px] font-semibold">{title}</h3>
             </div>
             <ul className="flex flex-col gap-3 py-2 mt-[10px]">
                 {data && data.length > 0 ? data.map((item: any)=>(

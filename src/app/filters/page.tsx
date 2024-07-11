@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Card from "@components/core/Card";
 import Recommended from "@components/Recommended";
+import useTitle from "@hooks/useTitle";
 
 const fetchFilteredData = async (selectedOptions: any) => {
     try {
@@ -43,6 +44,7 @@ const fetchSearchedData = async (selectedOptions: any, searched:string) => {
         };
 
 export default function FiltersPage() {
+    useTitle("Filter, Search Movies & TV Shows");
     const [selectedOptions, setSelectedOptions] =  useState<any>({
         selectedMedia: "movie",
         selectedYear:"",
@@ -98,7 +100,7 @@ export default function FiltersPage() {
                 {/* <div className="bg-white/10 h-[80px]"><Header /></div> */}
                 <div className="w-full mt-40">
                     <div className="homewrapper">
-                        <div className="containerHub flex gap-5">
+                    <div className="containerHub flex gap-5 flex-col lg:flex-row">
                             <div className="w-full">
                                 <div className="w-full">
                                     <div className="flex items-center gap-4">
