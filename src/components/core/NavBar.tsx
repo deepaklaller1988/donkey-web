@@ -60,7 +60,7 @@ export default function NavBar({ openSideBar ,toggleSidebar}: any) {
                 <section className='absolute p-2 flex flex-wrap rounded-lg'>
                     {movieGenre && movieGenre.length > 0 ? movieGenre.map((item: any) =>(
                         <div key={item.id}>
-                            <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">{item.name}</Link>
+                            <Link href={`/filters?genre=${item.id}`} className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">{item.name}</Link>
                         </div>
                     )) : ""}
                 </section>
@@ -70,15 +70,15 @@ export default function NavBar({ openSideBar ,toggleSidebar}: any) {
                 <section className='absolute p-2 flex flex-wrap rounded-lg'>
                 {countries && countries.length > 0 ? countries.map((item: any) =>(
                         <div key={item.iso_3166_1}>
-                            <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">{item.english_name}</Link>
+                            <Link href={`/filters?country=${item.iso_3166_1}`} className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">{item.english_name}</Link>
                         </div>
                     )) : ""}
                 
                 </section>
                 </div>
-                <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Movies</Link>
-                <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">TV Shows</Link>
-                <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Trending</Link>
+                <Link href={`/filters?mediaType=movie`} className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Movies</Link>
+                <Link href={`/filters?mediaType=tv`} className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">TV Shows</Link>
+                <Link href="/filters" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Popular</Link>
                 <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Top 10 Movies</Link>
                 <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Top 10 TV Episodes</Link>
             </div>

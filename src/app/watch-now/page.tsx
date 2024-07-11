@@ -106,8 +106,6 @@ const {
     { name: "Season 5", code: "5" },
   ];
 
-  console.log(watchDetials, popularList)
-
   if(isLoading){
     return(<>
     <Loader /></>)
