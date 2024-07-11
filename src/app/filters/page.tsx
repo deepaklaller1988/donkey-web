@@ -36,7 +36,7 @@ const fetchRecentlyUpdated = async (mediaType: any) => {
     try {
         const response = await fetch(`https://vidsrc.xyz/${mediaType === 'movie' ? 'movies' : 'tvshows'}/latest/page-1.json`);
         const data = await response.json();
-        return data;
+        return data.result
     } catch (error) {
         console.log(error);
     }
