@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { IoIosArrowRoundForward } from "react-icons/io";
@@ -54,7 +54,19 @@ const fetchPopularLists = async (mediaType:string) => {
         console.log(error)
     }
     };
-    
+ 
+  const fetchEpisodesLists = async (mediaType:string, seriesId: number, season:any) => {
+    try {
+      if(mediaType==='movie'){
+        return [];
+      }
+        const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${seriesId}/season/${season && season.season_number ? season.season_number : 1}}?language=en-US&page=1`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error)
+    }
+    };
 
   
 interface Season {
@@ -65,7 +77,8 @@ export default function WatchNow() {
     const searchParams = useSearchParams();
     const movieId: any = searchParams.get("id");
     const mediaType: any = searchParams.get("type");
-  const [selectedSeason, setSelectedSeason] = useState<Season | null>(null);
+  const [selectedSeason, setSelectedSeason] = useState<any>(null);
+  const [selectedEpisode, setSelectedEpisode] = useState<any>(1);
   const {
     isLoading,
     error,
@@ -76,6 +89,7 @@ export default function WatchNow() {
 });
 
 const {
+    isLoading: isCreditLoading,
     data: creditDetials,
 } = useQuery<any>({
     queryKey: ['credit-detials', movieId, mediaType],
@@ -83,6 +97,7 @@ const {
 });
 
 const {
+    isLoading: isSimilarLoading,
     data: similarMovies,
 } = useQuery<any>({
     queryKey: ['similar-lists', movieId, mediaType],
@@ -90,27 +105,39 @@ const {
 });
 
 const {
+    isLoading: isPopularLoading,
     data: popularList,
 } = useQuery<any>({
     queryKey: ['popular-lists', mediaType],
     queryFn: () =>fetchPopularLists(mediaType),
 });
-  
-  
-   
-  const seasons: Season[] = [
-    { name: "Season 1", code: "1" },
-    { name: "Season 2", code: "2" },
-    { name: "Season 3", code: "3" },
-    { name: "Season 4", code: "4" },
-    { name: "Season 5", code: "5" },
-  ];
 
-  if(isLoading){
-    return(<>
-    <Loader /></>)
+const {
+  isLoading: isEpisodeLoading,
+  data: episodesList,
+} = useQuery<any>({
+  queryKey: ['episodes-lists', mediaType,movieId, selectedSeason],
+  queryFn: () =>fetchEpisodesLists(mediaType, movieId, selectedSeason),
+  enabled: !!(selectedSeason || watchDetials)
+});
+
+useMemo(()=>{
+
+},[selectedEpisode])
+  
+  
+  const handleSeasonChange = (e:any)=>{
+    console.log(e.value)
+    setSelectedSeason(e.value);
   }
 
+  if(isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading){
+    return(
+        <div>
+        <Loader />
+      </div> 
+    )
+}
   return (
     <div className="w-full">
         {watchDetials && (<>
@@ -132,7 +159,7 @@ const {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 ></iframe> */}
                 <iframe 
-                    src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}`} 
+                    src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}${mediaType==='tv' && selectedSeason ? '&season=' + (selectedSeason.season_number || 1) : ''}${mediaType==='tv' && selectedEpisode ? '&episode=' + selectedEpisode : ''}`} 
                     // style="width: 100%; height: 100%;" 
                     className="w-full h-[700px] mt-5 rounded-lg"
                     title="Vidsrc video player"
@@ -288,107 +315,54 @@ const {
             <div className="min-w-full md:min-w-[376px]">
               <div className="w-full bg-white/10 rounded-lg">
                 <section className="episodeSelectionMain flex items-center justify-center text-white">
-                  <Dropdown
+                  {mediaType === 'movie' ? (
+                    <div className="p-3 px-20">
+                    Movie Files
+                  </div>) :(
+                    <>
+                    <Dropdown
                     value={selectedSeason}
                     onChange={(e: DropdownChangeEvent) =>
-                      setSelectedSeason(e.value)
+                     handleSeasonChange(e)
                     }
-                    options={seasons}
+                    options={watchDetials.seasons && watchDetials.seasons.length > 0 ? watchDetials.seasons.filter((item:any) => item?.season_number > 0) : []}
                     optionLabel="name"
                     placeholder="Season 1"
                     className="episodeSelection p-3 px-20"
                   />
+                  </>)}
+                  
                 </section>
                 <section className="episodeLists bg-neutral-950 max-h-[500px] overflow-auto">
                   <ul className="text-white/50">
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 1: Itch To Explore
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 2: You're It
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
+                  {mediaType === 'movie' ? (
+                    <>
                     <li className="episodeActive">
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 3: Jessica Goes to the Creek
-                      </a>
+                      <div className="text-[14px] py-3 px-4 block">
+                        Movie 1
+                      </div>
                       <span>12/04/2024</span>
                     </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 4: The Final Book
-                      </a>
-                      <span>12/04/2024</span>
+                  </>) : 
+                  (
+                    <>
+                    {episodesList && episodesList.episodes && episodesList.episodes.length > 0 ? episodesList.episodes.map((item:any) =>(<>
+                      <li key={item?.episode_number}>
+                      <div className={`text-[14px] py-3 px-4 block ${item?.episode_number === selectedEpisode ? 'episodeActive' : ""}`} onClick={()=>setSelectedEpisode(item?.episode_number)}>
+                        Episode {item?.episode_number}: {item?.name}
+                      </div>
+                      <span>{moment(item?.air_date).format("DD/MM/YYYY")}</span>
                     </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 5: Too Many Treasures
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 6: Wildernessa
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 7: Sunday Clothes
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 1: Itch To Explore
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 2: You're It
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 3: Jessica Goes to the Creek
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 4: The Final Book
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 5: Too Many Treasures
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 6: Wildernessa
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
-                    <li>
-                      <a className="text-[14px] py-3 px-4 block" href="">
-                        Episode 7: Sunday Clothes
-                      </a>
-                      <span>12/04/2024</span>
-                    </li>
+                    </>)) : ""}                 
+                  </>
+                  )}
                   </ul>
                 </section>
                 <section className="flex text-white gap-5 justify-between items-center p-2 px-4">
-                  <label>Go to episode</label>
+                  {
+                    mediaType === 'movie' ? (<>
+                    </>) :(<>
+                    <label>Go to episode</label>
                   <div className="nextPrev flex gap-3 items-center text-white/50">
                     <a href="">
                       <IoIosArrowRoundBack className="w-8 h-8" />
@@ -399,6 +373,9 @@ const {
                       <IoIosArrowRoundForward className="w-8 h-8 text-amber-500" />
                     </a>
                   </div>
+                    </>)
+                  }
+                  
                 </section>
               </div>
             </div>

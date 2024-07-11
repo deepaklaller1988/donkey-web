@@ -12,6 +12,7 @@ import { useSearchParams } from "next/navigation";
 import Card from "@components/core/Card";
 import Recommended from "@components/Recommended";
 import useTitle from "@hooks/useTitle";
+import Loader from "@components/core/Loader";
 
 const fetchFilteredData = async (selectedOptions: any) => {
     try {
@@ -114,6 +115,14 @@ export default function FiltersPage() {
             selectedFilter:selectedOptions.selectedFilter  
         })
         setSearchQuery(search)
+    }
+
+    if(isLoading || isRecentLoaded || isSearchLoading){
+        return(
+            <div>
+            <Loader />
+          </div> 
+        )
     }
 
     return (
