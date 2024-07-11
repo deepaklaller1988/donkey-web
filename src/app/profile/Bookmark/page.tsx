@@ -25,7 +25,7 @@ export default function BookmarkPage() {
                     <li className="w-1/6 cardSet relative">
                         <span className="relative">
                             <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
-                            <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-10 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
+                            <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                         <section className="py-2">
                             <div className="w-full flex items-center justify-between mb-2">
                                 <ul className="text-white/50 flex gap-1 items-center justify-between w-full">
