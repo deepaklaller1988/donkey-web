@@ -1,6 +1,6 @@
 "use client"
 import "./filters.css";
-import React, { useEffect, useState } from 'react';
+import React, {  useEffect,  useState } from 'react';
 import { MdFilterList } from "react-icons/md";
 import { MultiSelect } from 'primereact/multiselect';
 import FetchApi from "@lib/FetchApi";
@@ -90,26 +90,28 @@ export default function Filters({handleFilters, initiallySelected}:any) {
 
     useEffect(()=>{
         if(initiallySelected){
-            if(initiallySelected.selectedMedia){
+            if(type){
                 setSelectedType(type.filter((item:any) => item?.code === initiallySelected.selectedMedia))
             }
-            if(initiallySelected.selectedFilter){
+            if(popularOptions){
                 setSelectedFilter(popularOptions.filter((item:any) => item?.code === initiallySelected.selectedFilter))
             }
-            if(initiallySelected.selectedYear){
-                setSelectedYear(yearsArray.filter((item:any) => item?.year === initiallySelected.selectedYear))
+            if(yearsArray && yearsArray.length > 0){
+                setSelectedYear(yearsArray.filter((item:any) => item?.year == initiallySelected.selectedYear))
             }
-            if(initiallySelected.selectedGenres && genres && genres.length > 0){
+            if(genres && genres.length > 0){
+                console.log("initiallySelected gen", genres)
                 let genArr = initiallySelected?.selectedGenres.split(",").map((arr:any)=> parseInt(arr));
-                setSelectedYear(genres.filter((item:any) => genArr.includes(item.id)))
+                setSelectedGenre(genres.filter((item:any) => genArr.includes(item.id)))
             }
-            if(initiallySelected.selectedCountry){
+            if(countries && countries.length > 0){
                 let genArr = initiallySelected?.selectedCountry.split(",");
-                setSelectedYear(countries.filter((item:any) => genArr.includes(item.iso_3166_1)));
+                setSelectedCountry(countries?.filter((item:any) => genArr.includes(item.iso_3166_1)));
             }
         }
 
-    },[initiallySelected]);
+    },[initiallySelected, countries, movieGenre, tvGenre]);
+    console.log("initiallySelected", initiallySelected)
 
     const handleSelection = (e: any) =>{
         const {name,value} = e.target;

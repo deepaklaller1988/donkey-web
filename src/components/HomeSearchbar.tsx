@@ -17,7 +17,7 @@ export default function HomeSearchbar() {
                         <IoSearch className="text-xl" />
                     </button>
                 </section>
-                <div className="intellesenseOpen intellesense w-full absolute mt-[1px] top-full left-0 overflow-hidden z-50">
+                {/* <div className="intellesenseOpen intellesense w-full absolute mt-[1px] top-full left-0 overflow-hidden z-50">
                     <div className="w-full max-w-full md:max-w-[520px] m-auto bg-zinc-800 rounded-lg">
                         <div className="w-full border-b border-b-white/5">
                             <Link href="" className="flex gap-2 p-3 transition hover:bg-black/20">
@@ -71,7 +71,7 @@ export default function HomeSearchbar() {
                             <Link href="/home" className="transition text-lg font-medium p-2 px-6 rounded-lg inline-flex items-center justify-center pbgColor block w-full">View All Results <BsArrowUpRightCircleFill className="ml-1 text-lg" /></Link>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </form>
         </div>
     );

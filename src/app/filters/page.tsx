@@ -7,7 +7,8 @@ import Sidebar from "@components/Sidebar";
 import Filters from "@components/Filters";
 import FetchApi from "@lib/FetchApi";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Card from "@components/core/Card";
 import Recommended from "@components/Recommended";
 import useTitle from "@hooks/useTitle";
@@ -45,10 +46,19 @@ const fetchSearchedData = async (selectedOptions: any, searched:string) => {
 
 export default function FiltersPage() {
     useTitle("Filter, Search Movies & TV Shows");
+    const searchParams = useSearchParams();
+    const genreId: any = searchParams.get("genre");
+    const countryCode: any = searchParams.get("country");
+    const mediaType: any = searchParams.get("mediaType");
+
+    let genre = genreId ? genreId : "";
+    let media = mediaType ? mediaType : "movie";
+    let country = countryCode ? countryCode : "";
+
     const [selectedOptions, setSelectedOptions] =  useState<any>({
-        selectedMedia: "movie",
+        selectedMedia: media,
         selectedYear:"",
-        selectedCountry:"",
+        selectedCountry: "",
         selectedGenres:"",
         selectedFilter:"popularity.desc"
     });
@@ -81,6 +91,18 @@ export default function FiltersPage() {
         queryFn: () =>fetchSearchedData(selectedOptions, searchQuery),
         enabled: !!searchQuery,
     });
+
+    useEffect(() => {
+        if (genre || country || media) {
+            setSelectedOptions((prevOptions: any) => ({
+                ...prevOptions,
+                selectedMedia: media,
+                selectedCountry: country,
+                selectedGenres: genre,
+            }));
+        }
+    }, [genre, media, country]);
+    console.log(selectedOptions)
 
 
     const handleFilters = (selectedOptions: any, search:string) =>{
