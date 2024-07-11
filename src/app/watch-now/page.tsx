@@ -1,8 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { FaPlayCircle } from "react-icons/fa";
-import { FaRegCirclePlay } from "react-icons/fa6";
-import { IoIosAddCircleOutline } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { IoIosArrowRoundForward } from "react-icons/io";
@@ -15,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loader from "@components/core/Loader";
 import moment from "moment";
 import Card from "@components/core/Card";
+import RatingPopUp from "@components/core/RatingPopUp";
 
 const fetchDetails = async (movieId: number, mediaType:string) => {
     try {
@@ -188,7 +186,7 @@ const {
                       </li>
                     </ul>
                   </section>
-                  <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
+                  {/* <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
                     <span className="flex gap-1">
                       <FaStar className="text-amber-500 w-5 h-5" />
                       <FaStar className="text-amber-500 w-5 h-5" />
@@ -200,7 +198,8 @@ const {
                       <b className="text-sm">8.56</b> of{" "}
                       <b className="text-sm">10</b> (723 reviews)
                     </p>
-                  </section>
+                  </section> */}
+                  <RatingPopUp/>
                 </div>
                 <div className="w-full">
                   <p className="text-white/50 mt-3 font-light">

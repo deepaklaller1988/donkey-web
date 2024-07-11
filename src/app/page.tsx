@@ -8,9 +8,9 @@ import User from "@lib/User";
 export default function page() {
   const router = useRouter();
 
-  useEffect(() => {
-    router.push("/dashboard");
-  }, []);
+  // useEffect(() => {
+  //   router.push("/dashboard");
+  // }, []);
 
 
   return (
