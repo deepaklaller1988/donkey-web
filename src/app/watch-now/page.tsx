@@ -157,7 +157,7 @@ const {
         <div className="homewrapper">
           <div className="w-full flex gap-5">
             <div className="w-full flex gap-5">
-              <section className="min-w-[270px]">
+              <section className="min-w-[270px] max-w-[270px]">
                 <img
                   className="w-full rounded-lg"
                   src={`https://image.tmdb.org/t/p/original${watchDetials?.poster_path}`}
