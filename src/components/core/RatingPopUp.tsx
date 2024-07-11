@@ -4,9 +4,18 @@ import labels from '@lib/RatingLabels';
 
 export default function RatingPopUp() {
     const [rating, setRating] = useState(0);
+    const [hoverValue, setHoverValue] = useState(0);
 
     const handleRating = (rate: number) => {
         setRating(rate);
+    };
+
+    const handleHover = (rate: any) => {
+        setHoverValue(rate);
+    };
+
+    const handleMouseLeave = () => {
+        setHoverValue(0);
     };
 
     return (
@@ -14,6 +23,12 @@ export default function RatingPopUp() {
             <span className="flex gap-1">
                 <Rating
                     onClick={handleRating}
+                    onPointerEnter={handleHover}
+                    onPointerMove={handleHover}
+                    onPointerLeave={handleMouseLeave}
+                    SVGstyle={{
+                        display: "inline",
+                    }}
                     initialValue={rating}
                     size={30}
                     transition
@@ -23,11 +38,11 @@ export default function RatingPopUp() {
                     style={{ transition: 'transform 0.3s' }}
                 />
             </span>
-            {rating !== null && (
-                <div className="text-white">
-                    {labels[rating / 20]}
-                </div>
-            )}
+            <div className="text-white" style={{ width: '100px', textAlign: 'center' }}>
+                {(hoverValue !== 0 || rating !== 0) && (
+                    labels[(hoverValue || rating) / 20]
+                )}
+            </div>
             <p className="text-white/50 text-sm">
                 <b className="text-sm">8.56</b> of{" "}
                 <b className="text-sm">10</b> (723 reviews)
