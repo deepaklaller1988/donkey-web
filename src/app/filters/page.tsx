@@ -124,7 +124,7 @@ export default function FiltersPage() {
 
                                 </div>
                             </div>
-                            <div className="w-full  min-w-full md:min-w-[376px]">
+                            <div className="min-w-full md:min-w-[376px]">
                                 {/* <Sidebar /> */}
                                 <Recommended title={"RECENTLY UPDATED"} data={recentData && recentData.length > 0 ? recentData.slice(0,10) : []}  mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
                             </div>

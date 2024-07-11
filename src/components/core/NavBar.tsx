@@ -3,7 +3,7 @@ import React from 'react'
 import { IoMdClose } from "react-icons/io";
 
 
-export default function Sidebar({ openSideBar ,toggleSidebar}: any) {
+export default function NavBar({ openSideBar ,toggleSidebar}: any) {
     return (
         // <div className={`navSet ${openSideBar ?"navSetOpen" :""} fixed top-0 left-0 z-20 w-full h-screen bg-black/70`}>
         <div className={`navSet ${openSideBar ?"navSetOpen" :""} fixed top-0 left-0 w-full h-screen`}>
