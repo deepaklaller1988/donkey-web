@@ -11,7 +11,7 @@ export default function Recommended({title, data, movieId,mediaType}: any) {
                     <div key={item.id ? item.id : item.tmdb_id}>
                     <SidebarCard movieId={item.id ? item.id : item.tmdb_id} mediaType={mediaType}  />
                     </div>
-                )): ""}
+                )): (<div className="text-white">No data available...</div>)}
                 {/* <li>
                     <section className="flex items-center relative listTop10 bg-white/5  hover:bg-white/10 transition rounded-md">
                         <span className="relative min-w-[50px] w-[50px]">

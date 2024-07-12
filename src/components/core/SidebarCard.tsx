@@ -3,6 +3,7 @@ import React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
+import Loader from './Loader';
 
 const fetchDetails = async (movieId: number, mediaType:string) => {
     try {
@@ -25,6 +26,15 @@ function SidebarCard({movieId,mediaType,index}: any) {
         queryFn: () =>fetchDetails(movieId, mediaType),
     });
 
+    if(isLoading){
+      return(
+          <div>
+          <Loader />
+        </div> 
+      )
+    }
+    
+
   return (
     <>
       <li key={movieId} className={`cursor-pointer ${index ? "pl-[15px]" : ""}`} onClick={() =>router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)} >
@@ -32,7 +42,7 @@ function SidebarCard({movieId,mediaType,index}: any) {
           <span className="relative min-w-[50px] w-[50px]">
             <img
               className="rounded-md w-full"
-              src={`https://image.tmdb.org/t/p/original${cardDetials?.poster_path}`}
+              src={`${cardDetials?.poster_path ? "https://image.tmdb.org/t/p/original" + cardDetials?.poster_path : "/assets/images/miss.jpg"}`}
               alt="album"
             />
           </span>

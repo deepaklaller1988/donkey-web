@@ -77,8 +77,9 @@ export default function WatchNow() {
     const searchParams = useSearchParams();
     const movieId: any = searchParams.get("id");
     const mediaType: any = searchParams.get("type");
-  const [selectedSeason, setSelectedSeason] = useState<any>(null);
-  const [selectedEpisode, setSelectedEpisode] = useState<any>(1);
+    const [selectedSeason, setSelectedSeason] = useState<any>(null);
+    const [selectedEpisode, setSelectedEpisode] = useState<any>(1);
+    const [goToEpisode, setGoToEpisode] = useState<any>("");
   const {
     isLoading,
     error,
@@ -121,14 +122,33 @@ const {
   enabled: !!(selectedSeason || watchDetials)
 });
 
-useMemo(()=>{
+// useMemo(()=>{
 
-},[selectedEpisode])
+// },[selectedEpisode])
   
   
   const handleSeasonChange = (e:any)=>{
-    console.log(e.value)
     setSelectedSeason(e.value);
+    setSelectedEpisode(1)
+  }
+
+  const handleChange = (e: any) => {
+    const re = /^[0-9\b]+$/;
+    if (e.target.value === '' || re.test(e.target.value)) {
+      setGoToEpisode(e.target.value);
+    }else{
+      setGoToEpisode("");
+    }
+  };
+
+  const handleJumpToEpisode = ()=>{
+    if(episodesList && episodesList.episodes && episodesList.episodes.length > 0){
+      let noOfEpiosode = Math.max(...episodesList.episodes.map((item:any) => item.episode_number));
+      if(Number(goToEpisode) <= noOfEpiosode && Number(goToEpisode) > 0){
+        setSelectedEpisode(Number(goToEpisode));
+      }
+    }
+
   }
 
   if(isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading){
@@ -159,7 +179,7 @@ useMemo(()=>{
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 ></iframe> */}
                 <iframe 
-                    src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}${mediaType==='tv' && selectedSeason ? '&season=' + (selectedSeason.season_number || 1) : ''}${mediaType==='tv' && selectedEpisode ? '&episode=' + selectedEpisode : ''}`} 
+                    src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}${mediaType==='tv' && selectedSeason ? '&season=' + (selectedSeason.season_number || 1) : '&season=1'}${mediaType==='tv' && selectedEpisode ? '&episode=' + selectedEpisode : ''}`} 
                     // style="width: 100%; height: 100%;" 
                     className="w-full h-[700px] mt-5 rounded-lg"
                     title="Vidsrc video player"
@@ -341,7 +361,7 @@ useMemo(()=>{
                       <div className="text-[14px] py-3 px-4 block">
                         Movie 1
                       </div>
-                      <span>12/04/2024</span>
+                      <span>{moment(watchDetials?.release_date).format('MMM DD, YYYY')}</span>
                     </li>
                   </>) : 
                   (
@@ -364,14 +384,10 @@ useMemo(()=>{
                     </>) :(<>
                     <label>Go to episode</label>
                   <div className="nextPrev flex gap-3 items-center text-white/50">
-                    <a href="">
-                      <IoIosArrowRoundBack className="w-8 h-8" />
-                    </a>
-                    <a href="">1</a>
-                    <a href="">2</a>
-                    <a href="">
-                      <IoIosArrowRoundForward className="w-8 h-8 text-amber-500" />
-                    </a>
+                
+                    {/* <a href="">2</a> */}
+                    <input type="text" value={goToEpisode} className="w-[50px] text-center rounded text-white bg-white/10 py-1" placeholder="1" onChange={(e)=> handleChange(e)} />   
+                      <IoIosArrowRoundForward className="w-8 h-8 text-amber-500 cursor-pointer" onClick={handleJumpToEpisode} />
                   </div>
                     </>)
                   }
@@ -392,7 +408,7 @@ useMemo(()=>{
                 <div className="w-full">
                   <div className="flex items-center gap-4">
                     <h3 className="text-white text-[25px] font-semibold">
-                      RECOMMENDED MOVIES
+                      RECOMMENDED {mediaType === 'movie' ? 'MOVIES' : 'TV SHOWS'}
                     </h3>
                   </div>
                   <div className="w-full py-2">
