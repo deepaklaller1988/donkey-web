@@ -19,7 +19,7 @@ export default function Searchbar() {
                     </button>
 
                 </section>
-                <div className="intellesenseOpen intellesense w-full absolute mt-[1px] top-full left-0 overflow-hidden">
+                <div className="intellesense w-full absolute mt-[1px] top-full left-0 overflow-hidden">
                     <div className="w-full max-w-[700px] m-auto bg-zinc-800 rounded-lg">
                         <div className="w-full border-b border-b-white/5">
                             <Link href="" className="flex gap-2 p-3 transition hover:bg-black/20">
