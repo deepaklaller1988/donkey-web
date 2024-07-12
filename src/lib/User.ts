@@ -25,7 +25,7 @@ export default class User {
       }
 
       const res = await API.get(["my-details"]);
-      console.log(res, "response");
+      console.log(res.data?.user?.email, "response");
 
       if (res.success) {
         this.id = res.data?.user?.id || null;
