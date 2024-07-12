@@ -4,8 +4,10 @@ import Button from "@components/buttons/Button";
 import { IoMdClose, IoIosArrowRoundForward } from "react-icons/io";
 import { useMutation } from "@tanstack/react-query";
 import API from "@lib/Api";
+import { useAuth } from "context/AuthContext";
 
 const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
+  const { setToken }: any = useAuth();
   const recaptchaRef = useRef<any>(null);
   const [type, setType] = useState("login");
   const [captchaValue, setCaptchaValue] = useState(null);
@@ -36,6 +38,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
     onSuccess: async (data: any) => {
       if (data?.data?.accessToken) {
         localStorage.setItem("token", data?.data?.accessToken);
+        setToken(data.data?.accessToken);
         setSuccessMessage("Login successfull!");
         handleClose();
       } else if (type === "forgot" && data.success) {

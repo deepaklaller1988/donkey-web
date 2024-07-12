@@ -21,6 +21,7 @@ export default class User {
       const token = localStorage.getItem("token");
       if (token) {
         API.setToken(token);
+        
       }
 
       const res = await API.get(["my-details"]);

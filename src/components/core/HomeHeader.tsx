@@ -20,6 +20,7 @@ export default function Header() {
     const route = path.split("/");
 
     const token = User.id
+    console.log(token,"to")
     const [isOpen, isClose] = useState(false)
     const [OpenProfile, setOpenProfile] = useState(false)
     const [OpenSearch, setOpenSearch] = useState(false)

@@ -20,11 +20,10 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-       
       <body>
         <Provider>
-          <MainLayout>{children}
-          
+          <MainLayout>
+            {children}
           </MainLayout>
         </Provider>
       </body>
