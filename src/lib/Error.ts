@@ -70,7 +70,7 @@ async function handle(res: Res, route: string | string[]) {
   }
 
   if (error.signOut) {
-    await User.signOut();
+    // await User.signOut();
     return res;
   }
 

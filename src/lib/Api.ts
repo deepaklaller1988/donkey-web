@@ -11,49 +11,46 @@ export interface Res {
 }
 
 class API {
+  static token: string = "";
+
+  static setToken(token: string) {
+    this.token = token;
+  }
+
   static async get(
     path: string | string[],
     resent: boolean = false
   ): Promise<Res> {
-    return new Promise(async (resolve) => {
-      // Join path array
+    return new Promise(async (resolve, reject) => {
       if (Array.isArray(path)) path = path.join("/");
 
       let headers = new Headers();
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
 
-    if (localStorage.getItem("token")) {
-        headers.append("Authorization", `Bearer ${localStorage.getItem("token")}`);
+      if (this.token) {
+        headers.append("Authorization", `Bearer ${this.token}`);
       }
 
-      let options: any = {
-        headers: headers,
-        method: "GET",
-        credentials: "include",
-      };
-
-      await fetch(process.env.NEXT_PUBLIC_API_URL + path, options)
-        .then(async (res: Response) => {
-          let parsed = await this.parseRes(
-            res,
-            () => this.get(path, true),
-            resent,
-            path
-          );
-
-          // if (Process.isDev) console.log("GET", path, "\n", parsed);
-
-          resolve(parsed);
-        })
-        .catch((err: any) => {
-          if (err.status == undefined) {
-            console.log(err);
-
-            // Route.load("/maintenance");
-          }
-          console.error(err);
+      try {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
+          method: "GET",
+          credentials: "include",
+          headers: headers,
         });
+
+        const parsed = await this.parseRes(
+          response,
+          () => this.get(path, true),
+          resent,
+          path
+        );
+
+        resolve(parsed);
+      } catch (error) {
+        console.error(error);
+        reject(error);
+      }
     });
   }
 
@@ -63,20 +60,16 @@ class API {
     resent: boolean = false
   ): Promise<Res> {
     return new Promise(async (resolve, reject) => {
-      // Join path array
       if (Array.isArray(path)) path = path.join("/");
-  
+
       let headers = new Headers();
-  
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
-     if (localStorage.getItem("token")) {
-        headers.append(
-          "Authorization",
-          `Bearer ${localStorage.getItem("token")}`
-        );
+
+      if (this.token) {
+        headers.append("Authorization", `Bearer ${this.token}`);
       }
-  
+
       try {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
           method: "POST",
@@ -84,23 +77,24 @@ class API {
           headers: headers,
           body: JSON.stringify(body),
         });
-  
+
         const parsed = await this.parseRes(
           response,
           () => this.post(path, body, true),
           resent,
           path
         );
-  
+
         if (!parsed.success) {
-          return reject(parsed);
+          reject(parsed);
+        } else {
+          resolve(parsed);
         }
-        
-        resolve(parsed);
-      } catch (error:any) {
+      } catch (error: any) {
+        console.error(error, "err");
         reject(error);
-        console.log(error,"err")
-        throw handleError(error.code);      }
+        throw handleError(error.code);
+      }
     });
   }
   

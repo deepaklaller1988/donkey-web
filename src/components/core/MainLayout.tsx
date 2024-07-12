@@ -3,6 +3,8 @@ import React, { createContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Header from "@components/core/HomeHeader";
 import Footer from "@components/core/Footer";
+import User from "@lib/User";
+import { getToken } from "@lib/userToken";
 
 export default function MainLayout({ children }: any) {
   const [loading, setLoading] = useState(false);
@@ -17,7 +19,9 @@ export default function MainLayout({ children }: any) {
         : false
       : false;
   };
-
+  if (getToken) {
+    User.role()
+  }
   return (
     <div>
       {isHome() ? (
@@ -30,7 +34,7 @@ export default function MainLayout({ children }: any) {
         </>
       ) : (
         <>
-            <div>{children}</div>
+          <div>{children}</div>
         </>
       )}
     </div>

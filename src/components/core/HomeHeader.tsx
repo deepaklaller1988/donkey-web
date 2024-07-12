@@ -8,18 +8,18 @@ import { IoLogOutOutline } from "react-icons/io5";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import AuthForm from "./AuthForm";
 import { useState } from "react";
-import { useAuth } from "context/AuthContext";
 import Link from "next/link";
 import { logOut } from "@lib/userToken";
 import { IoSearch } from "react-icons/io5";
 import NavBar from "./NavBar";
+import User from "@lib/User";
 
 export default function Header() {
     const router = useRouter()
     const path = usePathname();
     const route = path.split("/");
 
-    const { token }: any = useAuth();
+    const token = User.id
     const [isOpen, isClose] = useState(false)
     const [OpenProfile, setOpenProfile] = useState(false)
     const [OpenSearch, setOpenSearch] = useState(false)
