@@ -30,6 +30,7 @@ export default function page() {
         setLoading(false);
       }
     };
+    console.log(userData, "user");
 
     fetchUserData();
   }, []);

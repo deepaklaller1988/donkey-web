@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
-import Button from '@components/buttons/Button';
-import { IoMdClose, IoIosArrowRoundForward } from 'react-icons/io';
-import { useMutation } from '@tanstack/react-query';
-import { useAuth } from 'context/AuthContext';
-import API from '@lib/Api';
+import React, { useEffect, useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import Button from "@components/buttons/Button";
+import { IoMdClose, IoIosArrowRoundForward } from "react-icons/io";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "context/AuthContext";
+import API from "@lib/Api";
 
 const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
+  const recaptchaRef = useRef<any>(null);
   const { setToken }: any = useAuth();
   const [type, setType] = useState("login");
   const [captchaValue, setCaptchaValue] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [showChangePassword, setShowChangePassword] = useState(false);
 
-
   useEffect(() => {
-    setErrorMessage('');
-    setSuccessMessage('');
+    setErrorMessage("");
+    setSuccessMessage("");
     setCaptchaValue(null);
+    if (recaptchaRef.current) {
+      recaptchaRef.current.reset();
+    }
   }, [type]);
 
   const endpoints: any = {
@@ -26,7 +29,6 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
     login: "login",
     forgot: "forgot-password",
   };
-
 
   const mutation = useMutation({
     mutationFn: async (formData: any) => {
@@ -37,69 +39,62 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
       if (data?.data?.accessToken) {
         localStorage.setItem("token", data?.data?.accessToken);
         setToken(data.data?.accessToken);
-        setSuccessMessage('Login successfull!');
+        setSuccessMessage("Login successfull!");
         handleClose();
-      } else if (type === 'forgot' && data.success) {
-        setSuccessMessage('Please check your email for further instructions.');
-      } else if (type === 'register' && data.success) {
-        setSuccessMessage('Registration successful! You can now log in.');
-        setType('login');
+      } else if (type === "forgot" && data.success) {
+        setSuccessMessage("Please check your email for further instructions.");
+      } else if (type === "register" && data.success) {
+        setSuccessMessage("Registration successful! You can now log in.");
+        setType("login");
       }
-
     },
     onError: async (error: any) => {
       setErrorMessage(error?.error?.code);
-    }
+    },
   });
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    setErrorMessage('');
-    setSuccessMessage('');
+    setErrorMessage("");
+    setSuccessMessage("");
 
     if (!captchaValue) {
-      setErrorMessage('Please complete the CAPTCHA');
+      setErrorMessage("Please complete the CAPTCHA");
       return;
     }
 
     const formData = new FormData(event.target);
-    const username: any = formData.get('username')?.toString().trim();
-    const password: any = formData.get('password')?.toString().trim();
-    const repeatPassword = formData.get('repeatPassword')?.toString().trim();
-
-    const type = formData.get('type')?.toString().trim();
-
+    const username: any = formData.get("username")?.toString().trim();
+    const password: any = formData.get("password")?.toString().trim();
+    const repeatPassword = formData.get("repeatPassword")?.toString().trim();
 
     const validations: any = {
       username: {
-        condition: type == 'register' && username?.length < 4,
-        message: 'Username must be at least 4 characters.'
+        condition: type === "register" && username?.length < 4,
+        message: "Username must be at least 4 characters.",
       },
       password: {
-        condition: type == 'register' && password?.length < 6,
-        message: 'Password must be at least 6 characters.'
+        condition: type === "register" && password?.length < 6,
+        message: "Password must be at least 6 characters.",
       },
       repeatPassword: {
-        condition: type == 'register' && password !== repeatPassword,
-        message: 'Password confirmation does not match.'
-      }
+        condition: type === "register" && password !== repeatPassword,
+        message: "Password confirmation does not match.",
+      },
     };
 
     const validationErrors: any = Object.keys(validations)
-      .filter(field => validations[field].condition)
-      .map(field => validations[field].message);
-    console.log(validationErrors);
+      .filter((field) => validations[field].condition)
+      .map((field) => validations[field].message);
 
-    // Handle validation errors
     if (validationErrors.length > 0) {
-      setErrorMessage(validationErrors.join(' '));
+      setErrorMessage(validationErrors.join(" "));
       return;
     }
 
     // Append CAPTCHA value and mutate
-    formData.set('captcha', captchaValue);
+    formData.set("captcha", captchaValue);
     mutation.mutate(formData);
   };
-
 
   const onCaptchaChange = (value: any) => {
     setCaptchaValue(value);
@@ -110,23 +105,30 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
     <div className="loginRegisterForgotForm flex items-center justify-center fixed top-0 left-0 z-20 w-full h-screen bg-black/70">
       <section className="max-h-[90vh] overflow-auto p-6 w-full max-w-[400px] bg-zinc-800 rounded-lg">
         <h2 className="text-white text-[30px] pb-2 flex items-center justify-between">
-          {type === 'login' && 'Login'}
-          {type === 'forgot' && 'Forgot Password'}
-          {type === 'register' && 'Account Sign up'}
-          {type === 'profile' && 'Info'}
-          {type !== 'profile' && (
-            <IoMdClose className="text-white w-6 h-6 cursor-pointer transition hover:text-amber-500" onClick={handleClose} />
+          {type === "login" && "Login"}
+          {type === "forgot" && "Forgot Password"}
+          {type === "register" && "Account Sign up"}
+          {type === "profile" && "Info"}
+          {type !== "profile" && (
+            <IoMdClose
+              className="text-white w-6 h-6 cursor-pointer transition hover:text-amber-500"
+              onClick={handleClose}
+            />
           )}
         </h2>
-        {type === 'forgot' && (
+        {type === "forgot" && (
           <p className="text-sm text-white/50 pb-4">
-            We will send an email to your box, just follow that link to set your new password.
+            We will send an email to your box, just follow that link to set your
+            new password.
           </p>
         )}
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          {(type === 'login' || type === 'register' || type === 'forgot' || type === 'profile') && (
+          {(type === "login" ||
+            type === "register" ||
+            type === "forgot" ||
+            type === "profile") && (
             <>
-              {type !== 'profile' && (
+              {type !== "profile" && (
                 <div className="w-full flex flex-col gap-1">
                   <label className="text-white/50">Email</label>
                   <input
@@ -139,7 +141,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
                 </div>
               )}
 
-              {type === 'login' && (
+              {type === "login" && (
                 <div className="w-full flex flex-col gap-1">
                   <label className="text-white/50">Password</label>
                   <input
@@ -151,23 +153,41 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
                   />
                 </div>
               )}
-              {type === 'register' && (
+              {type === "register" && (
                 <>
-                  {['username', 'password', 'repeatPassword'].map((fieldName) => (
-                    <div key={fieldName} className="w-full flex flex-col gap-1">
-                      <label htmlFor={fieldName} className="text-white/50">
-                        {fieldName === 'repeatPassword' ? 'Repeat Password' : `${fieldName.charAt(0).toUpperCase()}${fieldName.slice(1)}`} <sup>*</sup>
-                      </label>
-                      <input
-                        id={fieldName}
-                        className="p-2 px-4 rounded-lg bg-white/5 text-white"
-                        type={fieldName.includes('password') ? 'password' : 'text'}
-                        name={fieldName}
-                        placeholder={fieldName === 'repeatPassword' ? 'Repeat Password' : `${fieldName.charAt(0).toUpperCase()}${fieldName.slice(1)}`}
-                        required
-                      />
-                    </div>
-                  ))}
+                  {["username", "password", "repeatPassword"].map(
+                    (fieldName) => (
+                      <div
+                        key={fieldName}
+                        className="w-full flex flex-col gap-1"
+                      >
+                        <label htmlFor={fieldName} className="text-white/50">
+                          {fieldName === "repeatPassword"
+                            ? "Repeat Password"
+                            : `${fieldName
+                                .charAt(0)
+                                .toUpperCase()}${fieldName.slice(1)}`}{" "}
+                          <sup>*</sup>
+                        </label>
+                        <input
+                          id={fieldName}
+                          className="p-2 px-4 rounded-lg bg-white/5 text-white"
+                          type={
+                            fieldName.includes("password") ? "password" : "text"
+                          }
+                          name={fieldName}
+                          placeholder={
+                            fieldName === "repeatPassword"
+                              ? "Repeat Password"
+                              : `${fieldName
+                                  .charAt(0)
+                                  .toUpperCase()}${fieldName.slice(1)}`
+                          }
+                          required
+                        />
+                      </div>
+                    )
+                  )}
                 </>
               )}
             </>
@@ -176,41 +196,65 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
           {successMessage && <p className="text-green-500">{successMessage}</p>}
           <div className="w-full text-white py-3 flex justify-center captachSet">
             <ReCAPTCHA
+              ref={recaptchaRef}
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
               onChange={onCaptchaChange}
             />
           </div>
           <div>
             <Button type="submit">
-              {type === 'login' && 'Sign In'}
-              {type === 'register' && 'Sign up'}
-              {type === 'forgot' && 'Forgot password'}
+              {type === "login" && "Sign In"}
+              {type === "register" && "Sign up"}
+              {type === "forgot" && "Forgot password"}
             </Button>
           </div>
-          {type === 'login' && (
+          {type === "login" && (
             <>
               <div className="w-full mt-4">
-                <button className="pColor flex gap-2 items-center" onClick={() => setType("forgot")}>Forgot your Password <IoIosArrowRoundForward className="w-6 h-6" /></button>
+                <button
+                  className="pColor flex gap-2 items-center"
+                  onClick={() => setType("forgot")}
+                >
+                  Forgot your Password{" "}
+                  <IoIosArrowRoundForward className="w-6 h-6" />
+                </button>
               </div>
               <div className="w-full mb-4">
-                <button className="pColor flex gap-2 items-center" onClick={() => setType("register")}>Sign up for a new account <IoIosArrowRoundForward className="w-6 h-6" /></button>
+                <button
+                  className="pColor flex gap-2 items-center"
+                  onClick={() => setType("register")}
+                >
+                  Sign up for a new account{" "}
+                  <IoIosArrowRoundForward className="w-6 h-6" />
+                </button>
               </div>
             </>
           )}
-          {type === 'register' && (
+          {type === "register" && (
             <div className="w-full mt-4 flex items-center gap-2 text-white">
-              Already have an account? <a onClick={() => setType("login")} className="pColor cursor-pointer flex gap-2 items-center">Login Here <IoIosArrowRoundForward className="w-6 h-6" /></a>
+              Already have an account?{" "}
+              <a
+                onClick={() => setType("login")}
+                className="pColor cursor-pointer flex gap-2 items-center"
+              >
+                Login Here <IoIosArrowRoundForward className="w-6 h-6" />
+              </a>
             </div>
           )}
-          {type === 'forgot' && (
+          {type === "forgot" && (
             <div className="w-full mb-4">
-              <a onClick={() => setType("login")} className="pColor cursor-pointer flex gap-2 items-center">Back to sign in <IoIosArrowRoundForward className="w-6 h-6" /></a>
+              <a
+                onClick={() => setType("login")}
+                className="pColor cursor-pointer flex gap-2 items-center"
+              >
+                Back to sign in <IoIosArrowRoundForward className="w-6 h-6" />
+              </a>
             </div>
           )}
         </form>
       </section>
     </div>
   );
-}
+};
 
 export default AuthForm;
