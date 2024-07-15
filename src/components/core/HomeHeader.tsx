@@ -13,13 +13,14 @@ import { logOut } from "@lib/userToken";
 import { IoSearch } from "react-icons/io5";
 import NavBar from "./NavBar";
 import User from "@lib/User";
+import { useAuth } from "context/AuthContext";
 
 export default function Header() {
     const router = useRouter()
     const path = usePathname();
     const route = path.split("/");
 
-    const token = User.id
+    const {token}:any = useAuth()
     const [isOpen, isClose] = useState(false)
     const [OpenProfile, setOpenProfile] = useState(false)
     const [OpenSearch, setOpenSearch] = useState(false)
@@ -30,6 +31,10 @@ export default function Header() {
             ? true
             : false
     };
+
+    if(token){
+        User.role()
+    }
 
     const toggleProfile = () => {
         setOpenProfile(!OpenProfile)

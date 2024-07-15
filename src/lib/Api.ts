@@ -1,6 +1,6 @@
 import User from "./User";
 import Error from "./Error";
-import { handleError } from "util/errorHandler";
+import { handleError } from "../lib/errorHandler";
 
 export interface Res {
   success: boolean;
@@ -85,7 +85,10 @@ class API {
           path
         );
 
+        console.log(response,parsed,"====")
+
         if (!parsed.success) {
+          console.log("====")
           reject(parsed);
         } else {
           resolve(parsed);
@@ -93,7 +96,8 @@ class API {
       } catch (error: any) {
         console.error(error, "err");
         reject(error);
-        throw handleError(error.code);
+        console.log(error,"err")
+         handleError(error.code);
       }
     });
   }
