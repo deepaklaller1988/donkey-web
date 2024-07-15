@@ -18,7 +18,7 @@ const fetchDetails = async (movieId: number, mediaType:string) => {
   }
 };
 
-function Card({movieId, mediaType}: any) {
+function Card({movieId, mediaType, quality}: any) {
   const router = useRouter();
   const {
     isLoading,
@@ -31,10 +31,12 @@ function Card({movieId, mediaType}: any) {
 
 if(isLoading){
   return(
-    <>
-  </>
+      <div>
+      <Loader />
+    </div> 
   )
 }
+
 
 
   return (
@@ -45,11 +47,11 @@ if(isLoading){
           <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" />
           <img
             className="rounded-xl w-full"
-            src={`https://image.tmdb.org/t/p/original${movieDetials?.poster_path}`}
+            src={`${movieDetials?.poster_path ? "https://image.tmdb.org/t/p/original" + movieDetials?.poster_path : "/assets/images/miss.jpg"}`}
             alt="album"
           />
           <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
-            HD
+            {quality ? quality : "HD"}
           </label>
         </span>
         <section className="py-2">

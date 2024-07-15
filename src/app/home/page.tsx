@@ -3,7 +3,7 @@ import "./home.css";
 import { FaPlayCircle } from "react-icons/fa";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { IoIosAddCircleOutline } from "react-icons/io";
-
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {useQuery, useQueries} from '@tanstack/react-query';
 import { FaStar } from "react-icons/fa";
 import HomeSlider from "@components/HomeSlider";
@@ -13,6 +13,7 @@ import FetchApi from "@lib/FetchApi";
 import { useState } from "react";
 import useTitle from "@hooks/useTitle";
 import SocialButton from "@components/SocialButton";
+import Loader from "@components/core/Loader";
 
 const fetchPopularLists = async (mediaType: string) => {
     try {
@@ -41,6 +42,7 @@ const fetchPopularLists = async (mediaType: string) => {
   };
 
 export default function Home() {
+    const router = useRouter()
     useTitle("Home");
     const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
     const {
@@ -67,6 +69,15 @@ export default function Home() {
         queryKey: ['latest-movies', "movie"],
         queryFn: () => fetchLatestList("movie"),
     });
+
+
+    if(isLoading || movieLoading || tvLoading){
+        return(
+            <div>
+            <Loader />
+          </div> 
+        )
+    }
    
     return (
         <div className="w-full">
@@ -107,7 +118,7 @@ export default function Home() {
                                 </div>
 
                                 <section className="flex justify-center pt-10">
-                                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition">View More</button>
+                                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" onClick={() => router.push("/media/movie")}>View More</button>
                                 </section>
                             </div>
                             <div className="w-full pt-10">
@@ -124,7 +135,7 @@ export default function Home() {
                                 </div>
 
                                 <section className="flex justify-center pt-10">
-                                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition">View More</button>
+                                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" onClick={() => router.push("/media/tv")}>View More</button>
                                 </section>
                             </div>
                         </div>
