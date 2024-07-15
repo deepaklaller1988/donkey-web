@@ -30,7 +30,7 @@ export default function Home() {
                     </div>
                     <div className="w-full p-2 py-6 md:p-6 md:py-10">
                         <div className="wrapper">
-                            <h2 className="text-white/80 text-lg md:text-xl mb-1">Watch HD Movies & TV Shows online for Free!</h2>
+                            <h2 className="text-white/80 text-lg md:text-xl mb-1 font-regular drop-shadow-[1px_1px_0_rgb(255,0,0)]">100% Free - No Registeration Required</h2>
                             <p className="text-white/50 py-2">Welcome to Donkey – the ultimate destination for global entertainment! Enjoy a diverse collection of movies and TV shows from various genres, with regular updates and compatibility on any device. Experience high-quality, buffer-free streaming with multiple language subtitles. For added convenience, create a free account to bookmark favorites and keep a 'Continue Watching' list. Join our vibrant community and explore a world of cinematic wonders today!
                             </p>
                         </div>

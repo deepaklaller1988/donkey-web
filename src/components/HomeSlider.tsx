@@ -97,7 +97,7 @@ const indicators = (index:any) => (
                   <div className='sliderContentSet'>
                     <span className='text-white/70 flex items-center'>
                     <BsFire className='mr-1'/> Trending</span>
-                    <h2 className='text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:py-2 lg:py-3'>{item.title ? item.title : item.name}</h2>
+                    <h2 className='text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:pb-2'>{item.title ? item.title : item.name}</h2>
                     <ul className='py-1 flex flex-wrap items-center text-white gap-x-4 lg:gap-4 font-light'>
                       <li><b className='font-bold'>{item.release_date ? moment(item.release_date).year() : ""}</b></li>
                       {item.runtime && (<li>{item.runtime} min</li>)}
