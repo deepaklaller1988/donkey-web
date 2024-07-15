@@ -1,5 +1,4 @@
 export const handleError = (errorMessage:any) => {
-  console.log(errorMessage)
   switch (errorMessage) {
     case 'ERR_AUTH_WRONG_USERNAME_OR_PASSWORD':
       return 'Wrong Email';

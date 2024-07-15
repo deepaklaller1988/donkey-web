@@ -69,7 +69,6 @@ class API {
       if (this.token) {
         headers.append("Authorization", `Bearer ${this.token}`);
       }
-
       try {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
           method: "POST",
@@ -85,18 +84,14 @@ class API {
           path
         );
 
-        console.log(response,parsed,"====")
 
         if (!parsed.success) {
-          console.log("====")
           reject(parsed);
         } else {
           resolve(parsed);
         }
       } catch (error: any) {
-        console.error(error, "err");
         reject(error);
-        console.log(error,"err")
          handleError(error.code);
       }
     });

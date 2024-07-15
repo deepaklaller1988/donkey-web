@@ -50,8 +50,9 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
       }
     },
     onError: async (error: any) => {
-      console.log(error)
-     handleError(error?.error?.code);
+      const message = handleError(error?.error?.code);
+      setErrorMessage(message);
+  
     },
   });
   const handleSubmit = (event: any) => {
