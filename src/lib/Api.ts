@@ -1,6 +1,6 @@
 import User from "./User";
 import Error from "./Error";
-import { handleError } from "util/errorHandler";
+import { handleError } from "../lib/errorHandler";
 
 export interface Res {
   success: boolean;
@@ -69,7 +69,6 @@ class API {
       if (this.token) {
         headers.append("Authorization", `Bearer ${this.token}`);
       }
-
       try {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
           method: "POST",
@@ -85,15 +84,15 @@ class API {
           path
         );
 
+
         if (!parsed.success) {
           reject(parsed);
         } else {
           resolve(parsed);
         }
       } catch (error: any) {
-        console.error(error, "err");
         reject(error);
-        throw handleError(error.code);
+         handleError(error.code);
       }
     });
   }

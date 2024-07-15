@@ -5,6 +5,7 @@ import { IoMdClose, IoIosArrowRoundForward } from "react-icons/io";
 import { useMutation } from "@tanstack/react-query";
 import API from "@lib/Api";
 import { useAuth } from "context/AuthContext";
+import { handleError } from "@lib/errorHandler";
 
 const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const { setToken }: any = useAuth();
@@ -49,7 +50,9 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
       }
     },
     onError: async (error: any) => {
-      setErrorMessage(error?.error?.code);
+      const message = handleError(error?.error?.code);
+      setErrorMessage(message);
+  
     },
   });
   const handleSubmit = (event: any) => {

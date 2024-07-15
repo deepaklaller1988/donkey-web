@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import ProfileTab from '@components/core/ProfileTab';
-import User from '@lib/User'; // Assuming User object is correctly imported
+import User from '@lib/User'; 
 import { useMutation } from '@tanstack/react-query';
 import API from '@lib/Api';
 
