@@ -169,7 +169,7 @@ const {
             // "assets/images/slides/1.jpg"
             alt="Video"
           />
-          <div className="w-full h-full absolute top-0 left-0">
+          <div className="w-full h-full absolute top-0 left-0 z-0">
             <div className="homewrapper relative z-10">
               <div className="w-full">
                 {/* <iframe
@@ -181,7 +181,7 @@ const {
                 <iframe 
                     src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}${mediaType==='tv' && selectedSeason ? '&season=' + (selectedSeason.season_number || 1) : '&season=1'}${mediaType==='tv' && selectedEpisode ? '&episode=' + selectedEpisode : ''}`} 
                     // style="width: 100%; height: 100%;" 
-                    className="w-full h-[700px] mt-5 rounded-lg"
+                    className="w-full mt-5 rounded-lg videoFrame"
                     title="Vidsrc video player"
                     frameBorder="0" 
                     referrerPolicy="origin" 
@@ -196,7 +196,7 @@ const {
           </div>
         </section>
       </div> 
-      <div className="w-full">
+      <div className="w-full pt-32">
         <div className="homewrapper">
           <div className="w-full flex gap-5">
             <div className="w-full flex gap-5">

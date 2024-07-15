@@ -316,6 +316,7 @@ img.bgAlbumDetail {
 } */
 /* .navSet{display: none;  animation: nav .5s ease-in-out;}
 .navSet.navSetOpen{display: block;} */
+.videoFrame{aspect-ratio: 16 / 9;}
 .navSet .closeMenu{display:none;}
 .navSet.navSetOpen .closeMenu{display:block;}
 section.closeMenu {

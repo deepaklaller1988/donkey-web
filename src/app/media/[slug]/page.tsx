@@ -29,9 +29,18 @@ const fetchLatestData = async (option: any, page: number=1) => {
 const fetchSearchedData = async (selectedOptions: any, searched: string, page: number) => {
     try {
         const pageNumber = Math.min(page, 500);
-        const response = await FetchApi.get(`https://api.themoviedb.org/3/search/${selectedOptions.selectedMedia}?query=${searched}&include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&region=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
-        const data = await response.json();
-        return data;
+        console.log(searched, selectedOptions, "selectedOptions")
+        if(selectedOptions.selectedMedia){
+            const response = await FetchApi.get(`https://api.themoviedb.org/3/search/${selectedOptions.selectedMedia}?query=${searched}&include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&region=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
+            const data = await response.json();
+            return data;
+        }else{
+            const response = await FetchApi.get(`https://api.themoviedb.org/3/search/multi?query=${searched}&include_adult=false&language=en-US&page=${pageNumber}`);
+            console.log("object")
+            const data = await response.json();
+            return data;
+        }
+
     } catch (error) {
         console.log(error);
     }
@@ -47,26 +56,38 @@ const fetchRecentlyUpdated = async (mediaType: any) => {
     }
 };
 
+const fetchFilteredData = async (selectedOptions: any, page: number) => {
+    try {
+        const pageNumber = Math.min(page, 500);
+        const response = await FetchApi.get(`https://api.themoviedb.org/3/discover/${selectedOptions.selectedMedia}?include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&with_origin_country=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
 export default function MediaPage({ params }: { params: { slug: string } }) {
     const {slug} = params
     useTitle(slug === 'search' ? "View Results"  :`Latest ${slug === 'movie' ? "Movies" : "TV Shows"}`);
     const searchParams = useSearchParams();
-    const genreId: any = searchParams.get("genre");
+    const searchQuery: any = searchParams.get("query");
     const countryCode: any = searchParams.get("country");
     const mediaType: any = searchParams.get("mediaType");
 
-    let genre = genreId ? genreId : "";
-    let media = mediaType ? mediaType : "movie";
-    let country = countryCode ? countryCode : "";
+    // let genre = genreId ? genreId : "";
+    // let media = mediaType ? mediaType : "movie";
+    // let country = countryCode ? countryCode : "";
 
     const [selectedOptions, setSelectedOptions] = useState<any>({
-        selectedMedia: media,
+        selectedMedia: "",
         selectedYear: "",
         selectedCountry: "",
         selectedGenres: "",
-        selectedFilter: "popularity.desc"
+        selectedFilter: ""
     });
-    const [searchQuery, setSearchQuery] = useState<any>("");
+    const [search, setSearch] = useState<any>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(1);
 
@@ -93,21 +114,26 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
         isLoading: isSearchLoading,
         data: searchedData,
     } = useQuery<any>({
-        queryKey: ['searched-data', searchQuery, currentPage],
-        queryFn: () => fetchSearchedData(selectedOptions, searchQuery, currentPage),
-        enabled: !!searchQuery,
+        queryKey: ['searched-data', search, currentPage, selectedOptions.selectedMedia, selectedOptions.selectedYear, selectedOptions.selectedCountry, selectedOptions.selectedGenres, selectedOptions.selectedFilter],
+        queryFn: () => (slug === 'search' && search ?  fetchSearchedData(selectedOptions, search, currentPage) : fetchFilteredData(selectedOptions, currentPage)),
+        enabled: !!(search || selectedOptions),
     });
 
+
+    // useEffect(() => {
+    //     if (genre || country || media) {
+    //         setSelectedOptions((prevOptions: any) => ({
+    //             ...prevOptions,
+    //             selectedMedia: media,
+    //             selectedCountry: country,
+    //             selectedGenres: genre,
+    //         }));
+    //     }
+    // }, [genre, media, country]);
+
     useEffect(() => {
-        if (genre || country || media) {
-            setSelectedOptions((prevOptions: any) => ({
-                ...prevOptions,
-                selectedMedia: media,
-                selectedCountry: country,
-                selectedGenres: genre,
-            }));
-        }
-    }, [genre, media, country]);
+        setSearch(searchQuery)
+    }, [searchQuery]);
 
     useEffect(() => {
         if (latestData) {
@@ -129,7 +155,7 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
             selectedGenres: selectedOptions.selectedGenre,
             selectedFilter: selectedOptions.selectedFilter
         });
-        setSearchQuery(search);
+        setSearch(search);
         setCurrentPage(1);
     };
 
@@ -158,13 +184,14 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                                     <div className="flex items-center gap-4">
                                         <h3 className="text-white text-[25px] font-semibold">{slug === 'movie' ? "LATEST MOVIES" : slug === 'tv' ? "LATEST TV SHOWS" : 'VIEW RESULTS'}</h3>
                                     </div>
+                                    {slug === 'search' && (<><Filters handleFilters={handleFilters} initiallySelected={selectedOptions} initiallySearch={search} /> </>)}
                                     {/* <Filters handleFilters={handleFilters} initiallySelected={selectedOptions} /> */}
                                     <div className="w-full py-2">
-                                        {searchQuery ? (
+                                        {slug === 'search' ? (
                                             <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                                 {searchedData && searchedData.results?.length > 0 ? (
                                                     searchedData.results.map((item: any) => (
-                                                        <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
+                                                        <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' || item.media_type==='movie' ? 'Movie' : 'TV'} />
                                                     ))
                                                 ) : (
                                                     <p>No results found.</p>

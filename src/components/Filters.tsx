@@ -30,7 +30,7 @@ const fetchGenre = async (mediaType:string) => {
   };
 
 
-export default function Filters({handleFilters, initiallySelected}:any) {
+export default function Filters({handleFilters, initiallySelected, initiallySearch}:any) {
     const [selectedType, setSelectedType] = useState<any>(null);
     const [selectedGenre, setSelectedGenre] = useState<any>(null);
     const [selectedCountry, setSelectedCountry] = useState<any>(null);
@@ -86,7 +86,11 @@ export default function Filters({handleFilters, initiallySelected}:any) {
     const allGenres = [...(movieGenre?.genres || []), ...(tvGenre?.genres || [])];
     let genres = Array.from(new Map(allGenres.map(genre => [genre.id, genre])).values()).sort((a,b) => a.name.localeCompare(b.name));
 
-
+    useEffect(()=>{
+        if(initiallySearch){
+            setSearchQuery(initiallySearch)
+        }
+    },[initiallySearch])
 
     useEffect(()=>{
         if(initiallySelected){
@@ -162,7 +166,7 @@ export default function Filters({handleFilters, initiallySelected}:any) {
         <>
          <div className="w-full my-3">
                 <div className="flex flex-wrap gap-2">
-                    <input className="text-[14px] rounded-md px-3 bg-white/20 transition text-white" type="text" placeholder="Search..." onChange={(e)=>setSearchQuery(e.target.value)} />
+                    <input className="text-[14px] rounded-md px-3 bg-white/20 transition text-white" type="text" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} />
                 <MultiSelect
                     value={selectedType}
                     onChange={(e) => handleSelection(e)}
