@@ -1,7 +1,7 @@
 .enterHome {
     background-image: url(/assets/images/enterbg.jpg);
-    background-size: cover;
-    background-position: center;
+    background-size: 100% auto;
+    background-position: top;
     background-attachment: fixed;
     min-height: 100vh;
 }

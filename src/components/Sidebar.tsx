@@ -28,7 +28,7 @@ export default function Sidebar({mediaType}: any) {
     return (
         <div className="w-full">
             <div className="flex items-center gap-4 justify-between">
-                <h3 className="text-white text-[25px] font-semibold flex items-center gap-2"><HiTrendingUp className='mr-1 text-amber-500 w-8 h-8'/>{mediaType === 'Movie' ? 'MOVIES' : 'TV SHOWS'}</h3>
+                <h3 className="text-white text-[25px] font-semibold flex items-center gap-1"><HiTrendingUp className='mr-1 text-amber-500 w-8 h-8'/>{mediaType === 'Movie' ? 'MOVIES' : 'TV SHOWS'}</h3>
                 <section className="flex gap-2">
                     <button className={`${interval === 'day' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"}`} onClick={()=>setInterval("day")} >Day</button>
                     <button className={`${interval === 'week' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"}`} onClick={()=>setInterval("week")} >Week</button>
