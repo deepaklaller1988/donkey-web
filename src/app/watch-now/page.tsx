@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { IoIosArrowRoundForward } from "react-icons/io";
@@ -121,10 +121,6 @@ const {
   queryFn: () =>fetchEpisodesLists(mediaType, movieId, selectedSeason),
   enabled: !!(selectedSeason || watchDetials)
 });
-
-// useMemo(()=>{
-
-// },[selectedEpisode])
   
   
   const handleSeasonChange = (e:any)=>{
@@ -178,8 +174,14 @@ const {
                   title="YouTube video player"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 ></iframe> */}
+
+
+                {/*------- vidsrc.me ----- */}
+                {/* src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}${mediaType==='tv' && selectedSeason ? '&season=' + (selectedSeason.season_number || 1) : '&season=1'}${mediaType==='tv' && selectedEpisode ? '&episode=' + selectedEpisode : ''}`}  */}
+
+                {/* --------- vidsrc.to embed link -------- */}
                 <iframe 
-                    src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}${mediaType==='tv' && selectedSeason ? '&season=' + (selectedSeason.season_number || 1) : '&season=1'}${mediaType==='tv' && selectedEpisode ? '&episode=' + selectedEpisode : ''}`} 
+                    src={`https://vidsrc.to/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id}${mediaType==='tv' ? selectedSeason ? '/' + (selectedSeason.season_number || 1) : '/1' : ''}${mediaType==='tv' ? selectedEpisode ? '/' + selectedEpisode : '/1' : ''}#t=90s`} 
                     // style="width: 100%; height: 100%;" 
                     className="w-full mt-5 rounded-lg videoFrame"
                     title="Vidsrc video player"

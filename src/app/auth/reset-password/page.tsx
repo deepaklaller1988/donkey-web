@@ -21,7 +21,7 @@ export default function ResetPassword() {
                 token:searchToken
             };
             console.log(data);
-            return await API.post("reset-password", data);
+            return await API.post("user/reset-password", data);
         },
         onSuccess: (data) => {
             console.log(data,"=====")

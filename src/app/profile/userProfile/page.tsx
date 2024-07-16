@@ -23,7 +23,7 @@ export default function UserProfile() {
     const mutation = useMutation({
         mutationFn: async (formData: any) => {
             const data = Object.fromEntries(formData.entries());
-            return await API.post("update-userdetail", { userId: id, newPassword: userData.newPassword, newUsername: userData.username });
+            return await API.post("user/update-userdetail", { userId: id, newPassword: userData.newPassword, newUsername: userData.username });
         },
         onSuccess: (data: any) => {
             console.log(data.data, "data");

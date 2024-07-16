@@ -7,6 +7,7 @@ import FetchApi from "@lib/FetchApi";
 import Loader from "./Loader";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import CardSkeleton from "./CardSkeleton";
 
 const fetchDetails = async (movieId: number, mediaType:string) => {
   try {
@@ -31,9 +32,7 @@ function Card({movieId, mediaType, quality}: any) {
 
 if(isLoading){
   return(
-      <div>
-      <Loader />
-    </div> 
+    <CardSkeleton />
   )
 }
 
@@ -69,7 +68,7 @@ if(isLoading){
                 <li>
                   <b className="font-bold text-sm">{mediaType === 'Movie' ? moment(movieDetials?.release_date).year() : moment(movieDetials?.first_air_date).year()}</b>
                 </li>
-                <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP1"}</li>
+                <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>
                 <li>
                   <label className="flex items-center gap-2 text-white text-sm font-semibold">
                     <FaStar /> {movieDetials?.vote_average?.toFixed(1)}
@@ -77,7 +76,7 @@ if(isLoading){
                 </li>
                 <li>
                   <label className=" text-sm rounded-full pbgColor text-black font-bold px-2">
-                    HD
+                  {quality ? quality : "HD"}
                   </label>
                 </li>
               </ul>

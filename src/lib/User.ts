@@ -24,7 +24,7 @@ export default class User {
         
       }
 
-      const res = await API.get(["my-details"]);
+      const res = await API.get(["user","my-details"]);
       console.log(res.data?.user?.email, "response");
 
       if (res.success) {

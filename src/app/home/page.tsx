@@ -1,11 +1,7 @@
 "use client";
 import "./home.css";
-import { FaPlayCircle } from "react-icons/fa";
-import { FaRegCirclePlay } from "react-icons/fa6";
-import { IoIosAddCircleOutline } from "react-icons/io";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {useQuery, useQueries} from '@tanstack/react-query';
-import { FaStar } from "react-icons/fa";
 import HomeSlider from "@components/HomeSlider";
 import Sidebar from "@components/Sidebar";
 import Card from "@components/core/Card";
@@ -100,7 +96,7 @@ export default function Home() {
                                 <div className="w-full py-2">
                                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                         {
-                                           popularList && popularList.length > 0 ? popularList.map((item: any) =>(<Card movieId={item.id} mediaType={selectedMedia} />)) : ""
+                                           popularList && popularList.length > 0 ? popularList.slice(0,18).map((item: any) =>(<Card movieId={item.id} mediaType={selectedMedia} />)) : ""
                                         } 
                                     </ul>
                                 </div>
@@ -112,7 +108,7 @@ export default function Home() {
                                 <div className="w-full py-2">
                                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                      {
-                                           latestMovieList && latestMovieList.length > 0 ? latestMovieList.map((item: any) =>(<Card movieId={item.tmdb_id} mediaType={"Movie"} />)) : ""
+                                           latestMovieList && latestMovieList.length > 0 ? latestMovieList.slice(0,12).map((item: any) =>(<Card movieId={item.tmdb_id} mediaType={"Movie"} />)) : ""
                                         } 
                                     </ul>
                                 </div>
@@ -129,7 +125,7 @@ export default function Home() {
                                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
 
                                     {
-                                           latestTVList && latestTVList.length > 0 ? latestTVList.map((item: any) =>(<Card movieId={item.tmdb_id} mediaType={"TV"} />)) : ""
+                                           latestTVList && latestTVList.length > 0 ? latestTVList.slice(0,12).map((item: any) =>(<Card movieId={item.tmdb_id} mediaType={"TV"} />)) : ""
                                         } 
                                     </ul>
                                 </div>

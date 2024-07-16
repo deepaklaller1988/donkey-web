@@ -26,9 +26,9 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   }, [type]);
 
   const endpoints: any = {
-    register: "signup",
-    login: "login",
-    forgot: "forgot-password",
+    register: "user/signup",
+    login: "user/login",
+    forgot: "user/forgot-password",
   };
 
   const mutation = useMutation({

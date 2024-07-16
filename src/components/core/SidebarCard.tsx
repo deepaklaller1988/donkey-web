@@ -4,6 +4,7 @@ import {useQuery} from '@tanstack/react-query';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import Loader from './Loader';
+import SidebarSkeleton from '@components/SidebarSkeleton';
 
 const fetchDetails = async (movieId: number, mediaType:string) => {
     try {
@@ -28,9 +29,7 @@ function SidebarCard({movieId,mediaType,index}: any) {
 
     if(isLoading){
       return(
-          <div>
-          <Loader />
-        </div> 
+        <SidebarSkeleton index={index} />
       )
     }
     
