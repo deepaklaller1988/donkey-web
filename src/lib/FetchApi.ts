@@ -1,9 +1,8 @@
 
 let headers = new Headers();
 headers.append("Accept", "application/json");
-// headers.append("Content-Type", "text/plain");
-headers.append("Authorization", `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNTg0OGNjZTg1NDEwZDViNGRhZTk0MjliODI1MmI2OSIsIm5iZiI6MTcyMDAxMjkzMC4xMDYwNjUsInN1YiI6IjY2NzJiZjFiYzAyMjM0MjI0Y2ViMDhiNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rdU44cW2GOk4lzYWJhY5THlQscYEiOOdEm5b5JPvvHM`);
-// headers.append("Access-Control-Allow-Origin", `*`);
+headers.append("Content-Type", "application/json;charset=utf-8");
+headers.append("Authorization", `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NzYyMDI0YjFlNzcwYWI1NzRhYmRiN2Y2MGJmNjA4YyIsIm5iZiI6MTcyMTE5ODU5Ny4wMjcwNCwic3ViIjoiNjY4NTU4Nzk2MWY3NTA0YWIxODE4NzcyIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.18M2uo7jrhSCwssE0Pw-VDBADvPcRefiRWpqM9XlU2I`);
 
 export default {
   get: async (path: string) => {
@@ -19,18 +18,16 @@ export default {
   post: async (path: string, body: any) => {
     let options: any = {
       method: "POST",
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: headers,
+
       body: JSON.stringify(body)
     };
-
     try {
       let res: any = await fetch(path, options);
       if (!res.ok) {
         let errorData = await res.json();
-        //  throw Error(handleError(errorData.error.code))
+
+         throw Error(errorData.error.code)
       }
       let data: any = await res.json();
       return data;
