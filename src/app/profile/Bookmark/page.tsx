@@ -7,22 +7,74 @@ import { FaRegCirclePlay } from "react-icons/fa6";
 import { FaRegFolderOpen } from "react-icons/fa";
 import Filters from "@components/Filters";
 import ProfileTab from '@components/core/ProfileTab';
+import API from '@lib/Api';
+import { useQuery } from '@tanstack/react-query';
+import useRole from '@hooks/useRole';
+import User from '@lib/User';
+import Loader from '@components/core/Loader';
+import Card from '@components/core/Card';
+
+const fetchBookmarkList = async (userId: number) => {
+    try {
+      const response = await API.get(`bookmark?userId=${userId}`);
+      return response.data;
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
 export default function BookmarkPage() {
+    const [roleLoading, roleData] = useRole();
+    const {
+        isLoading,
+        error,
+        data: bookmarkList,
+    } = useQuery({
+        queryKey: ['bookmark', roleData],
+        queryFn: () => fetchBookmarkList(roleData ? roleData.id : User.id),
+        enabled: !!roleData,
+    });
+
+    if(isLoading || roleLoading){
+        return(
+          <div>
+          <Loader />
+        </div>
+        )
+      }
+    
+
     return (
-        <>
-            <ProfileTab activeTab="bookmark"/>
-            <div className="w-full mt-28">
-                <div className="w-full flex items-center gap-4 text-white/50">
-                    <a href="" className="text-white text-sm py-3 hover:text-white transition">All</a> /
-                    <a href="" className="text-sm py-3 hover:text-white transition">Watching</a> /
-                    <a href="" className="text-sm py-3 hover:text-white transition">Plan to Watch</a> /
-                    <a href="" className="text-sm py-3 hover:text-white transition">Completed</a> /
-                    <a href=""><FaRegFolderOpen className="text-white/60 hover:text-white transition" /></a>
-                </div>
-                <Filters />
-                <ul className="w-full flex flex-wrap gap-y-10">
-                    <li className="w-1/6 cardSet relative">
+      <>
+        <ProfileTab activeTab="bookmark" />
+        <div className="w-full mt-28">
+          <div className="w-full flex items-center gap-4 text-white/50">
+            <a
+              href=""
+              className="text-white text-sm py-3 hover:text-white transition"
+            >
+              All
+            </a>{" "}
+            /
+            <a href="" className="text-sm py-3 hover:text-white transition">
+              Watching
+            </a>{" "}
+            /
+            <a href="" className="text-sm py-3 hover:text-white transition">
+              Plan to Watch
+            </a>{" "}
+            /
+            <a href="" className="text-sm py-3 hover:text-white transition">
+              Completed
+            </a>{" "}
+            /
+            <a href="">
+              <FaRegFolderOpen className="text-white/60 hover:text-white transition" />
+            </a>
+          </div>
+          <Filters />
+          <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+            {/* <li className="w-1/6 cardSet relative">
                         <span className="relative">
                             <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
                             <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
@@ -59,11 +111,17 @@ export default function BookmarkPage() {
                                 <button className='text-black flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition m-auto mt-4 mb-2'>Watch Now <FaRegCirclePlay className='text-xl' /></button>
                             </div>
                         </div>
-                    </li>
-                </ul>
-            </div>
-        </>
-
-
-    )
+                    </li> */}
+            {bookmarkList && bookmarkList.length > 0
+              ? bookmarkList.map((item: any) => (
+                  <Card
+                    movieId={item.media_id}
+                    mediaType={item.media_type === "movie" ? "Movie" : "TV"}
+                  />
+                ))
+              : ""}
+          </ul>
+        </div>
+      </>
+    );
 }

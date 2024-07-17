@@ -11,13 +11,13 @@ export function middleware(request: NextRequest) {
         }
         return NextResponse.next();
     }
-    else if(request.nextUrl.pathname.startsWith("/profile")){
+    // else if(request.nextUrl.pathname.startsWith("/profile")){
 
-        const check=isWindowDefined && window.localStorage.getItem("token")
-        if(!check){
-            return NextResponse.redirect(new URL("/home", request.url));
-        }
-        return NextResponse.next();
+    //     const check=isWindowDefined && window.localStorage.getItem("token")
+    //     if(!check){
+    //         return NextResponse.redirect(new URL("/home", request.url));
+    //     }
+    //     return NextResponse.next();
 
-    }
+    // }
 }

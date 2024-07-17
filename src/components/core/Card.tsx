@@ -8,6 +8,11 @@ import Loader from "./Loader";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import CardSkeleton from "./CardSkeleton";
+import User from "@lib/User";
+import API from "@lib/Api";
+import { toasterError, toasterSuccess } from "./Toaster";
+import { useState } from "react";
+import AuthForm from "./AuthForm";
 
 const fetchDetails = async (movieId: number, mediaType:string) => {
   try {
@@ -21,6 +26,7 @@ const fetchDetails = async (movieId: number, mediaType:string) => {
 
 function Card({movieId, mediaType, quality}: any) {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false)
   const {
     isLoading,
     error,
@@ -30,13 +36,41 @@ function Card({movieId, mediaType, quality}: any) {
     queryFn: () =>fetchDetails(movieId, mediaType),
 });
 
+const handleBookmark = async (mediaID: any, mediaType: string) =>{
+  if(!User.isUserLoggedIn){
+    setIsOpen(true);
+  }else{
+    try {
+      let data = {
+        userId: User.id,
+        mediaId: mediaID,
+        mediaType: mediaType,
+        bookmarkType: 'planning-to-watch'
+      }
+
+      const result = await API.post("bookmark", data);
+      if(result.success){
+        toasterSuccess("Media added successfully to bookmarks.", 3000, mediaID)
+      }else {
+        toasterError(result.error.code, 3000, mediaID);
+      }
+    } catch (error: any) {
+      console.log(error.message)
+    }
+
+  }
+
+}
+
+const handleClose = () => {
+  setIsOpen(false);
+};
+
 if(isLoading){
   return(
     <CardSkeleton />
   )
 }
-
-
 
   return (
     <>
@@ -81,7 +115,7 @@ if(isLoading){
                 </li>
               </ul>
             </section>
-            <label className="absolute right-5 top-1/2">
+            <label className="absolute right-5 top-1/2" onClick={()=> handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')}>
               <IoIosAddCircleOutline className="text-white w-6 h-6 -mt-3" />
             </label>
           </div>
@@ -110,6 +144,9 @@ if(isLoading){
         </div>
       </li>
     </>)}
+    {isOpen ?
+        <AuthForm isOpen={isOpen} handleClose={handleClose} ProfileType="profile" />
+        : null}
     </>
   );
 }

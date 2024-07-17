@@ -12,6 +12,11 @@ import moment from 'moment';
 import FetchApi from '@lib/FetchApi';
 import Loader from './core/Loader';
 import { useRouter } from 'next/navigation';
+import useRole from '@hooks/useRole';
+import User from '@lib/User';
+import AuthForm from './core/AuthForm';
+import API from '@lib/Api';
+import { toasterError, toasterSuccess } from './core/Toaster';
 
 const fetchTopAll = async () => {
   try {
@@ -37,6 +42,8 @@ const getDetail = async (item : any) => {
 export default function HomeSlider() {
   const router = useRouter();
   // const [combinedList,setCombinedList] =useState([])
+  const [roleLoading, roleData] = useRole();
+  const [isOpen, setIsOpen] = useState(false)
   const {
     isLoading,
     error,
@@ -68,6 +75,36 @@ if(products && products.length > 0 && movieDetail){
 
 }
 
+const handleClose = () => {
+  setIsOpen(false);
+};
+
+const handleBookmark = async (mediaID: any, mediaType: string) =>{
+  if(!User.isUserLoggedIn){
+    setIsOpen(true);
+  }else{
+    try {
+      let data = {
+        userId: User.id ? User.id : roleData.id,
+        mediaId: mediaID,
+        mediaType: mediaType,
+        bookmarkType: 'planning-to-watch'
+      }
+
+      const result = await API.post("bookmark", data);
+      if(result.success){
+        toasterSuccess("Media added successfully to bookmarks.", 3000, mediaID)
+      }else {
+        toasterError(result.error.code, 3000, mediaID);
+      }
+    } catch (error: any) {
+      console.log(error.message)
+    }
+
+  }
+
+}
+
 const indicators = (index:any) => (
   <div className="indicator">
     <div className='transition p-1 bg-white rounded-full mx-1 cursor-pointer'></div>
@@ -75,7 +112,7 @@ const indicators = (index:any) => (
 );
 
 
-  if(isLoading){
+  if(isLoading || roleLoading){
     return(
       <div>
       <Loader />
@@ -108,7 +145,7 @@ const indicators = (index:any) => (
                       <p className='md:text-[16px] lg:text-lg text-white font-light hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
                   <section className='flex mt-4 gap-4'>
                     <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition' onClick={()=> router.push(`/watch-now?type=${item.media_type?.toLowerCase()}&id=${item.id}`)}>Watch Now <FaRegCirclePlay className='text-xl'/></button>
-                    <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold'><FaRegBookmark className='w-5 h-5'/> Bookmark</button>
+                    <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold' onClick={()=> handleBookmark(item.id, item.media_type)}><FaRegBookmark className='w-5 h-5' /> Bookmark</button>
                     </section>
                   </div>
                 </div>
@@ -121,6 +158,9 @@ const indicators = (index:any) => (
           ))}
         </Slide>
       </div>
+      {isOpen ?
+                <AuthForm isOpen={isOpen} handleClose={handleClose} ProfileType="profile" />
+                : null}
     </>
   );
 }

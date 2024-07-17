@@ -8,18 +8,20 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import AuthForm from "./AuthForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { logOut } from "@lib/userToken";
 import { IoSearch } from "react-icons/io5";
 import NavBar from "./NavBar";
 import User from "@lib/User";
 import { useAuth } from "context/AuthContext";
+import useRole from "@hooks/useRole";
 
 export default function Header() {
     const router = useRouter()
     const path = usePathname();
     const route = path.split("/");
+    const [roleLoading, roleData] = useRole();
 
     const {token}:any = useAuth()
     const [isOpen, isClose] = useState(false)
@@ -32,10 +34,6 @@ export default function Header() {
             ? true
             : false
     };
-
-    if(token){
-        User.role()
-    }
 
     const toggleProfile = () => {
         setOpenProfile(!OpenProfile)
@@ -68,7 +66,7 @@ export default function Header() {
                             <HomeSearchbar />
                             </div>
                         <section className="flex justify-end min-w-auto md:min-w-[196px]">
-                            {token ? (
+                            {User.isUserLoggedIn ? (
                                 <>
                                     <div className="relative flex gap-4">
                                         <button onClick={toggleSearch} className="text-white block md:hidden"><IoSearch className="w-6 h-6 hover:text-amber-500 transition" /></button>

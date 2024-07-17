@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import API from "@lib/Api";
 import { useAuth } from "context/AuthContext";
 import { handleError } from "@lib/errorHandler";
+import User from "@lib/User";
 
 const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const { setToken }: any = useAuth();
@@ -41,6 +42,8 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
         localStorage.setItem("token", data?.data?.accessToken);
         setToken(data.data?.accessToken);
         setSuccessMessage("Login successfull!");
+        User.isUserLoggedIn =true;
+        User.role()
         handleClose();
       } else if (type === "forgot" && data.success) {
         setSuccessMessage("Please check your email for further instructions.");

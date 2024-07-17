@@ -10,6 +10,7 @@ import Recommended from "@components/Recommended";
 import useTitle from "@hooks/useTitle";
 import Loader from "@components/core/Loader";
 import Pagination from "@components/core/Pagination";
+import useRole from "@hooks/useRole";
 
 const fetchFilteredData = async (selectedOptions: any, page: number) => {
     try {
@@ -49,6 +50,7 @@ export default function FiltersPage() {
     const genreId: any = searchParams.get("genre");
     const countryCode: any = searchParams.get("country");
     const mediaType: any = searchParams.get("mediaType");
+    const [roleLoading, roleData] = useRole();
 
     let genre = genreId ? genreId : "";
     let media = mediaType ? mediaType : "movie";
@@ -134,7 +136,7 @@ export default function FiltersPage() {
         }
     };
 
-    if(isLoading || isRecentLoaded || isSearchLoading){
+    if(isLoading || isRecentLoaded || isSearchLoading || roleLoading){
         return(
             <div>
             <Loader />

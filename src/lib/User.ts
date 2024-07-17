@@ -7,6 +7,7 @@ export default class User {
   static username: string = "";
   static id: number | null = null;
   static userDetailsFetched = false;
+  static isUserLoggedIn = false;
 
   static async role() {
     if (this.userDetailsFetched) {
@@ -14,6 +15,8 @@ export default class User {
         id: this.id,
         email: this.email,
         username: this.username,
+        userDetailsFetched: this.userDetailsFetched,
+        isUserLoggedIn: this.isUserLoggedIn,
       };
     }
 
@@ -32,17 +35,21 @@ export default class User {
         this.email = res.data?.user?.email || "";
         this.username = res.data?.user?.username || "";
         this.userDetailsFetched = true;
-        return res.data;
+        this.isUserLoggedIn = true;
+        return res.data.user;
       } else {
-        throw new Error(res.error || "Failed to fetch user details");
+        this.isUserLoggedIn = false;
+        // throw new Error(res.error || "Failed to fetch user details");
       }
     } catch (error) {
+      this.isUserLoggedIn = false;
       console.error("Fetch user details error:", error);
       throw error;
     }
   }
 
   static clearUserDetails() {
+    this.isUserLoggedIn = false;
     this.userDetailsFetched = false;
     this.id = null;
     this.email = "";

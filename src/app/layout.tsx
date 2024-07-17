@@ -6,6 +6,7 @@ import MainLayout from "@components/core/MainLayout";
 import Provider from "@components/core/Provider";
 import Head from "next/head";
 import User from "@lib/User";
+import ToastProvider from "@components/core/ToasterProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,6 +26,7 @@ export default function RootLayout({
           <MainLayout>
             {children}
           </MainLayout>
+          <ToastProvider />
         </Provider>
       </body>
     </html>
