@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { FaPlayCircle } from "react-icons/fa";
 import { IoIosAddCircleOutline, IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
@@ -14,9 +14,24 @@ import User from '@lib/User';
 import Loader from '@components/core/Loader';
 import Card from '@components/core/Card';
 
-const fetchBookmarkList = async (userId: number) => {
+const fetchBookmarkList = async (userId: number, selectedFolder: string) => {
+  let url = `bookmark?userId=${userId}`;
+  switch(selectedFolder){
+    case "all":
+        url = `bookmark?userId=${userId}`;
+            break;
+        case "watching":
+        case "planning-to-watch":
+        case "completed":
+          url = `bookmark?userId=${userId}&bookmarkType=${selectedFolder}`;
+          break;
+        default:
+          url = `bookmark?userId=${userId}`;
+            break;
+  }
+
     try {
-      const response = await API.get(`bookmark?userId=${userId}`);
+      const response = await API.get(url);
       return response.data;
     } catch (error) {
       console.log(error)
@@ -25,17 +40,18 @@ const fetchBookmarkList = async (userId: number) => {
 
 export default function BookmarkPage() {
     const [roleLoading, roleData] = useRole();
+    const [activeFolder, setActiveFolder] = useState('all');
     const {
         isLoading,
         error,
         data: bookmarkList,
     } = useQuery({
-        queryKey: ['bookmark', roleData],
-        queryFn: () => fetchBookmarkList(roleData ? roleData.id : User.id),
-        enabled: !!roleData,
+        queryKey: ['bookmark', roleData, activeFolder],
+        queryFn: () => fetchBookmarkList(roleData ? roleData.id : User.id, activeFolder),
+        enabled: !!(roleData || activeFolder),
     });
 
-    if(isLoading || roleLoading){
+    if(roleLoading){
         return(
           <div>
           <Loader />
@@ -49,31 +65,42 @@ export default function BookmarkPage() {
         <ProfileTab activeTab="bookmark" />
         <div className="w-full mt-28">
           <div className="w-full flex items-center gap-4 text-white/50">
-            <a
-              href=""
-              className="text-white text-sm py-3 hover:text-white transition"
+            <div
+              className={`${activeFolder === 'all' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
+              onClick={() => setActiveFolder('all')}
             >
               All
-            </a>{" "}
+            </div>{" "}
             /
-            <a href="" className="text-sm py-3 hover:text-white transition">
+            <div 
+              className={`${activeFolder === 'watching' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
+              onClick={() => setActiveFolder('watching')}
+              >
               Watching
-            </a>{" "}
+            </div>{" "}
             /
-            <a href="" className="text-sm py-3 hover:text-white transition">
+            <div 
+              className={`${activeFolder === 'planning-to-watch' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
+              onClick={() => setActiveFolder('planning-to-watch')}
+            >
               Plan to Watch
-            </a>{" "}
+            </div>{" "}
             /
-            <a href="" className="text-sm py-3 hover:text-white transition">
+            <div 
+              className={`${activeFolder === 'completed' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
+              onClick={() => setActiveFolder('completed')}
+            >
               Completed
-            </a>{" "}
-            /
-            <a href="">
+            </div>{" "}
+            {/* /
+            <div>
               <FaRegFolderOpen className="text-white/60 hover:text-white transition" />
-            </a>
+            </div> */}
           </div>
-          <Filters />
-          <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+          {
+            isLoading ? (<>
+            <Loader />
+            </>) : (<ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
             {/* <li className="w-1/6 cardSet relative">
                         <span className="relative">
                             <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
@@ -117,10 +144,13 @@ export default function BookmarkPage() {
                   <Card
                     movieId={item.media_id}
                     mediaType={item.media_type === "movie" ? "Movie" : "TV"}
+                    isBookmarked={true}
                   />
                 ))
               : ""}
-          </ul>
+          </ul>)
+          }
+          
         </div>
       </>
     );

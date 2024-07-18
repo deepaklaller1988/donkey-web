@@ -1,6 +1,7 @@
-import { FaPlayCircle } from "react-icons/fa";
+import { FaPlayCircle, FaFolder  } from "react-icons/fa";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { TiDelete } from "react-icons/ti";
 import {useQuery} from '@tanstack/react-query';
 import { FaStar } from "react-icons/fa";
 import FetchApi from "@lib/FetchApi";
@@ -24,7 +25,7 @@ const fetchDetails = async (movieId: number, mediaType:string) => {
   }
 };
 
-function Card({movieId, mediaType, quality}: any) {
+function Card({movieId, mediaType, quality, isBookmarked=false}: any) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false)
   const {
@@ -36,16 +37,21 @@ function Card({movieId, mediaType, quality}: any) {
     queryFn: () =>fetchDetails(movieId, mediaType),
 });
 
-const handleBookmark = async (mediaID: any, mediaType: string) =>{
+const handleWatchPopup = () =>{
   if(!User.isUserLoggedIn){
-    setIsOpen(true);
+    toasterError("Please login or signup to use this feature.")
   }else{
+    setIsOpen(true);
+  }
+}
+
+const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: string) =>{
     try {
       let data = {
         userId: User.id,
         mediaId: mediaID,
         mediaType: mediaType,
-        bookmarkType: 'planning-to-watch'
+        bookmarkType: bookmarkType
       }
 
       const result = await API.post("bookmark", data);
@@ -55,16 +61,54 @@ const handleBookmark = async (mediaID: any, mediaType: string) =>{
         toasterError(result.error.code, 3000, mediaID);
       }
     } catch (error: any) {
-      console.log(error.message)
+      console.log(error.error.code)
+      toasterError(error.error.code, 3000, mediaID);
     }
-
-  }
-
+    setIsOpen(false);
 }
 
-const handleClose = () => {
+const handleUpdateBookmark = async (mediaID: any, mediaType: string, bookmarkType: string) =>{
+  try {
+    let data = {
+      userId: User.id,
+      mediaId: mediaID,
+      mediaType: mediaType,
+      bookmarkType: bookmarkType
+    }
+
+    const result = await API.put("bookmark", data);
+    if(result.success){
+      toasterSuccess(`Media added successfully to ${bookmarkType === 'watching' ? 'Watching' : bookmarkType === 'completed' ? 'Completed' : 'Plan to Watch'} Folder.`, 3000, mediaID)
+    }else {
+      toasterError(result.error.code, 3000, mediaID);
+    }
+  } catch (error: any) {
+    console.log(error.error.code)
+    toasterError(error.error.code, 3000, mediaID);
+  }
   setIsOpen(false);
-};
+}
+
+const handleDeleteBookmark = async (mediaID: any, mediaType: string) =>{
+  try {
+    let data = {
+      userId: User.id,
+      mediaId: mediaID,
+      mediaType: mediaType,
+    }
+
+    const result = await API.delete("bookmark", data);
+    if(result.success){
+      toasterSuccess(`Media removed successfully from bookmarks.`, 3000, mediaID)
+    }else {
+      toasterError(result.error.code, 3000, mediaID);
+    }
+  } catch (error: any) {
+    console.log(error.error.code)
+    toasterError(error.error.code, 3000, mediaID);
+  }
+  setIsOpen(false);
+}
 
 if(isLoading){
   return(
@@ -76,7 +120,8 @@ if(isLoading){
     <>
     {movieDetials && (<>
       <li key={movieId} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 cursor-pointer cardSet relative" >
-        <span className="relative" onClick={()=>router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
+      <div className="relative w-full">
+        <span className="relative folderOpened" onClick={()=>router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
           <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" />
           <img
             className="rounded-xl w-full"
@@ -87,6 +132,19 @@ if(isLoading){
             {quality ? quality : "HD"}
           </label>
         </span>
+        {isBookmarked && (
+          <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl" onClick={handleWatchPopup}>
+            <div className="relative flex gap-4">
+             <FaFolder className="w-4 h-4 m-1 " />
+             <div className={`profileLinks top-[20px] absolute bg-zinc-950 rounded-lg right-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
+                    <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
+                    <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} >Plan to Watch</div>
+                    <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div>
+                    <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} ><TiDelete className="w-6 h-6" /> Remove</div>
+                </div>
+             </div>
+          </label>
+          )}
         <section className="py-2">
           <b className="text-white font-semibold">{(movieDetials?.title && movieDetials.title.length > 40) ? movieDetials?.title?.slice(0,40) + "..." : (movieDetials?.name && movieDetials?.name.length > 40 ) ? movieDetials?.name?.slice(0,40) + "..." : movieDetials?.name ? movieDetials?.name : movieDetials?.title}</b>
           <ul className="text-gray-500 flex gap-2">
@@ -94,7 +152,7 @@ if(isLoading){
             {/* . <li className="text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li> */}
           </ul>
         </section>
-        <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]">
+        <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]" onMouseLeave={()=> setIsOpen(false)}>
           <div className="w-full p-5 relative">
             <section className="pr-12">
               <h2 className="text-white text-lg">{movieDetials?.title || movieDetials?.name }</h2>
@@ -115,9 +173,21 @@ if(isLoading){
                 </li>
               </ul>
             </section>
-            <label className="absolute right-5 top-1/2" onClick={()=> handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')}>
-              <IoIosAddCircleOutline className="text-white w-6 h-6 -mt-3" />
-            </label>
+            {
+              !isBookmarked && (
+                <label className="absolute cursor-pointer right-5 top-1/2" onClick={handleWatchPopup}>
+                <div className="relative flex gap-4">
+                <IoIosAddCircleOutline className="text-white hover:text-amber-500 w-6 h-6 -mt-3" />
+                  <div className={`profileLinks top-[20px] absolute bg-zinc-950 rounded-lg right-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
+                      <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
+                      <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} >Plan to Watch</div>
+                      <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div>
+                  </div>
+                </div>
+              </label>
+              )
+            }
+
           </div>
           <div className="w-full p-5 border-t border-1 border-white/5 text-white/50">
             <p>
@@ -142,11 +212,9 @@ if(isLoading){
             </button>
           </div>
         </div>
+        </div>
       </li>
     </>)}
-    {isOpen ?
-        <AuthForm isOpen={isOpen} handleClose={handleClose} ProfileType="profile" />
-        : null}
     </>
   );
 }
