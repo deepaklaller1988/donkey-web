@@ -10,6 +10,13 @@ export default class User {
   static isUserLoggedIn = false;
 
   static async role() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      this.clearUserDetails();
+      return null;
+    }
+
     if (this.userDetailsFetched) {
       return {
         id: this.id,
@@ -21,13 +28,8 @@ export default class User {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        API.setToken(token);
-        
-      }
-
-      const res = await API.get(["user","my-details"]);
+      API.setToken(token);
+      const res = await API.get(["user", "my-details"]);
       console.log(res.data?.user?.email, "response");
 
       if (res.success) {

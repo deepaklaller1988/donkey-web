@@ -7,6 +7,7 @@ import API from "@lib/Api";
 import { useAuth } from "context/AuthContext";
 import { handleError } from "@lib/errorHandler";
 import User from "@lib/User";
+import { toasterSuccess } from "./Toaster";
 
 const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const { setToken }: any = useAuth();
@@ -15,7 +16,6 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const [captchaValue, setCaptchaValue] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [showChangePassword, setShowChangePassword] = useState(false);
 
   useEffect(() => {
     setErrorMessage("");
@@ -41,21 +41,26 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
       if (data?.data?.accessToken) {
         localStorage.setItem("token", data?.data?.accessToken);
         setToken(data.data?.accessToken);
-        setSuccessMessage("Login successfull!");
-        User.isUserLoggedIn =true;
-        User.role()
+        toasterSuccess("Login successfully !", 1000, "id");
+
+        User.isUserLoggedIn = true;
+        User.role();
         handleClose();
       } else if (type === "forgot" && data.success) {
-        setSuccessMessage("Please check your email for further instructions.");
+        toasterSuccess(
+          "Please check your email for further instructions",
+          3000,
+          "id"
+        );
+        handleClose();
       } else if (type === "register" && data.success) {
-        setSuccessMessage("Registration successful! You can now log in.");
+        toasterSuccess("Registration successfully !", 1000, "id");
         setType("login");
       }
     },
     onError: async (error: any) => {
       const message = handleError(error?.error?.code);
       setErrorMessage(message);
-  
     },
   });
   const handleSubmit = (event: any) => {
@@ -97,7 +102,6 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
       return;
     }
 
-    // Append CAPTCHA value and mutate
     formData.set("captcha", captchaValue);
     mutation.mutate(formData);
   };
@@ -179,7 +183,9 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
                           id={fieldName}
                           className="p-2 px-4 rounded-lg bg-white/5 text-white"
                           type={
-                            fieldName.includes("password") ? "password" : "text"
+                            fieldName.includes("password")
+                              ? "password"
+                              : "password"
                           }
                           name={fieldName}
                           placeholder={
