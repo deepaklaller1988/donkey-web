@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import API from "@lib/Api";
 import Loader from "./Loader";
 import User from "@lib/User";
+import { toasterSuccess } from "./Toaster";
 
 const RatingPopUp = () => {
   const [rating, setRating] = useState(0);
@@ -16,13 +17,11 @@ const RatingPopUp = () => {
   const movieId = searchParams.get("id");
   const userId: any = User.id ?? null;
   const apiUrl = "rating";
-
   useEffect(() => {
     fetchRatingData();
   }, [userId, ip]);
 
   useEffect(() => {
-    if (!userId) {
       const fetchIp = async () => {
         try {
           const response = await fetch("https://api.ipify.org?format=json");
@@ -34,14 +33,12 @@ const RatingPopUp = () => {
       };
 
       fetchIp();
-    }
-  }, [userId]);
-
+  }, []);
   const fetchRatingData = async () => {
     if (movieId && (userId || ip)) {
       try {
         const response = await API.get(
-          `rating/${movieId}/${userId ? userId : ip}`
+          `rating?movieId=${movieId}&id=${userId}&ip=${ip}`
         );
         setRating(response.data.rating.value);
 
@@ -49,9 +46,7 @@ const RatingPopUp = () => {
         return response.data;
       } catch (error) {
         setSubmitted(false);
-
-        console.error("Error fetching rating:", error);
-        throw new Error("Failed to fetch rating data");
+        return {};
       }
     } else {
       setSubmitted(false);
@@ -81,13 +76,13 @@ const RatingPopUp = () => {
       const payload = {
         movieId,
         value: rating,
-        userId: userId ? userId : null,
+        userId: userId ? userId.toString() : null,
         ip: ip ? ip : null,
       };
 
       try {
         const response = await API.post(apiUrl, payload);
-        return response.data; // Assuming your backend sends back the updated rating data
+        return response.data; 
       } catch (error: any) {
         console.log(error);
         throw new Error("Failed to submit rating");
@@ -97,13 +92,13 @@ const RatingPopUp = () => {
       if (data && data.value) {
         setRating(parseInt(data.value));
         setSubmitted(true);
+        toasterSuccess("Ratig Submitted !",3000,"id")
+
       }
 
-      // Optionally trigger a refetch to update ratingData immediately
       refetch();
     },
     onError: (error: any) => {
-      // Handle error, e.g., display an error message
     },
   });
 
