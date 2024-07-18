@@ -43,7 +43,7 @@ export default function HomeSlider() {
   const router = useRouter();
   // const [combinedList,setCombinedList] =useState([])
   const [roleLoading, roleData] = useRole();
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const {
     isLoading,
     error,
@@ -79,16 +79,22 @@ const handleClose = () => {
   setIsOpen(false);
 };
 
-const handleBookmark = async (mediaID: any, mediaType: string) =>{
+const handleWatchPopup = () =>{
   if(!User.isUserLoggedIn){
-    setIsOpen(true);
+    toasterError("Please login or signup to use this feature.")
   }else{
+    setIsOpen(true);
+  }
+}
+
+const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: string) =>{
     try {
+      setIsOpen(false);
       let data = {
         userId: User.id ? User.id : roleData.id,
         mediaId: mediaID,
         mediaType: mediaType,
-        bookmarkType: 'planning-to-watch'
+        bookmarkType: bookmarkType
       }
 
       const result = await API.post("bookmark", data);
@@ -100,9 +106,6 @@ const handleBookmark = async (mediaID: any, mediaType: string) =>{
     } catch (error: any) {
       console.log(error.message)
     }
-
-  }
-
 }
 
 const indicators = (index:any) => (
@@ -145,7 +148,14 @@ const indicators = (index:any) => (
                       <p className='md:text-[16px] lg:text-lg text-white font-light hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
                   <section className='flex mt-4 gap-4'>
                     <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition' onClick={()=> router.push(`/watch-now?type=${item.media_type?.toLowerCase()}&id=${item.id}`)}>Watch Now <FaRegCirclePlay className='text-xl'/></button>
-                    <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold' onClick={()=> handleBookmark(item.id, item.media_type)}><FaRegBookmark className='w-5 h-5' /> Bookmark</button>
+                    <div className="relative flex gap-4">
+                      <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold' onClick=     {handleWatchPopup}><FaRegBookmark className='w-5 h-5' /> Bookmark</button>
+                          <div className={`profileLinks top-[40px] absolute bg-zinc-800 rounded-lg left-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
+                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'watching')} >Watching </div>
+                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'planning-to-watch')} >Plan to Watch</div>
+                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'completed')} >Completed </div>
+                          </div>
+                      </div>
                     </section>
                   </div>
                 </div>
@@ -158,9 +168,6 @@ const indicators = (index:any) => (
           ))}
         </Slide>
       </div>
-      {isOpen ?
-                <AuthForm isOpen={isOpen} handleClose={handleClose} ProfileType="profile" />
-                : null}
     </>
   );
 }
