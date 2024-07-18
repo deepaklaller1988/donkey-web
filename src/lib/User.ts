@@ -30,8 +30,6 @@ export default class User {
     try {
       API.setToken(token);
       const res = await API.get(["user", "my-details"]);
-      console.log(res.data?.user?.email, "response");
-
       if (res.success) {
         this.id = res.data?.user?.id || null;
         this.email = res.data?.user?.email || "";
@@ -41,7 +39,6 @@ export default class User {
         return res.data.user;
       } else {
         this.isUserLoggedIn = false;
-        // throw new Error(res.error || "Failed to fetch user details");
       }
     } catch (error) {
       this.isUserLoggedIn = false;
