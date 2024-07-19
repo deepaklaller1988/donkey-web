@@ -166,7 +166,7 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
         <>
          <div className="w-full my-3">
                 <div className="flex flex-wrap gap-2">
-                    <input className="text-[14px] rounded-md px-3 bg-white/20 transition text-white" type="text" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} />
+                    <input className="text-[14px] rounded-md px-3 bg-[#272727] transition text-white" type="text" placeholder="Search..." value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} />
                 <MultiSelect
                     value={selectedType}
                     onChange={(e) => handleSelection(e)}
@@ -176,7 +176,7 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
                     placeholder="Type"
                     maxSelectedLabels={1}
                     selectionLimit={1}
-                    className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
+                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
                 />
                 <MultiSelect
                     value={selectedGenre}
@@ -186,7 +186,7 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
                     optionLabel="name"
                     placeholder="Genre"
                     maxSelectedLabels={1}
-                    className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
+                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
                 />
                  <MultiSelect
                     value={selectedCountry}
@@ -196,7 +196,7 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
                     optionLabel="english_name"
                     placeholder="Country"
                     maxSelectedLabels={1}
-                    className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
+                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
                 />
                  <MultiSelect
                     value={selectedYear}
@@ -207,7 +207,7 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
                     placeholder="Year"
                     maxSelectedLabels={1}
                     selectionLimit={1}
-                    className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
+                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
                 />
                  {/* <MultiSelect
                     value={selectedCities}
@@ -216,7 +216,7 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
                     optionLabel="name"
                     placeholder="Rating"
                     maxSelectedLabels={1}
-                    className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
+                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
                 />
                  <MultiSelect
                     value={selectedCities}
@@ -225,7 +225,7 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
                     optionLabel="name"
                     placeholder="Quality"
                     maxSelectedLabels={1}
-                    className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
+                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
                 /> */}
                  <MultiSelect
                     value={selectedFilter}
@@ -236,9 +236,9 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
                     placeholder="Popular"
                     maxSelectedLabels={1}
                     selectionLimit={1}
-                    className="customSelect rounded-md bg-white/20 hover:bg-amber-500 transition"
+                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
                 />
-                <button className="pbgColor flex items-center rounded-full text-white transition p-2 px-4 gap-2" onClick={onSubmit} ><MdFilterList /> Filter</button>
+                <button className="pbgColor flex items-center rounded-full text-[#272727] transition p-2 px-4 gap-2" onClick={onSubmit} ><MdFilterList /> Filter</button>
                 </div>
             </div>
         </>

@@ -1,106 +1,109 @@
 "use client"
 import React, { useState } from 'react'
-import { FaPlayCircle } from "react-icons/fa";
-import { IoIosAddCircleOutline, IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
-import { FaStar } from "react-icons/fa";
-import { FaRegCirclePlay } from "react-icons/fa6";
-import { FaRegFolderOpen } from "react-icons/fa";
-import Filters from "@components/Filters";
+
 import ProfileTab from '@components/core/ProfileTab';
 import API from '@lib/Api';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useRole from '@hooks/useRole';
 import User from '@lib/User';
 import Loader from '@components/core/Loader';
 import Card from '@components/core/Card';
+import CustomPagination from '@components/CustomPagination';
 
-const fetchBookmarkList = async (userId: number, selectedFolder: string) => {
+const fetchBookmarkList = async (userId: number, selectedFolder: string, page: number, limit: number) => {
   let url = `bookmark?userId=${userId}`;
-  switch(selectedFolder){
+  switch (selectedFolder) {
     case "all":
-        url = `bookmark?userId=${userId}`;
-            break;
-        case "watching":
-        case "planning-to-watch":
-        case "completed":
-          url = `bookmark?userId=${userId}&bookmarkType=${selectedFolder}`;
-          break;
-        default:
-          url = `bookmark?userId=${userId}`;
-            break;
+      url = `bookmark?userId=${userId}&page=${page}&limit=${limit}&pagination=${true}`;
+      break;
+    case "watching":
+    case "planning-to-watch":
+    case "completed":
+      url = `bookmark?userId=${userId}&bookmarkType=${selectedFolder}`;
+      break;
+    default:
+      url = `bookmark?userId=${userId}`;
+      break;
   }
 
-    try {
-      const response = await API.get(url);
-      return response.data;
-    } catch (error) {
-      console.log(error)
-    }
-  };
+  try {
+    const response = await API.get(url);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error)
+  }
+};
 
 export default function BookmarkPage() {
-    const [roleLoading, roleData] = useRole();
-    const [activeFolder, setActiveFolder] = useState('all');
-    const {
-        isLoading,
-        error,
-        data: bookmarkList,
-    } = useQuery({
-        queryKey: ['bookmark', roleData, activeFolder],
-        queryFn: () => fetchBookmarkList(roleData ? roleData.id : User.id, activeFolder),
-        enabled: !!(roleData || activeFolder),
-    });
+  const [roleLoading, roleData] = useRole();
+  const [activeFolder, setActiveFolder] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const queryClient = useQueryClient()
 
-    if(roleLoading){
-        return(
-          <div>
-          <Loader />
-        </div>
-        )
-      }
-    
+  const {
+    isLoading,
+    error,
+    data: bookmarkList,
+    refetch
+  } = useQuery({
+    queryKey: ['bookmark', roleData, activeFolder, currentPage],
+    queryFn: () => fetchBookmarkList(roleData ? roleData.id : User.id, activeFolder, currentPage, 10),
+    enabled: !!(roleData || activeFolder),
+  });
+  const totalPages = bookmarkList?.count || 1;
 
+
+  if (roleLoading) {
     return (
-      <>
-        <ProfileTab activeTab="bookmark" />
-        <div className="w-full mt-28">
-          <div className="w-full flex items-center gap-4 text-white/50">
-            <div
-              className={`${activeFolder === 'all' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
-              onClick={() => setActiveFolder('all')}
-            >
-              All
-            </div>{" "}
-            /
-            <div 
-              className={`${activeFolder === 'watching' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
-              onClick={() => setActiveFolder('watching')}
-              >
-              Watching
-            </div>{" "}
-            /
-            <div 
-              className={`${activeFolder === 'planning-to-watch' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
-              onClick={() => setActiveFolder('planning-to-watch')}
-            >
-              Plan to Watch
-            </div>{" "}
-            /
-            <div 
-              className={`${activeFolder === 'completed' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
-              onClick={() => setActiveFolder('completed')}
-            >
-              Completed
-            </div>{" "}
-            {/* /
+      <div>
+        <Loader />
+      </div>
+    )
+  }
+
+
+  return (
+    <>
+      <ProfileTab activeTab="bookmark" />
+      <div className="w-full mt-28">
+        <div className="w-full flex items-center gap-4 text-white/50">
+          <div
+            className={`${activeFolder === 'all' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
+            onClick={() => setActiveFolder('all')}
+          >
+            All
+          </div>{" "}
+          /
+          <div
+            className={`${activeFolder === 'watching' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
+            onClick={() => setActiveFolder('watching')}
+          >
+            Watching
+          </div>{" "}
+          /
+          <div
+            className={`${activeFolder === 'planning-to-watch' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
+            onClick={() => setActiveFolder('planning-to-watch')}
+          >
+            Plan to Watch
+          </div>{" "}
+          /
+          <div
+            className={`${activeFolder === 'completed' ? 'text-white' : ''} text-sm py-3 hover:text-white transition`}
+            onClick={() => setActiveFolder('completed')}
+          >
+            Completed
+          </div>{" "}
+          {/* /
             <div>
               <FaRegFolderOpen className="text-white/60 hover:text-white transition" />
             </div> */}
-          </div>
-          {
-            isLoading ? (<>
+        </div>
+        {
+          isLoading ? (<>
             <Loader />
-            </>) : (<ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+          </>) : (<ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
             {/* <li className="w-1/6 cardSet relative">
                         <span className="relative">
                             <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
@@ -139,19 +142,31 @@ export default function BookmarkPage() {
                             </div>
                         </div>
                     </li> */}
-            {bookmarkList && bookmarkList.length > 0
-              ? bookmarkList.map((item: any) => (
-                  <Card
-                    movieId={item.media_id}
-                    mediaType={item.media_type === "movie" ? "Movie" : "TV"}
-                    isBookmarked={true}
-                  />
-                ))
+            {bookmarkList && bookmarkList.data.length > 0
+              ? bookmarkList.data?.map((item: any) => (
+                <Card
+                  movieId={item.media_id}
+                  mediaType={item.media_type === "movie" ? "Movie" : "TV"}
+                  bookmark_type={item.bookmark_type}
+                  isBookmarked={true}
+                  queryClient={queryClient}
+                />
+              ))
               : ""}
           </ul>)
-          }
-          
-        </div>
-      </>
-    );
+        }
+
+      </div>
+
+
+      <CustomPagination
+        currentPage={currentPage}
+        totalItems={totalPages}
+        totalPages={totalPages / 10}
+        itemsPerPage={10}
+        onPageChange={(page: number) => setCurrentPage(page)}
+
+      />
+    </>
+  );
 }

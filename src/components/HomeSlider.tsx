@@ -14,18 +14,27 @@ import Loader from './core/Loader';
 import { useRouter } from 'next/navigation';
 import useRole from '@hooks/useRole';
 import User from '@lib/User';
-import AuthForm from './core/AuthForm';
 import API from '@lib/Api';
 import { toasterError, toasterSuccess } from './core/Toaster';
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
+
 
 const fetchTopAll = async () => {
   try {
     const response = await FetchApi.get('https://api.themoviedb.org/3/trending/all/day?language=en-US');
     const data = await response.json();
-    return data.results;
+    
+    const combinedResults = await Promise.all(data.results.map(async (item: any) => {
+      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
+      const certificateData = await certificateResponse.json();
+      return {
+        ...item,
+        certificate: certificateData.certification ||null
+      };
+    }));
+    return combinedResults;
   } catch (error) {
-    console.log(error)
+    console.error(error);
   }
 };
 
@@ -48,7 +57,6 @@ const getDetail = async (item : any) => {
 
 export default function HomeSlider() {
   const router = useRouter();
-  // const [combinedList,setCombinedList] =useState([])
   const [roleLoading, roleData] = useRole();
   const [isOpen, setIsOpen] = useState(false);
   const {
@@ -69,7 +77,7 @@ const movieDetail = useQueries({
           enabled: !!products,
         };
       })
-  : [], // if users is undefined, an empty array will be returned
+  : [], 
 });
 
 let combinedList =[];
@@ -150,6 +158,8 @@ const indicators = (index:any) => (
                       <li><label className='rounded-full pbgColor text-black font-bold px-2'>HD</label></li>
                       <li><span className='flex items-center gap-2 text-white text-sm font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
                       {item.runtime && (<li>{item.runtime} min</li>)}
+                     {item.certificate && <li><label className='rounded-full pbgColor text-black font-bold px-2'>{item.certificate}</label></li>}
+
                       {item.genres && item.genres.length > 0 ? item.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       </ul>
                       <p className='md:text-[16px] lg:text-lg text-white font-light hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>

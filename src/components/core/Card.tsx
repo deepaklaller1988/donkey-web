@@ -5,7 +5,6 @@ import { TiDelete } from "react-icons/ti";
 import {useQuery} from '@tanstack/react-query';
 import { FaStar } from "react-icons/fa";
 import FetchApi from "@lib/FetchApi";
-import Loader from "./Loader";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import CardSkeleton from "./CardSkeleton";
@@ -13,7 +12,6 @@ import User from "@lib/User";
 import API from "@lib/Api";
 import { toasterError, toasterSuccess } from "./Toaster";
 import { useState } from "react";
-import AuthForm from "./AuthForm";
 
 const fetchDetails = async (movieId: number, mediaType:string) => {
   try {
@@ -25,7 +23,8 @@ const fetchDetails = async (movieId: number, mediaType:string) => {
   }
 };
 
-function Card({movieId, mediaType, quality, isBookmarked=false}: any) {
+function Card({movieId, mediaType, quality, isBookmarked=false,bookmark_type,queryClient}: any) {
+
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false)
   const {
@@ -57,11 +56,11 @@ const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: str
       const result = await API.post("bookmark", data);
       if(result.success){
         toasterSuccess("Media added successfully to bookmarks.", 3000, mediaID)
+        queryClient.invalidateQueries({ queryKey: ['bookmark'] })
       }else {
         toasterError(result.error.code, 3000, mediaID);
       }
     } catch (error: any) {
-      console.log(error.error.code)
       toasterError(error.error.code, 3000, mediaID);
     }
     setIsOpen(false);
@@ -78,12 +77,13 @@ const handleUpdateBookmark = async (mediaID: any, mediaType: string, bookmarkTyp
 
     const result = await API.put("bookmark", data);
     if(result.success){
-      toasterSuccess(`Media added successfully to ${bookmarkType === 'watching' ? 'Watching' : bookmarkType === 'completed' ? 'Completed' : 'Plan to Watch'} Folder.`, 3000, mediaID)
+      queryClient.invalidateQueries({ queryKey: ['bookmark'] })
+      
+    toasterSuccess(`Media added successfully to ${bookmarkType === 'watching' ? 'Watching' : bookmarkType === 'completed' ? 'Completed' : 'Plan to Watch'} Folder.`, 3000, mediaID)
     }else {
       toasterError(result.error.code, 3000, mediaID);
     }
   } catch (error: any) {
-    console.log(error.error.code)
     toasterError(error.error.code, 3000, mediaID);
   }
   setIsOpen(false);
@@ -100,11 +100,12 @@ const handleDeleteBookmark = async (mediaID: any, mediaType: string) =>{
     const result = await API.delete("bookmark", data);
     if(result.success){
       toasterSuccess(`Media removed successfully from bookmarks.`, 3000, mediaID)
+      queryClient.invalidateQueries({ queryKey: ['bookmark'] })
+
     }else {
       toasterError(result.error.code, 3000, mediaID);
     }
   } catch (error: any) {
-    console.log(error.error.code)
     toasterError(error.error.code, 3000, mediaID);
   }
   setIsOpen(false);
@@ -137,10 +138,10 @@ if(isLoading){
             <div className="relative flex gap-4">
              <FaFolder className="w-4 h-4 m-1 " />
              <div className={`profileLinks top-[20px] absolute bg-zinc-950 rounded-lg right-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
-                    <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
-                    <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} >Plan to Watch</div>
-                    <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div>
-                    <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} ><TiDelete className="w-6 h-6" /> Remove</div>
+                    <div className={`${bookmark_type=="watching"?"pbgColor text-black m-2 rounded":""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={()=> handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
+                    <div className={`${bookmark_type=="planning-to-watch"?"pbgColor text-black m-2 rounded":""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={()=> handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} >Plan to Watch</div>
+                    <div className={`${bookmark_type=="Completed"?"pbgColor text-black m-2 rounded":""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={()=> handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div>
+                    <div className={`p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`}  onClick={()=> handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} ><TiDelete className="w-6 h-6" /> Remove</div>
                 </div>
              </div>
           </label>

@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { IoIosArrowRoundBack } from "react-icons/io";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import Recommended from "@components/Recommended";
 import "./album-detail.css";
@@ -13,16 +12,28 @@ import Loader from "@components/core/Loader";
 import moment from "moment";
 import Card from "@components/core/Card";
 import RatingPopUp from "@components/core/RatingPopUp";
+const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
-const fetchDetails = async (movieId: number, mediaType:string) => {
+  const fetchDetails = async (movieId: number, mediaType:string) => {
     try {
       const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US`);
       const data = await response.json();
-      return data;
+    
+      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
+      const certificateData = await certificateResponse.json();
+    
+      const combinedResults = {
+        ...data,
+        certificate: certificateData.certification || null
+      };
+    
+      return combinedResults;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  };
+    
+    };
+  
 
 const fetchCredits = async (movieId: number, mediaType:string) => {
 try {
@@ -220,6 +231,7 @@ const {
                         <b className="font-bold">{mediaType === 'movie' ? moment(watchDetials?.release_date).year() : moment(watchDetials?.first_air_date).year()}</b>
                       </li>
                       <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
+                      <li>{watchDetials.certificate}</li>
                       {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       <li>
                         <span className="flex items-center gap-2 pColor font-semibold">
