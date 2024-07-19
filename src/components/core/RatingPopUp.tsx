@@ -19,7 +19,7 @@ export default function RatingPopUp() {
     };
 
     return (
-        <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
+        <section className="bg-[#272727] rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
             <span className="flex gap-1">
                 <Rating
                     onClick={handleRating}

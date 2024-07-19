@@ -200,8 +200,8 @@ const {
       </div> 
       <div className="w-full pt-32">
         <div className="homewrapper">
-          <div className="w-full flex gap-5">
-            <div className="w-full flex gap-5">
+        <div className="w-full flex flex-col lg:flex-row gap-5">
+        <div className="w-full flex flex-col md-flex-row gap-5">
               <section className="min-w-[270px] max-w-[270px]">
                 <img
                   className="w-full rounded-lg"
@@ -210,7 +210,7 @@ const {
                 />
               </section>
               <section>
-                <div className="w-full flex gap-5 justify-between">
+                <div className="w-full flex flex-col lg:flex-row gap-5 justify-between">
                   <section>
                     <h3 className="text-white text-[25px] font-semibold">
                       {watchDetials?.title || watchDetials?.name}

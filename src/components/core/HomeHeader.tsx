@@ -55,7 +55,7 @@ export default function Header() {
 
     return (
         <>
-            <div className={`header ${isHome() ? "" : "bg-white/10"} p-2 py-3 absolute z-10 w-full top-0 right-0`}>
+            <div className={`header ${isHome() ? "" : "bg-[#272727]"} bg-[#272727] p-2 py-3 absolute z-10 w-full top-0 right-0`}>
                 <div className="homewrapper">
                     <div className="headerInner flex items-center justify-between relative">
                         <section className="flex items-center">
