@@ -149,7 +149,7 @@ ul.indicators .indicator.active div {
   display: none;
 }
 
-.cardSet span.folderOpened:hover ~ .albumDetail {
+.cardSet:hover .albumDetail {
   display: block;
 }
 
