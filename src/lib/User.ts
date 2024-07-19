@@ -10,6 +10,13 @@ export default class User {
   static isUserLoggedIn = false;
 
   static async role() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      this.clearUserDetails();
+      return null;
+    }
+
     if (this.userDetailsFetched) {
       return {
         id: this.id,
@@ -21,15 +28,8 @@ export default class User {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        API.setToken(token);
-        
-      }
-
-      const res = await API.get(["user","my-details"]);
-      console.log(res.data?.user?.email, "response");
-
+      API.setToken(token);
+      const res = await API.get(["user", "my-details"]);
       if (res.success) {
         this.id = res.data?.user?.id || null;
         this.email = res.data?.user?.email || "";
@@ -39,7 +39,6 @@ export default class User {
         return res.data.user;
       } else {
         this.isUserLoggedIn = false;
-        // throw new Error(res.error || "Failed to fetch user details");
       }
     } catch (error) {
       this.isUserLoggedIn = false;
