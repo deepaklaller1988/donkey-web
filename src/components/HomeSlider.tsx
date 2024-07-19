@@ -17,6 +17,7 @@ import User from '@lib/User';
 import AuthForm from './core/AuthForm';
 import API from '@lib/Api';
 import { toasterError, toasterSuccess } from './core/Toaster';
+const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
 const fetchTopAll = async () => {
   try {
@@ -32,7 +33,13 @@ const getDetail = async (item : any) => {
   try {
     const response = await FetchApi.get(`https://api.themoviedb.org/3/${item.media_type}/${item.id}?language=en-US`);
     const data = await response.json();
+    if (data.vote_average === 0) {
+      const ratingResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
+      const ratingData = await ratingResponse.json();
+      data.vote_average = ratingData.score_average;
+    }
     return data;
+    
   } catch (error) {
     console.log(error)
   }
