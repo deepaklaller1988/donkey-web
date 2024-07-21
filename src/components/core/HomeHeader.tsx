@@ -131,7 +131,7 @@ export default function Header() {
                       </Link>
                       <button
                         type="button"
-                        className="border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 "
+                        className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 "
                         onClick={handleLogOut}
                       >
                         <IoLogOutOutline /> Logout

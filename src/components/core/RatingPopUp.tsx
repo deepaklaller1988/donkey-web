@@ -6,11 +6,13 @@ import { useSearchParams } from "next/navigation";
 import API from "@lib/Api";
 import Loader from "./Loader";
 import User from "@lib/User";
+import { toasterSuccess } from "./Toaster";
 
 const RatingPopUp = () => {
   const [rating, setRating] = useState(0);
   const [hoverValue, setHoverValue] = useState(0);
   const [ip, setIp] = useState<string | null>(null);
+  const [reviewCount, setReviewCount] = useState<any>({ totalReviews: 0, average_rating: "0" ,outOf:"0"});
   const [submitted, setSubmitted] = useState(false);
   const searchParams = useSearchParams();
   const movieId = searchParams.get("id");
@@ -21,8 +23,8 @@ const RatingPopUp = () => {
     fetchRatingData();
   }, [userId, ip]);
 
+
   useEffect(() => {
-    if (!userId) {
       const fetchIp = async () => {
         try {
           const response = await fetch("https://api.ipify.org?format=json");
@@ -34,24 +36,26 @@ const RatingPopUp = () => {
       };
 
       fetchIp();
-    }
-  }, [userId]);
+  }, []);
 
   const fetchRatingData = async () => {
     if (movieId && (userId || ip)) {
       try {
         const response = await API.get(
-          `rating/${movieId}/${userId ? userId : ip}`
+          `rating?movieId=${movieId}&id=${userId}&ip=${ip}`
         );
         setRating(response.data.rating.value);
-
+        setReviewCount({
+          totalReviews: parseInt(response.data.ratingCount.total),
+          average_rating: parseFloat(response.data.ratingCount.rating).toFixed(2),
+          outOf: (reviewCount.totalReviews * 5)
+        });
         setSubmitted(true);
         return response.data;
+
       } catch (error) {
         setSubmitted(false);
-
-        console.error("Error fetching rating:", error);
-        throw new Error("Failed to fetch rating data");
+        return {};
       }
     } else {
       setSubmitted(false);
@@ -68,7 +72,7 @@ const RatingPopUp = () => {
   } = useQuery<any>({
     queryKey: ["latest", movieId],
     queryFn: fetchRatingData,
-    enabled: () => !!movieId && (userId || ip), // Use a function to evaluate the condition
+    enabled: () => !!movieId && (userId || ip), 
   });
 
   const mutation = useMutation({
@@ -81,29 +85,29 @@ const RatingPopUp = () => {
       const payload = {
         movieId,
         value: rating,
-        userId: userId ? userId : null,
+        userId: userId ? userId.toString() : null,
         ip: ip ? ip : null,
       };
 
       try {
         const response = await API.post(apiUrl, payload);
-        return response.data; // Assuming your backend sends back the updated rating data
+        return response.data; 
       } catch (error: any) {
-        console.log(error);
         throw new Error("Failed to submit rating");
       }
     },
     onSuccess: (data) => {
       if (data && data.value) {
         setRating(parseInt(data.value));
+        localStorage.setItem(`${movieId}`,data.value)
         setSubmitted(true);
+        toasterSuccess("Ratig Submitted !",3000,"id")
+
       }
 
-      // Optionally trigger a refetch to update ratingData immediately
       refetch();
     },
     onError: (error: any) => {
-      // Handle error, e.g., display an error message
     },
   });
 
@@ -159,8 +163,7 @@ const RatingPopUp = () => {
           labels[(hoverValue || rating) / 20]}
       </div>
       <p className="text-white/50 text-sm">
-        <b className="text-sm">21</b> of <b className="text-sm">10</b> (12
-        reviews)
+        <b className="text-sm">{reviewCount.average_rating}</b> of <b className="text-sm">{reviewCount?.outOf}</b> ( {reviewCount.totalReviews} reviews)
       </p>
       <button
         onClick={handleSubmitRating}
