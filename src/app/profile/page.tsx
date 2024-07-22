@@ -1,3 +1,4 @@
+"use client"
 import BookmarkPage from './Bookmark/page';
 import UserProfile from './userProfile/page';
 import ContinueWatchingPage from './watching/page';

@@ -102,14 +102,24 @@ export default function FiltersPage() {
                                 <section className="episodeLists bg-neutral-950 max-h-[500px] overflow-auto">
                                     <ul className="text-white/50">
                                         <li><a className="text-[14px] py-3 px-4 block" href="">Episode 1: Itch To Explore</a><span>12/04/2024</span></li>
-                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 2: You're It</a><span>12/04/2024</span></li>
+                                        {/* <li><a className="text-[14px] py-3 px-4 block" href="">Episode 2: You're It</a><span>12/04/2024</span></li> */}
+                                        <li>
+                                            <a className="text-[14px] py-3 px-4 block" href="">Episode 2: You&apos;re It</a>
+                                            <span>12/04/2024</span>
+                                        </li>
+
                                         <li className="episodeActive"><a className="text-[14px] py-3 px-4 block" href="">Episode 3: Jessica Goes to the Creek</a><span>12/04/2024</span></li>
                                         <li><a className="text-[14px] py-3 px-4 block" href="">Episode 4: The Final Book</a><span>12/04/2024</span></li>
                                         <li><a className="text-[14px] py-3 px-4 block" href="">Episode 5: Too Many Treasures</a><span>12/04/2024</span></li>
                                         <li><a className="text-[14px] py-3 px-4 block" href="">Episode 6: Wildernessa</a><span>12/04/2024</span></li>
                                         <li><a className="text-[14px] py-3 px-4 block" href="">Episode 7: Sunday Clothes</a><span>12/04/2024</span></li>
                                         <li><a className="text-[14px] py-3 px-4 block" href="">Episode 1: Itch To Explore</a><span>12/04/2024</span></li>
-                                        <li><a className="text-[14px] py-3 px-4 block" href="">Episode 2: You're It</a><span>12/04/2024</span></li>
+                                        <li>
+                                            <a className="text-[14px] py-3 px-4 block" href="">Episode 2: You&apos;re It</a>
+                                            <span>12/04/2024</span>
+                                        </li>
+
+                                        {/* <li><a className="text-[14px] py-3 px-4 block" href="">Episode 2: You're It</a><span>12/04/2024</span></li> */}
                                         <li><a className="text-[14px] py-3 px-4 block" href="">Episode 3: Jessica Goes to the Creek</a><span>12/04/2024</span></li>
                                         <li><a className="text-[14px] py-3 px-4 block" href="">Episode 4: The Final Book</a><span>12/04/2024</span></li>
                                         <li><a className="text-[14px] py-3 px-4 block" href="">Episode 5: Too Many Treasures</a><span>12/04/2024</span></li>
@@ -136,7 +146,7 @@ export default function FiltersPage() {
                 {/* <div className="bg-white/10 h-[80px]"><Header /></div> */}
                 <div className="w-full mt-20">
                     <div className="homewrapper">
-                    <div className="containerHub flex gap-5 flex-col lg:flex-row">
+                        <div className="containerHub flex gap-5 flex-col lg:flex-row">
                             <div className="w-full">
                                 <div className="w-full">
                                     <div className="flex items-center gap-4">

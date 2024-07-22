@@ -58,6 +58,7 @@ export default function UserProfile() {
     },
     onSuccess: (data: any) => {
       setShowChangePassword(false);
+      setUsername(userData.username);
       User.username = userData.username;
       toasterSuccess("Profile updated successfully", 3000, "id");
       setIsSaveButtonEnabled(false);

@@ -8,12 +8,12 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const CustomPagination: React.FC<PaginationProps> = ({ 
-  currentPage, 
-  totalPages, 
-  itemsPerPage, 
-  totalItems, 
-  onPageChange 
+const CustomPagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  itemsPerPage,
+  totalItems,
+  onPageChange
 }) => {
   const [pages, setPages] = useState(Math.ceil(totalItems / itemsPerPage));
 
@@ -25,7 +25,7 @@ const CustomPagination: React.FC<PaginationProps> = ({
       onPageChange(updatedTotalPages);
     }
   }, [totalItems, itemsPerPage, currentPage, onPageChange]);
-  
+
   const handlePrevious = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
@@ -37,29 +37,34 @@ const CustomPagination: React.FC<PaginationProps> = ({
       onPageChange(currentPage + 1);
     }
   };
+  const shouldShowPagination = totalItems > 0;
 
   const calculatedTotalPages = Math.ceil(totalPages / itemsPerPage);
 
 
   return (
     <div className="flex justify-end">
-      <button 
-        onClick={handlePrevious} 
-        className={`mx-1 px-3 py-2 rounded-xl pbgColor ${currentPage === 1 ? "bg-gray-400 cursor-not-allowed opacity-60":""} `} 
-        disabled={currentPage === 1}
-      >
-        Previous
-      </button>
-      <span className='text-white mt-2'>
-      Page {currentPage} of {Math.round(totalPages)}
-      </span>
-      <button 
-        onClick={handleNext} 
-        className={`mx-1 px-3 py-2 rounded-xl pbgColor ${currentPage === calculatedTotalPages ? "bg-gray-400 cursor-not-allowed opacity-60":""}`} 
-        disabled={currentPage === calculatedTotalPages}
-      >
-        Next
-      </button>
+      {shouldShowPagination && (
+        <>
+          <button
+            onClick={handlePrevious}
+            className={`mx-1 px-3 py-2 rounded-xl pbgColor ${currentPage === 1 ? "bg-gray-400 cursor-not-allowed opacity-60" : ""} `}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className='text-white mt-2'>
+            Page {currentPage} of {Math.round(totalPages)}
+          </span>
+          <button
+            onClick={handleNext}
+            className={`mx-1 px-3 py-2 rounded-xl pbgColor ${currentPage === calculatedTotalPages ? "bg-gray-400 cursor-not-allowed opacity-60" : ""}`}
+            disabled={currentPage === calculatedTotalPages}
+          >
+            Next
+          </button>
+        </>
+      )}
     </div>
   );
 };

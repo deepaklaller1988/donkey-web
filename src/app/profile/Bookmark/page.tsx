@@ -10,10 +10,10 @@ import Card from '@components/core/Card';
 import CustomPagination from '@components/CustomPagination';
 
 const fetchBookmarkList = async (userId: number, selectedFolder: string, page: number, limit: number) => {
- 
+
   if (!userId) {
     console.error('User ID is required');
-    return null; 
+    return null;
   }
 
   let url = `bookmark?userId=${userId}`;
@@ -148,6 +148,7 @@ export default function BookmarkPage() {
             {bookmarkList && bookmarkList.data.length > 0
               ? bookmarkList.data?.map((item: any) => (
                 <Card
+                  key={item.id}
                   movieId={item.media_id}
                   mediaType={item.media_type === "movie" ? "Movie" : "TV"}
                   bookmark_type={item.bookmark_type}
