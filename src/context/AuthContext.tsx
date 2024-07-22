@@ -5,6 +5,7 @@ const AuthContext :any= createContext({ token: "", setToken: () => {} });
 
 export function AuthProvider({ children }:any) {
   const [token, setToken] = useState<any>("");
+
   
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export function AuthProvider({ children }:any) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, setToken }}>
+    <AuthContext.Provider value={{ token, setToken}}>
       {children}
     </AuthContext.Provider>
   );

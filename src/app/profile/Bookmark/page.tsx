@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react'
 
-import ProfileTab from '@components/core/ProfileTab';
 import API from '@lib/Api';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useRole from '@hooks/useRole';
@@ -28,7 +27,6 @@ const fetchBookmarkList = async (userId: number, selectedFolder: string, page: n
 
   try {
     const response = await API.get(url);
-    console.log(response);
     return response;
   } catch (error) {
     console.log(error)
@@ -65,7 +63,6 @@ export default function BookmarkPage() {
 
   return (
     <>
-      <ProfileTab activeTab="bookmark" />
       <div className="w-full mt-28">
         <div className="w-full flex items-center gap-4 text-white/50">
           <div

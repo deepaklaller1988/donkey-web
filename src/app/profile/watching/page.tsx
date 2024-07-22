@@ -4,13 +4,11 @@ import { FaPlayCircle } from "react-icons/fa";
 import { IoIosAddCircleOutline, IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
 import { FaRegCirclePlay } from "react-icons/fa6";
-import ProfileTab from '@components/core/ProfileTab';
 
 
 export default function ContinueWatchingPage() {
     return (
         <>
-            <ProfileTab activeTab="watching" />
             <div className="w-full mt-28">
                 <ul className="w-full flex flex-wrap gap-y-10">
                     <li className="w-1/6 cardSet relative">
