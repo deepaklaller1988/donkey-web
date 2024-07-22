@@ -10,6 +10,12 @@ import Card from '@components/core/Card';
 import CustomPagination from '@components/CustomPagination';
 
 const fetchBookmarkList = async (userId: number, selectedFolder: string, page: number, limit: number) => {
+ 
+  if (!userId) {
+    console.error('User ID is required');
+    return null; 
+  }
+
   let url = `bookmark?userId=${userId}`;
   switch (selectedFolder) {
     case "all":
@@ -47,9 +53,9 @@ export default function BookmarkPage() {
   } = useQuery({
     queryKey: ['bookmark', roleData, activeFolder, currentPage],
     queryFn: () => fetchBookmarkList(roleData ? roleData.id : User.id, activeFolder, currentPage, 10),
-    enabled: !!(roleData || activeFolder),
+    enabled: !!(roleData?.id || User.id) && !!activeFolder,
   });
-  const totalPages = bookmarkList?.count || 1;
+  const totalPages = bookmarkList?.count
 
 
   if (roleLoading) {
@@ -159,7 +165,7 @@ export default function BookmarkPage() {
       <CustomPagination
         currentPage={currentPage}
         totalItems={totalPages}
-        totalPages={totalPages / 10}
+        totalPages={totalPages}
         itemsPerPage={10}
         onPageChange={(page: number) => setCurrentPage(page)}
 

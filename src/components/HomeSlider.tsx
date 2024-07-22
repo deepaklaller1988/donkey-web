@@ -115,11 +115,9 @@ const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: str
       const result = await API.post("bookmark", data);
       if(result.success){
         toasterSuccess("Media added successfully to bookmarks.", 3000, mediaID)
-      }else {
-        toasterError(result.error.code, 3000, mediaID);
       }
     } catch (error: any) {
-      console.log(error.message)
+      toasterError(error?.error.code, 3000, mediaID);
     }
 }
 
@@ -158,9 +156,8 @@ const indicators = (index:any) => (
                       <li><label className='rounded-full pbgColor  text-black font-bold px-2'>HD</label></li>
                       <li><span className='flex items-center gap-2 text-white font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
                       {item.runtime && (<li>{item.runtime} min</li>)}
-                     {item.certificate && 
-                     <li><label className='text-white'>{item.certificate}</label></li>}
-
+                     {item.certificate &&                     
+                     <li><label className='rounded-full border border-white text-white px-2'>{item.certificate}</label></li>}
                       {item.genres && item.genres.length > 0 ? item.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       </ul>
                       <p className='md:text-[16px] lg:text-lg text-white hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
