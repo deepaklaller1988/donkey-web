@@ -39,8 +39,8 @@ export default function FiltersPage() {
             </div>
             <div className="w-full">
                 <div className="homewrapper">
-                    <div className="w-full flex gap-5">
-                        <div className="w-full flex gap-5">
+                    <div className="w-full flex flex-col lg:flex-row gap-5">
+                        <div className="w-full flex flex-col md-flex-row gap-5">
                             <section className="min-w-[270px]">
                                 <img className="w-full rounded-lg" src="assets/images/album1.jpg" alt="album" />
                             </section>
@@ -50,7 +50,7 @@ export default function FiltersPage() {
                                         <h3 className="text-white text-[25px] font-semibold">Craig of the Creek</h3>
                                         <ul className="py-1 flex flex-wrap text-white gap-4 font-light"><li><b className="font-bold">2024</b></li><li>118 min</li><li>Action</li><li>Comedy</li><li>Crime</li><li><span className="flex items-center gap-2 text-white font-semibold"><FaStar /> 7.2</span></li><li><label className="rounded-full pbgColor text-black font-bold px-2">HD</label></li></ul>
                                     </section>
-                                    <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
+                                    <section className="bg-[#272727] rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
                                         <span className="flex gap-1">
                                             <FaStar className="text-amber-500 w-5 h-5" />
                                             <FaStar className="text-amber-500 w-5 h-5" />
@@ -94,7 +94,7 @@ export default function FiltersPage() {
                             </section>
                         </div>
                         <div className="min-w-full md:min-w-[376px]">
-                            <div className="w-full bg-white/10 rounded-lg">
+                            <div className="w-full bg-[#272727] rounded-lg">
                                 <section className="episodeSelectionMain flex items-center justify-center text-white">
                                     <Dropdown value={selectedSeason} onChange={(e: DropdownChangeEvent) => setSelectedSeason(e.value)} options={seasons} optionLabel="name"
                                         placeholder="Season 1" className="episodeSelection p-3 px-20" />

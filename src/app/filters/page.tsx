@@ -66,7 +66,7 @@ export default function FiltersPage() {
     const [searchQuery, setSearchQuery] = useState<any>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(1);
-
+    
     const {
         isLoading,
         error,
@@ -136,7 +136,7 @@ export default function FiltersPage() {
         }
     };
 
-    if(isLoading || isRecentLoaded || isSearchLoading || roleLoading){
+    if(isLoading || isRecentLoaded || isSearchLoading || roleLoading ){
         return(
             <div>
             <Loader />

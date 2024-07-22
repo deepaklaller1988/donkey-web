@@ -12,14 +12,17 @@ const RatingPopUp = () => {
   const [rating, setRating] = useState(0);
   const [hoverValue, setHoverValue] = useState(0);
   const [ip, setIp] = useState<string | null>(null);
+  const [reviewCount, setReviewCount] = useState<any>({ totalReviews: 0, average_rating: "0" ,outOf:"0"});
   const [submitted, setSubmitted] = useState(false);
   const searchParams = useSearchParams();
   const movieId = searchParams.get("id");
   const userId: any = User.id ?? null;
   const apiUrl = "rating";
+
   useEffect(() => {
     fetchRatingData();
   }, [userId, ip]);
+
 
   useEffect(() => {
       const fetchIp = async () => {
@@ -34,6 +37,7 @@ const RatingPopUp = () => {
 
       fetchIp();
   }, []);
+
   const fetchRatingData = async () => {
     if (movieId && (userId || ip)) {
       try {
@@ -41,9 +45,14 @@ const RatingPopUp = () => {
           `rating?movieId=${movieId}&id=${userId}&ip=${ip}`
         );
         setRating(response.data.rating.value);
-
+        setReviewCount({
+          totalReviews: parseInt(response.data.ratingCount.total),
+          average_rating: parseFloat(response.data.ratingCount.rating).toFixed(2),
+          outOf: (reviewCount.totalReviews * 5)
+        });
         setSubmitted(true);
         return response.data;
+
       } catch (error) {
         setSubmitted(false);
         return {};
@@ -63,7 +72,7 @@ const RatingPopUp = () => {
   } = useQuery<any>({
     queryKey: ["latest", movieId],
     queryFn: fetchRatingData,
-    enabled: () => !!movieId && (userId || ip), // Use a function to evaluate the condition
+    enabled: () => !!movieId && (userId || ip), 
   });
 
   const mutation = useMutation({
@@ -84,13 +93,13 @@ const RatingPopUp = () => {
         const response = await API.post(apiUrl, payload);
         return response.data; 
       } catch (error: any) {
-        console.log(error);
         throw new Error("Failed to submit rating");
       }
     },
     onSuccess: (data) => {
       if (data && data.value) {
         setRating(parseInt(data.value));
+        localStorage.setItem(`${movieId}`,data.value)
         setSubmitted(true);
         toasterSuccess("Ratig Submitted !",3000,"id")
 
@@ -154,8 +163,7 @@ const RatingPopUp = () => {
           labels[(hoverValue || rating) / 20]}
       </div>
       <p className="text-white/50 text-sm">
-        <b className="text-sm">21</b> of <b className="text-sm">10</b> (12
-        reviews)
+        <b className="text-sm">{reviewCount.average_rating}</b> of <b className="text-sm">{reviewCount?.outOf}</b> ( {reviewCount.totalReviews} reviews)
       </p>
       <button
         onClick={handleSubmitRating}

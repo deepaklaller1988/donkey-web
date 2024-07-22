@@ -23,7 +23,7 @@ export default function Footer() {
                         </li>
                     </ul>
                 </section>
-                <section>
+                <section className="relative top-0 lg:top-[25px]">
                     <a href="" className="w-[150px] block mb-4"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
                     <div className="w-full flex items-center justify-center md:justify-end gap-4 mb-2 md:mb-0 ">
                         <a href="" className="text-white hover:text-yellow-500 transition" title="twitter"><PiXLogoBold className="w-6 h-6"/></a>
@@ -31,7 +31,7 @@ export default function Footer() {
                     </div>
                 </section>
             </div>
-            <div className="w-full text-center px-4 pb-4 borderSet">
+            <div className="w-full text-center borderSet">
                 <p className="text-white font-light text-sm text-white/50 pb-2">We do not store any files on our server, media files are hosted via third-party services.</p>
                 {/* <b className="pColor font-semibold text-sm">We do not store any files on our server, media files are hosted via third-party services.</b> */}
             </div>
