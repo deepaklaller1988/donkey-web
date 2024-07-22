@@ -14,24 +14,49 @@ import { toasterError, toasterSuccess } from "./Toaster";
 import { useState } from "react";
 const apiKey = process.env.NEXT_PUBLIC_MDBKEY
 
+// const fetchDetails = async (movieId: number, mediaType: string) => {
+//   try {
+//     const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US`);
+//     const data = await response.json();
+//     const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
+//     const certificateData = await certificateResponse.json();
+
+//     const combinedResult = {
+//       ...data,
+//       certificate: certificateData.certification || null,
+//     };
+
+//     return combinedResult;
+//   } catch (error) {
+//     console.log(error)
+//   }
+// };
+
 const fetchDetails = async (movieId: number, mediaType: string) => {
   try {
     const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US`);
     const data = await response.json();
-    const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
-    const certificateData = await certificateResponse.json();
+
+    let certificate = null;
+
+    try {
+      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
+      const certificateData = await certificateResponse.json();
+      certificate = certificateData.certification || null;
+    } catch (certificateError) {
+      console.error(`Failed to fetch certificate for movie ID ${movieId}:`, certificateError);
+    }
 
     const combinedResult = {
       ...data,
-      certificate: certificateData.certification || null,
+      certificate
     };
 
     return combinedResult;
   } catch (error) {
-    console.log(error)
+    console.error('Failed to fetch data from the primary API:', error);
   }
 };
-
 
 
 

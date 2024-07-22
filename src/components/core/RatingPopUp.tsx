@@ -127,13 +127,16 @@ const RatingPopUp = () => {
       setHoverValue(0);
     }
   };
-
-
+  // const getLabel = (ratingValue: number) => {
+  //   if (hasRated) {
+  //     return labels[Math.round(rating)] || ''; 
+  //   }
+  //   const roundedRating = Math.round(ratingValue * 2) / 2;
+  //   return labels[roundedRating] || '';
+  // };
   if (isLoading) {
     return <Loader />;
   }
-
-
 
   return (
     <section className="bg-[#272727] rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
@@ -149,6 +152,7 @@ const RatingPopUp = () => {
           transition
           allowHover={!hasRated}
           fillColor="orange"
+          allowFraction
           emptyColor="white"
           readonly={hasRated}
           style={{ transition: "transform 0.3s" }}
@@ -158,8 +162,7 @@ const RatingPopUp = () => {
         className="text-white"
         style={{ width: "100px", textAlign: "center" }}
       >
-        {(hoverValue !== 0 || rating !== 0) &&
-          labels[(hoverValue || rating) / 20]}
+        {/* {(hoverValue !== 0 || rating !== 0) && getLabel(hoverValue || rating)} */}
       </div>
       <p className="text-white text-sm">
         <b className="text-sm">{reviewCount.average_rating}</b> of <b className="text-sm">10</b> ( {reviewCount.totalReviews} reviews)
