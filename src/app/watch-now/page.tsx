@@ -231,7 +231,7 @@ const {
                         <b className="font-bold">{mediaType === 'movie' ? moment(watchDetials?.release_date).year() : moment(watchDetials?.first_air_date).year()}</b>
                       </li>
                       <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
-                      <li>{watchDetials.certificate}</li>
+                      <li className="rounded-full border border-white py-1 text-white font-bold px-2 text-sm">{watchDetials.certificate}</li>
                       {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       <li>
                         <span className="flex items-center gap-2 pColor font-semibold">

@@ -38,13 +38,13 @@ const CustomPagination: React.FC<PaginationProps> = ({
   return (
      
       <div className="flex justify-end">
-        <button onClick={handlePrevious} className={`mx-1 px-5 py-4 rounded-xl pbgColor`} disabled={currentPage === 1}>
+        <button onClick={handlePrevious} className={`mx-1 px-3 py-2 rounded-xl pbgColor`} disabled={currentPage === 1}>
           Previous
         </button>
-        <span className='text-white mt-4'>
+        <span className='text-white mt-2'>
           Page {currentPage} of {Math.round(totalPages)}
         </span>
-        <button onClick={handleNext} className={`mx-1 px-5 py-4 rounded-xl pbgColor`} disabled={currentPage === Math.round(totalPages)}>
+        <button onClick={handleNext} className={`mx-1 px-3 py-2 rounded-xl pbgColor`} disabled={currentPage === Math.round(totalPages)}>
           Next
         </button>
       </div>

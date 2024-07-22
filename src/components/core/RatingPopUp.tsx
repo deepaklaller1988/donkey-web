@@ -113,6 +113,7 @@ const RatingPopUp = () => {
 
   const handleRating = (rate: number) => {
     setRating(rate);
+    mutation.mutate();
   };
 
   const handleHover = (rate: any) => {
@@ -123,9 +124,7 @@ const RatingPopUp = () => {
     setHoverValue(0);
   };
 
-  const handleSubmitRating = () => {
-    mutation.mutate();
-  };
+
 
   if (isLoading) {
     return <Loader />;
@@ -165,13 +164,13 @@ const RatingPopUp = () => {
       <p className="text-white/50 text-sm">
         <b className="text-sm">{reviewCount.average_rating}</b> of <b className="text-sm">{reviewCount?.outOf}</b> ( {reviewCount.totalReviews} reviews)
       </p>
-      <button
+      {/* <button
         onClick={handleSubmitRating}
         disabled={submitted}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Submit Rating
-      </button>
+      </button> */}
     </section>
   );
 };
