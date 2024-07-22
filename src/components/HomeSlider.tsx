@@ -153,16 +153,17 @@ const indicators = (index:any) => (
                     <span className='text-white/70 flex items-center'>
                     <BsFire className='mr-1'/> Trending</span>
                     <h2 className='text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:pb-2'>{item.title ? item.title : item.name}</h2>
-                    <ul className='py-1 flex flex-wrap items-center text-white gap-x-4 lg:gap-4 font-light'>
+                    <ul className='py-1 flex flex-wrap items-center text-white gap-x-3'>
                       <li><b className='font-bold'>{item.release_date ? moment(item.release_date).year() : ""}</b></li>
                       <li><label className='rounded-full pbgColor  text-black font-bold px-2'>HD</label></li>
-                      <li><span className='flex items-center gap-2 text-white text-sm font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
+                      <li><span className='flex items-center gap-2 text-white font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
                       {item.runtime && (<li>{item.runtime} min</li>)}
-                     {item.certificate && <li><label className='rounded-full border border-white py-1 text-white font-bold px-2'>{item.certificate}</label></li>}
+                     {item.certificate && 
+                     <li><label className='text-white'>{item.certificate}</label></li>}
 
                       {item.genres && item.genres.length > 0 ? item.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       </ul>
-                      <p className='md:text-[16px] lg:text-lg text-white font-light hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
+                      <p className='md:text-[16px] lg:text-lg text-white hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
                   <section className='flex mt-4 gap-4'>
                     <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition' onClick={()=> router.push(`/watch-now?type=${item.media_type?.toLowerCase()}&id=${item.id}`)}>Watch Now <FaRegCirclePlay className='text-xl'/></button>
                     <div className="relative flex gap-4">

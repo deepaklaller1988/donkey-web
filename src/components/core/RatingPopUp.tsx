@@ -135,7 +135,7 @@ const RatingPopUp = () => {
   }
 
   return (
-    <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
+    <section className="bg-[#272727] rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
       <span className="flex gap-1">
         <Rating
           onClick={handleRating}
@@ -150,7 +150,7 @@ const RatingPopUp = () => {
           transition
           allowHover={false}
           fillColor="orange"
-          emptyColor="gray"
+          emptyColor="white"
           style={{ transition: "transform 0.3s" }}
         />
       </span>
@@ -161,7 +161,7 @@ const RatingPopUp = () => {
         {(hoverValue !== 0 || rating !== 0) &&
           labels[(hoverValue || rating) / 20]}
       </div>
-      <p className="text-white/50 text-sm">
+      <p className="text-white text-sm">
         <b className="text-sm">{reviewCount.average_rating}</b> of <b className="text-sm">{reviewCount?.outOf}</b> ( {reviewCount.totalReviews} reviews)
       </p>
       {/* <button
