@@ -6,8 +6,6 @@ const AuthContext :any= createContext({ token: "", setToken: () => {} });
 export function AuthProvider({ children }:any) {
   const [token, setToken] = useState<any>("");
 
-  
-
   useEffect(() => {
     const fetchToken = async () => {
       const token:any = await getToken;

@@ -1,5 +1,3 @@
-"use client"
-import React, { useEffect, useState } from 'react';
 import BookmarkPage from './Bookmark/page';
 import UserProfile from './userProfile/page';
 import ContinueWatchingPage from './watching/page';

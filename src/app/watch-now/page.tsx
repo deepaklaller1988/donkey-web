@@ -238,7 +238,7 @@ const {
                         </span>
                       </li>
                       <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
-                      <li className='rounded-full border border-white py-1 text-white font-bold px-2'>{watchDetials.certificate}</li>
+                      <li className='rounded-full border border-white text-white px-2'>{watchDetials.certificate}</li>
                       {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                      
                      

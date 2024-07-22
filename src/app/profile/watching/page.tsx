@@ -1,5 +1,4 @@
-"use client"
-import React from 'react'
+
 import { FaPlayCircle } from "react-icons/fa";
 import { IoIosAddCircleOutline, IoIosArrowRoundForward, IoMdClose } from "react-icons/io";
 import { FaStar } from "react-icons/fa";

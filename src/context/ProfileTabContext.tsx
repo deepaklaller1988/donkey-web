@@ -1,5 +1,5 @@
-import User from '@lib/User';
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+"use client"
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface AuthContextType {
   activeTab: string;
@@ -17,21 +17,6 @@ interface AuthProviderProps {
 export function ProfileTabProvider({ children }: AuthProviderProps) {
   const [activeTab, setActiveTab] = useState('profile');
   const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    const fetchUsername = async () => {
-      try {
-        const userDetails = await User.role();
-        if (userDetails) {
-          setUsername(userDetails.username);
-        }
-      } catch (error) {
-        console.error("Error fetching username:", error);
-      }
-    };
-
-    fetchUsername();
-  }, []);
 
   const value = {
     activeTab,
