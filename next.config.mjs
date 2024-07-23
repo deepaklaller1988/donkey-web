@@ -4,7 +4,9 @@
 const nextConfig = {
     reactStrictMode: false,
     // output: "export",
-
+    experimental: {
+      missingSuspenseWithCSRBailout: false,
+    },
       images: {
           remotePatterns: [
             {

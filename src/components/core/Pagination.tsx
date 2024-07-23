@@ -30,10 +30,11 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, onPageChange, curre
                 <button
                     key={i}
                     onClick={() => handlePageChange(i)}
-                    className={`mx-1 rounded-xl px-5 py-1 ${currentPage === i ? 'pbgColor' : 'bg-white/20 hover:bg-[#e99700] hover:text-black text-white'}`}
+                    className={`w-10 h-10 flex items-center justify-center mx-1 rounded-xl ${currentPage === i ? 'pbgColor' : 'bg-white/20 hover:bg-[#e99700] hover:text-black text-white'}`}
                 >
                     {i}
                 </button>
+
             );
         }
 
@@ -51,18 +52,27 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, onPageChange, curre
     return (
         <div className="flex justify-center mt-4">
             {currentPage > 1 && (
-                <button onClick={goToFirstPage} className={`mx-1 px-5 py-4 rounded-xl pbgColor`}>
-                    <span style={{ fontSize: '1.5em' }}>{"\u00AB"}</span>
+                <button
+                    onClick={goToFirstPage}
+                    className={`w-10 h-10 flex items-center justify-center mx-1 px-1 py-1 rounded-xl pbgColor text-black ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+                    disabled={currentPage === 1}
+                >
+                    <span className="text-2xl">{"\u00AB"}</span>
                 </button>
             )}
 
             {renderPageNumbers()}
 
             {currentPage < maxPages && (
-                <button onClick={goToLastPage} className={`mx-1 px-5 py-4 rounded-xl pbgColor`}>
-                <span style={{ fontSize: '1.5em' }}>{"\u00BB"}</span>
-            </button>
+                <button
+                    onClick={goToLastPage}
+                    className={`w-10 h-10 flex items-center justify-center mx-1 px-1 py-1 rounded-xl pbgColor text-black ${currentPage === maxPages ? 'cursor-not-allowed opacity-50' : ''}`}
+                    disabled={currentPage === maxPages}
+                >
+                    <span className="text-2xl">{"\u00BB"}</span>
+                </button>
             )}
+
         </div>
     );
 };

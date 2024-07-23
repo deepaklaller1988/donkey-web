@@ -17,6 +17,7 @@ import User from "@lib/User";
 import { useAuth } from "context/AuthContext";
 import useRole from "@hooks/useRole";
 import { toasterSuccess } from "./Toaster";
+import { useProfileTab } from "context/ProfileTabContext";
 
 export default function Header() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function Header() {
   const route = path.split("/");
   const [roleLoading, roleData] = useRole();
 
-  const { token }: any = useAuth();
+  const { setActiveTab } = useProfileTab()
   const [isOpen, isClose] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [OpenSearch, setOpenSearch] = useState(false);
@@ -51,13 +52,26 @@ export default function Header() {
     logOut(), router.push("/dashboard");
     toasterSuccess("LogOut Successfully !", 3000, "id");
   };
+  const handleProfile = (type: any) => {
+    if (path.includes("profile")) {
+      setActiveTab(type)
+     
+      setOpenProfile(!OpenProfile)
+
+    }
+    else {
+      router.push("/profile")
+      setOpenProfile(!OpenProfile)
+      setActiveTab(type)
+
+    }
+  }
 
   return (
     <>
       <div
-        className={`header ${
-          isHome() ? "" : "bg-white/10"
-        } p-2 py-3 absolute z-10 w-full top-0 right-0`}
+        className={`header ${isHome() ? "" : "bg-white/10"
+          } p-2 py-3 absolute z-10 w-full top-0 right-0`}
       >
         <div className="homewrapper">
           <div className="headerInner flex items-center justify-between relative">
@@ -77,9 +91,8 @@ export default function Header() {
               </Link>
             </section>
             <div
-              className={`mobileSearch w-full ${
-                OpenSearch ? "openMobileSearch" : ""
-              }`}
+              className={`mobileSearch w-full ${OpenSearch ? "openMobileSearch" : ""
+                }`}
             >
               <HomeSearchbar />
             </div>
@@ -97,38 +110,33 @@ export default function Header() {
                       <VscAccount className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
                     <div
-                      className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${
-                        OpenProfile ? "openProfileLinks" : ""
-                      }`}
+                      className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${OpenProfile ? "openProfileLinks" : ""
+                        }`}
                     >
-                      <Link
-                        href="/profile/userProfile"
+                      <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
-                        onClick={() => setOpenProfile(!OpenProfile)}
+                        onClick={() => handleProfile("profile")}
                       >
                         <FaRegUser /> Profile{" "}
-                      </Link>
-                      <Link
-                        href="/profile/watching"
+                      </button>
+                      <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
-                        onClick={() => setOpenProfile(!OpenProfile)}
+                        onClick={() => handleProfile("watching")}
                       >
                         <GoVideo /> Continue Watching{" "}
-                      </Link>
-                      <Link
-                        href="/profile/Bookmark"
+                      </button>
+                      <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
-                        onClick={() => setOpenProfile(!OpenProfile)}
+                        onClick={() => {handleProfile("Bookmark") }}
                       >
                         <FaRegBookmark /> Bookmark{" "}
-                      </Link>
-                      <Link
-                        href="/profile/SettingsPage"
+                      </button>
+                      <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
-                        onClick={() => setOpenProfile(!OpenProfile)}
+                        onClick={() => handleProfile("settings") }
                       >
                         <IoSettingsOutline /> Settings
-                      </Link>
+                      </button>
                       <button
                         type="button"
                         className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 "

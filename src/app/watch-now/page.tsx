@@ -14,25 +14,50 @@ import Card from "@components/core/Card";
 import RatingPopUp from "@components/core/RatingPopUp";
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
-  const fetchDetails = async (movieId: number, mediaType:string) => {
-    try {
-      const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US`);
-      const data = await response.json();
+
+// const fetchTopAll = async () => {
+//   try {
+//     const response = await FetchApi.get('https://api.themoviedb.org/3/trending/all/day?language=en-US');
+//     const data = await response.json();
     
+//     const combinedResults = await Promise.all(data.results.map(async (item: any) => {
+//       const certificateResponse = await fetch(https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id});
+//       const certificateData = await certificateResponse.json();
+//       return {
+//         ...item,
+//         certificate: certificateData.certification ||null
+//       };
+//     }));
+//     return combinedResults;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+const fetchDetails = async (movieId: number, mediaType: string) => {
+  try {
+    const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US`);
+    const data = await response.json();
+    
+    let certificate = null;
+    try {
       const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
       const certificateData = await certificateResponse.json();
-    
-      const combinedResults = {
-        ...data,
-        certificate: certificateData.certification || null
-      };
-    
-      return combinedResults;
-    } catch (error) {
-      console.log(error);
+      certificate = certificateData.certification || null;
+    } catch (certificateError) {
+      console.error(`Failed to fetch certificate for movie ID ${movieId}:`, certificateError);
     }
     
+    const combinedResults = {
+      ...data,
+      certificate
     };
+    
+    return combinedResults;
+  } catch (error) {
+    console.error('Failed to fetch data from the primary API:', error);
+  }
+};
+
   
 
 const fetchCredits = async (movieId: number, mediaType:string) => {
@@ -221,7 +246,7 @@ const {
                 />
               </section>
               <section>
-                <div className="w-full flex flex-col lg:flex-row gap-5 justify-between flex-wrap">
+                <div className="w-full flex flex-col lg:flex-row gap-5 justify-between flex-wrap lg:flex-nowrap">
                   <section>
                     <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
                       <li>
@@ -238,7 +263,7 @@ const {
                         </span>
                       </li>
                       <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
-                      <li className="text-white">{watchDetials.certificate}</li>
+                      <li className='text-white'>{watchDetials.certificate}</li>
                       {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                      
                      
@@ -430,7 +455,7 @@ const {
                   <div className="w-full py-2">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                         {
-                            popularList && popularList.length > 0 ? popularList.slice(0,18).map((item: any) =>(<Card movieId={item.id} mediaType={mediaType === 'movie' ? 'Movie' : 'TV'} />)) : ""
+                            popularList && popularList.length > 0 ? popularList.slice(0,18).map((item: any) =>(<Card key={item.id} movieId={item.id} mediaType={mediaType === 'movie' ? 'Movie' : 'TV'} />)) : ""
                         } 
                     </ul>
                   </div>

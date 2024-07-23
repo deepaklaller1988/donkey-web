@@ -19,24 +19,58 @@ import { toasterError, toasterSuccess } from './core/Toaster';
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
 
+
+// const fetchTopAll = async () => {
+//   try {
+//     const response = await FetchApi.get('https://api.themoviedb.org/3/trending/all/day?language=en-US');
+//     const data = await response.json();
+//     console.log(data)
+    
+//     const combinedResults = await Promise.all(data.results.map(async (item: any) => {
+//       const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
+//       const certificateData = await certificateResponse.json();
+//       return {
+//         ...item,
+//         certificate: certificateData.certification ||null
+//       };
+//     }));
+//   console.log(combinedResults,"home-now")
+
+//     return combinedResults;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+
 const fetchTopAll = async () => {
   try {
     const response = await FetchApi.get('https://api.themoviedb.org/3/trending/all/day?language=en-US');
     const data = await response.json();
     
     const combinedResults = await Promise.all(data.results.map(async (item: any) => {
-      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
-      const certificateData = await certificateResponse.json();
-      return {
-        ...item,
-        certificate: certificateData.certification ||null
-      };
+      try {
+        const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
+        const certificateData = await certificateResponse.json();
+        return {
+          ...item,
+          certificate: certificateData.certification || null
+        };
+      } catch (error) {
+        console.error(`Failed to fetch certificate for item ID ${item.id}:`, error);
+        return {
+          ...item,
+          certificate: null
+        };
+      }
     }));
+
     return combinedResults;
   } catch (error) {
-    console.error(error);
+    console.error('Failed to fetch data from the primary API:', error);
   }
 };
+
 
 const getDetail = async (item : any) => {
   try {
@@ -96,7 +130,7 @@ const handleClose = () => {
 
 const handleWatchPopup = () =>{
   if(!User.isUserLoggedIn){
-    toasterError("Please login or signup to use this feature.")
+    toasterError("Please login or signup to use this feature.",3000,"id")
   }else{
     setIsOpen(true);
   }
@@ -115,11 +149,9 @@ const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: str
       const result = await API.post("bookmark", data);
       if(result.success){
         toasterSuccess("Media added successfully to bookmarks.", 3000, mediaID)
-      }else {
-        toasterError(result.error.code, 3000, mediaID);
       }
     } catch (error: any) {
-      console.log(error.message)
+      toasterError(error?.error.code, 3000, mediaID);
     }
 }
 
@@ -158,9 +190,8 @@ const indicators = (index:any) => (
                       <li><label className='rounded-full pbgColor  text-black font-bold px-2'>HD</label></li>
                       <li><span className='flex items-center gap-2 text-white font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
                       {item.runtime && (<li>{item.runtime} min</li>)}
-                     {item.certificate && 
+                     {item.certificate &&                     
                      <li><label className='text-white'>{item.certificate}</label></li>}
-
                       {item.genres && item.genres.length > 0 ? item.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       </ul>
                       <p className='md:text-[16px] lg:text-lg text-white hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
@@ -169,9 +200,9 @@ const indicators = (index:any) => (
                     <div className="relative flex gap-4">
                       <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold' onClick=     {handleWatchPopup}><FaRegBookmark className='w-5 h-5' /> Bookmark</button>
                           <div className={`profileLinks top-[40px] absolute bg-zinc-800 rounded-lg left-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
-                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'watching')} >Watching </div>
-                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'planning-to-watch')} >Plan to Watch</div>
-                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'completed')} >Completed </div>
+                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'watching')} >Watching </div>
+                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'planning-to-watch')} >Plan to Watch</div>
+                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'completed')} >Completed </div>
                           </div>
                       </div>
                     </section>

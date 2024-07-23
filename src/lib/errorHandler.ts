@@ -9,7 +9,7 @@ export const handleError = (errorMessage: any) => {
     case "ERR_AUTH_USERNAME":
       return "Username already Exist";
     case "ERR_AUTH_WRONG_TOKEN":
-      return "Token Expired. ";
+      return "Oops! Looks like this link has expired. Please request a fresh one. ";
     case "Email Not Found":
       return "Email Not Found";
     case "Password Not Matched":

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PaginationProps {
   currentPage: number;
@@ -8,13 +8,24 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const CustomPagination: React.FC<PaginationProps> = ({ 
-  currentPage, 
-  totalPages, 
-  itemsPerPage, 
-  totalItems, 
-  onPageChange 
+const CustomPagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  itemsPerPage,
+  totalItems,
+  onPageChange
 }) => {
+  const [pages, setPages] = useState(Math.ceil(totalItems / itemsPerPage));
+
+  useEffect(() => {
+    const updatedTotalPages = Math.ceil(totalItems / itemsPerPage);
+    setPages(updatedTotalPages);
+
+    if (currentPage > updatedTotalPages) {
+      onPageChange(updatedTotalPages);
+    }
+  }, [totalItems, itemsPerPage, currentPage, onPageChange]);
+
   const handlePrevious = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
@@ -26,28 +37,35 @@ const CustomPagination: React.FC<PaginationProps> = ({
       onPageChange(currentPage + 1);
     }
   };
+  const shouldShowPagination = totalItems > 0;
 
-  const getItemsToDisplay = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-    return Array.from({ length: endIndex - startIndex }, (_, i) => startIndex + i + 1);
-  };
+  const calculatedTotalPages = Math.ceil(totalPages / itemsPerPage);
 
-  const items = getItemsToDisplay();
 
   return (
-     
-      <div className="flex justify-end">
-        <button onClick={handlePrevious} className={`mx-1 px-3 py-2 rounded-xl pbgColor`} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span className='text-white mt-2'>
-          Page {currentPage} of {Math.round(totalPages)}
-        </span>
-        <button onClick={handleNext} className={`mx-1 px-3 py-2 rounded-xl pbgColor`} disabled={currentPage === Math.round(totalPages)}>
-          Next
-        </button>
-      </div>
+    <div className="flex justify-end">
+      {shouldShowPagination && (
+        <>
+          <button
+            onClick={handlePrevious}
+            className={`mx-1 px-3 py-2 rounded-xl pbgColor ${currentPage === 1 ? "bg-gray-400 cursor-not-allowed opacity-60" : ""} `}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className='text-white mt-2'>
+            Page {currentPage} of {Math.round(totalPages)}
+          </span>
+          <button
+            onClick={handleNext}
+            className={`mx-1 px-3 py-2 rounded-xl pbgColor ${currentPage === calculatedTotalPages ? "bg-gray-400 cursor-not-allowed opacity-60" : ""}`}
+            disabled={currentPage === calculatedTotalPages}
+          >
+            Next
+          </button>
+        </>
+      )}
+    </div>
   );
 };
 
