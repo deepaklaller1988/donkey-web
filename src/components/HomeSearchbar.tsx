@@ -61,7 +61,7 @@ export default function HomeSearchbar() {
                                     <section className="text-white/50 flex items-center gap-2">
                                         <p className="text-sm font-light font-light">{item?.media_type === 'movie' ? "Movie" : "TV"} <b>.</b></p>
                                         <p className="text-sm font-light">{item?.media_type === 'movie' ? moment(item?.release_date).year() : moment(item?.first_air_date).year()} <b>.</b></p>
-                                        <p className="flex items-center gap-1 text-sm font-light"><FaStar />{item?.vote_average.toFixed(1)}</p>
+                                        <p className="flex items-center gap-1 text-sm font-light"><FaStar />{item?.vote_average?.toFixed(1)}</p>
                                     </section>
                                 </span>
                             </div>
