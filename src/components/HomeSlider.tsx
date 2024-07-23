@@ -18,25 +18,31 @@ import API from '@lib/Api';
 import { toasterError, toasterSuccess } from './core/Toaster';
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
-// const fetchDetails = async (movieId: number, mediaType:string) => {
+
+
+// const fetchTopAll = async () => {
 //   try {
-//     const response = await FetchApi.get(https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US);
+//     const response = await FetchApi.get('https://api.themoviedb.org/3/trending/all/day?language=en-US');
 //     const data = await response.json();
-  
-//     const certificateResponse = await fetch(https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId});
-//     const certificateData = await certificateResponse.json();
-  
-//     const combinedResults = {
-//       ...data,
-//       certificate: certificateData.certification || null
-//     };
-  
+//     console.log(data)
+    
+//     const combinedResults = await Promise.all(data.results.map(async (item: any) => {
+//       const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
+//       const certificateData = await certificateResponse.json();
+//       return {
+//         ...item,
+//         certificate: certificateData.certification ||null
+//       };
+//     }));
+//   console.log(combinedResults,"home-now")
+
 //     return combinedResults;
 //   } catch (error) {
-//     console.log(error);
+//     console.error(error);
 //   }
-  
-//   };
+// };
+
+
 const fetchTopAll = async () => {
   try {
     const response = await FetchApi.get('https://api.themoviedb.org/3/trending/all/day?language=en-US');
