@@ -175,9 +175,9 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                 <div className="relative flex gap-4">
                   <FaFolder className="w-4 h-4 m-1 " />
                   <div className={`profileLinks top-[20px] absolute bg-zinc-950 rounded-lg right-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
-                    <div className={`${bookmark_type == "watching" ? "pbgColor text-white m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
-                    <div className={`${bookmark_type == "planning-to-watch" ? "pbgColor text-white m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} >Plan to Watch</div>
-                    <div className={`${bookmark_type == "completed" ? "pbgColor text-white m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div>
+                    <div className={`${bookmark_type == "watching" ? "pbgColor transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
+                    <div className={`${bookmark_type == "planning-to-watch" ? "pbgColor transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} >Plan to Watch</div>
+                    <div className={`${bookmark_type == "completed" ? "pbgColor  transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div>
                     <div className={`p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} ><TiDelete className="w-6 h-6" /> Remove</div>
                   </div>
                 </div>
@@ -211,7 +211,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                     </li>
                     {movieDetials.certificate &&
                       <li>
-                        <label className='rounded-full border border-white text-white font-bold px-2 text-sm font-semibold'>
+                        <label className='text-white'>
                           {movieDetials.certificate}
                           </label>
                       </li>
@@ -238,11 +238,11 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
               <div className="w-full p-5 border-t border-1 border-white/5 text-white/50">
                 <p>
                   Country:{" "}
-                  <label className="text-white font-light">{movieDetials.production_countries && movieDetials.production_countries.length > 0 ? movieDetials.production_countries.map((gen: any) => gen.name).join(", ") : ""}</label>
+                  <label className="text-white font-light">{movieDetials?.production_countries && movieDetials?.production_countries?.length > 0 ? movieDetials?.production_countries?.map((gen: any) => gen?.name).join(", ") : ""}</label>
                 </p>
                 <p>
                   Genre:{" "}
-                  <label className="text-white font-light">{movieDetials.genres && movieDetials.genres.length > 0 ? movieDetials.genres.map((gen: any) => gen.name).join(", ") : ""}</label>
+                  <label className="text-white font-light">{movieDetials?.genres && movieDetials?.genres?.length > 0 ? movieDetials?.genres?.map((gen: any) => gen?.name)?.join(", ") : ""}</label>
                 </p>
                 <p>
                   Scores:{" "}

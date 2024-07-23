@@ -4,7 +4,7 @@ import API from "@lib/Api";
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { toasterSuccess } from "@components/core/Toaster";
+import { toasterError, toasterSuccess } from "@components/core/Toaster";
 import { handleError } from "@lib/errorHandler";
 
 export default function ResetPassword() {
@@ -32,7 +32,7 @@ export default function ResetPassword() {
     },
     onError: (error: any) => {
       const message = handleError(error?.error?.code);
-      setErrorMessage(message);
+      toasterError(message,3000,"id");
     },
   });
 

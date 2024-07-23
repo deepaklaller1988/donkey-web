@@ -246,7 +246,7 @@ const {
                 />
               </section>
               <section>
-                <div className="w-full flex flex-col lg:flex-row gap-5 justify-between flex-wrap">
+                <div className="w-full flex flex-col lg:flex-row gap-5 justify-between flex-wrap lg:flex-nowrap">
                   <section>
                     <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
                       <li>
@@ -263,7 +263,7 @@ const {
                         </span>
                       </li>
                       <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
-                      <li className='rounded-full border border-white text-white px-2'>{watchDetials.certificate}</li>
+                      <li className='text-white'>{watchDetials.certificate}</li>
                       {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                      
                      
