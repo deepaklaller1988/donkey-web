@@ -25,6 +25,14 @@ const fetchCounts = async () => {
     }
 }
 
+const formatCount = (count:any) => {
+    if (count >= 1000) {
+        return `${(count / 1000).toFixed(1)}k`;
+    }
+    return count;
+};
+
+
 export default function SocialButton() {
  const queryClient: any = useQueryClient();
 
@@ -50,7 +58,7 @@ export default function SocialButton() {
             }
         },
         onSuccess: (data) => {
-            if (data.success) {
+            if (data) {
                 queryClient.invalidateQueries(['counts']);
             }
         },
@@ -76,42 +84,42 @@ export default function SocialButton() {
                 <FacebookShareButton url={`${process.env.NEXT_PUBLIC_API_URL}`}>
                     <div className="bg-zinc-500/20 rounded-md p-2 md:px-4 py-2 flex items-center justify-center text-white" onClick={() => handleCounts("facebook_count")}>
                         <FaFacebook className="w-5 h-5 text-sky-600" />
-                        <span className="hidden md:block ml-2 text-[15px]">{counts?.facebook_count}</span>
+                        <span className="hidden md:block ml-2 text-[15px]">{formatCount(counts?.facebook_count)}</span>
                     </div>
                 </FacebookShareButton>
 
                 <TwitterShareButton url={`${process.env.NEXT_PUBLIC_API_URL}`}>
                     <div className="bg-zinc-500/20 rounded-md p-2 md:px-4 py-2 flex items-center justify-center text-white" onClick={() => handleCounts("twitter_count")}>
                         <PiXLogoBold className="w-5 h-5 text-sky-500" />
-                        <span className="hidden md:block ml-2 text-[15px]" >{counts?.twitter_count}</span>
+                        <span className="hidden md:block ml-2 text-[15px]" >{formatCount(counts?.twitter_count)}</span>
                     </div>
                 </TwitterShareButton>
 
                 <FacebookMessengerShareButton url={`${process.env.NEXT_PUBLIC_API_URL}`} appId="">
                     <div className="bg-zinc-500/20 rounded-md p-2 md:px-4 py-2 flex items-center justify-center text-white" onClick={() => handleCounts("messager_count")}>
                         <Image src="/images/messager.png" alt="Messenger" width={20} height={20} />
-                        <span className="hidden md:block ml-2 text-[15px]" >{counts?.messager_count}</span>
+                        <span className="hidden md:block ml-2 text-[15px]" >{formatCount(counts?.messager_count)}</span>
                     </div>
                 </FacebookMessengerShareButton>
 
                 <RedditShareButton url={`${process.env.NEXT_PUBLIC_API_URL}`}>
                     <div className=" bg-zinc-500/20 rounded-md p-2 md:px-4 py-2 flex items-center justify-center text-white" onClick={() => handleCounts("reddit_count")}>
                         <Image src="/images/reddit.png" alt="Reddit" width={20} height={20} />
-                        <span className="hidden md:block ml-2 text-[15px]">{counts?.reddit_count}</span>
+                        <span className="hidden md:block ml-2 text-[15px]">{formatCount(counts?.reddit_count)}</span>
                     </div>
                 </RedditShareButton>
 
                 <WhatsappShareButton url={`${process.env.NEXT_PUBLIC_API_URL}`}>
                     <div className="bg-zinc-500/20 rounded-md p-2 md:px-4 py-2 flex items-center justify-center text-white" onClick={() => handleCounts("whatsapp_count")}>
                         <Image src="/images/whatsapp.png" alt="WhatsApp" width={20} height={20} />
-                        <span className="hidden md:block ml-2 text-[15px]" >{counts?.whatsapp_count}</span>
+                        <span className="hidden md:block ml-2 text-[15px]" >{formatCount(counts?.whatsapp_count)}</span>
                     </div>
                 </WhatsappShareButton>
 
                 <TelegramShareButton url={`${process.env.NEXT_PUBLIC_API_URL}`}>
                     <div className="bg-zinc-500/20 rounded-md p-2 md:px-4 py-2 flex items-center justify-center text-white" onClick={() => handleCounts("telegram_count")}>
                         <Image src="/images/telegram.png" alt="Telegram" width={20} height={20} />
-                        <span className="hidden md:block ml-2 text-[15px]" >{counts?.telegram_count}</span>
+                        <span className="hidden md:block ml-2 text-[15px]" >{formatCount(counts?.telegram_count)}</span>
                     </div>
                 </TelegramShareButton>
             </div>
