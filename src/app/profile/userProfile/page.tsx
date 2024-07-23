@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ProfileTab from "@components/core/ProfileTab";
 import User from "@lib/User";
 import { useMutation } from "@tanstack/react-query";
 import API from "@lib/Api";
 import { toasterError, toasterSuccess } from "@components/core/Toaster";
+import { useProfileTab } from "context/ProfileTabContext";
 
 export default function UserProfile() {
   const [userData, setUserData] = useState({
@@ -13,7 +13,7 @@ export default function UserProfile() {
     newPassword: "",
     confirmNewPassword: "",
   });
-
+  const { setUsername } = useProfileTab();
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false);
 
@@ -22,6 +22,7 @@ export default function UserProfile() {
       try {
         const userDetails = await User.role();
         if (userDetails) {
+          setUsername(userDetails.username)
           setUserData({
             username: userDetails.username,
             email: userDetails.email,
@@ -57,8 +58,9 @@ export default function UserProfile() {
     },
     onSuccess: (data: any) => {
       setShowChangePassword(false);
+      setUsername(userData.username);
       User.username = userData.username;
-      toasterSuccess("Password updated successfully", 3000, "id");
+      toasterSuccess("Profile updated successfully", 3000, "id");
       setIsSaveButtonEnabled(false);
     },
     onError: (error) => {
@@ -75,7 +77,12 @@ export default function UserProfile() {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    const { newPassword, confirmNewPassword } = userData;
+    const { newPassword, confirmNewPassword, username } = userData;
+
+    if (!username) {
+      toasterError("Username is Required.", 3000, "id");
+      return;
+    }
 
     if (showChangePassword) {
       if (newPassword.length < 6 || newPassword !== confirmNewPassword) {
@@ -93,7 +100,6 @@ export default function UserProfile() {
 
   return (
     <div>
-      <ProfileTab activeTab="profile" />
       <div className="w-full mt-28">
         <div className="w-full max-w-[500px] rounded-lg bg-black/50 m-auto p-10">
           <h2 className="text-white text-[30px] pb-2 flex items-center justify-between">

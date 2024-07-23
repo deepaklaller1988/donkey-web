@@ -18,25 +18,53 @@ import API from '@lib/Api';
 import { toasterError, toasterSuccess } from './core/Toaster';
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
-
+// const fetchDetails = async (movieId: number, mediaType:string) => {
+//   try {
+//     const response = await FetchApi.get(https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US);
+//     const data = await response.json();
+  
+//     const certificateResponse = await fetch(https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId});
+//     const certificateData = await certificateResponse.json();
+  
+//     const combinedResults = {
+//       ...data,
+//       certificate: certificateData.certification || null
+//     };
+  
+//     return combinedResults;
+//   } catch (error) {
+//     console.log(error);
+//   }
+  
+//   };
 const fetchTopAll = async () => {
   try {
     const response = await FetchApi.get('https://api.themoviedb.org/3/trending/all/day?language=en-US');
     const data = await response.json();
     
     const combinedResults = await Promise.all(data.results.map(async (item: any) => {
-      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
-      const certificateData = await certificateResponse.json();
-      return {
-        ...item,
-        certificate: certificateData.certification ||null
-      };
+      try {
+        const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
+        const certificateData = await certificateResponse.json();
+        return {
+          ...item,
+          certificate: certificateData.certification || null
+        };
+      } catch (error) {
+        console.error(`Failed to fetch certificate for item ID ${item.id}:`, error);
+        return {
+          ...item,
+          certificate: null
+        };
+      }
     }));
+
     return combinedResults;
   } catch (error) {
-    console.error(error);
+    console.error('Failed to fetch data from the primary API:', error);
   }
 };
+
 
 const getDetail = async (item : any) => {
   try {
@@ -115,11 +143,9 @@ const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: str
       const result = await API.post("bookmark", data);
       if(result.success){
         toasterSuccess("Media added successfully to bookmarks.", 3000, mediaID)
-      }else {
-        toasterError(result.error.code, 3000, mediaID);
       }
     } catch (error: any) {
-      console.log(error.message)
+      toasterError(error?.error.code, 3000, mediaID);
     }
 }
 
@@ -153,16 +179,16 @@ const indicators = (index:any) => (
                     <span className='text-white/70 flex items-center'>
                     <BsFire className='mr-1'/> Trending</span>
                     <h2 className='text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:pb-2'>{item.title ? item.title : item.name}</h2>
-                    <ul className='py-1 flex flex-wrap items-center text-white gap-x-4 lg:gap-4 font-light'>
+                    <ul className='py-1 flex flex-wrap items-center text-white gap-x-3'>
                       <li><b className='font-bold'>{item.release_date ? moment(item.release_date).year() : ""}</b></li>
-                      <li><label className='rounded-full pbgColor text-black font-bold px-2'>HD</label></li>
-                      <li><span className='flex items-center gap-2 text-white text-sm font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
+                      <li><label className='rounded-full pbgColor  text-black font-bold px-2'>HD</label></li>
+                      <li><span className='flex items-center gap-2 text-white font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
                       {item.runtime && (<li>{item.runtime} min</li>)}
-                     {item.certificate && <li><label className='rounded-full pbgColor text-black font-bold px-2'>{item.certificate}</label></li>}
-
+                     {item.certificate &&                     
+                     <li><label className='rounded-full border border-white text-white px-2'>{item.certificate}</label></li>}
                       {item.genres && item.genres.length > 0 ? item.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       </ul>
-                      <p className='md:text-[16px] lg:text-lg text-white font-light hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
+                      <p className='md:text-[16px] lg:text-lg text-white hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
                   <section className='flex mt-4 gap-4'>
                     <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition' onClick={()=> router.push(`/watch-now?type=${item.media_type?.toLowerCase()}&id=${item.id}`)}>Watch Now <FaRegCirclePlay className='text-xl'/></button>
                     <div className="relative flex gap-4">

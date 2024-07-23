@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react'
 
-import ProfileTab from '@components/core/ProfileTab';
 import API from '@lib/Api';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useRole from '@hooks/useRole';
@@ -11,6 +10,12 @@ import Card from '@components/core/Card';
 import CustomPagination from '@components/CustomPagination';
 
 const fetchBookmarkList = async (userId: number, selectedFolder: string, page: number, limit: number) => {
+
+  if (!userId) {
+    console.error('User ID is required');
+    return null;
+  }
+
   let url = `bookmark?userId=${userId}`;
   switch (selectedFolder) {
     case "all":
@@ -28,7 +33,6 @@ const fetchBookmarkList = async (userId: number, selectedFolder: string, page: n
 
   try {
     const response = await API.get(url);
-    console.log(response);
     return response;
   } catch (error) {
     console.log(error)
@@ -49,9 +53,9 @@ export default function BookmarkPage() {
   } = useQuery({
     queryKey: ['bookmark', roleData, activeFolder, currentPage],
     queryFn: () => fetchBookmarkList(roleData ? roleData.id : User.id, activeFolder, currentPage, 10),
-    enabled: !!(roleData || activeFolder),
+    enabled: !!(roleData?.id || User.id) && !!activeFolder,
   });
-  const totalPages = bookmarkList?.count || 1;
+  const totalPages = bookmarkList?.count
 
 
   if (roleLoading) {
@@ -65,7 +69,6 @@ export default function BookmarkPage() {
 
   return (
     <>
-      <ProfileTab activeTab="bookmark" />
       <div className="w-full mt-28">
         <div className="w-full flex items-center gap-4 text-white/50">
           <div
@@ -145,6 +148,7 @@ export default function BookmarkPage() {
             {bookmarkList && bookmarkList.data.length > 0
               ? bookmarkList.data?.map((item: any) => (
                 <Card
+                  key={item.id}
                   movieId={item.media_id}
                   mediaType={item.media_type === "movie" ? "Movie" : "TV"}
                   bookmark_type={item.bookmark_type}
@@ -162,7 +166,7 @@ export default function BookmarkPage() {
       <CustomPagination
         currentPage={currentPage}
         totalItems={totalPages}
-        totalPages={totalPages / 10}
+        totalPages={totalPages}
         itemsPerPage={10}
         onPageChange={(page: number) => setCurrentPage(page)}
 

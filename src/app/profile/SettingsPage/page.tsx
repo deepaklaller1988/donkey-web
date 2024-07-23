@@ -1,10 +1,8 @@
-import ProfileTab from "@components/core/ProfileTab";
 import React from "react";
 
 export default function SettingsPage() {
   return (
     <div>
-      <ProfileTab activeTab="settings" />
       <div className="w-full mt-28">
         <div className="w-full max-w-[500px] rounded-lg bg-black/50 m-auto p-10">
           <h2 className="text-white/50 text-[30px] mb-4">Settings</h2>

@@ -14,25 +14,50 @@ import Card from "@components/core/Card";
 import RatingPopUp from "@components/core/RatingPopUp";
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
-  const fetchDetails = async (movieId: number, mediaType:string) => {
-    try {
-      const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US`);
-      const data = await response.json();
+
+// const fetchTopAll = async () => {
+//   try {
+//     const response = await FetchApi.get('https://api.themoviedb.org/3/trending/all/day?language=en-US');
+//     const data = await response.json();
     
+//     const combinedResults = await Promise.all(data.results.map(async (item: any) => {
+//       const certificateResponse = await fetch(https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id});
+//       const certificateData = await certificateResponse.json();
+//       return {
+//         ...item,
+//         certificate: certificateData.certification ||null
+//       };
+//     }));
+//     return combinedResults;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+const fetchDetails = async (movieId: number, mediaType: string) => {
+  try {
+    const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US`);
+    const data = await response.json();
+    
+    let certificate = null;
+    try {
       const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
       const certificateData = await certificateResponse.json();
-    
-      const combinedResults = {
-        ...data,
-        certificate: certificateData.certification || null
-      };
-    
-      return combinedResults;
-    } catch (error) {
-      console.log(error);
+      certificate = certificateData.certification || null;
+    } catch (certificateError) {
+      console.error(`Failed to fetch certificate for movie ID ${movieId}:`, certificateError);
     }
     
+    const combinedResults = {
+      ...data,
+      certificate
     };
+    
+    return combinedResults;
+  } catch (error) {
+    console.error('Failed to fetch data from the primary API:', error);
+  }
+};
+
   
 
 const fetchCredits = async (movieId: number, mediaType:string) => {
@@ -221,29 +246,31 @@ const {
                 />
               </section>
               <section>
-                <div className="w-full flex flex-col lg:flex-row gap-5 justify-between">
+                <div className="w-full flex flex-col lg:flex-row gap-5 justify-between flex-wrap">
                   <section>
-                    <h3 className="text-white text-[25px] font-semibold">
-                      {watchDetials?.title || watchDetials?.name}
-                    </h3>
-                    <ul className="py-1 flex flex-wrap text-white gap-4 font-light">
+                    <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
                       <li>
                         <b className="font-bold">{mediaType === 'movie' ? moment(watchDetials?.release_date).year() : moment(watchDetials?.first_air_date).year()}</b>
-                      </li>
-                      <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
-                      <li>{watchDetials.certificate}</li>
-                      {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
-                      <li>
-                        <span className="flex items-center gap-2 pColor font-semibold">
-                          <FaStar /> {watchDetials?.vote_average?.toFixed(1)}
-                        </span>
                       </li>
                       <li>
                         <label className="rounded-full pbgColor text-black font-bold px-2">
                           HD
                         </label>
                       </li>
+                      <li>
+                        <span className="flex items-center gap-2 text-white font-semibold">
+                          <FaStar /> {watchDetials?.vote_average?.toFixed(1)}
+                        </span>
+                      </li>
+                      <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
+                      <li className='rounded-full border border-white text-white px-2'>{watchDetials.certificate}</li>
+                      {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
+                     
+                     
                     </ul>
+                    <h3 className="text-white text-[25px] font-semibold">
+                      {watchDetials?.title || watchDetials?.name}
+                    </h3>
                   </section>
                   {/* <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
                     <span className="flex gap-1">
@@ -347,7 +374,7 @@ const {
               </section>
             </div>
             <div className="min-w-full md:min-w-[376px]">
-              <div className="w-full bg-white/10 rounded-lg">
+              <div className="w-full bg-[#272727] rounded-lg">
                 <section className="episodeSelectionMain flex items-center justify-center text-white">
                   {mediaType === 'movie' ? (
                     <div className="p-3 px-20">
@@ -428,7 +455,7 @@ const {
                   <div className="w-full py-2">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                         {
-                            popularList && popularList.length > 0 ? popularList.slice(0,18).map((item: any) =>(<Card movieId={item.id} mediaType={mediaType === 'movie' ? 'Movie' : 'TV'} />)) : ""
+                            popularList && popularList.length > 0 ? popularList.slice(0,18).map((item: any) =>(<Card key={item.id} movieId={item.id} mediaType={mediaType === 'movie' ? 'Movie' : 'TV'} />)) : ""
                         } 
                     </ul>
                   </div>
