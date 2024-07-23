@@ -130,7 +130,7 @@ const handleClose = () => {
 
 const handleWatchPopup = () =>{
   if(!User.isUserLoggedIn){
-    toasterError("Please login or signup to use this feature.")
+    toasterError("Please login or signup to use this feature.",3000,"id")
   }else{
     setIsOpen(true);
   }
