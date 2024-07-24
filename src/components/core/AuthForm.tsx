@@ -8,6 +8,7 @@ import { useAuth } from "context/AuthContext";
 import { handleError } from "@lib/errorHandler";
 import User from "@lib/User";
 import { toasterSuccess } from "./Toaster";
+import { useProfileTab } from "context/ProfileTabContext";
 
 const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const { setToken }: any = useAuth();
@@ -16,6 +17,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const [captchaValue, setCaptchaValue] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const { setUsername } = useProfileTab();
 
   useEffect(() => {
     setErrorMessage("");
@@ -42,7 +44,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
         localStorage.setItem("token", data?.data?.accessToken);
         setToken(data.data?.accessToken);
         toasterSuccess("Login successfully !", 1000, "id");
-
+        setUsername(data?.data?.user?.username)
         User.isUserLoggedIn = true;
         User.role();
         handleClose();
