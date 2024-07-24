@@ -185,10 +185,11 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
                           id={fieldName}
                           className="p-2 px-4 rounded-lg bg-white/5 text-white"
                           type={
-                            fieldName.includes("password")
+                            /(password|repeatPassword)/i.test(fieldName)
                               ? "password"
-                              : "password"
+                              : "text"
                           }
+                          
                           name={fieldName}
                           placeholder={
                             fieldName === "repeatPassword"
