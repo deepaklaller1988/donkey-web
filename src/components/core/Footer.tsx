@@ -12,15 +12,15 @@ export default function Footer() {
                             <b className="text-white font-semibold">Links:</b>
                         </li>
                         <li>
-                            <a href="/page?type=movie" className="transition flex justify-center md:justify-start items-center gap-2 px-1 md:px-4">Movies <BiSolidRightArrowSquare className="pColor" /></a>
+                            <a href="/footerData?type=movie" className="transition flex justify-center md:justify-start items-center gap-2 px-1 md:px-4">Movies <BiSolidRightArrowSquare className="pColor" /></a>
                         </li>
                         <div className="hidden md:block">|</div>
                         <li>
-                            <a href="/page?type=tv" className="flex  justify-center md:justify-start items-center gap-2 px-1 md:px-4">TV Shows <BiSolidRightArrowSquare className="pColor" /></a>
+                            <a href="/footerData?type=tv" className="flex  justify-center md:justify-start items-center gap-2 px-1 md:px-4">TV Shows <BiSolidRightArrowSquare className="pColor" /></a>
                         </li>
                         <div className="hidden md:block">|</div>
                         <li>
-                            <a href="/page?type=recently" className="flex  justify-center md:justify-start items-center gap-2 px-1 md:px-4">Recently Updated <BiSolidRightArrowSquare className="pColor" /></a>
+                            <a href="/footerData?type=recently" className="flex  justify-center md:justify-start items-center gap-2 px-1 md:px-4">Recently Updated <BiSolidRightArrowSquare className="pColor" /></a>
                         </li>
                     </ul>
                 </section>
