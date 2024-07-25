@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import Recommended from "@components/Recommended";
@@ -110,12 +110,17 @@ interface Season {
   code: string;
 }
 export default function WatchNow() {
-    const searchParams = useSearchParams();
-    const movieId: any = searchParams.get("id");
-    const mediaType: any = searchParams.get("type");
-    const [selectedSeason, setSelectedSeason] = useState<any>(null);
-    const [selectedEpisode, setSelectedEpisode] = useState<any>(1);
-    const [goToEpisode, setGoToEpisode] = useState<any>("");
+  const videoRef: any = useRef(null);
+  const searchParams = useSearchParams();
+  const userId = User.id
+  const movieId: any = searchParams.get("id");
+  const mediaType: any = searchParams.get("type");
+  const [selectedSeason, setSelectedSeason] = useState<any>(null);
+  const [selectedEpisode, setSelectedEpisode] = useState<any>(1);
+  const [goToEpisode, setGoToEpisode] = useState<any>("");
+  const [progressTime, setProgressTime] = useState<any>("");
+
+
   const {
     isLoading,
     error,
@@ -183,9 +188,44 @@ const {
 
   }
 
-  if(isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading){
-    return(
-        <div>
+  const handleTimeUpdate = (mediaId: any) => {
+    if (videoRef.current) {
+      setProgressTime(videoRef.current.currentTime);
+      mutation.mutate({
+        user_id: Number(userId),
+        media_id: Number(mediaId),
+        media_type: Number(mediaType),
+        progress_time: "12",
+        status: true,
+      });
+    }
+    toasterInfo("hii", 1000, "id")
+  };
+
+  const handlePlay = () => {
+    const mediaId = watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id;
+    if (userId && mediaType) {
+      handleTimeUpdate(mediaId);
+    }
+  };
+  const mutation = useMutation({
+    mutationFn: async (progressData: any) => {
+
+      return await API.post("mediaprogress", progressData);
+    },
+    onSuccess: (data) => {
+      if (data?.message) {
+
+      }
+    },
+    onError: (error: any) => {
+
+    },
+  });
+
+  if (isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading) {
+    return (
+      <div>
         <Loader />
       </div> 
     )
@@ -215,64 +255,66 @@ const {
                 {/*------- vidsrc.me ----- */}
                 {/* src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}${mediaType==='tv' && selectedSeason ? '&season=' + (selectedSeason.season_number || 1) : '&season=1'}${mediaType==='tv' && selectedEpisode ? '&episode=' + selectedEpisode : ''}`}  */}
 
-                {/* --------- vidsrc.to embed link -------- */}
-                <iframe 
-                    src={`https://vidsrc.pro/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id}${mediaType==='tv' ? selectedSeason ? '/' + (selectedSeason.season_number || 1) : '/1' : ''}${mediaType==='tv' ? selectedEpisode ? '/' + selectedEpisode : '/1' : ''}#t=90s`} 
-                    // style="width: 100%; height: 100%;" 
+                  {/* --------- vidsrc.to embed link -------- */}
+                  <iframe
+                    src={`https://vidsrc.pro/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id}${mediaType === 'tv' ? selectedSeason ? '/' + (selectedSeason.season_number || 1) : '/1' : ''}${mediaType === 'tv' ? selectedEpisode ? '/' + selectedEpisode : '/1' : ''}`}
                     className="w-full mt-5 rounded-lg videoFrame"
                     title="Vidsrc video player"
                     frameBorder="0" 
                     referrerPolicy="origin" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen>
-                    </iframe>
+                    allowFullScreen
+                    ref={videoRef}
+                    onTimeUpdate={() => handleTimeUpdate(watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id)}
+                  ></iframe>
+
+                </div>
+              </div>
+              <div className="absolute w-full z-0 left-0 bottom-0">
+                <img src="/assets/images/slides/shadow.png" alt="shadow" />
               </div>
             </div>
-            <div className="absolute w-full z-0 left-0 bottom-0">
-              <img src="/assets/images/slides/shadow.png" alt="shadow" />
-            </div>
-          </div>
-        </section>
-      </div> 
-      <div className="w-full pt-32">
-        <div className="homewrapper">
-        <div className="w-full flex flex-col lg:flex-row gap-5">
-        <div className="w-full flex flex-col md:flex-row gap-5">
-              <section className="min-w-[270px] max-w-[270px]">
-                <img
-                  className="w-full rounded-lg"
-                  src={`https://image.tmdb.org/t/p/original${watchDetials?.poster_path}`}
-                  alt="album"
-                />
-              </section>
-              <section>
-                <div className="w-full flex flex-col lg:flex-row gap-5 justify-between flex-wrap lg:flex-nowrap">
-                  <section>
-                    <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
-                      <li>
-                        <b className="font-bold">{mediaType === 'movie' ? moment(watchDetials?.release_date).year() : moment(watchDetials?.first_air_date).year()}</b>
-                      </li>
-                      <li>
-                        <label className="rounded-full pbgColor text-black font-bold px-2">
-                          HD
-                        </label>
-                      </li>
-                      <li>
-                        <span className="flex items-center gap-2 text-white font-semibold">
-                          <FaStar /> {watchDetials?.vote_average?.toFixed(1)}
-                        </span>
-                      </li>
-                      <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
-                      <li className='text-white'>{watchDetials.certificate}</li>
-                      {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
-                     
-                     
-                    </ul>
-                    <h3 className="text-white text-[25px] font-semibold">
-                      {watchDetials?.title || watchDetials?.name}
-                    </h3>
-                  </section>
-                  {/* <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
+          </section>
+        </div>
+        <div className="w-full pt-32">
+          <div className="homewrapper">
+            <div className="w-full flex flex-col lg:flex-row gap-5">
+              <div className="w-full flex flex-col md:flex-row gap-5">
+                <section className="min-w-[270px] max-w-[270px]">
+                  <img
+                    className="w-full rounded-lg"
+                    src={`https://image.tmdb.org/t/p/original${watchDetials?.poster_path}`}
+                    alt="album"
+                  />
+                </section>
+                <section>
+                  <div className="w-full flex flex-col lg:flex-row gap-5 justify-between flex-wrap lg:flex-nowrap">
+                    <section>
+                      <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
+                        <li>
+                          <b className="font-bold">{mediaType === 'movie' ? moment(watchDetials?.release_date).year() : moment(watchDetials?.first_air_date).year()}</b>
+                        </li>
+                        <li>
+                          <label className="rounded-full pbgColor text-black font-bold px-2">
+                            HD
+                          </label>
+                        </li>
+                        <li>
+                          <span className="flex items-center gap-2 text-white font-semibold">
+                            <FaStar /> {watchDetials?.vote_average?.toFixed(1)}
+                          </span>
+                        </li>
+                        <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
+                        <li className='text-white'>{watchDetials.certificate}</li>
+                        {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen: any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
+
+
+                      </ul>
+                      <h3 className="text-white text-[25px] font-semibold">
+                        {watchDetials?.title || watchDetials?.name}
+                      </h3>
+                    </section>
+                    {/* <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
                     <span className="flex gap-1">
                       <FaStar className="text-amber-500 w-5 h-5" />
                       <FaStar className="text-amber-500 w-5 h-5" />
