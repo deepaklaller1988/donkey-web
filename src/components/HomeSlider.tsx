@@ -18,25 +18,31 @@ import API from '@lib/Api';
 import { toasterError, toasterSuccess } from './core/Toaster';
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
-// const fetchDetails = async (movieId: number, mediaType:string) => {
+
+
+// const fetchTopAll = async () => {
 //   try {
-//     const response = await FetchApi.get(https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US);
+//     const response = await FetchApi.get('https://api.themoviedb.org/3/trending/all/day?language=en-US');
 //     const data = await response.json();
-  
-//     const certificateResponse = await fetch(https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId});
-//     const certificateData = await certificateResponse.json();
-  
-//     const combinedResults = {
-//       ...data,
-//       certificate: certificateData.certification || null
-//     };
-  
+//     console.log(data)
+    
+//     const combinedResults = await Promise.all(data.results.map(async (item: any) => {
+//       const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
+//       const certificateData = await certificateResponse.json();
+//       return {
+//         ...item,
+//         certificate: certificateData.certification ||null
+//       };
+//     }));
+//   console.log(combinedResults,"home-now")
+
 //     return combinedResults;
 //   } catch (error) {
-//     console.log(error);
+//     console.error(error);
 //   }
-  
-//   };
+// };
+
+
 const fetchTopAll = async () => {
   try {
     const response = await FetchApi.get('https://api.themoviedb.org/3/trending/all/day?language=en-US');
@@ -124,7 +130,7 @@ const handleClose = () => {
 
 const handleWatchPopup = () =>{
   if(!User.isUserLoggedIn){
-    toasterError("Please login or signup to use this feature.")
+    toasterError("Please login or signup to use this feature.",3000,"id")
   }else{
     setIsOpen(true);
   }
@@ -185,7 +191,7 @@ const indicators = (index:any) => (
                       <li><span className='flex items-center gap-2 text-white font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
                       {item.runtime && (<li>{item.runtime} min</li>)}
                      {item.certificate &&                     
-                     <li><label className='rounded-full border border-white text-white px-2'>{item.certificate}</label></li>}
+                     <li><label className='text-white'>{item.certificate}</label></li>}
                       {item.genres && item.genres.length > 0 ? item.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       </ul>
                       <p className='md:text-[16px] lg:text-lg text-white hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
@@ -194,9 +200,9 @@ const indicators = (index:any) => (
                     <div className="relative flex gap-4">
                       <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold' onClick=     {handleWatchPopup}><FaRegBookmark className='w-5 h-5' /> Bookmark</button>
                           <div className={`profileLinks top-[40px] absolute bg-zinc-800 rounded-lg left-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
-                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'watching')} >Watching </div>
-                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'planning-to-watch')} >Plan to Watch</div>
-                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'completed')} >Completed </div>
+                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'watching')} >Watching </div>
+                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'planning-to-watch')} >Plan to Watch</div>
+                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'completed')} >Completed </div>
                           </div>
                       </div>
                     </section>

@@ -29,14 +29,12 @@ const fetchLatestData = async (option: any, page: number=1) => {
 const fetchSearchedData = async (selectedOptions: any, searched: string, page: number) => {
     try {
         const pageNumber = Math.min(page, 500);
-        console.log(searched, selectedOptions, "selectedOptions")
         if(selectedOptions.selectedMedia){
             const response = await FetchApi.get(`https://api.themoviedb.org/3/search/${selectedOptions.selectedMedia}?query=${searched}&include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&region=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
             const data = await response.json();
             return data;
         }else{
             const response = await FetchApi.get(`https://api.themoviedb.org/3/search/multi?query=${searched}&include_adult=false&language=en-US&page=${pageNumber}`);
-            console.log("object")
             const data = await response.json();
             return data;
         }

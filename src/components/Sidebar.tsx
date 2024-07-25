@@ -37,9 +37,7 @@ export default function Sidebar({mediaType}: any) {
             </div>
             <ul className="flex flex-col gap-3 py-2 mt-[10px]">
                 {topList && topList.length > 0 ? topList.slice(0,10).map((item: any, index:number) => (
-                    <>
-                    <SidebarCard movieId={item.id} mediaType={mediaType} index={index+1} />
-                    </>
+                    <SidebarCard key={item.id} movieId={item.id} mediaType={mediaType} index={index+1} />
                 )) : ""}
             </ul>
         </div>

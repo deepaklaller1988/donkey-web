@@ -48,7 +48,7 @@ const RatingPopUp = () => {
           `rating?movieId=${movieId}&mediaType=${mediaType}&id=${userId}&ip=${ip}`
         );
         const userRating = response.data?.rating.value;
-        setRating(userRating || 0);
+        setRating(userRating ? userRating  : 0);
         setReviewCount({
           totalReviews: parseInt(response.data?.ratingCount.total),
           average_rating: parseFloat(response.data?.ratingCount.rating).toFixed(2),
@@ -98,7 +98,7 @@ const RatingPopUp = () => {
         setRating(parseInt(data?.value));
         // localStorage.setItem(`${movieId}`, data.value)
         setHasRated(true);
-        toasterSuccess("Ratig Submitted !", 3000, "id")
+        toasterSuccess("Thanks for Rating!", 3000, "id")
         refetch();
       }
     },
@@ -109,9 +109,11 @@ const RatingPopUp = () => {
   });
 
   const handleRating = (rate: number) => {
+    console.log(rate,"rate===")
     if (hasRated) {
       return;
     }
+    
     setRating(rate);
     mutation.mutate();
   };
@@ -127,13 +129,13 @@ const RatingPopUp = () => {
       setHoverValue(0);
     }
   };
-  // const getLabel = (ratingValue: number) => {
-  //   if (hasRated) {
-  //     return labels[Math.round(rating)] || ''; 
-  //   }
-  //   const roundedRating = Math.round(ratingValue * 2) / 2;
-  //   return labels[roundedRating] || '';
-  // };
+  const getLabel = (ratingValue: number) => {
+    if (hasRated) {
+      return labels[Math.round(rating)] || ''; 
+    }
+    const roundedRating = Math.round(ratingValue * 2) / 2;
+    return labels[roundedRating] || '';
+  };
   if (isLoading) {
     return <Loader />;
   }
@@ -162,7 +164,7 @@ const RatingPopUp = () => {
         className="text-white"
         style={{ width: "100px", textAlign: "center" }}
       >
-        {/* {(hoverValue !== 0 || rating !== 0) && getLabel(hoverValue || rating)} */}
+        {(hoverValue !== 0 || rating !== 0) && getLabel(hoverValue || rating)}
       </div>
       <p className="text-white text-sm">
         <b className="text-sm">{reviewCount.average_rating}</b> of <b className="text-sm">10</b> ( {reviewCount.totalReviews} reviews)
