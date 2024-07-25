@@ -1,3 +1,4 @@
+"use client"
 import { FaPlayCircle, FaFolder } from "react-icons/fa";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { IoIosAddCircleOutline } from "react-icons/io";
