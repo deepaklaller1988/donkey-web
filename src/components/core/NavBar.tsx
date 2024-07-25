@@ -79,8 +79,8 @@ export default function NavBar({ openSideBar ,toggleSidebar}: any) {
                 <Link href={`/filters?mediaType=movie`} className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Movies</Link>
                 <Link href={`/filters?mediaType=tv`} className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">TV Shows</Link>
                 <Link href="/filters" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Popular</Link>
-                <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Top 10 Movies</Link>
-                <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Top 10 TV Episodes</Link>
+                {/* <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Top 10 Movies</Link>
+                <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Top 10 TV Episodes</Link> */}
             </div>
         </div>
     )

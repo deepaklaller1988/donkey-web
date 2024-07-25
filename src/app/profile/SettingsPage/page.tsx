@@ -4,6 +4,7 @@ export default function SettingsPage() {
   return (
     <div>
       <div className="w-full mt-28">
+      <div className='homewrapper'>
         <div className="w-full max-w-[500px] rounded-lg bg-black/50 m-auto p-10">
           <h2 className="text-white/50 text-[30px] mb-4">Settings</h2>
           <div className="full flex items-center justify-between py-2">
@@ -71,6 +72,7 @@ export default function SettingsPage() {
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

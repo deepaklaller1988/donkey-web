@@ -9,6 +9,7 @@ export default function ContinueWatchingPage() {
     return (
         <>
             <div className="w-full mt-28">
+                <div className='homewrapper'>
                 <ul className="w-full flex flex-wrap gap-y-10">
                     <li className="w-1/6 cardSet relative">
                         <span className="relative">
@@ -99,6 +100,7 @@ export default function ContinueWatchingPage() {
                         </div>
                     </li>
                 </ul>
+                </div>
             </div>
         </>
 

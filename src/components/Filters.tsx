@@ -209,24 +209,6 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
                     selectionLimit={1}
                     className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
                 />
-                 {/* <MultiSelect
-                    value={selectedCities}
-                    onChange={(e) => setSelectedCities(e.value)}
-                    options={cities}
-                    optionLabel="name"
-                    placeholder="Rating"
-                    maxSelectedLabels={1}
-                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
-                />
-                 <MultiSelect
-                    value={selectedCities}
-                    onChange={(e) => setSelectedCities(e.value)}
-                    options={cities}
-                    optionLabel="name"
-                    placeholder="Quality"
-                    maxSelectedLabels={1}
-                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
-                /> */}
                  <MultiSelect
                     value={selectedFilter}
                     onChange={(e) => setSelectedFilter(e.value)}
