@@ -111,7 +111,9 @@ export default function Header() {
             >
               <HomeSearchbar />
             </div>
-            <section className="flex justify-end min-w-auto md:min-w-[196px]" >
+            <section 
+              ref={profileRef}
+            className="flex justify-end min-w-auto md:min-w-[196px]" >
               {User.isUserLoggedIn ? (
                 <>
                   <div className="relative flex gap-4">
@@ -127,7 +129,6 @@ export default function Header() {
                     <div
                       className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${OpenProfile ? "openProfileLinks" : ""
                         }`}
-                        ref={profileRef}
                     >
                       <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
