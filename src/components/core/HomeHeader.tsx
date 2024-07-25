@@ -8,7 +8,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import AuthForm from "./AuthForm";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { logOut } from "@lib/userToken";
 import { IoSearch } from "react-icons/io5";
@@ -24,13 +24,14 @@ export default function Header() {
   const path = usePathname();
   const route = path.split("/");
   const [roleLoading, roleData] = useRole();
-
   const { setActiveTab } = useProfileTab()
   const [isOpen, isClose] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [OpenSearch, setOpenSearch] = useState(false);
   const [openSideBar, setOpenSidebar] = useState(false);
-
+  const profileRef:any = useRef(null);
+  
+  
   const isHome = () => {
     return route.includes("home") ? true : false;
   };
@@ -38,6 +39,13 @@ export default function Header() {
   const toggleProfile = () => {
     setOpenProfile(!OpenProfile);
   };
+
+  const handleClickOutside = (event:any) => {
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setOpenProfile(false); 
+    }
+  };
+
   const toggleSearch = () => {
     setOpenSearch(!OpenSearch);
   };
@@ -66,6 +74,13 @@ export default function Header() {
 
     }
   }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -96,7 +111,7 @@ export default function Header() {
             >
               <HomeSearchbar />
             </div>
-            <section className="flex justify-end min-w-auto md:min-w-[196px]">
+            <section className="flex justify-end min-w-auto md:min-w-[196px]" >
               {User.isUserLoggedIn ? (
                 <>
                   <div className="relative flex gap-4">
@@ -106,12 +121,13 @@ export default function Header() {
                     >
                       <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                     </button>
-                    <button onClick={toggleProfile} className="text-white">
+                    <button onClick={toggleProfile} className="text-white" >
                       <VscAccount className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
                     <div
                       className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${OpenProfile ? "openProfileLinks" : ""
                         }`}
+                        ref={profileRef}
                     >
                       <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"

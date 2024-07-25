@@ -197,7 +197,7 @@ const indicators = (index:any) => (
                       <p className='md:text-[16px] lg:text-lg text-white hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
                   <section className='flex mt-4 gap-4'>
                     <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition' onClick={()=> router.push(`/watch-now?type=${item.media_type?.toLowerCase()}&id=${item.id}`)}>Watch Now <FaRegCirclePlay className='text-xl'/></button>
-                    <div className="relative flex gap-4">
+                    <div className="relative flex gap-4"  onMouseLeave={()=> setIsOpen(false)}>
                       <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold' onClick=     {handleWatchPopup}><FaRegBookmark className='w-5 h-5' /> Bookmark</button>
                           <div className={`profileLinks top-[40px] absolute bg-zinc-800 rounded-lg left-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
                               <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'watching')} >Watching </div>
