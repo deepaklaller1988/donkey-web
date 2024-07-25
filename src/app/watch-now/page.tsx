@@ -7,11 +7,14 @@ import "./album-detail.css";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { useSearchParams } from "next/navigation";
 import FetchApi from "@lib/FetchApi";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Loader from "@components/core/Loader";
 import moment from "moment";
 import Card from "@components/core/Card";
 import RatingPopUp from "@components/core/RatingPopUp";
+import { toasterInfo } from "@components/core/Toaster";
+import API from "@lib/Api";
+import User from "@lib/User";
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
 
