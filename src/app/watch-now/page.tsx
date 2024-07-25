@@ -205,13 +205,6 @@ const {
           <div className="w-full h-full absolute top-0 left-0 z-0">
             <div className="homewrapper relative z-10">
               <div className="w-full">
-                {/* <iframe
-                  className="w-full h-[700px] mt-5 rounded-lg"
-                  src="https://www.youtube.com/embed/a12DMAs5U_c?si=PF8d0y9qS_63Qvss"
-                  title="YouTube video player"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                ></iframe> */}
-
 
                 {/*------- vidsrc.me ----- */}
                 {/* src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}${mediaType==='tv' && selectedSeason ? '&season=' + (selectedSeason.season_number || 1) : '&season=1'}${mediaType==='tv' && selectedEpisode ? '&episode=' + selectedEpisode : ''}`}  */}
@@ -396,8 +389,6 @@ const {
                     </>) :(<>
                     <label>Go to episode</label>
                   <div className="nextPrev flex gap-3 items-center text-white/50">
-                
-                    {/* <a href="">2</a> */}
                     <input type="text" value={goToEpisode} className="w-[50px] text-center rounded text-white bg-white/10 py-1" placeholder="1" onChange={(e)=> handleChange(e)} />   
                       <IoIosArrowRoundForward className="w-8 h-8 text-amber-500 cursor-pointer" onClick={handleJumpToEpisode} />
                   </div>
@@ -412,7 +403,6 @@ const {
       </div>
       </>)}
       <div className="w-full">
-        {/* <div className="bg-white/10 h-[80px]"><Header /></div> */}
         <div className="w-full mt-20">
           <div className="homewrapper">
           <div className="containerHub flex gap-5 flex-col lg:flex-row">
@@ -438,7 +428,6 @@ const {
             </div>
           </div>
         </div>
-        {/* <Footer /> */}
       </div>
     </div>
   );
