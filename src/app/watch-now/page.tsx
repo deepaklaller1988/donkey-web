@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import Recommended from "@components/Recommended";
@@ -110,9 +110,9 @@ interface Season {
   code: string;
 }
 export default function WatchNow() {
-  const videoRef :any= useRef(null);
+  const videoRef: any = useRef(null);
   const searchParams = useSearchParams();
-  const userId=User.id
+  const userId = User.id
   const movieId: any = searchParams.get("id");
   const mediaType: any = searchParams.get("type");
   const [selectedSeason, setSelectedSeason] = useState<any>(null);
@@ -187,7 +187,7 @@ export default function WatchNow() {
 
   }
 
-  const handleTimeUpdate = (mediaId:any) => {
+  const handleTimeUpdate = (mediaId: any) => {
     if (videoRef.current) {
       setProgressTime(videoRef.current.currentTime);
       mutation.mutate({
@@ -198,27 +198,27 @@ export default function WatchNow() {
         status: true,
       });
     }
-  toasterInfo("hii",1000,"id")
+    toasterInfo("hii", 1000, "id")
   };
 
   const handlePlay = () => {
     const mediaId = watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id;
     if (userId && mediaType) {
       handleTimeUpdate(mediaId);
-    } 
+    }
   };
   const mutation = useMutation({
     mutationFn: async (progressData: any) => {
-     
+
       return await API.post("mediaprogress", progressData);
     },
     onSuccess: (data) => {
       if (data?.message) {
-        
+
       }
     },
     onError: (error: any) => {
-     
+
     },
   });
 
@@ -256,8 +256,7 @@ export default function WatchNow() {
 
                   {/* --------- vidsrc.to embed link -------- */}
                   <iframe
-                    src={`https://vidsrc.pro/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id}${mediaType==='tv' ? selectedSeason ? '/' + (selectedSeason.season_number || 1) : '/1' : ''}${mediaType==='tv' ? selectedEpisode ? '/' + selectedEpisode : '/1' : ''}`} 
-                    // style="width: 100%; height: 100%;" 
+                    src={`https://vidsrc.pro/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id}${mediaType === 'tv' ? selectedSeason ? '/' + (selectedSeason.season_number || 1) : '/1' : ''}${mediaType === 'tv' ? selectedEpisode ? '/' + selectedEpisode : '/1' : ''}`}
                     className="w-full mt-5 rounded-lg videoFrame"
                     title="Vidsrc video player"
                     frameBorder="0"
@@ -265,10 +264,9 @@ export default function WatchNow() {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                     ref={videoRef}
-                    onLoad={handlePlay}
-                    // onTimeUpdate={()=>handleTimeUpdate(watchDetials.imdb_id ?watchDetials.imdb_id :watchDetials.id)}
-                  >
-                  </iframe>
+                    onTimeUpdate={() => handleTimeUpdate(watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id)}
+                  ></iframe>
+
                 </div>
               </div>
               <div className="absolute w-full z-0 left-0 bottom-0">

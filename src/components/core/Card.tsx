@@ -61,7 +61,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
 
 
 
-function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type, queryClient }: any) {
+function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type, queryClient}: any) {
 
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false)
