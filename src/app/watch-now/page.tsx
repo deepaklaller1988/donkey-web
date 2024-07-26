@@ -1,5 +1,5 @@
 "use client";
-import React, {useRef, useState } from "react";
+import React, {useEffect, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import Recommended from "@components/Recommended";
@@ -15,6 +15,7 @@ import RatingPopUp from "@components/core/RatingPopUp";
 import { toasterInfo } from "@components/core/Toaster";
 import API from "@lib/Api";
 import User from "@lib/User";
+import ToastProvider from "@components/core/ToasterProvider";
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
 
@@ -123,7 +124,7 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [progressTime, setProgressTime] = useState<any>("");
 
-
+  
   const {
     isLoading,
     error,
@@ -165,8 +166,7 @@ const {
   queryFn: () =>fetchEpisodesLists(mediaType, movieId, selectedSeason),
   enabled: !!(selectedSeason || watchDetials)
 });
-  
-  
+
   const handleSeasonChange = (e:any)=>{
     setSelectedSeason(e.value);
     setSelectedEpisode(1)
@@ -190,14 +190,14 @@ const {
     }
 
   }
-
+console.log(progressTime,"====p")
   const handleTimeUpdate = (mediaId: any) => {
-    if (videoRef.current) {
-      setProgressTime(videoRef.current.currentTime);
+    console.log(userId,mediaId,mediaType,"userid")
+    if (videoRef.current && userId && mediaId &&mediaType) {
       mutation.mutate({
         user_id: Number(userId),
-        media_id: Number(mediaId),
-        media_type: Number(mediaType),
+        media_id: mediaId,
+        media_type: mediaType,
         progress_time: "12",
         status: true,
       });
@@ -233,6 +233,7 @@ const {
       </div> 
     )
 }
+
   return (
     <div className="w-full">
         {watchDetials && (<>
@@ -268,7 +269,9 @@ const {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                     ref={videoRef}
-                    onTimeUpdate={() => handleTimeUpdate(watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id)}
+                    id="myiframe"
+                    // onTimeUpdate={() => handleTimeUpdate(watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id)}
+                    onLoad={() => handleTimeUpdate(watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id)}
                   ></iframe>
 
                 </div>
