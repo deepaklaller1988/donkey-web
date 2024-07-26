@@ -124,7 +124,7 @@ export default function Home() {
                                 </div>
 
                                 <section className="flex justify-center pt-10">
-                                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" onClick={() => router.push(`/media/movie?type=home`)}>View More</button>
+                                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" onClick={() => router.push(`/media/movie`)}>View More</button>
                                 </section>
                             </div>
                             <div className="w-full pt-10">
@@ -141,7 +141,7 @@ export default function Home() {
                                 </div>
 
                                 <section className="flex justify-center pt-10">
-                                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" onClick={() => router.push(`/media/tv?type=home`)}>View More</button>
+                                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" onClick={() => router.push(`/media/tv`)}>View More</button>
                                 </section>
                             </div>
                         </div>

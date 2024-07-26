@@ -11,14 +11,19 @@ import useTitle from "@hooks/useTitle";
 import Loader from "@components/core/Loader";
 import Pagination from "@components/core/Pagination";
 
-const fetchLatestData = async (option: any, page: number = 1) => {
+const fetchLatestData = async (option: any, page: number=1) => {
     try {
-        if (option === 'movie' || option === 'tv') {
+        if(option==='movie' || option==='tv'){
             const pageNumber = Math.min(page, 500);
-            const response = await fetch(`https://vidsrc.xyz/${option === 'movie' ? "movies" : "tvshows"}/latest/page-${pageNumber}.json`);
+            const response = await fetch(`https://vidsrc.xyz/${option=== 'movie' ? "movies" : "tvshows"}/latest/page-${pageNumber}.json`);
             const data = await response.json();
             return data;
-        } else {
+        }else if(option === 'recent'){
+            const pageNumber = Math.min(page, 500);
+            const response = await FetchApi.get(`https://api.themoviedb.org/3/trending/all/day?language=en-US&page=${pageNumber}`);
+            const data = await response.json();
+            return data;
+        }else{
             return [];
         }
     } catch (error) {
@@ -29,11 +34,11 @@ const fetchLatestData = async (option: any, page: number = 1) => {
 const fetchSearchedData = async (selectedOptions: any, searched: string, page: number) => {
     try {
         const pageNumber = Math.min(page, 500);
-        if (selectedOptions.selectedMedia) {
+        if(selectedOptions.selectedMedia){
             const response = await FetchApi.get(`https://api.themoviedb.org/3/search/${selectedOptions.selectedMedia}?query=${searched}&include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&region=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
             const data = await response.json();
             return data;
-        } else {
+        }else{
             const response = await FetchApi.get(`https://api.themoviedb.org/3/search/multi?query=${searched}&include_adult=false&language=en-US&page=${pageNumber}`);
             const data = await response.json();
             return data;
@@ -67,17 +72,12 @@ const fetchFilteredData = async (selectedOptions: any, page: number) => {
 
 
 export default function MediaPage({ params }: { params: { slug: string } }) {
-    const { slug } = params
-    useTitle(slug === 'search' ? "View Results" : `Latest ${slug === 'movie' ? "Movies" : "TV Shows"}`);
+    const {slug} = params
+    useTitle(slug === 'search' ? "Results"  : slug === 'recent' ? "Recently Updated" :`Latest ${slug === 'movie' ? "Movies" : "TV Shows"}`);
     const searchParams = useSearchParams();
     const searchQuery: any = searchParams.get("query");
-    const type: any = searchParams.get("type");
     const countryCode: any = searchParams.get("country");
     const mediaType: any = searchParams.get("mediaType");
-
-    // let genre = genreId ? genreId : "";
-    // let media = mediaType ? mediaType : "movie";
-    // let country = countryCode ? countryCode : "";
 
     const [selectedOptions, setSelectedOptions] = useState<any>({
         selectedMedia: "",
@@ -95,7 +95,7 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
         error,
         data: latestData,
     } = useQuery<any>({
-        queryKey: ['latest', slug, currentPage],
+        queryKey: ['latest', slug , currentPage],
         queryFn: () => fetchLatestData(slug, currentPage),
         enabled: !!slug,
     });
@@ -114,37 +114,27 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
         data: searchedData,
     } = useQuery<any>({
         queryKey: ['searched-data', search, currentPage, selectedOptions.selectedMedia, selectedOptions.selectedYear, selectedOptions.selectedCountry, selectedOptions.selectedGenres, selectedOptions.selectedFilter],
-        queryFn: () => (slug === 'search' && search ? fetchSearchedData(selectedOptions, search, currentPage) : fetchFilteredData(selectedOptions, currentPage)),
+        queryFn: () => (slug === 'search' && search ?  fetchSearchedData(selectedOptions, search, currentPage) : fetchFilteredData(selectedOptions, currentPage)),
         enabled: !!(search || selectedOptions),
     });
-
-
-    // useEffect(() => {
-    //     if (genre || country || media) {
-    //         setSelectedOptions((prevOptions: any) => ({
-    //             ...prevOptions,
-    //             selectedMedia: media,
-    //             selectedCountry: country,
-    //             selectedGenres: genre,
-    //         }));
-    //     }
-    // }, [genre, media, country]);
 
     useEffect(() => {
         setSearch(searchQuery)
     }, [searchQuery]);
 
     useEffect(() => {
-        if (latestData) {
-            setTotalPages(latestData.pages);
+        if (latestData && slug != 'search') {
+            if(slug == 'recent'){
+                setTotalPages(latestData.total_pages);
+            }else{
+                setTotalPages(latestData.pages);
+            }
         }
-    }, [latestData]);
 
-    useEffect(() => {
-        if (searchedData) {
+        if (searchedData && slug == 'search') {
             setTotalPages(searchedData.total_pages);
         }
-    }, [searchedData]);
+    }, [latestData, searchedData]);
 
     const handleFilters = (selectedOptions: any, search: string) => {
         setSelectedOptions({
@@ -164,14 +154,13 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
         }
     };
 
-    if (isLoading || isRecentLoaded || isSearchLoading) {
-        return (
+    if(isLoading || isRecentLoaded || isSearchLoading){
+        return(
             <div>
-                <Loader />
-            </div>
+            <Loader />
+          </div> 
         )
     }
-
 
     return (
         <div className="w-full">
@@ -180,97 +169,57 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                     <div className="homewrapper">
                         <div className="containerHub flex gap-5 flex-col lg:flex-row">
                             <div className="w-full">
-                                (
-                                <>
-                                    <div className="w-full">
-                                        <div className="flex items-center gap-4">
-                                            <h3 className="text-white text-[25px] font-semibold">{slug === 'movie' ? "LATEST MOVIES" : slug === 'tv' ? "LATEST TV SHOWS" : 'VIEW RESULTS'}</h3>
-                                        </div>
-                                        {slug === 'search' && (<><Filters handleFilters={handleFilters} initiallySelected={selectedOptions} initiallySearch={search} /> </>)}
-                                        {/* <Filters handleFilters={handleFilters} initiallySelected={selectedOptions} /> */}
-                                        <div className="w-full py-2">
-                                            {slug === 'search' ? (
-                                                <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-                                                    {searchedData && searchedData.results?.length > 0 ? (
-                                                        searchedData.results.map((item: any) => (
-                                                            <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' || item.media_type === 'movie' ? 'Movie' : 'TV'} />
-                                                        ))
-                                                    ) : (
-                                                        <p>No results found.</p>
-                                                    )}
-                                                </ul>
-                                            ) : (
-                                                <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-                                                    {latestData && latestData.result?.length > 0 ? (
-                                                        latestData.result.map((item: any) => (
-                                                            <Card key={item.tmdb_id} movieId={item.tmdb_id} mediaType={slug === 'movie' ? 'Movie' : 'TV'} quality={item.quality === '1080p' ? 'HD' : item.quality === '720p' ? 'CAM' : item.quality} />
-                                                        ))
-                                                    ) : (
-                                                        <p>No results found.</p>
-                                                    )}
-                                                </ul>
-                                            )}
-                                        </div>
+                                <div className="w-full">
+                                    <div className="flex items-center gap-4">
+                                        <h3 className="text-white text-[25px] font-semibold">{slug === 'movie' ? "LATEST MOVIES" : slug === 'tv' ? "LATEST TV SHOWS" : slug === 'recent' ? 'RECENTLY UPDATED' : 'RESULTS'}</h3>
                                     </div>
-
-                                    <Pagination
-                                        totalPages={totalPages}
-                                        onPageChange={handlePageChange}
-                                        currentPage={currentPage}
-                                    />
-                                </>
-                                )
-                            </div>
-                            {(type == "home") ? <>
-                                <div className="min-w-full md:min-w-[376px]">
-                                    <Recommended title={"RECENTLY UPDATED"} data={recentData && recentData?.items.length > 0 ? recentData?.items.slice(0, 10) : []} mediaType={slug === 'tv' ? 'TV' : 'Movie'} />
+                                    {slug === 'search' && (<><Filters handleFilters={handleFilters} initiallySelected={selectedOptions} initiallySearch={search} /> </>)}
+                                    {/* <Filters handleFilters={handleFilters} initiallySelected={selectedOptions} /> */}
+                                    <div className="w-full py-2">
+                                        {slug === 'search' ? (
+                                            <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+                                                {searchedData && searchedData.results?.length > 0 ? (
+                                                    searchedData.results.map((item: any) => (
+                                                        <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' || item.media_type==='movie' ? 'Movie' : 'TV'} />
+                                                    ))
+                                                ) : (
+                                                    <p className="text-white text-[20px]">No results found.</p>
+                                                )}
+                                            </ul>
+                                        ) : slug === 'recent' ? (
+                                            <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+                                                {latestData && latestData.results?.length > 0 ? (
+                                                    latestData.results.map((item: any) => (
+                                                        <Card key={item.id} movieId={item.id} mediaType={item.media_type === 'movie' ? 'Movie' : 'TV'} />
+                                                    ))
+                                                ) : (
+                                                    <p className="text-white text-[20px]">No results found.</p>
+                                                )}
+                                            </ul>
+                                        ) : (
+                                            <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+                                                {latestData && latestData.result?.length > 0 ? (
+                                                    latestData.result.map((item: any) => (
+                                                        <Card key={item.tmdb_id} movieId={item.tmdb_id} mediaType={slug === 'movie' ? 'Movie' : 'TV'} quality={item.quality === '1080p' ? 'HD' : item.quality === '720p' ? 'CAM' : item.quality} />
+                                                    ))
+                                                ) : (
+                                                    <p className="text-white text-[20px]">No results found.</p>
+                                                )}
+                                            </ul>
+                                        )}
+                                    </div>
                                 </div>
-                            </> : ""}
+                                <Pagination
+                                    totalPages={totalPages}
+                                    onPageChange={handlePageChange}
+                                    currentPage={currentPage}
+                                />
+                            </div>
+                            <div className="min-w-full md:min-w-[376px]">
+                                {/* Sidebar */}
+                                <Recommended title={slug != 'recent' ? "RECENTLY UPDATED" : 'NEWLY ADDED'} data={recentData && recentData?.items.length > 0 ? recentData?.items.slice(0, 10) : []} mediaType={slug === 'tv' ? 'TV' : 'Movie'} />
+                            </div>
                         </div>
-                        {type == "footers" &&
-                            (
-                                <>
-                                    <div className="w-full">
-                                        <div className="w-full">
-                                            <div className="">
-                                                <h3 className="text-white text-[25px] font-semibold">RECENTLY UPDATED</h3>
-                                                <div className="w-full py-2">
-                                                    <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-                                                        {recentData && recentData.items.length > 0 ? (
-                                                            recentData.items.map((item: any) => {
-                                                                console.log(item, "item"); // Log each item here
-                                                                return (
-                                                                    <>
-                                                                        <Card
-                                                                            key={item.id}
-                                                                            movieId={item.tmdb_id}
-                                                                            mediaType={'Movie'}
-                                                                        />
-                                                                        <Card
-                                                                            key={item.id}
-                                                                            movieId={item.tmdb_id}
-                                                                            mediaType={'TV'}
-                                                                        />
-                                                                    </>
-                                                                );
-                                                            })
-                                                        ) : (
-                                                            <p>No results found.</p>
-                                                        )}
-                                                    </ul>
-
-                                                    ) : (
-                                                    <p>No results found.</p>
-
-                                                    {/* )} */}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </>
-                            )
-                        }
                     </div>
                 </div>
             </div>
