@@ -6,6 +6,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import FetchApi from "@lib/FetchApi";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import { Dropdown } from "primereact/dropdown";
 
 
 const fetchGenre = async (mediaType:string) => {
@@ -37,7 +38,6 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
     const [selectedYear, setSelectedYear] = useState<any>(null);
     const [selectedFilter, setSelectedFilter] = useState<any>(null);
     const [searchQuery, setSearchQuery] =  useState<string>("");
-
     const {
         data: movieGenre,
     } = useQuery<any>({
@@ -77,6 +77,7 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
     for (let year = currentYear; year >= startYear; year--) {
     yearsArray.push({ year: year });
     }
+    console.log(yearsArray,"===")
 
     const type = [
         { name: 'Movie', code: 'movie' },
@@ -123,6 +124,7 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
         if(name=== 'year'){
             setSelectedYear(value)
         }
+     
         if(name=== 'genre'){
             setSelectedGenre(value)
         }
@@ -200,12 +202,14 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
                 />
                  <MultiSelect
                     value={selectedYear}
+                    // defaultChecked={true}
                     onChange={(e) => setSelectedYear(e.value)}
+                    // selectAll={true}
                     options={yearsArray}
                     name="year"
                     optionLabel="year"
                     placeholder="Year"
-                    maxSelectedLabels={1}
+                    // maxSelectedLabels={1}
                     selectionLimit={1}
                     className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
                 />

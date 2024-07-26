@@ -48,7 +48,7 @@ export default function FiltersPage() {
                                 <div className="w-full flex gap-5 justify-between">
                                     <section>
                                         <h3 className="text-white text-[25px] font-semibold">Craig of the Creek</h3>
-                                        <ul className="py-1 flex flex-wrap text-white gap-4 font-light"><li><b className="font-bold">2024</b></li><li>118 min</li><li>Action</li><li>Comedy</li><li>Crime</li><li><span className="flex items-center gap-2 text-white font-semibold"><FaStar /> 7.2</span></li><li><label className="rounded-full pbgColor text-black font-bold px-2">HD</label></li></ul>
+                                        <ul className="py-1 flex flex-wrap text-white gap-4 font-light"><li><b className="font-bold">2024</b></li><li>118 min</li><li>Action</li><li>Comedy</li><li>Crime</li><li><span className="flex items-center gap-2 text-white font-semibold pColor"><FaStar /> 7.2</span></li><li><label className="rounded-full pbgColor text-black font-bold px-2">HD</label></li></ul>
                                     </section>
                                     <section className="bg-[#272727] rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
                                         <span className="flex gap-1">
@@ -157,7 +157,7 @@ export default function FiltersPage() {
 
                                             <li className="w-1/5 cardSet relative">
                                                 <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
+                                                    {/* <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" /> */}
                                                     <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
@@ -193,7 +193,7 @@ export default function FiltersPage() {
                                             </li>
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
+                                                    {/* <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" /> */}
                                                     <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>
@@ -206,7 +206,7 @@ export default function FiltersPage() {
                                             </li>
                                             <li className="w-1/5 cardSet">
                                                 <span className="relative">
-                                                    <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" />
+                                                    {/* <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[35px] -ml-5 left-1/2" /> */}
                                                     <img className="rounded-xl w-full" src="/assets/images/album1.jpg" alt="album" /><label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">HD</label></span>
                                                 <section className="py-2">
                                                     <b className="text-white font-semibold">Faraway Downs 100</b>

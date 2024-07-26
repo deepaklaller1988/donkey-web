@@ -10,7 +10,6 @@ import Recommended from "@components/Recommended";
 import useTitle from "@hooks/useTitle";
 import Loader from "@components/core/Loader";
 import Pagination from "@components/core/Pagination";
-import { CiLineHeight } from "react-icons/ci";
 
 const fetchLatestData = async (option: any, page: number = 1) => {
     try {

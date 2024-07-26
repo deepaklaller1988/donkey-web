@@ -5,7 +5,7 @@ import BookmarkPage from './Bookmark/page';
 import UserProfile from './userProfile/page';
 import ContinueWatchingPage from './watching/page';
 import SettingsPage from './SettingsPage/page';
-import { FaRegUser, FaRegBookmark } from "react-icons/fa";
+import { FaRegUser, FaRegBookmark, FaPlus } from "react-icons/fa";
 import { GoVideo } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
 import { useProfileTab } from 'context/ProfileTabContext';
@@ -83,15 +83,15 @@ export default function Profile() {
                 className={`px-2 gap-2 py-1 text-white/50 transition hover:text-white border border-1 border-white/10 hover:border-white rounded-lg flex items-center ${activeTab === "Bookmark" ? "profileActive" : ""
                   }`}
               >
-                <FaRegBookmark /> Bookmark
+                <FaPlus /> WatchList
               </button>
-              <button
+              {/* <button
                 onClick={() => switchProcessorTab("settings")}
                 className={`px-2 gap-2 py-1 text-white/50 transition hover:text-white border border-1 border-white/10 hover:border-white rounded-lg flex items-center ${activeTab === "settings" ? "profileActive" : ""
                   }`}
               >
                 <IoSettingsOutline /> Settings
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

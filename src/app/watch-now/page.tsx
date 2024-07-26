@@ -196,7 +196,7 @@ console.log(progressTime,"====p")
     if (videoRef.current && userId && mediaId &&mediaType) {
       mutation.mutate({
         user_id: Number(userId),
-        media_id: mediaId,
+        media_id: mediaId.toString(),
         media_type: mediaType,
         progress_time: "12",
         status: true,
@@ -300,17 +300,19 @@ console.log(progressTime,"====p")
                         <li>
                           <b className="font-bold">{mediaType === 'movie' ? moment(watchDetials?.release_date).year() : moment(watchDetials?.first_air_date).year()}</b>
                         </li>
-                        <li>
+                        {/* <li>
                           <label className="rounded-full pbgColor text-black font-bold px-2">
                             HD
                           </label>
-                        </li>
+                        </li> */}
                         <li>
-                          <span className="flex items-center gap-2 text-white font-semibold">
+                          <span className="flex items-center gap-2 pColor font-semibold">
                             <FaStar /> {watchDetials?.vote_average?.toFixed(1)}
                           </span>
                         </li>
                         <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
+                      </ul>
+                      <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
                         <li className='text-white'>{watchDetials.certificate}</li>
                         {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen: any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
 

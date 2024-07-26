@@ -3,8 +3,7 @@ import HomeSearchbar from "../HomeSearchbar";
 import { FaRegUser, FaUserCircle } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
 import { GoVideo } from "react-icons/go";
-import { FaRegBookmark } from "react-icons/fa";
-import { IoSettingsOutline } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import AuthForm from "./AuthForm";
@@ -14,7 +13,6 @@ import { logOut } from "@lib/userToken";
 import { IoSearch } from "react-icons/io5";
 import NavBar from "./NavBar";
 import User from "@lib/User";
-import { useAuth } from "context/AuthContext";
 import useRole from "@hooks/useRole";
 import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
@@ -146,14 +144,14 @@ export default function Header() {
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => {handleProfile("Bookmark") }}
                       >
-                        <FaRegBookmark /> Bookmark{" "}
+                        <FaPlus /> WatchList{" "}
                       </button>
-                      <button
+                      {/* <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => handleProfile("settings") }
                       >
                         <IoSettingsOutline /> Settings
-                      </button>
+                      </button> */}
                       <button
                         type="button"
                         className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 "
