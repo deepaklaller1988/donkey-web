@@ -48,7 +48,7 @@ const RatingPopUp = () => {
           `rating?movieId=${movieId}&mediaType=${mediaType}&id=${userId}&ip=${ip}`
         );
         const userRating = response.data?.rating.value;
-        setRating(userRating || 0);
+        setRating(userRating ? userRating  : 0);
         setReviewCount({
           totalReviews: parseInt(response.data?.ratingCount.total),
           average_rating: parseFloat(response.data?.ratingCount.rating).toFixed(2),
@@ -109,9 +109,11 @@ const RatingPopUp = () => {
   });
 
   const handleRating = (rate: number) => {
+    console.log(rate,"rate===")
     if (hasRated) {
       return;
     }
+    
     setRating(rate);
     mutation.mutate();
   };

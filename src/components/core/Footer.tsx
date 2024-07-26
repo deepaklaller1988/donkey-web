@@ -2,6 +2,7 @@ import { BiSolidRightArrowSquare } from "react-icons/bi";
 import { PiXLogoBold } from "react-icons/pi";
 import { FaRedditAlien } from "react-icons/fa6";
 export default function Footer() {
+
     return (
         <div className="w-full mt-20 md:mt-40 footerSet flex flex-col justify-end">
             <div className="w-full flex items-center md:items-end justify-between px-4 flex-col-reverse md:flex-row">
@@ -11,15 +12,15 @@ export default function Footer() {
                             <b className="text-white font-semibold">Links:</b>
                         </li>
                         <li>
-                            <a href="" className="transition flex justify-center md:justify-start items-center gap-2 px-1 md:px-4">Movies <BiSolidRightArrowSquare className="pColor" /></a>
+                            <a href="/media/movie?type=footer" className="transition flex justify-center md:justify-start items-center gap-2 px-1 md:px-4">Movies <BiSolidRightArrowSquare className="pColor" /></a>
                         </li>
                         <div className="hidden md:block">|</div>
                         <li>
-                            <a href="" className="flex  justify-center md:justify-start items-center gap-2 px-1 md:px-4">TV Shows <BiSolidRightArrowSquare className="pColor" /></a>
+                            <a href="/media/tv?type=footer" className="flex  justify-center md:justify-start items-center gap-2 px-1 md:px-4">TV Shows <BiSolidRightArrowSquare className="pColor" /></a>
                         </li>
                         <div className="hidden md:block">|</div>
                         <li>
-                            <a href="" className="flex  justify-center md:justify-start items-center gap-2 px-1 md:px-4">Recently Updated <BiSolidRightArrowSquare className="pColor" /></a>
+                            <a href="/media/both?type=footers" className="flex  justify-center md:justify-start items-center gap-2 px-1 md:px-4">Recently Updated <BiSolidRightArrowSquare className="pColor" /></a>
                         </li>
                     </ul>
                 </section>

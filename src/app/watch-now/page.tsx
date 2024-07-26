@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import Recommended from "@components/Recommended";
@@ -7,12 +7,14 @@ import "./album-detail.css";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { useSearchParams } from "next/navigation";
 import FetchApi from "@lib/FetchApi";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Loader from "@components/core/Loader";
 import moment from "moment";
 import Card from "@components/core/Card";
 import RatingPopUp from "@components/core/RatingPopUp";
-import Link from "next/link";
+import { toasterInfo } from "@components/core/Toaster";
+import API from "@lib/Api";
+import User from "@lib/User";
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
 
@@ -111,12 +113,17 @@ interface Season {
   code: string;
 }
 export default function WatchNow() {
-    const searchParams = useSearchParams();
-    const movieId: any = searchParams.get("id");
-    const mediaType: any = searchParams.get("type");
-    const [selectedSeason, setSelectedSeason] = useState<any>(null);
-    const [selectedEpisode, setSelectedEpisode] = useState<any>(1);
-    const [goToEpisode, setGoToEpisode] = useState<any>("");
+  const videoRef: any = useRef(null);
+  const searchParams = useSearchParams();
+  const userId = User.id
+  const movieId: any = searchParams.get("id");
+  const mediaType: any = searchParams.get("type");
+  const [selectedSeason, setSelectedSeason] = useState<any>(null);
+  const [selectedEpisode, setSelectedEpisode] = useState<any>(1);
+  const [goToEpisode, setGoToEpisode] = useState<any>("");
+  const [progressTime, setProgressTime] = useState<any>("");
+
+
   const {
     isLoading,
     error,
@@ -184,9 +191,44 @@ const {
 
   }
 
-  if(isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading){
-    return(
-        <div>
+  const handleTimeUpdate = (mediaId: any) => {
+    if (videoRef.current) {
+      setProgressTime(videoRef.current.currentTime);
+      mutation.mutate({
+        user_id: Number(userId),
+        media_id: Number(mediaId),
+        media_type: Number(mediaType),
+        progress_time: "12",
+        status: true,
+      });
+    }
+    toasterInfo("hii", 1000, "id")
+  };
+
+  const handlePlay = () => {
+    const mediaId = watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id;
+    if (userId && mediaType) {
+      handleTimeUpdate(mediaId);
+    }
+  };
+  const mutation = useMutation({
+    mutationFn: async (progressData: any) => {
+
+      return await API.post("mediaprogress", progressData);
+    },
+    onSuccess: (data) => {
+      if (data?.message) {
+
+      }
+    },
+    onError: (error: any) => {
+
+    },
+  });
+
+  if (isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading) {
+    return (
+      <div>
         <Loader />
       </div> 
     )
@@ -209,63 +251,78 @@ const {
                 {/*------- vidsrc.me ----- */}
                 {/* src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}${mediaType==='tv' && selectedSeason ? '&season=' + (selectedSeason.season_number || 1) : '&season=1'}${mediaType==='tv' && selectedEpisode ? '&episode=' + selectedEpisode : ''}`}  */}
 
-                {/* --------- vidsrc.to embed link -------- */}
-                <iframe 
-                    src={`https://vidsrc.pro/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id}${mediaType==='tv' ? selectedSeason ? '/' + (selectedSeason.season_number || 1) : '/1' : ''}${mediaType==='tv' ? selectedEpisode ? '/' + selectedEpisode : '/1' : ''}`} 
-                    // style="width: 100%; height: 100%;" 
+                  {/* --------- vidsrc.to embed link -------- */}
+                  <iframe
+                    src={`https://vidsrc.pro/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id}${mediaType === 'tv' ? selectedSeason ? '/' + (selectedSeason.season_number || 1) : '/1' : ''}${mediaType === 'tv' ? selectedEpisode ? '/' + selectedEpisode : '/1' : ''}`}
                     className="w-full mt-5 rounded-lg videoFrame"
                     title="Vidsrc video player"
                     frameBorder="0" 
                     referrerPolicy="origin" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen>
-                    </iframe>
+                    allowFullScreen
+                    ref={videoRef}
+                    onTimeUpdate={() => handleTimeUpdate(watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id)}
+                  ></iframe>
+
+                </div>
+              </div>
+              <div className="absolute w-full z-0 left-0 bottom-0">
+                <img src="/assets/images/slides/shadow.png" alt="shadow" />
               </div>
             </div>
-            <div className="absolute w-full z-0 left-0 bottom-0">
-              <img src="/assets/images/slides/shadow.png" alt="shadow" />
-            </div>
-          </div>
-        </section>
-      </div> 
-      <div className="w-full pt-32">
-        <div className="homewrapper">
-        <div className="w-full flex flex-col lg:flex-row gap-5">
-        <div className="w-full flex flex-col md:flex-row gap-5">
-              <section className="min-w-[270px] max-w-[270px]">
-                <img
-                  className="w-full rounded-lg"
-                  src={`https://image.tmdb.org/t/p/original${watchDetials?.poster_path}`}
-                  alt="album"
-                />
-              </section>
-              <section>
-                <div className="w-full flex flex-col lg:flex-row gap-5 justify-between flex-wrap lg:flex-nowrap">
-                  <section>
-                    <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
-                      <li>
-                        <b className="font-bold">{mediaType === 'movie' ? moment(watchDetials?.release_date).year() : moment(watchDetials?.first_air_date).year()}</b>
-                      </li>
-                      <li>
-                        <label className="rounded-full pbgColor text-black font-bold px-2">
-                          HD
-                        </label>
-                      </li>
-                      <li>
-                        <span className="flex items-center gap-2 text-white font-semibold">
-                          <FaStar /> {watchDetials?.vote_average?.toFixed(1)}
-                        </span>
-                      </li>
-                      <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
-                      <li className='text-white'>{watchDetials.certificate}</li>
-                      {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
-                     
-                     
-                    </ul>
-                    <h3 className="text-white text-[25px] font-semibold">
-                      {watchDetials?.title || watchDetials?.name}
-                    </h3>
-                  </section>
+          </section>
+        </div>
+        <div className="w-full pt-32">
+          <div className="homewrapper">
+            <div className="w-full flex flex-col lg:flex-row gap-5">
+              <div className="w-full flex flex-col md:flex-row gap-5">
+                <section className="min-w-[270px] max-w-[270px]">
+                  <img
+                    className="w-full rounded-lg"
+                    src={`https://image.tmdb.org/t/p/original${watchDetials?.poster_path}`}
+                    alt="album"
+                  />
+                </section>
+                <section>
+                  <div className="w-full flex flex-col lg:flex-row gap-5 justify-between flex-wrap lg:flex-nowrap">
+                    <section>
+                      <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
+                        <li>
+                          <b className="font-bold">{mediaType === 'movie' ? moment(watchDetials?.release_date).year() : moment(watchDetials?.first_air_date).year()}</b>
+                        </li>
+                        <li>
+                          <label className="rounded-full pbgColor text-black font-bold px-2">
+                            HD
+                          </label>
+                        </li>
+                        <li>
+                          <span className="flex items-center gap-2 text-white font-semibold">
+                            <FaStar /> {watchDetials?.vote_average?.toFixed(1)}
+                          </span>
+                        </li>
+                        <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
+                        <li className='text-white'>{watchDetials.certificate}</li>
+                        {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen: any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
+
+
+                      </ul>
+                      <h3 className="text-white text-[25px] font-semibold">
+                        {watchDetials?.title || watchDetials?.name}
+                      </h3>
+                    </section>
+                    {/* <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
+                    <span className="flex gap-1">
+                      <FaStar className="text-amber-500 w-5 h-5" />
+                      <FaStar className="text-amber-500 w-5 h-5" />
+                      <FaStar className="text-amber-500 w-5 h-5" />
+                      <FaStar className="text-amber-500 w-5 h-5" />
+                      <FaStar className="text-white/20 w-5 h-5" />
+                    </span>
+                    <p className="text-white/50 text-sm">
+                      <b className="text-sm">8.56</b> of{" "}
+                      <b className="text-sm">10</b> (723 reviews)
+                    </p>
+                  </section> */}
                   <RatingPopUp/>
                 </div>
                 <div className="w-full">
@@ -278,31 +335,33 @@ const {
                     <p>
                       Type:{" "}
                       <label className="text-white font-light">
-                        <Link href={`/filters?mediaType=${mediaType}`} className="transition hover:text-amber-500">
+                        <a href="" className="transition hover:text-amber-500">
                           {mediaType.toUpperCase()}
-                        </Link>
+                        </a>
                       </label>
                     </p>
                     <p>
                       Country:{" "}
                       <label className="text-white font-light">
-                        {watchDetials?.production_countries && watchDetials?.production_countries.length > 0 ? watchDetials?.production_countries.map((gen:any, index:number) => (<span key={index}>
-                          <Link href={`/filters?mediaType=${mediaType}&country=${gen.iso_3166_1}`} className="transition hover:text-amber-500">
-                            {gen.name}
-                          </Link>
-                      {index < watchDetials.production_countries.length - 1 && ', '}
-                    </span>)) : ""}
+                        <a href="" className="transition hover:text-amber-500">
+                        {watchDetials?.production_countries && watchDetials?.production_countries.length > 0 ? watchDetials?.production_countries.map((gen:any) => gen.name).join(", ") : ""}
+                        </a>
+                        {/* ,
+                        <a href="" className="transition hover:text-amber-500">
+                          Spain
+                        </a> */}
                       </label>
                     </p>
                     <p>
                       Genre:{" "}
-                      <label className="text-white font-light"> 
-                        {watchDetials?.genres && watchDetials?.genres.length > 0 ? watchDetials?.genres.map((gen:any, index:number) => (<span key={index}>
-                          <Link href={`/filters?mediaType=${mediaType}&genre=${gen.id}`} className="transition hover:text-amber-500">
-                            {gen.name}
-                          </Link>
-                      {index < watchDetials.genres.length - 1 && ', '}
-                    </span>)) : ""}
+                      <label className="text-white font-light">
+                        <a href="" className="transition hover:text-amber-500">
+                        {watchDetials?.genres && watchDetials?.genres.length > 0 ? watchDetials?.genres.map((gen:any) => gen.name).join(", ") : ""}
+                        </a>
+                        {/* ,{" "}
+                        <a href="" className="transition hover:text-amber-500">
+                          Comedy
+                        </a> */}
                       </label>
                     </p>
                     <p>
@@ -318,21 +377,36 @@ const {
                     <p>
                       Production:{" "}
                       <label className="text-white font-light">
+                        <a href="" className="transition hover:text-amber-500">
                         {watchDetials.production_companies && watchDetials.production_companies.length > 0 ? watchDetials.production_companies.map((gen:any) => gen.name).join(", ") : ""}
+                        </a>
                       </label>
                     </p>
                     <p>
                       Cast:{" "}
                       <label className="text-white font-light">
+                        <a href="" className="transition hover:text-amber-500">
                         {creditDetials?.cast && creditDetials?.cast.length > 0 ? creditDetials?.cast.slice(0,5).map((gen:any) => gen.name).join(", ") : ""}
+                        </a>
                       </label>
                     </p>
                     <p>
                       Tagline:{" "}
                       <label className="text-white font-light">
+                        <a href="" className="transition hover:text-amber-500">
                         {watchDetials.tagline ? watchDetials.tagline : "N/A"}
+                        </a>
                       </label>
                     </p>
+                    {/* <p className="text-white/50 font-light pt-2">
+                      A group of high-end professional thieves start to feel the
+                      heat from the LAPD when they unknowingly leave a verbal
+                      clue at their latest heist. Ccraig of the creek online tv
+                      download, watch craig of the creek online, craig of the
+                      creek watch online, craig of the creek free download,
+                      craig of the creek online streaming, craig of the creek
+                      download free
+                    </p> */}
                   </div>
                 </div>
               </section>
@@ -363,7 +437,7 @@ const {
                   {mediaType === 'movie' ? (
                     <>
                     <li className="episodeActive">
-                      <div className="text-[14px] py-3 px-4 block cursor-pointer">
+                      <div className="text-[14px] py-3 px-4 block">
                         Movie 1
                       </div>
                       <span>{moment(watchDetials?.release_date).format('MMM DD, YYYY')}</span>
@@ -373,7 +447,7 @@ const {
                     <>
                     {episodesList && episodesList.episodes && episodesList.episodes.length > 0 ? episodesList.episodes.map((item:any) =>(<>
                       <li key={item?.episode_number}>
-                      <div className={`text-[14px] py-3 px-4 block cursor-pointer ${item?.episode_number === selectedEpisode ? 'episodeActive' : ""}`} onClick={()=>setSelectedEpisode(item?.episode_number)}>
+                      <div className={`text-[14px] py-3 px-4 block ${item?.episode_number === selectedEpisode ? 'episodeActive' : ""}`} onClick={()=>setSelectedEpisode(item?.episode_number)}>
                         Episode {item?.episode_number}: {item?.name}
                       </div>
                       <span>{moment(item?.air_date).format("DD/MM/YYYY")}</span>

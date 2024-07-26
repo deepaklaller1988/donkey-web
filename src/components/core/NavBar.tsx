@@ -58,7 +58,7 @@ export default function NavBar({ openSideBar ,toggleSidebar}: any) {
                 <div className='navInners w-full'>
                 <Link href="" className="rounded-lg block p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Genre</Link>
                 <section className='absolute p-2 flex flex-wrap rounded-lg'>
-                    {movieGenre && movieGenre.length > 0 ? movieGenre.map((item: any) =>(
+                    {movieGenre && movieGenre?.length > 0 ? movieGenre?.map((item: any) =>(
                         <div key={item.id}>
                             <Link href={`/filters?genre=${item.id}`} className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">{item.name}</Link>
                         </div>
@@ -68,7 +68,7 @@ export default function NavBar({ openSideBar ,toggleSidebar}: any) {
                 <div className='navInners w-full'>
                 <Link href="" className="rounded-lg block p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Country</Link>
                 <section className='absolute p-2 flex flex-wrap rounded-lg'>
-                {countries && countries.length > 0 ? countries.map((item: any) =>(
+                {countries && countries?.length > 0 ? countries?.map((item: any) =>(
                         <div key={item.iso_3166_1}>
                             <Link href={`/filters?country=${item.iso_3166_1}`} className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">{item.english_name}</Link>
                         </div>

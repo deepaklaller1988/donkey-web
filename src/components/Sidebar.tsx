@@ -25,6 +25,7 @@ export default function Sidebar({mediaType}: any) {
         queryKey: ['top-10', mediaType, interval],
         queryFn: () => fetchTop10List(mediaType, interval),
     });
+
     return (
         <div className="w-full">
             <div className="flex items-center gap-4 justify-between">
@@ -36,7 +37,7 @@ export default function Sidebar({mediaType}: any) {
                 </section>
             </div>
             <ul className="flex flex-col gap-3 py-2 mt-[10px]">
-                {topList && topList.length > 0 ? topList.slice(0,10).map((item: any, index:number) => (
+                {topList && topList.length > 0 ? topList?.slice(0,10)?.map((item: any, index:number) => (
                     <SidebarCard key={item.id} movieId={item.id} mediaType={mediaType} index={index+1} />
                 )) : ""}
             </ul>
