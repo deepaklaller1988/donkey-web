@@ -73,7 +73,7 @@ const fetchFilteredData = async (selectedOptions: any, page: number) => {
 
 export default function MediaPage({ params }: { params: { slug: string } }) {
     const {slug} = params
-    useTitle(slug === 'search' ? "Results"  :`Latest ${slug === 'movie' ? "Movies" : "TV Shows"}`);
+    useTitle(slug === 'search' ? "Results"  : slug === 'recent' ? "Recently Updated" :`Latest ${slug === 'movie' ? "Movies" : "TV Shows"}`);
     const searchParams = useSearchParams();
     const searchQuery: any = searchParams.get("query");
     const countryCode: any = searchParams.get("country");
