@@ -1,7 +1,7 @@
 "use client"
 import '../../node_modules/react-slideshow-image/dist/styles.css';
 import { FaRegCirclePlay } from "react-icons/fa6";
-import { FaRegBookmark } from "react-icons/fa";
+import { FaPlus, FaRegBookmark } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { BsFire } from "react-icons/bs";
 import React, { useEffect, useState } from 'react';
@@ -156,7 +156,7 @@ const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: str
 }
 
 const indicators = (index:any) => (
-  <div className="indicator">
+  <div className="indicator hidden">
     <div className='transition p-1 bg-white rounded-full mx-1 cursor-pointer'></div>
   </div>
 );
@@ -187,18 +187,18 @@ const indicators = (index:any) => (
                     <h2 className='text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:pb-2'>{item.title ? item.title : item.name}</h2>
                     <ul className='py-1 flex flex-wrap items-center text-white gap-x-3'>
                       <li><b className='font-bold'>{item.release_date ? moment(item.release_date).year() : ""}</b></li>
-                      <li><label className='rounded-full pbgColor  text-black font-bold px-2'>HD</label></li>
-                      <li><span className='flex items-center gap-2 text-white font-semibold'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
+                      {/* <li><label className='rounded-full pbgColor  text-black font-bold px-2'>HD</label></li> */}
+                      <li><span className='flex items-center gap-2 pColor font-semibold pColor'><FaStar/>{item?.vote_average.toFixed(1)}</span></li>
                       {item.runtime && (<li>{item.runtime} min</li>)}
                      {item.certificate &&                     
                      <li><label className='text-white'>{item.certificate}</label></li>}
                       {item.genres && item.genres.length > 0 ? item.genres.map((gen:any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       </ul>
-                      <p className='md:text-[16px] lg:text-lg text-white hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
+                      <p className='text-white hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0,250) + "..." : item?.overview}</p>
                   <section className='flex mt-4 gap-4'>
                     <button className='flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition' onClick={()=> router.push(`/watch-now?type=${item.media_type?.toLowerCase()}&id=${item.id}`)}>Watch Now <FaRegCirclePlay className='text-xl'/></button>
-                    <div className="relative flex gap-4">
-                      <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold' onClick=     {handleWatchPopup}><FaRegBookmark className='w-5 h-5' /> Bookmark</button>
+                    <div className="relative flex gap-4"  onMouseLeave={()=> setIsOpen(false)}>
+                      <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold' onClick=     {handleWatchPopup}><FaPlus className='w-5 h-5' /> WatchList</button>
                           <div className={`profileLinks top-[40px] absolute bg-zinc-800 rounded-lg left-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
                               <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'watching')} >Watching </div>
                               <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'planning-to-watch')} >Plan to Watch</div>

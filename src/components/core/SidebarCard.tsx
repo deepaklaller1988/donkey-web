@@ -32,7 +32,7 @@ function SidebarCard({movieId,mediaType,index}: any) {
         <SidebarSkeleton index={index} />
       )
     }
-    
+
 
   return (
     <>
@@ -59,7 +59,7 @@ function SidebarCard({movieId,mediaType,index}: any) {
                 .<li className="text-sm">SS{cardDetials?.last_episode_to_air?.season_number}</li></>)} 
             </ul>
             <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">
-            {mediaType === 'Movie' ? moment(cardDetials?.release_date).year() : moment(cardDetials?.last_air_date).year()}
+            {mediaType === 'Movie' ? moment(cardDetials?.release_date).year() : cardDetials?.last_air_date ? new Date(cardDetials.last_air_date).getFullYear() : ''}
             </label>
           </div>
         </section>

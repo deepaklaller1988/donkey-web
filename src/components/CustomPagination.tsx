@@ -54,7 +54,7 @@ const CustomPagination: React.FC<PaginationProps> = ({
             Previous
           </button>
           <span className='text-white mt-2'>
-            Page {currentPage} of {Math.round(totalPages)}
+            Page {currentPage} of {Math.round(pages)}
           </span>
           <button
             onClick={handleNext}

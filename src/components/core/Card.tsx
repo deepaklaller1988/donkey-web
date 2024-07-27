@@ -61,7 +61,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
 
 
 
-function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type, queryClient }: any) {
+function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type, queryClient}: any) {
 
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false)
@@ -78,7 +78,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
     if (!User.isUserLoggedIn) {
       toasterError("Please login or signup to use this feature.",3000,"id")
     } else {
-      setIsOpen(true);
+      setIsOpen(!isOpen);
     }
   }
 
@@ -159,21 +159,21 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
     <>
       {movieDetials && (<>
         <li key={movieId} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 cursor-pointer cardSet relative" >
-          <div className="relative w-full">
+          <div className="relative w-full" onMouseLeave={() => setIsOpen(false)}>
             <span className="relative folderOpened" onClick={() => router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
-              <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" />
+              {/* <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" /> */}
               <img
                 className="rounded-xl w-full"
                 src={`${movieDetials?.poster_path ? "https://image.tmdb.org/t/p/original" + movieDetials?.poster_path : "/assets/images/miss.jpg"}`}
                 alt="album"
               />
-              <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
+              {/* <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
                 {quality ? quality : "HD"}
-              </label>
+              </label> */}
             </span>
             {isBookmarked && (
-              <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl" onClick={handleWatchPopup}>
-                <div className="relative flex gap-4">
+              <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl"  onClick={handleWatchPopup}>
+                <div className="relative flex gap-4" >
                   <FaFolder className="w-4 h-4 m-1 " />
                   <div className={`profileLinks top-[20px] absolute bg-zinc-950 rounded-lg right-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
                     <div className={`${bookmark_type == "watching" ? "pbgColor transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
@@ -191,7 +191,8 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                 {/* . <li className="text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li> */}
               </ul>
             </section>
-            <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]" onMouseLeave={() => setIsOpen(false)}>
+    
+            <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]">
               <div className="w-full p-5 relative">
                 <section className="pr-12">
                   <h2 className="text-white text-lg">{movieDetials?.title || movieDetials?.name}</h2>
@@ -199,24 +200,25 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                     <li>
                       <b className="font-bold text-sm">{mediaType === 'Movie' ? moment(movieDetials?.release_date).year() : moment(movieDetials?.first_air_date).year()}</b>
                     </li>
-                    <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>
                     <li>
-                      <label className="flex items-center gap-2 text-white text-sm font-semibold">
+                      <label className="flex items-center gap-2 pColor text-sm font-semibold">
                         <FaStar /> {movieDetials?.vote_average?.toFixed(1)}
                       </label>
                     </li>
+                    <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>
+                   
                     <li>
-                      <label className=" text-sm rounded-full pbgColor text-black font-bold px-2">
+                      {/* <label className=" text-sm rounded-full pbgColor text-black font-bold px-2">
                         {quality ? quality : "HD"}
-                      </label>
+                      </label> */}
                     </li>
-                    {movieDetials.certificate &&
+                    {/* {movieDetials.certificate &&
                       <li>
                         <label className='text-white'>
                           {movieDetials.certificate}
                           </label>
                       </li>
-                    }
+                    } */}
 
                   </ul>
                 </section>
@@ -259,6 +261,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                 </button>
               </div>
             </div>
+
           </div>
         </li>
       </>)}

@@ -115,9 +115,14 @@ body {
 .sliderContent {
   width: 100%;
 }
-
+@keyframes sliderContent {
+  0% {opacity:0;}
+  50% {opacity:0;}
+  100% {opacity:1;}
+}
 .sliderContentSet {
   max-width: 800px;
+  animation: sliderContent 1s;
 }
 
 ul.indicators {
@@ -204,9 +209,12 @@ section.listTop10:hover b {
 
 .footerSet {
   background-image: url(/assets/images/donkeyF.png);
-  height: 425px;
-  background-size: cover;
+  height: 475px;
+  background-size: 100% auto;
   position: relative;
+  background-color: #151515;
+  background-position: center bottom 80px;
+  background-repeat: no-repeat
 }
 
 .f-Links a:hover {

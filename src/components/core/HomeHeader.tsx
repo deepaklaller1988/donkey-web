@@ -3,18 +3,16 @@ import HomeSearchbar from "../HomeSearchbar";
 import { FaRegUser, FaUserCircle } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
 import { GoVideo } from "react-icons/go";
-import { FaRegBookmark } from "react-icons/fa";
-import { IoSettingsOutline } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import AuthForm from "./AuthForm";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { logOut } from "@lib/userToken";
 import { IoSearch } from "react-icons/io5";
 import NavBar from "./NavBar";
 import User from "@lib/User";
-import { useAuth } from "context/AuthContext";
 import useRole from "@hooks/useRole";
 import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
@@ -24,13 +22,14 @@ export default function Header() {
   const path = usePathname();
   const route = path.split("/");
   const [roleLoading, roleData] = useRole();
-
   const { setActiveTab } = useProfileTab()
   const [isOpen, isClose] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [OpenSearch, setOpenSearch] = useState(false);
   const [openSideBar, setOpenSidebar] = useState(false);
-
+  const profileRef:any = useRef(null);
+  
+  
   const isHome = () => {
     return route.includes("home") ? true : false;
   };
@@ -38,6 +37,13 @@ export default function Header() {
   const toggleProfile = () => {
     setOpenProfile(!OpenProfile);
   };
+
+  const handleClickOutside = (event:any) => {
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setOpenProfile(false); 
+    }
+  };
+
   const toggleSearch = () => {
     setOpenSearch(!OpenSearch);
   };
@@ -66,6 +72,13 @@ export default function Header() {
 
     }
   }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -96,7 +109,9 @@ export default function Header() {
             >
               <HomeSearchbar />
             </div>
-            <section className="flex justify-end min-w-auto md:min-w-[196px]">
+            <section 
+              ref={profileRef}
+            className="flex justify-end min-w-auto md:min-w-[196px]" >
               {User.isUserLoggedIn ? (
                 <>
                   <div className="relative flex gap-4">
@@ -106,7 +121,7 @@ export default function Header() {
                     >
                       <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                     </button>
-                    <button onClick={toggleProfile} className="text-white">
+                    <button onClick={toggleProfile} className="text-white" >
                       <VscAccount className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
                     <div
@@ -129,14 +144,14 @@ export default function Header() {
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => {handleProfile("Bookmark") }}
                       >
-                        <FaRegBookmark /> Bookmark{" "}
+                        <FaPlus /> WatchList{" "}
                       </button>
-                      <button
+                      {/* <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => handleProfile("settings") }
                       >
                         <IoSettingsOutline /> Settings
-                      </button>
+                      </button> */}
                       <button
                         type="button"
                         className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 "

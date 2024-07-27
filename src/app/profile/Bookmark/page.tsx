@@ -99,10 +99,6 @@ export default function BookmarkPage() {
           >
             Completed
           </div>{" "}
-          {/* /
-            <div>
-              <FaRegFolderOpen className="text-white/60 hover:text-white transition" />
-            </div> */}
         </div>
         {
           isLoading ? (<>
