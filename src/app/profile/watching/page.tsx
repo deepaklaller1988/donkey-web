@@ -4,6 +4,6 @@ import React from 'react'
 export default function page() {
   return (
 
-        <WatchingPage/>
+    <WatchingPage type="profile" />
   )
 }

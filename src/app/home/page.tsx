@@ -1,19 +1,18 @@
 "use client";
 import "./home.css";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useQuery, useQueries } from '@tanstack/react-query';
+import { useRouter } from "next/navigation";
+import { useQuery } from '@tanstack/react-query';
 import HomeSlider from "@components/HomeSlider";
 import Sidebar from "@components/Sidebar";
 import Card from "@components/core/Card";
 import FetchApi from "@lib/FetchApi";
-import { useState } from "react";
+import {  useState } from "react";
 import useTitle from "@hooks/useTitle";
 import SocialButton from "@components/SocialButton";
 import Loader from "@components/core/Loader";
-import User from "@lib/User";
 import WatchingPage from "@components/core/WatchingPage";
-import { useProfileTab } from "context/ProfileTabContext";
-import { getToken } from "@lib/userToken";
+import useRole from "@hooks/useRole";
+import { useAuth } from "context/AuthContext";
 
 const fetchPopularLists = async (mediaType: string) => {
     try {
@@ -43,7 +42,9 @@ const fetchLatestList = async (mediaType: string) => {
 
 export default function Home() {
     const router = useRouter()
-    const token = getToken
+    const [roleLoading, roleData] = useRole();
+
+    const {token}:any=useAuth()
     useTitle("Home");
     const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
     const {
@@ -54,7 +55,6 @@ export default function Home() {
         queryKey: ['popular', selectedMedia],
         queryFn: () => fetchPopularLists(selectedMedia),
     });
-
     const {
         isLoading: tvLoading,
         data: latestTVList,
@@ -72,14 +72,13 @@ export default function Home() {
     });
 
 
-    if (isLoading || movieLoading || tvLoading) {
+    if (isLoading || movieLoading || tvLoading || roleLoading) {
         return (
             <div>
                 <Loader />
             </div>
         )
     }
-
     return (
         <div className="w-full">
             <HomeSlider />
@@ -91,9 +90,9 @@ export default function Home() {
                 <div className="homewrapper">
                     <div className="containerHub flex gap-5 flex-col lg:flex-row">
                         <div className="w-full">
-                            {token && (<>
-                                <h3 className="text-white text-[25px] font-semibold">CONTINUE WATCHING</h3>
-                                <WatchingPage />
+                        {token && (
+                            <>
+                                <WatchingPage type={"home"}/>
                             </>)
 
                             }

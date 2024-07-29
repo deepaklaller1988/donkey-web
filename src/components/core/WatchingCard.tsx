@@ -6,7 +6,8 @@ import { FaStar } from "react-icons/fa";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import CardSkeleton from "./CardSkeleton";
-import FetchApi from "@lib/FetchApi";
+import FetchApi from "@lib/FetchApi";   
+
 const apiKey = process.env.NEXT_PUBLIC_MDBKEY
 
 const fetchDetails = async (movieId: number, mediaType: string) => {
@@ -35,7 +36,8 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
     }
   };
 
-function WatchingCard({ movieId, mediaType, handleDelete,id }: any) {
+
+function WatchingCard({ movieId, mediaType, handleDelete,id,queryClient }: any) {
     const router = useRouter(); 
 
     const {
@@ -44,10 +46,11 @@ function WatchingCard({ movieId, mediaType, handleDelete,id }: any) {
         data: data,
     } =  useQuery<any>({
         queryKey: ["movie-details", movieId, mediaType],
-        queryFn: () => fetchDetails(movieId,mediaType)
+        queryFn: () => fetchDetails(movieId,mediaType),
+        
     });
 
-    if (isLoading) {
+    if (isLoading ) {
         return (
             <CardSkeleton />
         )
@@ -80,7 +83,7 @@ function WatchingCard({ movieId, mediaType, handleDelete,id }: any) {
                         <section className="py-2">
                             <b className="text-white font-semibold">{(data?.title && data.title.length > 40) ? data?.title?.slice(0, 40) + "..." : (data?.name && data?.name.length > 40) ? data?.name?.slice(0, 40) + "..." : data?.name ? data?.name : data?.title}</b>
                             <ul className="text-gray-500 flex gap-2">
-                                <li className="text-sm">{mediaType}</li>.<li className="text-sm">{mediaType === 'Movie' ? moment(data?.release_date).year() : "SS" + data?.last_episode_to_air?.season_number}</li>
+                                <li className="text-sm">{mediaType}</li>.<li className="text-sm">{mediaType === 'movie' ? moment(data?.release_date).year() : "SS" + data?.last_episode_to_air?.season_number}</li>
                             </ul>
                         </section>
 

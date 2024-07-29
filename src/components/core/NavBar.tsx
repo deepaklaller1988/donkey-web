@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import React from 'react'
-import { IoMdClose } from "react-icons/io";
 import FetchApi from "@lib/FetchApi";
 import { useQuery } from '@tanstack/react-query';
 

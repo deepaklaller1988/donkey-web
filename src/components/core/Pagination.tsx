@@ -7,7 +7,6 @@ interface PaginationProps {
 }
 
 const Pagination: React.FC<PaginationProps> = ({ totalPages, onPageChange, currentPage }) => {
-    // Ensure the total pages do not exceed 500
     const maxPages = Math.min(totalPages, 500);
 
     const handlePageChange = (page: number) => {
@@ -20,7 +19,6 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, onPageChange, curre
         let startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
         let endPage = Math.min(startPage + pagesToShow - 1, maxPages);
 
-        // Adjust startPage if endPage is less than pagesToShow
         if (endPage - startPage + 1 < pagesToShow) {
             startPage = Math.max(1, endPage - pagesToShow + 1);
         }

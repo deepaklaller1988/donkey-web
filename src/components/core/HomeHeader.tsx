@@ -21,7 +21,6 @@ export default function Header() {
   const router = useRouter();
   const path = usePathname();
   const route = path.split("/");
-  const [roleLoading, roleData] = useRole();
   const { setActiveTab } = useProfileTab()
   const [isOpen, isClose] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);

@@ -7,12 +7,14 @@ import { toasterError, toasterSuccess } from "@components/core/Toaster";
 import Loader from "@components/core/Loader";
 import CustomPagination from "@components/CustomPagination";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useProfileTab } from "context/ProfileTabContext";
 
 
 const fetchMovie = async (userId: any, page: number, limit: number) => {
     try {
         const response = await API.get(`mediaprogress?user_id=${userId}&page=${page}&limit=${limit}&pagination=${true}`);
-        const data = await response.data
+        const data = response
         return data;
     } catch (error) {
         console.error('Failed to fetch data from the primary API:', error);
@@ -28,9 +30,13 @@ const deleteMovies = async (id: any) => {
         throw error;
     }
 };
-export default function WatchingPage() {
+
+export default function WatchingPage({ type }: any) {
     const UserId = User.id
     const queryClient: any = useQueryClient()
+    const router=useRouter()
+    const {  setActiveTab } = useProfileTab();
+
     const [currentPage, setCurrentPage] = useState(1);
     const {
         isLoading: isMediaLoading,
@@ -38,14 +44,19 @@ export default function WatchingPage() {
     } = useQuery<any>({
         queryKey: ["watch-movies", UserId, currentPage],
         queryFn: () => fetchMovie(UserId, currentPage, 10),
+        enabled: !!(UserId && currentPage),
+
+
     });
     const totalPages = mediaData?.count
-
     const handleDelete = async (id: any) => {
         try {
             await deleteMovies(id);
             toasterSuccess("Delete Successfully from Continue Watching.", 3000, "id");
-            queryClient.invalidateQueries(["watch-movies", UserId]);
+            if (mediaData?.data?.length === 1 && currentPage > 1) {
+                setCurrentPage((prevPage) => prevPage - 1);
+            }
+            queryClient.invalidateQueries(["watch-movies", UserId, currentPage]);
         } catch (error) {
             toasterError("Failed to delete movie.", 3000, "id");
         }
@@ -57,35 +68,50 @@ export default function WatchingPage() {
 
     return (
         <>
-
+            {type == "home" && mediaData && mediaData?.data?.length > 0 &&
+                <h3 className="text-white text-[25px] font-semibold">CONTINUE WATCHING</h3>
+            }
             <div className="w-full py-2 mt-10 ml-2">
                 <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-                    {mediaData && mediaData?.length > 0 ? (
-                        mediaData?.map((item: any) => (
+                    {mediaData && mediaData?.data?.length > 0 ? (
+                        mediaData?.data?.map((item: any) => (
                             <WatchingCard
                                 key={item?.id}
                                 movieId={item?.media_id}
                                 mediaType={item?.media_type}
                                 id={item?.id}
                                 handleDelete={handleDelete}
+                                queryClient={queryClient}
                             />
                         ))
                     ) : (
-                        <p className="text-white text-sm font-semibold ml-2">No Continue Watching Yet !</p>
+                        <>
+                            <div className="flex justify-center items-center h-full">
+                                {type == "profile" && (
+                                    <h3 className="text-white text-[20px] font-semibold mb-6">No Continue Watching Yet !</h3>
+                                )}
+                            </div>
+                        </>
                     )}
 
                 </ul>
 
-                <CustomPagination
-                    currentPage={currentPage}
-                    totalItems={totalPages}
-                    totalPages={totalPages}
-                    itemsPerPage={10}
-                    onPageChange={(page: number) => setCurrentPage(page)}
-                />
+
             </div>
 
-
+            {type == "profile" && <CustomPagination
+                currentPage={currentPage}
+                totalItems={totalPages}
+                totalPages={totalPages}
+                itemsPerPage={10}
+                onPageChange={(page: number) => setCurrentPage(page)}
+            />
+            }
+            {type == "home" &&
+                <section className="flex justify-center pt-10 mb-8">
+                    <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" onClick={() =>{ setActiveTab("watching"),router.push(`/profile`)}}>View More</button>
+                </section>
+            }
         </>
 
     )
