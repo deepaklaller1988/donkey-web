@@ -144,7 +144,7 @@ export default function Header() {
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => {handleProfile("Bookmark") }}
                       >
-                        <FaPlus /> WatchList{" "}
+                        <FaPlus /> My List{" "}
                       </button>
                       {/* <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"

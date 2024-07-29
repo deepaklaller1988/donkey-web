@@ -92,7 +92,7 @@ function WatchingCard({ movieId, mediaType, quality, handleDelete,id, queryClien
                                         <li>
                                             <b className="font-bold text-sm">{mediaType === 'Movie' ? moment(data?.release_date).year() : moment(data?.first_air_date).year()}</b>
                                         </li>
-                                        <li className=" text-sm">{mediaType === 'Movie' ? data?.runtime + " min" : "EP" + data?.last_episode_to_air?.episode_number}</li>
+                                        {/* <li className=" text-sm">{mediaType === 'Movie' ? data?.runtime + " min" : "EP" + data?.last_episode_to_air?.episode_number}</li> */}
                                         <li>
                                             <label className="flex items-center gap-2 pColor text-sm font-semibold">
                                                 <FaStar /> {data?.vote_average?.toFixed(1)}

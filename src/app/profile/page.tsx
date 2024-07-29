@@ -83,7 +83,7 @@ export default function Profile() {
                 className={`px-2 gap-2 py-1 text-white/50 transition hover:text-white border border-1 border-white/10 hover:border-white rounded-lg flex items-center ${activeTab === "Bookmark" ? "profileActive" : ""
                   }`}
               >
-                <FaPlus /> WatchList
+                <FaPlus /> My List
               </button>
               {/* <button
                 onClick={() => switchProcessorTab("settings")}
