@@ -1,5 +1,4 @@
 "use client"
-import { FaPlayCircle, FaFolder } from "react-icons/fa";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { TiDelete } from "react-icons/ti";
 import { useQuery } from '@tanstack/react-query';
@@ -36,7 +35,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
     }
   };
 
-function WatchingCard({ movieId, mediaType, quality, handleDelete,id, queryClient }: any) {
+function WatchingCard({ movieId, mediaType, handleDelete,id }: any) {
     const router = useRouter(); 
 
     const {
@@ -53,6 +52,7 @@ function WatchingCard({ movieId, mediaType, quality, handleDelete,id, queryClien
             <CardSkeleton />
         )
     }
+
     return (
         <>
             {data && (<>
@@ -67,9 +67,9 @@ function WatchingCard({ movieId, mediaType, quality, handleDelete,id, queryClien
                                 src={`${data?.poster_path ? "https://image.tmdb.org/t/p/original" + data?.poster_path : "/assets/images/miss.jpg"}`}
                                 alt="album"
                             />
-                            <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
+                            {/* <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
                                 {quality ? quality : "HD"}
-                            </label>
+                            </label> */}
                         </span>
                         <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl" >
                             <div className="relative flex gap-4" >
@@ -90,18 +90,19 @@ function WatchingCard({ movieId, mediaType, quality, handleDelete,id, queryClien
                                     <h2 className="text-white text-lg">{data?.title || data?.name}</h2>
                                     <ul className="py-1 flex flex-wrap items-center text-white gap-4 font-light">
                                         <li>
-                                            <b className="font-bold text-sm">{mediaType === 'Movie' ? moment(data?.release_date).year() : moment(data?.first_air_date).year()}</b>
+                                            <b className="font-bold text-sm !text-white">{mediaType === 'Movie' ? moment(data?.release_date).year() : moment(data?.first_air_date).year()}</b>
                                         </li>
-                                        {/* <li className=" text-sm">{mediaType === 'Movie' ? data?.runtime + " min" : "EP" + data?.last_episode_to_air?.episode_number}</li> */}
                                         <li>
                                             <label className="flex items-center gap-2 pColor text-sm font-semibold">
                                                 <FaStar /> {data?.vote_average?.toFixed(1)}
                                             </label>
                                         </li>
+                                        <li className=" text-sm">{mediaType === 'movie' ? data?.runtime + " min" : "EP" + data?.last_episode_to_air?.episode_number}</li>
+
                                         <li>
-                                            <label className=" text-sm rounded-full pbgColor text-black font-bold px-2">
+                                            {/* <label className=" text-sm rounded-full pbgColor text-black font-bold px-2">
                                                 {quality ? quality : "HD"}
-                                            </label>
+                                            </label> */}
                                         </li>
                                         {data.certificate &&
                                             <li>
@@ -123,7 +124,6 @@ function WatchingCard({ movieId, mediaType, quality, handleDelete,id, queryClien
                                                 </div>
                                             </div> */}
                                 </label>
-
                             </div>
                             <div className="w-full p-5 border-t border-1 border-white/5 text-white/50">
                                 <p>
@@ -148,7 +148,6 @@ function WatchingCard({ movieId, mediaType, quality, handleDelete,id, queryClien
                                 </button>
                             </div>
                         </div>
-
                     </div>
                 </li>
             </>)}

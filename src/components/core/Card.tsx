@@ -61,7 +61,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
 
 
 
-function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type, queryClient}: any) {
+function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type, queryClient }: any) {
 
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false)
@@ -76,7 +76,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
 
   const handleWatchPopup = () => {
     if (!User.isUserLoggedIn) {
-      toasterError("Please login or signup to use this feature.",3000,"id")
+      toasterError("Please login or signup to use this feature.", 3000, "id")
     } else {
       setIsOpen(!isOpen);
     }
@@ -93,7 +93,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
 
       const result = await API.post("bookmark", data);
       if (result.success) {
-        toasterSuccess("Media added successfully to bookmarks.", 3000, mediaID)
+        toasterSuccess("Media added successfully to List.", 3000, mediaID)
         queryClient.invalidateQueries({ queryKey: ['bookmark'] })
       } else {
         toasterError(result?.error?.code, 3000, mediaID);
@@ -138,12 +138,12 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
       const result = await API.delete("bookmark", data);
       if (result.success) {
         queryClient.invalidateQueries({ queryKey: ['bookmark'] })
-        toasterSuccess(`Media removed successfully from bookmarks.`, 3000, mediaID)
+        toasterSuccess(`Media removed successfully from List.`, 3000, mediaID)
       } else {
         toasterError(result?.error?.code, 3000, mediaID);
       }
     } catch (error: any) {
-      console.log(error,"errr");
+      console.log(error, "errr");
       toasterError(error?.error?.code, 3000, mediaID);
     }
     setIsOpen(false);
@@ -171,15 +171,24 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                 {quality ? quality : "HD"}
               </label> */}
             </span>
+            
             {isBookmarked && (
-              <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl"  onClick={handleWatchPopup}>
+              <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl" onClick={handleWatchPopup}>
                 <div className="relative flex gap-4" >
-                  <FaFolder className="w-4 h-4 m-1 " />
+                <div className="relative flex gap-4" >
+                      <TiDelete className="w-5 h-5 m-1 " onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
+
+                    </div>
                   <div className={`profileLinks top-[20px] absolute bg-zinc-950 rounded-lg right-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
-                    <div className={`${bookmark_type == "watching" ? "pbgColor transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
-                    <div className={`${bookmark_type == "planning-to-watch" ? "pbgColor transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} >Plan to Watch</div>
-                    <div className={`${bookmark_type == "completed" ? "pbgColor  transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div>
-                    <div className={`p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} ><TiDelete className="w-6 h-6" /> Remove</div>
+                    {/* <div className={`${bookmark_type == "watching" ? "pbgColor transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
+                    <div className={`${bookmark_type == "planning-to-watch" ? "pbgColor transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} >Plan to Watch</div> */}
+                    {/* <div className={`${bookmark_type == "completed" ? "pbgColor  transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div> */}
+
+                    {/* <div className={`p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`}
+                     onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} 
+                     ><TiDelete className="w-6 h-6" /> Remove</div> */}
+
+                  
                   </div>
                 </div>
               </label>
@@ -191,14 +200,14 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                 {/* . <li className="text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li> */}
               </ul>
             </section>
-    
+
             <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]">
               <div className="w-full p-5 relative">
                 <section className="pr-12">
                   <h2 className="text-white text-lg">{movieDetials?.title || movieDetials?.name}</h2>
                   <ul className="py-1 flex flex-wrap items-center text-white gap-4 font-light">
                     <li>
-                      <b className="font-bold text-sm">{mediaType === 'Movie' ? moment(movieDetials?.release_date).year() : moment(movieDetials?.first_air_date).year()}</b>
+                      <b className="font-bold text-sm !text-white">{mediaType === 'Movie' ? moment(movieDetials?.release_date).year() : moment(movieDetials?.first_air_date).year()}</b>
                     </li>
                     <li>
                       <label className="flex items-center gap-2 pColor text-sm font-semibold">
@@ -206,7 +215,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                       </label>
                     </li>
                     <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>
-                   
+
                     <li>
                       {/* <label className=" text-sm rounded-full pbgColor text-black font-bold px-2">
                         {quality ? quality : "HD"}
@@ -227,10 +236,10 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                     <label className="absolute cursor-pointer right-5 top-1/2" onClick={handleWatchPopup}>
                       <div className="relative flex gap-4">
                         <IoIosAddCircleOutline className="text-white hover:text-amber-500 w-6 h-6 -mt-3" />
-                        <div className={`profileLinks top-[20px] absolute bg-zinc-950 rounded-lg right-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
-                          <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
+                        <div className={`profileLinks top-[25px] absolute bg-zinc-950 rounded-lg right-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
+                          {/* <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div> */}
                           <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} >Plan to Watch</div>
-                          <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div>
+                          {/* <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div> */}
                         </div>
                       </div>
                     </label>

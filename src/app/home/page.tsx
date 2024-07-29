@@ -10,9 +10,9 @@ import { useState } from "react";
 import useTitle from "@hooks/useTitle";
 import SocialButton from "@components/SocialButton";
 import Loader from "@components/core/Loader";
-import WatchingCard from "@components/core/WatchingCard";
 import User from "@lib/User";
 import WatchingPage from "@components/core/WatchingPage";
+import { useProfileTab } from "context/ProfileTabContext";
 
 const fetchPopularLists = async (mediaType: string) => {
     try {
@@ -42,8 +42,8 @@ const fetchLatestList = async (mediaType: string) => {
 
 export default function Home() {
     const router = useRouter()
+    const {username} =useProfileTab()
     useTitle("Home");
-    const id = User.isAdmin
     const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
     const {
         isLoading,
@@ -89,12 +89,13 @@ export default function Home() {
                 </div>
                 <div className="homewrapper">
                     <div className="containerHub flex gap-5 flex-col lg:flex-row">
-                
-
                         <div className="w-full">
-                        <h3 className="text-white text-[25px] font-semibold">CONTINUE WATCHING</h3>
-                            <WatchingPage />
+                            {username && (<>
+                                <h3 className="text-white text-[25px] font-semibold">CONTINUE WATCHING</h3>
+                                <WatchingPage />
+                            </>)
 
+                            }
                             <div className="w-full">
                                 <div className="flex items-center gap-4">
                                     <h3 className="text-white text-[25px] font-semibold">POPULAR</h3>

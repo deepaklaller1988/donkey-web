@@ -72,7 +72,7 @@ export default function BookmarkPage() {
       <div className="w-full mt-28">
         <div className='homewrapper'>
         <div className="w-full flex items-center gap-4 text-white/50">
-          <div
+          {/* <div
             className={`${activeFolder === 'all' ? 'text-white pointer-cursor' : ''} text-sm py-3 hover:text-white transition`}
             onClick={() => setActiveFolder('all')}
           >
@@ -98,7 +98,7 @@ export default function BookmarkPage() {
             onClick={() => setActiveFolder('completed')}
           >
             Completed
-          </div>{" "}
+          </div>{" "} */}
         </div>
         {
           isLoading ? (<>

@@ -148,7 +148,7 @@ const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: str
 
       const result = await API.post("bookmark", data);
       if(result.success){
-        toasterSuccess("Media added successfully to bookmarks.", 3000, mediaID)
+        toasterSuccess("Media added successfully to List.", 3000, mediaID)
       }
     } catch (error: any) {
       toasterError(error?.error.code, 3000, mediaID);
@@ -200,9 +200,9 @@ const indicators = (index:any) => (
                     <div className="relative flex gap-4"  onMouseLeave={()=> setIsOpen(false)}>
                       <button className='flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold' onClick=     {handleWatchPopup}><FaPlus className='w-5 h-5' /> My List</button>
                           <div className={`profileLinks top-[40px] absolute bg-zinc-800 rounded-lg left-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
-                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'watching')} >Watching </div>
+                              {/* <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'watching')} >Watching </div> */}
                               <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'planning-to-watch')} >Plan to Watch</div>
-                              <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'completed')} >Completed </div>
+                              {/* <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center cursor-pointer gap-2" onClick={()=> handleBookmark(item.id, item.media_type, 'completed')} >Completed </div> */}
                           </div>
                       </div>
                     </section>

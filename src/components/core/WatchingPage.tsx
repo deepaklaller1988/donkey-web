@@ -71,7 +71,7 @@ export default function WatchingPage() {
                             />
                         ))
                     ) : (
-                        <p>No results found.</p>
+                        <p className="text-white text-sm font-semibold ml-2">No Continue Watching Yet !</p>
                     )}
 
                 </ul>
