@@ -19,7 +19,7 @@ const fetchSearched = async (searchQuery:string) => {
     }
   };
 
-export default function HomeSearchbar() {
+export default function HomeSearchbar({path}:any) {
     const router = useRouter();
     const [searchQuery, setSearchQuery] = useState("");
     const {
@@ -29,11 +29,10 @@ export default function HomeSearchbar() {
         queryFn: () =>fetchSearched(searchQuery),
     });
 
-
     return (
         <div className="searchBar w-full px-4 relative z-10">
             <form>
-                <section className="flex justify-between bg-[#1C1C1C] rounded-full max-w-[520px] m-auto">
+                <section className={`flex justify-between ${path=="/home"?"bg-[#1C1C1C]/70":"bg-[#1C1C1C]"} rounded-full max-w-[520px] m-auto`}>
                     <span className="p-2">
                         <Link href="/filters" className="rounded-full p-1 px-2 text-sm bg-[#121212] transition text-white/60 hover:text-white flex items-center">
                             <CiFilter className="mr-1" /> Filter

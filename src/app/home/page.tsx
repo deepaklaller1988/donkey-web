@@ -13,6 +13,7 @@ import Loader from "@components/core/Loader";
 import User from "@lib/User";
 import WatchingPage from "@components/core/WatchingPage";
 import { useProfileTab } from "context/ProfileTabContext";
+import { getToken } from "@lib/userToken";
 
 const fetchPopularLists = async (mediaType: string) => {
     try {
@@ -42,7 +43,7 @@ const fetchLatestList = async (mediaType: string) => {
 
 export default function Home() {
     const router = useRouter()
-    const {username} =useProfileTab()
+    const token = getToken
     useTitle("Home");
     const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
     const {
@@ -90,7 +91,7 @@ export default function Home() {
                 <div className="homewrapper">
                     <div className="containerHub flex gap-5 flex-col lg:flex-row">
                         <div className="w-full">
-                            {username && (<>
+                            {token && (<>
                                 <h3 className="text-white text-[25px] font-semibold">CONTINUE WATCHING</h3>
                                 <WatchingPage />
                             </>)

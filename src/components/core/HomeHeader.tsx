@@ -107,7 +107,7 @@ export default function Header() {
               className={`mobileSearch w-full ${OpenSearch ? "openMobileSearch" : ""
                 }`}
             >
-              <HomeSearchbar />
+              <HomeSearchbar path={path}/>
             </div>
             <section 
               ref={profileRef}
