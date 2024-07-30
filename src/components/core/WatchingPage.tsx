@@ -6,7 +6,7 @@ import User from "@lib/User";
 import { toasterError, toasterSuccess } from "@components/core/Toaster";
 import Loader from "@components/core/Loader";
 import CustomPagination from "@components/CustomPagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useProfileTab } from "context/ProfileTabContext";
 
@@ -41,14 +41,19 @@ export default function WatchingPage({ type }: any) {
     const {
         isLoading: isMediaLoading,
         data: mediaData,
+        refetch 
     } = useQuery<any>({
         queryKey: ["watch-movies", UserId, currentPage],
         queryFn: () => fetchMovie(UserId, currentPage, 10),
         enabled: !!(UserId && currentPage),
-
-
+        refetchOnWindowFocus: true,
     });
     const totalPages = mediaData?.count
+
+    useEffect(() => {
+        refetch();
+    }, [refetch]);
+
     const handleDelete = async (id: any) => {
         try {
             await deleteMovies(id);
