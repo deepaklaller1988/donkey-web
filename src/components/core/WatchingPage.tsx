@@ -1,5 +1,3 @@
-
-import WatchingCard from "@components/core/WatchingCard";
 import API from "@lib/Api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import User from "@lib/User";
@@ -9,6 +7,7 @@ import CustomPagination from "@components/CustomPagination";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useProfileTab } from "context/ProfileTabContext";
+import Card from "./Card";
 
 
 const fetchMovie = async (userId: any, page: number, limit: number) => {
@@ -21,21 +20,11 @@ const fetchMovie = async (userId: any, page: number, limit: number) => {
     }
 };
 
-const deleteMovies = async (id: any) => {
-    try {
-        const response = await API.delete("mediaprogress", { id });
-        return response.data;
-    } catch (error) {
-        console.error('Failed to delete movie:', error);
-        throw error;
-    }
-};
-
 export default function WatchingPage({ type }: any) {
-    const UserId = User.id
     const queryClient: any = useQueryClient()
     const router=useRouter()
     const {  setActiveTab } = useProfileTab();
+    const UserId = User.id;
 
     const [currentPage, setCurrentPage] = useState(1);
     const {
@@ -48,24 +37,11 @@ export default function WatchingPage({ type }: any) {
         enabled: !!(UserId && currentPage),
         refetchOnWindowFocus: true,
     });
-    const totalPages = mediaData?.count
 
     useEffect(() => {
         refetch();
     }, [refetch]);
 
-    const handleDelete = async (id: any) => {
-        try {
-            await deleteMovies(id);
-            toasterSuccess("Delete Successfully from Continue Watching.", 3000, "id");
-            if (mediaData?.data?.length === 1 && currentPage > 1) {
-                setCurrentPage((prevPage) => prevPage - 1);
-            }
-            queryClient.invalidateQueries(["watch-movies", UserId, currentPage]);
-        } catch (error) {
-            toasterError("Failed to delete movie.", 3000, "id");
-        }
-    };
 
     if (isMediaLoading) {
         <Loader />
@@ -80,12 +56,11 @@ export default function WatchingPage({ type }: any) {
                 <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {mediaData && mediaData?.data?.length > 0 ? (
                         mediaData?.data?.map((item: any) => (
-                            <WatchingCard
+                            <Card
                                 key={item?.id}
                                 movieId={item?.media_id}
-                                mediaType={item?.media_type}
-                                id={item?.id}
-                                handleDelete={handleDelete}
+                                mediaType={item.media_type === 'movie' ? 'Movie' : 'TV'}
+                                isMyList={true}
                                 queryClient={queryClient}
                             />
                         ))
@@ -106,8 +81,8 @@ export default function WatchingPage({ type }: any) {
 
             {type == "profile" && <CustomPagination
                 currentPage={currentPage}
-                totalItems={totalPages}
-                totalPages={totalPages}
+                totalItems={mediaData?.count}
+                totalPages={mediaData?.count}
                 itemsPerPage={10}
                 onPageChange={(page: number) => setCurrentPage(page)}
             />

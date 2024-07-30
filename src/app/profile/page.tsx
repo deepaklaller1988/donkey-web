@@ -60,7 +60,7 @@ export default function Profile() {
           <div className="homewrapper">
             <div className="w-full mt-20 pt-20 flex items-center text-white/50 gap-2">
               <h2 className="text-white pr-2 text-[30px]">
-                Hi <b className="text-[30px] font-semibold">{username}</b>
+                Hi <b className="text-[30px] font-semibold">{roleData.username}</b>
               </h2>
 
               <button
