@@ -107,7 +107,7 @@ export default function WatchingPage({ type }: any) {
                 onPageChange={(page: number) => setCurrentPage(page)}
             />
             }
-            {type == "home" &&
+            {type == "home" && mediaData && mediaData?.data?.length > 0 &&
                 <section className="flex justify-center pt-10 mb-8">
                     <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" onClick={() =>{ setActiveTab("watching"),router.push(`/profile`)}}>View More</button>
                 </section>
