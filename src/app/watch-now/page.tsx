@@ -16,6 +16,7 @@ import { toasterInfo } from "@components/core/Toaster";
 import API from "@lib/Api";
 import User from "@lib/User";
 import ToastProvider from "@components/core/ToasterProvider";
+import useRole from "@hooks/useRole";
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
 
@@ -114,17 +115,16 @@ interface Season {
   code: string;
 }
 export default function WatchNow() {
+  const [roleLoading, roleData] = useRole();
   const videoRef: any = useRef(null);
   const searchParams = useSearchParams();
-  const userId = User.id
   const movieId: any = searchParams.get("id");
   const mediaType: any = searchParams.get("type");
   const [selectedSeason, setSelectedSeason] = useState<any>(null);
   const [selectedEpisode, setSelectedEpisode] = useState<any>(1);
   const [goToEpisode, setGoToEpisode] = useState<any>("");
-  const [progressTime, setProgressTime] = useState<any>("");
+  const userId = User.id
 
-  
   const {
     isLoading,
     error,
@@ -167,6 +167,21 @@ const {
   enabled: !!(selectedSeason || watchDetials)
 });
 
+const mutation = useMutation({
+  mutationFn: async (progressData: any) => {
+
+    return await API.post("mediaprogress", progressData);
+  },
+  onSuccess: (data) => {
+    if (data?.message) {
+
+    }
+  },
+  onError: (error: any) => {
+
+  },
+});
+
   const handleSeasonChange = (e:any)=>{
     setSelectedSeason(e.value);
     setSelectedEpisode(1)
@@ -190,9 +205,8 @@ const {
     }
 
   }
-console.log(progressTime,"====p")
+
   const handleTimeUpdate = (mediaId: any) => {
-    console.log(userId,mediaId,mediaType,"userid")
     if (videoRef.current && userId && mediaId &&mediaType) {
       mutation.mutate({
         user_id: Number(userId),
@@ -202,31 +216,16 @@ console.log(progressTime,"====p")
         status: true,
       });
     }
-    toasterInfo("hii", 1000, "id")
   };
 
   const handlePlay = () => {
-    const mediaId = watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id;
+    const mediaId = watchDetials.id ? watchDetials.id : watchDetials.imdb_id;
     if (userId && mediaType) {
       handleTimeUpdate(mediaId);
     }
   };
-  const mutation = useMutation({
-    mutationFn: async (progressData: any) => {
 
-      return await API.post("mediaprogress", progressData);
-    },
-    onSuccess: (data) => {
-      if (data?.message) {
-
-      }
-    },
-    onError: (error: any) => {
-
-    },
-  });
-
-  if (isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading) {
+  if (isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading || roleLoading) {
     return (
       <div>
         <Loader />
@@ -264,7 +263,7 @@ console.log(progressTime,"====p")
                     ref={videoRef}
                     id="myiframe"
                     // onTimeUpdate={() => handleTimeUpdate(watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id)}
-                    onLoad={() => handleTimeUpdate(watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id)}
+                    onLoad={() => handleTimeUpdate(watchDetials.id ? watchDetials.id : watchDetials.imdb_id)}
                   ></iframe>
 
                 </div>
