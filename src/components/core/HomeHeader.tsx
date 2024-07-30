@@ -18,6 +18,7 @@ import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
 
 export default function Header() {
+  const [roleLoading] = useRole();
   const router = useRouter();
   const path = usePathname();
   const route = path.split("/");
@@ -27,7 +28,7 @@ export default function Header() {
   const [OpenSearch, setOpenSearch] = useState(false);
   const [openSideBar, setOpenSidebar] = useState(false);
   const profileRef:any = useRef(null);
-  
+  const loggedIn = User.isUserLoggedIn;
   
   const isHome = () => {
     return route.includes("home") ? true : false;
@@ -111,7 +112,7 @@ export default function Header() {
             <section 
               ref={profileRef}
             className="flex justify-end min-w-auto md:min-w-[196px]" >
-              {User.isUserLoggedIn ? (
+              {loggedIn ? (
                 <>
                   <div className="relative flex gap-4">
                     <button
