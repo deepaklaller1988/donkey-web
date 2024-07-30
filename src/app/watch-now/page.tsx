@@ -16,7 +16,8 @@ import { toasterInfo } from "@components/core/Toaster";
 import API from "@lib/Api";
 import User from "@lib/User";
 import ToastProvider from "@components/core/ToasterProvider";
-const apiKey = process.env.NEXT_PUBLIC_MDBKEY
+import useRole from "@hooks/useRole";
+const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
 
 // const fetchTopAll = async () => {
@@ -114,9 +115,9 @@ interface Season {
   code: string;
 }
 export default function WatchNow() {
+  const [roleLoading, roleData] = useRole();
   const videoRef: any = useRef(null);
   const searchParams = useSearchParams();
-  const userId = User.id
   const movieId: any = searchParams.get("id");
   const mediaType: any = searchParams.get("type");
   const [selectedSeason, setSelectedSeason] = useState<any>(null);
@@ -124,6 +125,8 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  const userId = User.id
 
   const {
     isLoading,
@@ -158,14 +161,29 @@ export default function WatchNow() {
     queryFn: () => fetchPopularLists(mediaType),
   });
 
-  const {
-    isLoading: isEpisodeLoading,
-    data: episodesList,
-  } = useQuery<any>({
-    queryKey: ['episodes-lists', mediaType, movieId, selectedSeason],
-    queryFn: () => fetchEpisodesLists(mediaType, movieId, selectedSeason),
-    enabled: !!(selectedSeason || watchDetials)
-  });
+const {
+  isLoading: isEpisodeLoading,
+  data: episodesList,
+} = useQuery<any>({
+  queryKey: ['episodes-lists', mediaType,movieId, selectedSeason],
+  queryFn: () =>fetchEpisodesLists(mediaType, movieId, selectedSeason),
+  enabled: !!(selectedSeason || watchDetials)
+});
+
+const mutation = useMutation({
+  mutationFn: async (progressData: any) => {
+
+    return await API.post("mediaprogress", progressData);
+  },
+  onSuccess: (data) => {
+    if (data?.message) {
+
+    }
+  },
+  onError: (error: any) => {
+
+  },
+});
 
   const handleSeasonChange = (e: any) => {
     setSelectedSeason(e.value);
@@ -220,7 +238,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     if (isPlaying === true) {
-      const mediaId = watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id;
+      const mediaId = watchDetials.id ? watchDetials.id : watchDetials.imdb_id;
       if (videoRef.current && userId && mediaId && mediaType) {
         mutation.mutate({
           user_id: Number(userId),
@@ -233,22 +251,7 @@ export default function WatchNow() {
     }
   }, [isPlaying])
 
-  const mutation = useMutation({
-    mutationFn: async (progressData: any) => {
-
-      return await API.post("mediaprogress", progressData);
-    },
-    onSuccess: (data) => {
-      if (data?.message) {
-
-      }
-    },
-    onError: (error: any) => {
-
-    },
-  });
-
-  if (isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading) {
+  if (isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading || roleLoading) {
     return (
       <div>
         <Loader />
@@ -284,6 +287,8 @@ export default function WatchNow() {
                     allowFullScreen
                     ref={videoRef}
                     id="myiframe"
+                    // onTimeUpdate={() => handleTimeUpdate(watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id)}
+                    // onLoad={() => handleTimeUpdate(watchDetials.id ? watchDetials.id : watchDetials.imdb_id)}
                   ></iframe>
 
                 </div>

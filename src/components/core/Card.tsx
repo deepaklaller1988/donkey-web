@@ -43,7 +43,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
 
 
 
-function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type, queryClient }: any) {
+function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = false, queryClient }: any) {
 
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false)
@@ -133,6 +133,28 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
     setIsOpen(false);
   }
 
+  const handleDeleteList = async (mediaID: any, mediaType: string) => {
+    try {
+      let data = {
+        userId: User.id,
+        mediaId: mediaID,
+        mediaType: mediaType,
+      }
+
+      const result = await API.delete("mediaprogress", data);
+      if (result.success) {
+        queryClient.invalidateQueries({ queryKey: ['watch-movies'] })
+        toasterSuccess(`Media removed successfully from My List.`, 3000, mediaID)
+      } else {
+        toasterError("Failed to delete movie.", 3000, mediaID);
+      }
+    } catch (error: any) {
+      console.log(error, "errr");
+      toasterError(error?.error?.code, 3000, mediaID);
+    }
+  }
+
+
   if (isLoading) {
     return (
       <CardSkeleton />
@@ -155,22 +177,21 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                 {quality ? quality : "HD"}
               </label> */}
             </span>
+
+            {isMyList && (
+              <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl" >
+                    <div className="relative flex gap-4" >
+                        <TiDelete className="w-5 h-5 m-1 "  onClick={() => handleDeleteList(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
+                    </div>
+                </label>
+              )}
             
             {isBookmarked && (
-              <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl" onClick={handleWatchPopup}>
+              <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl">
                 <div className="relative flex gap-4" >
                 <div className="relative flex gap-4" >
                       <TiDelete className="w-5 h-5 m-1 " onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
                     </div>
-                  <div className={`profileLinks top-[20px] absolute bg-zinc-950 rounded-lg right-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
-                    {/* <div className={`${bookmark_type == "watching" ? "pbgColor transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div>
-                    <div className={`${bookmark_type == "planning-to-watch" ? "pbgColor transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} >Plan to Watch</div> */}
-                    {/* <div className={`${bookmark_type == "completed" ? "pbgColor  transition !text-black m-2 rounded" : ""} p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`} onClick={() => handleUpdateBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div> */}
-
-                    {/* <div className={`p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2`}
-                     onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} 
-                     ><TiDelete className="w-6 h-6" /> Remove</div> */}
-                  </div>
                 </div>
               </label>
             )}
@@ -213,15 +234,10 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, bookmark_type
                   </ul>
                 </section>
                 {
-                  !isBookmarked && (
-                    <label className="absolute cursor-pointer right-5 top-1/2" onClick={handleWatchPopup}>
+                  !isBookmarked && !isMyList && (
+                    <label className="absolute cursor-pointer right-5 top-1/2">
                       <div className="relative flex gap-4">
                         <IoIosAddCircleOutline className="text-white hover:text-amber-500 w-6 h-6 -mt-3" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} />
-                        <div className={`profileLinks top-[25px] absolute bg-zinc-950 rounded-lg right-0 min-w-[200px] ${isOpen ? 'openProfileLinks' : ''}`}>
-                          {/* <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'watching')} >Watching </div> */}
-                          {/* <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"  >Plan to Watch</div> */}
-                          {/* <div className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'completed')} >Completed </div> */}
-                        </div>
                       </div>
                     </label>
                   )
