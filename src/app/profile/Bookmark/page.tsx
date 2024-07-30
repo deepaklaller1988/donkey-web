@@ -71,35 +71,7 @@ export default function BookmarkPage() {
     <>
       <div className="w-full mt-28">
         <div className='homewrapper'>
-        <div className="w-full flex items-center gap-4 text-white/50">
-          {/* <div
-            className={`${activeFolder === 'all' ? 'text-white pointer-cursor' : ''} text-sm py-3 hover:text-white transition`}
-            onClick={() => setActiveFolder('all')}
-          >
-            All
-          </div>{" "}
-          /
-          <div
-            className={`${activeFolder === 'watching' ? 'text-white pointer-cursor' : ''} text-sm py-3  hover:text-white transition`}
-            onClick={() => setActiveFolder('watching')}
-          >
-            Watching
-          </div>{" "}
-          /
-          <div
-            className={`${activeFolder === 'planning-to-watch ' ? 'text-white pointer-cursor' : ''} text-sm py-3  hover:text-white transition`}
-            onClick={() => setActiveFolder('planning-to-watch')}
-          >
-            Plan to Watch
-          </div>{" "}
-          /
-          <div
-            className={`${activeFolder === 'completed' ? 'text-white pointer-cursor' : ''} text-sm py-3  hover:text-white transition`}
-            onClick={() => setActiveFolder('completed')}
-          >
-            Completed
-          </div>{" "} */}
-        </div>
+       
         {
           isLoading ? (<>
             <Loader />
