@@ -12,7 +12,7 @@ import CustomPagination from '@components/CustomPagination';
 const fetchBookmarkList = async (userId: number, selectedFolder: string, page: number, limit: number) => {
 
   if (!userId) {
-    console.error('User ID is required');
+    // console.error('User ID is required');
     return null;
   }
 

@@ -58,7 +58,6 @@ export default function ResetPassword() {
   };
 
   return (
-    <div>
       <div className="loginRegisterForgotForm flex items-center justify-center fixed top-0 left-0 z-20 w-full h-screen bg-black/70">
         <section className="max-h-[90vh] overflow-auto p-6 w-full max-w-[400px] bg-zinc-800 rounded-lg">
           <h2 className="text-white text-[30px] pb-2 flex items-center justify-between">
@@ -95,6 +94,5 @@ export default function ResetPassword() {
           </form>
         </section>
       </div>
-    </div>
   );
 }
