@@ -178,7 +178,7 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
                     placeholder="Type"
                     maxSelectedLabels={1}
                     selectionLimit={1}
-                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition"
+                    className="customSelect rounded-md bg-[#272727] hover:bg-amber-500 transition sandeep"
                 />
                 <MultiSelect
                     value={selectedGenre}

@@ -385,6 +385,8 @@ section.closeMenu {
 .intellesense{transition:.5s; max-height:0;}
 .intellesense.intellesenseOpen{ max-height:1000px;}
 .intellesense div:last-child{border:none;}
+.p-multiselect-panel{max-width:500px}
+ul.p-multiselect-items{min-width: 200px;}
 @media only screen and (max-width: 1023px){
   .cardSet:hover .albumDetail {
     display: none;
@@ -412,3 +414,21 @@ ul.indicators {
   height: 350px;
 }
 }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 20px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #fea500 ;
+  border-radius: 100vh;
+}
+/* 
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+} */
