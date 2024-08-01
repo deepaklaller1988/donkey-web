@@ -50,9 +50,9 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
 
     return (
         // <div className={`navSet ${openSideBar ?"navSetOpen" :""} fixed top-0 left-0 z-20 w-full h-screen bg-black/70`}>
-        <div className={`navSet ${openSideBar ? "navSetOpen" : ""} fixed top-0 left-0 w-full h-screen`}>
+        <div className={`navSet ${openSideBar ? "navSetOpen" : ""} absolute top-0 left-0 w-full h-screen`}>
             <section className='closeMenu' onClick={toggleSidebar}></section>
-            <div className="navSetInner fixed top-[80px] left-[20px] w-[200px] bg-amber-500 flex flex-col rounded-lg py-4">
+            <div className="navSetInner relative top-[80px] left-[20px] w-[200px] bg-amber-500 flex flex-col rounded-lg py-4">
         <Link
           href="/home"
           className="rounded-lg p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition bg-amber-500 mx-4"

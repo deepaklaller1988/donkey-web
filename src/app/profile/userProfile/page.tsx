@@ -168,9 +168,9 @@ export default function UserProfile() {
               </>
             )}
 
-            <div className="w-full mt-2 text-center">
+            <div className="w-full mt-3 text-center">
               <button
-                className="p-1 px-4 rounded-lg bg-white/5 text-white"
+                className="py-2 px-4 w-full rounded-lg bg-white/5 text-black font-semibold bg-[#FFA500] text-lg"
                 type="submit"
                 disabled={
                   !isSaveButtonEnabled ||

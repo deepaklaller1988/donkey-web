@@ -33,7 +33,7 @@ export default function WatchingPage({ type }: any) {
         refetch 
     } = useQuery<any>({
         queryKey: ["watch-movies", UserId, currentPage],
-        queryFn: () => fetchMovie(UserId, currentPage, 10),
+        queryFn: () => fetchMovie(UserId, currentPage, 12),
         enabled: !!(UserId && currentPage),
         refetchOnWindowFocus: true,
     });
@@ -83,7 +83,7 @@ export default function WatchingPage({ type }: any) {
                 currentPage={currentPage}
                 totalItems={mediaData?.count}
                 totalPages={mediaData?.count}
-                itemsPerPage={10}
+                itemsPerPage={12}
                 onPageChange={(page: number) => setCurrentPage(page)}
             />
             }
