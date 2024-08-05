@@ -1,5 +1,5 @@
 "use client"
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BookmarkPage from './Bookmark/page';
 import UserProfile from './userProfile/page';
@@ -15,6 +15,7 @@ export default function Profile() {
   const { activeTab, setActiveTab, username } = useProfileTab();
   const [roleLoading, roleData] = useRole();
   const router = useRouter();
+  const [nameUpdated, setNameUpdated] = useState(null);
 
   useEffect(() => {
     if (roleLoading) return;
@@ -38,7 +39,7 @@ export default function Profile() {
         content = <BookmarkPage />;
         break;
       case "profile":
-        content = <UserProfile />;
+        content = <UserProfile setNameUpdated={setNameUpdated}/>;
         break;
       case "watching":
         content = <ContinueWatchingPage />;
@@ -60,7 +61,7 @@ export default function Profile() {
           <div className="homewrapper">
             <div className="w-full mt-20 pt-20 flex items-center text-white/50 gap-2">
               <h2 className="text-white pr-2 text-[30px]">
-                Hi <b className="text-[30px] font-semibold">{roleData.username}</b>
+                Hi <b className="text-[30px] font-semibold">{nameUpdated ?? roleData.username}</b>
               </h2>
 
               <button

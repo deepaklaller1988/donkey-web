@@ -184,7 +184,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
 
             {(isMyList && isDeletable) && (
               <label className="absolute z-0 top-1 right-0 font-bold px-2 rounded-l-xl" >
-                    <div className="relative flex gap-4" >
+                    <div className="relative flex gap-4 hover:cursor-pointer" >
                         <TiDelete className="w-8 h-8 m-1 " color="red"  onClick={() => handleDeleteList(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
                     </div>
                 </label>
