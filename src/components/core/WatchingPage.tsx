@@ -1,7 +1,7 @@
+"use client"
 import API from "@lib/Api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import User from "@lib/User";
-import { toasterError, toasterSuccess } from "@components/core/Toaster";
 import Loader from "@components/core/Loader";
 import CustomPagination from "@components/CustomPagination";
 import { useEffect, useState } from "react";
@@ -52,7 +52,6 @@ export default function WatchingPage({ type }: any) {
             {type == "home" && mediaData && mediaData?.data?.length > 0 &&
                 <h3 className="text-white text-[25px] font-semibold">CONTINUE WATCHING</h3>
             }
-            {/* <div className="w-full py-2 mt-10 ml-2"> */}
                 <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {mediaData && mediaData?.data?.length > 0 ? (
                         mediaData?.data?.map((item: any) => (
@@ -75,9 +74,6 @@ export default function WatchingPage({ type }: any) {
                     )}
 
                 </ul>
-
-
-            {/* </div> */}
 
             {type == "profile" && <CustomPagination
                 currentPage={currentPage}
