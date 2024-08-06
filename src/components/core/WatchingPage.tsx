@@ -1,3 +1,4 @@
+"use client";
 import API from "@lib/Api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import User from "@lib/User";
