@@ -47,6 +47,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
 
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false)
+  const [isDeletable, setIsDeletable] = useState(false);
   const {
     isLoading,
     error,
@@ -165,7 +166,10 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
     <>
       {movieDetials && (<>
         <li key={movieId} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 cursor-pointer cardSet relative" >
-          <div className="relative w-full" onMouseLeave={() => setIsOpen(false)}>
+          <div className="relative w-full" onMouseEnter={()=> setIsDeletable(isBookmarked || isMyList ? true : false)} onMouseLeave={() => {
+           setIsDeletable(false)
+           setIsOpen(false)}
+          }>
             <span className="relative folderOpened" onClick={() => router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
               {/* <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" /> */}
               <img
@@ -178,19 +182,19 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
               </label> */}
             </span>
 
-            {isMyList && (
-              <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl" >
-                    <div className="relative flex gap-4" >
-                        <TiDelete className="w-5 h-5 m-1 "  onClick={() => handleDeleteList(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
+            {(isMyList && isDeletable) && (
+              <label className="absolute z-0 top-1 right-0 font-bold px-2 rounded-l-xl" >
+                    <div className="relative flex gap-4 hover:cursor-pointer" >
+                        <TiDelete className="w-8 h-8 m-1 " color="red"  onClick={() => handleDeleteList(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
                     </div>
                 </label>
               )}
             
-            {isBookmarked && (
-              <label className="absolute z-0 pbgColor top-5 right-0 font-bold px-2 rounded-l-xl">
+            {(isBookmarked && isDeletable) && (
+              <label className="absolute z-0 top-1 right-0 font-bold px-2 rounded-l-xl">
                 <div className="relative flex gap-4" >
                 <div className="relative flex gap-4" >
-                      <TiDelete className="w-5 h-5 m-1 " onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
+                      <TiDelete className=" w-8 h-8 m-1 " color="red" onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
                     </div>
                 </div>
               </label>
