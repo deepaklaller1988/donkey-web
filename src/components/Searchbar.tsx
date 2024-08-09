@@ -29,16 +29,23 @@ export default function Searchbar() {
         queryFn: () =>fetchSearched(searchQuery),
     });
 
+    
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+          router.push(`/media/search?query=${encodeURIComponent(searchQuery)}`);
+          setSearchQuery('');  // Clear the input field after search
+        }
+      };
+
     return (
         <div className="searchBar relative z-10">
-            <form>
                 <section className="flex justify-between gap-1 bg-zinc-800 rounded-full max-w-[700px] m-auto">
                     <span className="p-2">
                         <Link href="/filters" className="rounded-full p-1 px-2 text-sm bg-black/30 transition text-white/60 hover:text-white flex items-center">
                             <CiFilter className="mr-1" /> Filter
                         </Link>
                     </span>
-                    <input className="text-white w-full bg-white/0 text-center" placeholder="Search..." type="text" value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} />
+                    <input className="text-white w-full bg-white/0 text-center" placeholder="Search..." type="text" value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)}  onKeyDown={handleKeyDown}/>
 
                     <button className="pColor mr-1 p-3">
                         <IoSearch className="text-xl" />
@@ -78,7 +85,6 @@ export default function Searchbar() {
                     </div>
                 </div>
                 </>)}
-            </form>
         </div>
     );
 }

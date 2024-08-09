@@ -27,14 +27,15 @@ const fetchPopularLists = async (mediaType: string) => {
 
 const fetchLatestList = async (mediaType: string) => {
     try {
-        //   const response = await FetchApi.get(`https://vidsrc.to/vapi/${mediaType}/new/1`);
-        let response = await fetch(`https://vidsrc.to/vapi/${mediaType}/new/1`, { method: "GET", });
+          const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType}/popular?language=en-US&page=1`);
+        // let response = await fetch(`https://vidsrc.to/vapi/${mediaType}/new/1`, { method: "GET", });
         const data = await response.json();
-        if (data.status === 200) {
-            if (data.result) return data.result.items;
-        } else {
-            return [];
-        }
+        // if (data.status === 200) {
+        //     if (data.result) return data.result.items;
+        // } else {
+        //     return [];
+        // }
+        return data.results;
     } catch (error) {
         console.log(error)
     }
@@ -119,7 +120,7 @@ export default function Home() {
                                 <div className="w-full py-2">
                                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                         {
-                                            latestMovieList && latestMovieList.length > 0 ? latestMovieList.slice(0, 12).map((item: any) => (<Card key={item.tmdb_id} movieId={item.tmdb_id} mediaType={"Movie"} />)) : ""
+                                            latestMovieList && latestMovieList.length > 0 ? latestMovieList.slice(0, 12).map((item: any) => (<Card key={item.id} movieId={item.id} mediaType={"Movie"} />)) : ""
                                         }
                                     </ul>
                                 </div>
@@ -136,7 +137,7 @@ export default function Home() {
                                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
 
                                         {
-                                            latestTVList && latestTVList.length > 0 ? latestTVList.slice(0, 12).map((item: any) => (<Card key={item.tmdb_id} movieId={item.tmdb_id} mediaType={"TV"} />)) : ""
+                                            latestTVList && latestTVList.length > 0 ? latestTVList.slice(0, 12).map((item: any) => (<Card key={item.id} movieId={item.id} mediaType={"TV"} />)) : ""
                                         }
                                     </ul>
                                 </div>

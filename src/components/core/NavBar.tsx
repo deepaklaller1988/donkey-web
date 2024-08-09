@@ -2,6 +2,11 @@ import Link from 'next/link';
 import React from 'react'
 import FetchApi from "@lib/FetchApi";
 import { useQuery } from '@tanstack/react-query';
+import { FaMasksTheater } from "react-icons/fa6";
+import { TiHome } from "react-icons/ti";
+import { TbWorld } from "react-icons/tb";
+import { MdStars } from "react-icons/md";
+import { HiTrendingUp } from 'react-icons/hi';
 
 const fetchGenre = async (mediaType: string) => {
   try {
@@ -59,19 +64,21 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
       <section className='closeMenu' data-key="close"></section>
       <div className='w-full relative h-0'>
         <div className='homewrapper h-0'>
-      <div className="navSetInner relative top-[80px] left-0 w-[200px] bg-amber-500 flex flex-col rounded-lg py-4 ">
+      <div className="navSetInner relative top-[80px] left-0 w-[150px] bg-amber-500 flex flex-col rounded-lg py-4 ">
         <Link
           href="/home"
           data-key="home"
-          className="rounded-lg p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition bg-amber-500 mx-4"
+          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition bg-amber-500 flex gap-1"
         >
+          <TiHome className="w-5 h-5" />
           Home
         </Link>
         <div className="navInners w-full">
           <Link
             href=""
-            className="rounded-lg block p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition mx-4"
+            className=" block p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1 "
           >
+            <FaMasksTheater className="w-5 h-5" />
             Genre
           </Link>
           <section className="absolute p-2 flex flex-wrap rounded-lg !bg-[#272727]">
@@ -93,8 +100,9 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
         <div className="navInners w-full">
           <Link
             href=""
-            className="rounded-lg block p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition mx-4"
+            className="block p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1"
           >
+            <TbWorld className="w-5 h-5" />
             Country
           </Link>
           <section className="absolute p-2 flex flex-wrap rounded-lg !bg-[#272727]">
@@ -114,25 +122,28 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
           </section>
         </div>
         <Link
+          href="/filters"
+          data-key="popular"
+          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1"
+        >
+          <MdStars className="w-5 h-5" />
+          Popular
+        </Link>
+        <Link
           href={`/filters?mediaType=movie`}
            data-key="movie"
-          className="rounded-lg p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition mx-4"
+          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1"
         >
+          <HiTrendingUp className="w-5 h-5" />
           Movies
         </Link>
         <Link
           href={`/filters?mediaType=tv`}
           data-key="tv"
-          className="rounded-lg p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition mx-4"
+          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1"
         >
+          <HiTrendingUp className="w-5 h-5" />
           TV Shows
-        </Link>
-        <Link
-          href="/filters"
-          data-key="popular"
-          className="rounded-lg p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition mx-4"
-        >
-          Popular
         </Link>
         {/* <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Top 10 Movies</Link>
                 <Link href="" className="rounded-lg p-2 px-4 hover:bg-amber-500 transition text-white/50 hover:text-black">Top 10 TV Episodes</Link> */}

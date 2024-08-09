@@ -17,6 +17,7 @@ import API from "@lib/Api";
 import User from "@lib/User";
 import ToastProvider from "@components/core/ToasterProvider";
 import useRole from "@hooks/useRole";
+import Link from "next/link";
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
 
@@ -44,17 +45,25 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
     const data = await response.json();
 
     let certificate = null;
+    let imdbRating = null;
     try {
       const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
       const certificateData = await certificateResponse.json();
       certificate = certificateData.certification || null;
+
+      if(certificateData){
+        if(certificateData.ratings && certificateData.ratings.length > 0){
+          imdbRating = certificateData.ratings.find((rating: any) => rating.source === "imdb").value;
+        }
+      }
     } catch (certificateError) {
       console.error(`Failed to fetch certificate for movie ID ${movieId}:`, certificateError);
     }
 
     const combinedResults = {
       ...data,
-      certificate
+      certificate,
+      imdb_rating: imdbRating,
     };
 
     return combinedResults;
@@ -319,6 +328,9 @@ const mutation = useMutation({
                 <section>
                   <div className="w-full flex flex-col lg:flex-row gap-5 justify-between flex-wrap lg:flex-nowrap">
                     <section>
+                    <h3 className="text-white text-[25px] font-semibold">
+                        {watchDetials?.title || watchDetials?.name}
+                      </h3>
                       <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
                         <li>
                           <b className="font-bold">{mediaType === 'movie' ? moment(watchDetials?.release_date).year() : moment(watchDetials?.first_air_date).year()}</b>
@@ -330,7 +342,7 @@ const mutation = useMutation({
                         </li> */}
                         <li>
                           <span className="flex items-center gap-2 pColor font-semibold">
-                            <FaStar /> {watchDetials?.vote_average?.toFixed(1)}
+                            <FaStar /> {watchDetials?.imdb_rating ? watchDetials?.imdb_rating.toFixed(1) : watchDetials?.vote_average.toFixed(1)}
                           </span>
                         </li>
                         <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
@@ -341,23 +353,7 @@ const mutation = useMutation({
 
 
                       </ul>
-                      <h3 className="text-white text-[25px] font-semibold">
-                        {watchDetials?.title || watchDetials?.name}
-                      </h3>
                     </section>
-                    {/* <section className="bg-white/10 rounded-lg text-center p-2 px-4 flex flex-col justify-center items-center gap-2">
-                    <span className="flex gap-1">
-                      <FaStar className="text-amber-500 w-5 h-5" />
-                      <FaStar className="text-amber-500 w-5 h-5" />
-                      <FaStar className="text-amber-500 w-5 h-5" />
-                      <FaStar className="text-amber-500 w-5 h-5" />
-                      <FaStar className="text-white/20 w-5 h-5" />
-                    </span>
-                    <p className="text-white/50 text-sm">
-                      <b className="text-sm">8.56</b> of{" "}
-                      <b className="text-sm">10</b> (723 reviews)
-                    </p>
-                  </section> */}
                     <RatingPopUp />
                   </div>
                   <div className="w-full">
@@ -370,78 +366,61 @@ const mutation = useMutation({
                       <p>
                         Type:{" "}
                         <label className="text-white font-light">
-                          <a href="" className="transition hover:text-amber-500">
+                          <Link href={`/filters?mediaType=${mediaType}`} className="transition hover:text-amber-500">
                             {mediaType.toUpperCase()}
-                          </a>
-                        </label>
+                          </Link>
+                      </label>
                       </p>
                       <p>
                         Country:{" "}
                         <label className="text-white font-light">
-                          <a href="" className="transition hover:text-amber-500">
-                            {watchDetials?.production_countries && watchDetials?.production_countries.length > 0 ? watchDetials?.production_countries.map((gen: any) => gen.name).join(", ") : ""}
-                          </a>
-                          {/* ,
-                        <a href="" className="transition hover:text-amber-500">
-                          Spain
-                        </a> */}
-                        </label>
+                        {watchDetials?.production_countries && watchDetials?.production_countries.length > 0 ? watchDetials?.production_countries.map((gen:any, index:number) => (<span key={index}>
+                          <Link href={`/filters?mediaType=${mediaType}&country=${gen.iso_3166_1}`} className="transition hover:text-amber-500">
+                            {gen.name}
+                          </Link>
+                         {index < watchDetials.production_countries.length - 1 && ', '}
+                        </span>)) : ""}
+                      </label>
                       </p>
                       <p>
-                        Genre:{" "}
-                        <label className="text-white font-light">
-                          <a href="" className="transition hover:text-amber-500">
-                            {watchDetials?.genres && watchDetials?.genres.length > 0 ? watchDetials?.genres.map((gen: any) => gen.name).join(", ") : ""}
-                          </a>
-                          {/* ,{" "}
-                        <a href="" className="transition hover:text-amber-500">
-                          Comedy
-                        </a> */}
-                        </label>
-                      </p>
-                      <p>
-                        Release:{" "}
-                        <label className="text-white font-light">
-                          {mediaType === 'movie' ? moment(watchDetials?.release_date).format('MMM DD, YYYY') : moment(watchDetials?.first_air_date).format('MMM DD, YYYY')}
-                        </label>
-                      </p>
-                      <p>
-                        Director:{" "}
-                        <label className="text-white font-light">{creditDetials?.crew && creditDetials?.crew.length > 0 ? creditDetials?.crew.filter((item: any) => item?.job === 'Director').map((gen: any) => gen.name).join(", ") : ""}</label>
-                      </p>
-                      <p>
-                        Production:{" "}
-                        <label className="text-white font-light">
-                          <a href="" className="transition hover:text-amber-500">
-                            {watchDetials.production_companies && watchDetials.production_companies.length > 0 ? watchDetials.production_companies.map((gen: any) => gen.name).join(", ") : ""}
-                          </a>
-                        </label>
-                      </p>
-                      <p>
-                        Cast:{" "}
-                        <label className="text-white font-light">
-                          <a href="" className="transition hover:text-amber-500">
-                            {creditDetials?.cast && creditDetials?.cast.length > 0 ? creditDetials?.cast.slice(0, 5).map((gen: any) => gen.name).join(", ") : ""}
-                          </a>
-                        </label>
-                      </p>
-                      <p>
-                        Tagline:{" "}
-                        <label className="text-white font-light">
-                          <a href="" className="transition hover:text-amber-500">
-                            {watchDetials.tagline ? watchDetials.tagline : "N/A"}
-                          </a>
-                        </label>
-                      </p>
-                      {/* <p className="text-white/50 font-light pt-2">
-                      A group of high-end professional thieves start to feel the
-                      heat from the LAPD when they unknowingly leave a verbal
-                      clue at their latest heist. Ccraig of the creek online tv
-                      download, watch craig of the creek online, craig of the
-                      creek watch online, craig of the creek free download,
-                      craig of the creek online streaming, craig of the creek
-                      download free
-                    </p> */}
+                      Genre:{" "}
+                      <label className="text-white font-light"> 
+                        {watchDetials?.genres && watchDetials?.genres.length > 0 ? watchDetials?.genres.map((gen:any, index:number) => (<span key={index}>
+                          <Link href={`/filters?mediaType=${mediaType}&genre=${gen.id}`} className="transition hover:text-amber-500">
+                            {gen.name}
+                          </Link>
+                      {index < watchDetials.genres.length - 1 && ', '}
+                    </span>)) : ""}
+                      </label>
+                    </p>
+                    <p>
+                      Release:{" "}
+                      <label className="text-white font-light">
+                      {mediaType === 'movie' ? moment(watchDetials?.release_date).format('MMM DD, YYYY') : moment(watchDetials?.first_air_date).format('MMM DD, YYYY')}
+                      </label>
+                    </p>
+                    <p>
+                      Director:{" "}
+                      <label className="text-white font-light">{creditDetials?.crew && creditDetials?.crew.length > 0 ? creditDetials?.crew.filter((item: any) => item?.job==='Director').map((gen:any) => gen.name).join(", ") : ""}</label>
+                    </p>
+                    <p>
+                      Production:{" "}
+                      <label className="text-white font-light">
+                        {watchDetials.production_companies && watchDetials.production_companies.length > 0 ? watchDetials.production_companies.map((gen:any) => gen.name).join(", ") : ""}
+                      </label>
+                    </p>
+                    <p>
+                      Cast:{" "}
+                      <label className="text-white font-light">
+                        {creditDetials?.cast && creditDetials?.cast.length > 0 ? creditDetials?.cast.slice(0,5).map((gen:any) => gen.name).join(", ") : ""}
+                      </label>
+                    </p>
+                    <p>
+                      Tagline:{" "}
+                      <label className="text-white font-light">
+                        {watchDetials.tagline ? watchDetials.tagline : "N/A"}
+                      </label>
+                    </p>
                     </div>
                   </div>
                 </section>
@@ -472,7 +451,7 @@ const mutation = useMutation({
                       {mediaType === 'movie' ? (
                         <>
                           <li className="episodeActive">
-                            <div className="text-[14px] py-3 px-4 block">
+                            <div className="text-[14px] py-3 px-4 block cursor-pointer">
                               Movie 1
                             </div>
                             <span>{moment(watchDetials?.release_date).format('MMM DD, YYYY')}</span>

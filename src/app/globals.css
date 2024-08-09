@@ -121,7 +121,7 @@ body {
   100% {opacity:1;}
 }
 .sliderContentSet {
-  max-width: 800px;
+  max-width: 600px;
   animation: sliderContent 1s;
 }
 
@@ -210,10 +210,10 @@ section.listTop10:hover b {
 .footerSet {
   background-image: url(/assets/images/donkeyF.png);
   height: 475px;
-  background-size: 100% auto;
+  background-size: 110% auto;
   position: relative;
   background-color: #151515;
-  background-position: center bottom 80px;
+  background-position: center bottom;
   background-repeat: no-repeat
 }
 

@@ -175,7 +175,7 @@ export default function Header() {
                       className="text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black"
                       onClick={() => isClose(true)}
                     >
-                      Login
+                      Log in
                     </button>
                   </div>
                 </>

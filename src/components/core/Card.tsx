@@ -21,18 +21,26 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
     const data = await response.json();
 
     let certificate = null;
+    let imdbRating = null;
 
     try {
       const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
       const certificateData = await certificateResponse.json();
       certificate = certificateData.certification || null;
+      
+      if(certificateData){
+        if(certificateData.ratings && certificateData.ratings.length > 0){
+          imdbRating = certificateData.ratings.find((rating: any) => rating.source === "imdb").value;
+        }
+      }
     } catch (certificateError) {
       console.error(`Failed to fetch certificate for movie ID ${movieId}:`, certificateError);
     }
 
     const combinedResult = {
       ...data,
-      certificate
+      certificate,
+      imdb_rating: imdbRating,
     };
 
     return combinedResult;
@@ -66,6 +74,9 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
   }
 
   const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: string) => {
+    if (!User.isUserLoggedIn) {
+      toasterError("Please login or signup to use this feature.", 3000, "id")
+    }
     if(User.isUserLoggedIn){
     try {
       let data = {
@@ -209,7 +220,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
 
             <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]">
               <div className="w-full p-5 relative">
-                <section className="pr-12">
+                <section className="pr-16">
                   <h2 className="text-white text-lg">{movieDetials?.title || movieDetials?.name}</h2>
                   <ul className="py-1 flex flex-wrap items-center text-white gap-4 font-light">
                     <li>
@@ -217,7 +228,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
                     </li>
                     <li>
                       <label className="flex items-center gap-2 pColor text-sm font-semibold">
-                        <FaStar /> {movieDetials?.vote_average?.toFixed(1)}
+                        <FaStar /> {movieDetials?.imdb_rating ? movieDetials?.imdb_rating.toFixed(1) : movieDetials?.vote_average.toFixed(1)}
                       </label>
                     </li>
                     <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>
@@ -240,8 +251,8 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
                 {
                   !isBookmarked && !isMyList && (
                     <label className="absolute cursor-pointer right-5 top-1/2">
-                      <div className="relative flex gap-4">
-                        <IoIosAddCircleOutline className="text-white hover:text-amber-500 w-6 h-6 -mt-3" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')} />
+                      <div className="relative text-white hover:text-amber-500 -mt-3 flex gap-2" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')}>
+                        <IoIosAddCircleOutline className="w-6 h-6" /> My List
                       </div>
                     </label>
                   )

@@ -29,16 +29,22 @@ export default function HomeSearchbar({path}:any) {
         queryFn: () =>fetchSearched(searchQuery),
     });
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+          router.push(`/media/search?query=${encodeURIComponent(searchQuery)}`);
+          setSearchQuery('');  // Clear the input field after search
+        }
+      };
+
     return (
         <div className="searchBar w-full px-4 relative z-10">
-            <form>
                 <section className={`flex justify-between ${path=="/home"?"bg-[#1C1C1C]/70":"bg-[#1C1C1C]"} rounded-full max-w-[520px] m-auto`}>
                     <span className="p-2">
                         <Link href="/filters" className="rounded-full p-1 px-2 text-sm bg-[#121212] transition text-white/60 hover:text-white flex items-center">
                             <CiFilter className="mr-1" /> Filter
                         </Link>
                     </span>
-                    <input className="text-white w-full bg-white/0 text-center" placeholder="Search..." type="text" value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} />
+                    <input className="text-white w-full bg-white/0 text-center" placeholder="Search..." type="text" value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} onKeyDown={handleKeyDown} />
                     <button className="pColor mr-1 p-3">
                         <IoSearch className="text-xl" />
                     </button>
@@ -66,38 +72,6 @@ export default function HomeSearchbar({path}:any) {
                             </div>
                         </div>
                         ))}
-                        {/* <div className="w-full border-b border-b-white/5">
-                            <Link href="" className="flex gap-2 p-3 transition hover:bg-black/20">
-                                <span className="rounded-lg overflow-hidden max-w-[50px] max-h-[50px]">
-                                    <img className="w-full block" src="/assets/images/album1.jpg" alt="album" />
-                                </span>
-                                <span>
-                                    <b className="text-white font-semibold">100 Vaginas</b>
-                                    <section className="text-white/50 flex items-center gap-2">
-                                        <p className="text-sm font-light font-light">Movie <b>.</b></p>
-                                        <p className="text-sm font-light">2019 <b>.</b></p>
-                                        <p className="text-sm font-light">5.9 <b>.</b></p>
-                                        <p className="text-sm font-light">47 min</p>
-                                    </section>
-                                </span>
-                            </Link>
-                        </div>
-                        <div className="w-full border-b border-b-white/5">
-                            <Link href="" className="flex gap-2 p-3 transition hover:bg-black/20">
-                                <span className="rounded-lg overflow-hidden max-w-[50px] max-h-[50px]">
-                                    <img className="w-full block" src="/assets/images/album1.jpg" alt="album" />
-                                </span>
-                                <span>
-                                    <b className="text-white font-semibold">100 Vaginas</b>
-                                    <section className="text-white/50 flex items-center gap-2">
-                                        <p className="text-sm font-light font-light">Movie <b>.</b></p>
-                                        <p className="text-sm font-light">2019 <b>.</b></p>
-                                        <p className="text-sm font-light">5.9 <b>.</b></p>
-                                        <p className="text-sm font-light">47 min</p>
-                                    </section>
-                                </span>
-                            </Link>
-                        </div> */}
                         <div className="w-full text-center p-3">
                             <div onClick={()=>{
                                 router.push(`/media/search?query=${searchQuery}`);
@@ -108,7 +82,6 @@ export default function HomeSearchbar({path}:any) {
                     </div>
                 </div> 
                 </>)}
-            </form>
         </div>
     );
 }

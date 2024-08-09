@@ -27,9 +27,16 @@ const fetchTopAll = async () => {
       try {
         const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
         const certificateData = await certificateResponse.json();
+        let imdbRating = null;
+        if(certificateData){
+          if(certificateData.ratings && certificateData.ratings.length > 0){
+            imdbRating = certificateData.ratings.find((rating: any) => rating.source === "imdb").value;
+          }
+        }
         return {
           ...item,
-          certificate: certificateData.certification || null
+          certificate: certificateData.certification || null,
+          imdb_rating: imdbRating,
         };
       } catch (error) {
         console.error(`Failed to fetch certificate for item ID ${item.id}:`, error);
@@ -51,13 +58,7 @@ const getDetail = async (item: any) => {
   try {
     const response = await FetchApi.get(`https://api.themoviedb.org/3/${item.media_type}/${item.id}?language=en-US`);
     const data = await response.json();
-    if (data.vote_average === 0) {
-      const ratingResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
-      const ratingData = await ratingResponse.json();
-      data.vote_average = ratingData.score_average;
-    }
     return data;
-
   } catch (error) {
     console.log(error)
   }
@@ -155,16 +156,16 @@ export default function HomeSlider() {
               <div className='sliderSet'>
                 <div className='sliderContent relative z-10'>
                   <div className='homewrapper'>
-                    <div className='sliderContentSet'>
+                    <div className='sliderContentSet pl-0 md:pl-4'>
                       <span className='text-white/70 flex items-center'>
                         <BsFire className='mr-1' /> Trending</span>
                       <h2 className='text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:pb-2'>{item.title ? item.title : item.name}</h2>
                       <ul className='py-1 flex flex-wrap items-center text-white gap-x-3'>
                         <li><b className='font-bold'>{item.release_date ? moment(item.release_date).year() : ""}</b></li>
-                        <li><span className='flex items-center gap-2 pColor font-semibold pColor'><FaStar />{item?.vote_average.toFixed(1)}</span></li>
-                        {item.runtime && (<li>{item.runtime} min</li>)}
+                        <li><span className='flex items-center gap-2 pColor font-semibold pColor'><FaStar />{item?.imdb_rating ? item?.imdb_rating.toFixed(1) : item?.vote_average.toFixed(1)}</span></li>
+                        {/* {item.runtime && (<li>{item.runtime} min</li>)}
                         {item.certificate &&
-                          <li><label className='text-white'>{item.certificate}</label></li>}
+                          <li><label className='text-white'>{item.certificate}</label></li>} */}
                         {item.genres && item.genres.length > 0 ? item.genres.map((gen: any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       </ul>
                       <p className='text-white hidden md:block'>{item?.overview && item?.overview.length > 250 ? item?.overview.slice(0, 250) + "..." : item?.overview}</p>
