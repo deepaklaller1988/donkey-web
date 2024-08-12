@@ -5,7 +5,7 @@ export const toasterSuccess = (message: any, time: any = 3000, customId?: any) =
   toast(message || "process has been done successfully", {
     type: "success",
     toastId: customId,
-    position: "bottom-center",
+    position: "bottom-right",
     autoClose: time,
     hideProgressBar: false,
     closeOnClick: true,
@@ -20,7 +20,7 @@ export const toasterError = (message: any, time: any = 3000, customId?: any) => 
   toast(message || "An error has been encountered", {
     type: "error",
     toastId: customId,
-    position: "bottom-center",
+    position: "bottom-right",
     autoClose: time, // Display toast for 3 seconds
     hideProgressBar: false,
     closeOnClick: true,
@@ -35,7 +35,7 @@ export const toasterInfo = (message: any, time: any= 3000, customId?: any) => {
   toast(message, {
     type: "info",
     toastId: customId,
-    position: "top-center",
+    position: "bottom-right",
     autoClose: time,
     hideProgressBar: false,
     closeOnClick: true,
@@ -47,7 +47,7 @@ export const toasterInfo = (message: any, time: any= 3000, customId?: any) => {
 export const toasterWarning = (message: any) => {
   toast(message, {
     type: "warning",
-    position: "bottom-center",
+    position: "bottom-right",
     autoClose: 3000, // Display toast for 3 seconds
     hideProgressBar: false,
     closeOnClick: true,
