@@ -9,15 +9,47 @@ import { useState } from "react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 
-const fetchSearched = async (searchQuery:string) => {
+const apiKey =process.env.NEXT_PUBLIC_MDBKEY;
+
+const fetchSearched = async (searchQuery: string) => {
     try {
       const response = await FetchApi.get(`https://api.themoviedb.org/3/search/multi?query=${searchQuery}&include_adult=false&language=en-US&page=1`);
       const data = await response.json();
-      return data.results;
+  
+      if (data.results && data.results.length > 0) {
+        const ndata = await Promise.all(
+          data.results.map(async (item: any) => {
+            let certificate = null;
+            let imdbRating = null;
+  
+            const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item?.id}`);
+            const certificateData = await certificateResponse.json();
+            certificate = certificateData.certification || null;
+  
+            if (certificateData) {
+              if (certificateData.ratings && certificateData.ratings.length > 0) {
+                const imdbRatingObj = certificateData.ratings.find((rating: any) => rating.source === "imdb");
+                imdbRating = imdbRatingObj ? imdbRatingObj.value : null;
+              }
+            }
+  
+            return {
+              ...item,
+              certificate,
+              imdb_rating: imdbRating,
+            };
+          })
+        );
+  
+        return ndata;
+      } else {
+        return [];
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
+  
 
 export default function HomeSearchbar({path}:any) {
     const router = useRouter();
@@ -66,7 +98,7 @@ export default function HomeSearchbar({path}:any) {
                                     <section className="text-white/50 flex items-center gap-2">
                                         <p className="text-sm font-light font-light">{item?.media_type === 'movie' ? "Movie" : "TV"} <b>.</b></p>
                                         <p className="text-sm font-light">{item?.media_type === 'movie' ? moment(item?.release_date).year() : moment(item?.first_air_date).year()} <b>.</b></p>
-                                        <p className="flex items-center gap-1 text-sm font-light pColor"><FaStar />{item?.vote_average?.toFixed(1)}</p>
+                                        <p className="flex items-center gap-1 text-sm font-light pColor"><FaStar />{item?.imdb_rating ? item?.imdb_rating?.toFixed(1) : item?.vote_average?.toFixed(1)}</p>
                                     </section>
                                 </span>
                             </div>

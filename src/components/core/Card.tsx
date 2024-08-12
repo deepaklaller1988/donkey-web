@@ -228,7 +228,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
                     </li>
                     <li>
                       <label className="flex items-center gap-2 pColor text-sm font-semibold">
-                        <FaStar /> {movieDetials?.imdb_rating ? movieDetials?.imdb_rating.toFixed(1) : movieDetials?.vote_average.toFixed(1)}
+                        <FaStar /> {movieDetials?.imdb_rating ? movieDetials?.imdb_rating?.toFixed(1) : movieDetials?.vote_average?.toFixed(1)}
                       </label>
                     </li>
                     <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>

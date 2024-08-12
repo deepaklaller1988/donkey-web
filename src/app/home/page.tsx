@@ -97,23 +97,8 @@ export default function Home() {
                             </>)
 
                             }
+
                             <div className="w-full">
-                                <div className="flex items-center gap-4">
-                                    <h3 className="text-white text-[25px] font-semibold">POPULAR</h3>
-                                    <section className="flex gap-2">
-                                        <button className={`${selectedMedia === 'Movie' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"}`} onClick={() => setSelectedMedia("Movie")}>Movies</button>
-                                        <button className={`${selectedMedia === 'TV' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"}`} onClick={() => setSelectedMedia("TV")}>TV Shows</button>
-                                    </section>
-                                </div>
-                                <div className="w-full py-2">
-                                    <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-                                        {
-                                            popularList && popularList.length > 0 ? popularList.slice(0, 18).map((item: any) => (<Card key={item.id} movieId={item.id} mediaType={selectedMedia} />)) : ""
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                            <div className="w-full pt-10">
                                 <div className="flex items-center gap-4">
                                     <h3 className="text-white text-[25px] font-semibold">LATEST MOVIES</h3>
                                 </div>
@@ -145,6 +130,22 @@ export default function Home() {
                                 <section className="flex justify-center pt-10">
                                     <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition" onClick={() => router.push(`/media/tv`)}>View More</button>
                                 </section>
+                            </div>
+                            <div className="w-full pt-10">
+                                <div className="flex items-center gap-4">
+                                    <h3 className="text-white text-[25px] font-semibold">POPULAR</h3>
+                                    <section className="flex gap-2">
+                                        <button className={`${selectedMedia === 'Movie' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"}`} onClick={() => setSelectedMedia("Movie")}>Movies</button>
+                                        <button className={`${selectedMedia === 'TV' ? "pbgColor rounded-full text-black px-2" : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"}`} onClick={() => setSelectedMedia("TV")}>TV Shows</button>
+                                    </section>
+                                </div>
+                                <div className="w-full py-2">
+                                    <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+                                        {
+                                            popularList && popularList.length > 0 ? popularList.slice(0, 18).map((item: any) => (<Card key={item.id} movieId={item.id} mediaType={selectedMedia} />)) : ""
+                                        }
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <div className="min-w-full md:min-w-[376px]">
