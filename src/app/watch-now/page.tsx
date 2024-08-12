@@ -47,7 +47,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
     let certificate = null;
     let imdbRating = null;
     try {
-      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
+      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}&m=${mediaType==='movie' ? 'movie' : 'show'}`);
       const certificateData = await certificateResponse.json();
       certificate = certificateData.certification || null;
 
@@ -342,7 +342,7 @@ const mutation = useMutation({
                         </li> */}
                         <li>
                           <span className="flex items-center gap-2 pColor font-semibold">
-                            <FaStar /> {watchDetials?.imdb_rating ? watchDetials?.imdb_rating.toFixed(1) : watchDetials?.vote_average.toFixed(1)}
+                            <FaStar /> {watchDetials?.imdb_rating ? watchDetials?.imdb_rating?.toFixed(1) : watchDetials?.vote_average?.toFixed(1)}
                           </span>
                         </li>
                         <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>

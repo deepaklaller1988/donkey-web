@@ -22,7 +22,7 @@ const fetchSearched = async (searchQuery: string) => {
             let certificate = null;
             let imdbRating = null;
   
-            const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item?.id}`);
+            const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item?.id}&m=${item?.media_type === 'movie' ? 'movie' : 'show'}`);
             const certificateData = await certificateResponse.json();
             certificate = certificateData.certification || null;
   

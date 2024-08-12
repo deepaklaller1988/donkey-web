@@ -25,7 +25,7 @@ const fetchTopAll = async () => {
 
     const combinedResults = await Promise.all(data.results.map(async (item: any) => {
       try {
-        const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}`);
+        const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}&m=${item?.media_type === 'movie' ? 'movie' : 'show'}`);
         const certificateData = await certificateResponse.json();
         let imdbRating = null;
         if(certificateData){
@@ -162,7 +162,7 @@ export default function HomeSlider() {
                       <h2 className='text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:pb-2'>{item.title ? item.title : item.name}</h2>
                       <ul className='py-1 flex flex-wrap items-center text-white gap-x-3'>
                         <li><b className='font-bold'>{item.release_date ? moment(item.release_date).year() : ""}</b></li>
-                        <li><span className='flex items-center gap-2 pColor font-semibold pColor'><FaStar />{item?.imdb_rating ? item?.imdb_rating.toFixed(1) : item?.vote_average.toFixed(1)}</span></li>
+                        <li><span className='flex items-center gap-2 pColor font-semibold pColor'><FaStar />{item?.imdb_rating ? item?.imdb_rating?.toFixed(1) : item?.vote_average?.toFixed(1)}</span></li>
                         {/* {item.runtime && (<li>{item.runtime} min</li>)}
                         {item.certificate &&
                           <li><label className='text-white'>{item.certificate}</label></li>} */}
