@@ -24,7 +24,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
     let imdbRating = null;
 
     try {
-      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}&m=${mediaType.toLowerCase() ==='movie' ? 'movie' : 'show'}`);
+      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
       const certificateData = await certificateResponse.json();
       certificate = certificateData.certification || null;
       
@@ -194,18 +194,20 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
             </span>
 
             {(isMyList && isDeletable) && (
-              <label className="absolute z-0 top-1 right-0 font-bold px-2 rounded-l-xl" >
+              <label className="absolute z-0 top-1 right-0 font-bold px-1 rounded-l-xl" >
                     <div className="relative flex gap-4 hover:cursor-pointer" >
-                        <TiDelete className="w-8 h-8 m-1 " color="red"  onClick={() => handleDeleteList(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
+                        <img className="w-8 h-8" src="/assets/images/cross.png" onClick={() => handleDeleteList(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
                     </div>
                 </label>
               )}
             
             {(isBookmarked && isDeletable) && (
-              <label className="absolute z-0 top-1 right-0 font-bold px-2 rounded-l-xl">
+              <label className="absolute z-0 top-1 right-0 font-bold px-1 rounded-l-xl">
                 <div className="relative flex gap-4" >
                 <div className="relative flex gap-4" >
-                      <TiDelete className=" w-8 h-8 m-1 " color="red" onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
+                      {/* <TiDelete className=" w-8 h-8 m-1 " color="red" onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} /> */}
+                      <img className="w-8 h-8" src="/assets/images/cross.png" onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} />
+                    
                     </div>
                 </div>
               </label>

@@ -76,7 +76,7 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
         <div className="navInners w-full">
           <Link
             href=""
-            className=" block p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1 "
+            className="p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1 "
           >
             <FaMasksTheater className="w-5 h-5" />
             Genre
@@ -100,7 +100,7 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
         <div className="navInners w-full">
           <Link
             href=""
-            className="block p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1"
+            className="p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1"
           >
             <TbWorld className="w-5 h-5" />
             Country

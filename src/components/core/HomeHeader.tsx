@@ -16,6 +16,7 @@ import User from "@lib/User";
 import useRole from "@hooks/useRole";
 import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
+import Image from "next/image";
 
 export default function Header() {
   const [roleLoading] = useRole();
@@ -96,7 +97,9 @@ export default function Header() {
                 href="/home"
                 className="w-[120px] md:w-[150px] block m-auto"
               >
-                <img
+                <Image
+                  width = {150}
+                  height= {57}
                   className="max-w-full"
                   src="/assets/images/logo.png"
                   alt="logo"
@@ -172,7 +175,7 @@ export default function Header() {
                       <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                     </button>
                     <button
-                      className="text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black"
+                      className="text-white font-semibold p-2 px-6 rounded-full border-2 border-white transition hover:bg-white hover:text-black"
                       onClick={() => isClose(true)}
                     >
                       Log in

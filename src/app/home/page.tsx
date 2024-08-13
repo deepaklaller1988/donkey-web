@@ -26,8 +26,14 @@ const fetchPopularLists = async (mediaType: string) => {
 
 
 const fetchLatestList = async (mediaType: string) => {
+    let url = '';
+    if (mediaType === 'movie') {
+        url = `https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`;
+    } else {
+        url = `https://api.themoviedb.org/3/trending/tv/day?language=en-US`;
+    }
     try {
-          const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType}/popular?language=en-US&page=1`);
+          const response = await FetchApi.get(url);
         // let response = await fetch(`https://vidsrc.to/vapi/${mediaType}/new/1`, { method: "GET", });
         const data = await response.json();
         // if (data.status === 200) {
@@ -116,7 +122,7 @@ export default function Home() {
                             </div>
                             <div className="w-full pt-10">
                                 <div className="flex items-center gap-4">
-                                    <h3 className="text-white text-[25px] font-semibold">LATEST TV SHOWS</h3>
+                                    <h3 className="text-white text-[25px] font-semibold">TRENDING SHOWS</h3>
                                 </div>
                                 <div className="w-full py-2">
                                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
