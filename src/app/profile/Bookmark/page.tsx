@@ -67,34 +67,40 @@ export default function BookmarkPage() {
     <>
       <div className="w-full mt-28">
         <div className='homewrapper'>
-       
-        {
-          isLoading ? (<>
-            <Loader />
-          </>) : (<ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-            {bookmarkList && bookmarkList.data.length > 0
-              ? bookmarkList.data?.map((item: any) => (
-                <Card
-                  key={item.id}
-                  movieId={item.media_id}
-                  mediaType={item.media_type === "movie" ? "Movie" : "TV"}
-                  bookmark_type={item.bookmark_type}
-                  isBookmarked={true}
-                  queryClient={queryClient}
-                />
-              ))
-              : ""}
-          </ul>)
-        }
-              <CustomPagination
-                currentPage={currentPage}
-                totalItems={totalPages}
-                totalPages={totalPages}
-                itemsPerPage={12}
-                onPageChange={(page: number) => setCurrentPage(page)}
-            />
+
+          {
+            isLoading ? (<>
+              <Loader />
+            </>) : (<ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+              {bookmarkList && bookmarkList.data.length > 0
+                ? bookmarkList.data?.map((item: any) => (
+                  <Card
+                    key={item.id}
+                    movieId={item.media_id}
+                    mediaType={item.media_type === "movie" ? "Movie" : "TV"}
+                    bookmark_type={item.bookmark_type}
+                    isBookmarked={true}
+                    queryClient={queryClient}
+                  />
+                ))
+                :
+                <>
+                  <div className="flex justify-center items-center h-full w-full">
+                      <h3 className="text-white/70 text-[20px] font-semibold mb-6">There is no result...</h3>
+                  </div>
+                </>
+              }
+            </ul>)
+          }
+          <CustomPagination
+            currentPage={currentPage}
+            totalItems={totalPages}
+            totalPages={totalPages}
+            itemsPerPage={12}
+            onPageChange={(page: number) => setCurrentPage(page)}
+          />
         </div>
-      </div> 
+      </div>
     </>
   );
 }
