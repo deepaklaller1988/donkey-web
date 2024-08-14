@@ -24,7 +24,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
     let imdbRating = null;
 
     try {
-      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}`);
+      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}}&m=${mediaType.toLowerCase() ==='movie' ? 'movie' : 'show'}`);
       const certificateData = await certificateResponse.json();
       certificate = certificateData.certification || null;
       
