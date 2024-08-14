@@ -55,8 +55,6 @@ export default function Home() {
     useTitle("Home");
     const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
     const {
-        isLoading,
-        error,
         data: popularList,
     } = useQuery({
         queryKey: ['popular', selectedMedia],
@@ -79,7 +77,7 @@ export default function Home() {
     });
 
 
-    if (isLoading || movieLoading || tvLoading || roleLoading) {
+    if (movieLoading || tvLoading || roleLoading) {
         return (
             <div>
                 <Loader />
