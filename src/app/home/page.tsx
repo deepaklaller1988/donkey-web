@@ -33,7 +33,7 @@ const fetchLatestList = async (mediaType: string) => {
         url = `https://api.themoviedb.org/3/trending/tv/day?language=en-US`;
     }
     try {
-          const response = await FetchApi.get(url);
+        const response = await FetchApi.get(url);
         // let response = await fetch(`https://vidsrc.to/vapi/${mediaType}/new/1`, { method: "GET", });
         const data = await response.json();
         // if (data.status === 200) {
