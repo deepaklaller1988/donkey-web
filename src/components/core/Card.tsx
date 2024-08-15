@@ -24,7 +24,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
     let imdbRating = null;
 
     try {
-      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}}&m=${mediaType.toLowerCase() ==='movie' ? 'movie' : 'show'}`);
+      const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}&m=${mediaType.toLowerCase() ==='movie' ? 'movie' : 'show'}`);
       const certificateData = await certificateResponse.json();
       certificate = certificateData.certification || null;
       
@@ -99,6 +99,8 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
     setIsOpen(false);
   }
   }
+
+  console.log(movieDetials)
 
   const handleUpdateBookmark = async (mediaID: any, mediaType: string, bookmarkType: string) => {
     try {
