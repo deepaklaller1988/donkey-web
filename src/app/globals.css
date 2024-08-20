@@ -393,6 +393,8 @@ ul.p-multiselect-items{min-width: 200px;}
   }
 }
 @media only screen and (max-width: 767px){
+  .navInners section{width:150px}
+  .navInners section a{width:100%;}
   .mobileSearch {
     position: absolute;
     left: 0;

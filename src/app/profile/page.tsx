@@ -59,7 +59,7 @@ export default function Profile() {
       <>
         <div className="w-full">
           <div className="homewrapper">
-            <div className="w-full mt-20 pt-20 flex items-center text-white/50 gap-2">
+            <div className="w-full mt-20 pt-20 flex flex-wrap items-center text-white/50 gap-2">
               <h2 className="text-white pr-2 text-[30px]">
                 Hi <b className="text-[30px] font-semibold">{nameUpdated ?? roleData.username}</b>
               </h2>

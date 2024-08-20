@@ -318,7 +318,7 @@ const mutation = useMutation({
           <div className="homewrapper">
             <div className="w-full flex flex-col lg:flex-row gap-5">
               <div className="w-full flex flex-col md:flex-row gap-5">
-                <section className="min-w-[270px] max-w-[270px]">
+                <section className="min-w-[170px] max-w-[170px] md:min-w-[270px] md:max-w-[270px] m-auto md:m-0">
                   <img
                     className="w-full rounded-lg"
                     src={`https://image.tmdb.org/t/p/original${watchDetials?.poster_path}`}
