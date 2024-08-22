@@ -7,6 +7,7 @@ import Provider from "@components/core/Provider";
 import Head from "next/head";
 import User from "@lib/User";
 import ToastProvider from "@components/core/ToasterProvider";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Donkey | Watch Free Movies Online",
@@ -21,6 +22,28 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-7QQKB1XSQF"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-7QQKB1XSQF');
+        </script> */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-7QQKB1XSQF"
+        />
+        <Script id="google-analytics">
+          {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-7QQKB1XSQF');
+          `}
+        </Script>
+      </head>
       <body>
         <Provider>
           <MainLayout>
