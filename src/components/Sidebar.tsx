@@ -5,6 +5,7 @@ import SidebarCard from "./core/SidebarCard";
 import { useState } from "react";
 import { HiTrendingUp } from "react-icons/hi";
 import { FaRankingStar } from "react-icons/fa6";
+const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
 const fetchTop10List = async (mediaType: string, interval: string = "day") => {
   try {
@@ -21,7 +22,8 @@ const fetchTop10List = async (mediaType: string, interval: string = "day") => {
 const fetchPopularLists = async () => {
   try {
     const response = await fetch(
-      "https://mdblist.com/api/lists/14/items?apikey=178glc77gig10s6b8t3nact7g&limit=10"
+      // "https://mdblist.com/api/lists/14/items?apikey=178glc77gig10s6b8t3nact7g&limit=10"
+      `https://mdblist.com/api/lists/14/items?apikey=${apiKey}&limit=10`
     );
     const data = await response.json();
     const movieIds = data.map((item:any) => item.id);
@@ -40,10 +42,12 @@ const fetchPopularLists = async () => {
       })
     );
     return allMovieData
-  } catch (error) {
+    // return allMovieData.filter(movie => movie !== null);
+    } catch (error) {
     console.log("Error fetching data from the first API:", error);
   }
 };
+
 
 export default function Sidebar({ mediaType }: any) {
 

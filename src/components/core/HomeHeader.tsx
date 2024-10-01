@@ -137,12 +137,12 @@ export default function Header() {
                       >
                         <FaRegUser /> Profile{" "}
                       </button>
-                      <button
+                      {/* <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => handleProfile("watching")}
                       >
                         <GoVideo /> Continue Watching{" "}
-                      </button>
+                      </button> */}
                       <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => {handleProfile("Bookmark") }}

@@ -109,7 +109,6 @@ const RatingPopUp = () => {
   });
 
   const handleRating = (rate: number) => {
-    console.log(rate,"rate===")
     if (hasRated) {
       return;
     }

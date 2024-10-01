@@ -10,7 +10,7 @@ import { useState } from "react";
 import useTitle from "@hooks/useTitle";
 import SocialButton from "@components/SocialButton";
 import Loader from "@components/core/Loader";
-import WatchingPage from "@components/core/WatchingPage";
+// import WatchingPage from "@components/core/WatchingPage";
 import useRole from "@hooks/useRole";
 import { useAuth } from "context/AuthContext";
 
@@ -86,11 +86,11 @@ export default function Home() {
         <div className="homewrapper">
           <div className="containerHub flex gap-5 flex-col lg:flex-row">
             <div className="w-full">
-              {token && (
+              {/* {token && (
                 <>
                   <WatchingPage type={"home"} />
                 </>
-              )}
+              )} */}
 
               <div className="w-full">
                 <div className="flex items-center gap-4">
