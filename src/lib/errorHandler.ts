@@ -14,6 +14,8 @@ export const handleError = (errorMessage: any) => {
       return "Email Not Found";
     case "Password Not Matched":
       return "Wrong Password";
+      case "ERR_AUTH_USERNAME_OR_EMAIL_ALREADY_EXIST":
+        return "Email Already Exist"
     default:
       return "An error occurred. Please try again.";
   }

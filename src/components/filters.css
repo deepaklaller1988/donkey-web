@@ -2,6 +2,9 @@
     padding: 8px 15px;
     color: white;
 }
+.customSelect:hover{
+    color: black
+}
 .p-multiselect-label.p-placeholder, .p-multiselect-label.p-multiselect-items-label, .p-multiselect-label{
     @apply text-[14px];
 }

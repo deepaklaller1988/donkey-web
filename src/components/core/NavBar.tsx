@@ -4,9 +4,8 @@ import FetchApi from "@lib/FetchApi";
 import { useQuery } from '@tanstack/react-query';
 import { FaMasksTheater } from "react-icons/fa6";
 import { TiHome } from "react-icons/ti";
-import { TbWorld } from "react-icons/tb";
-import { MdStars } from "react-icons/md";
 import { HiTrendingUp } from 'react-icons/hi';
+import { FaRankingStar } from "react-icons/fa6";
 
 const fetchGenre = async (mediaType: string) => {
   try {
@@ -68,7 +67,7 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
         <Link
           href="/home"
           data-key="home"
-          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition bg-amber-500 flex gap-1"
+          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition bg-amber-500 flex gap-4"
         >
           <TiHome className="w-5 h-5" />
           Home
@@ -76,7 +75,7 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
         <div className="navInners w-full">
           <Link
             href=""
-            className="p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1 "
+            className="p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-4 "
           >
             <FaMasksTheater className="w-5 h-5" />
             Genre
@@ -97,7 +96,7 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
               : ""}
           </section>
         </div>
-        <div className="navInners w-full">
+        {/* <div className="navInners w-full">
           <Link
             href=""
             className="p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1"
@@ -120,19 +119,19 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
               ))
               : ""}
           </section>
-        </div>
+        </div> */}
         <Link
           href="/filters"
           data-key="popular"
-          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1"
+          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-4"
         >
-          <MdStars className="w-5 h-5" />
+          <FaRankingStar className="w-5 h-5" />
           Popular
         </Link>
         <Link
           href={`/filters?mediaType=movie`}
            data-key="movie"
-          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1"
+          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-4"
         >
           <HiTrendingUp className="w-5 h-5" />
           Movies
@@ -140,7 +139,7 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
         <Link
           href={`/filters?mediaType=tv`}
           data-key="tv"
-          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-1"
+          className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-4"
         >
           <HiTrendingUp className="w-5 h-5" />
           TV Shows
