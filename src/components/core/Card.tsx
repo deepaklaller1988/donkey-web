@@ -8,6 +8,7 @@ import FetchApi from "@lib/FetchApi";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import CardSkeleton from "./CardSkeleton";
+import Image from "next/image";
 import User from "@lib/User";
 import API from "@lib/Api";
 import { toasterError, toasterSuccess } from "./Toaster";
@@ -98,10 +99,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
     }
     setIsOpen(false);
   }
-  }
-
-  console.log(movieDetials)
-
+}
   const handleUpdateBookmark = async (mediaID: any, mediaType: string, bookmarkType: string) => {
     try {
       let data = {
@@ -231,9 +229,12 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
                       <b className="font-bold text-sm !text-white">{mediaType === 'Movie' ? moment(movieDetials?.release_date).year() : moment(movieDetials?.first_air_date).year()}</b>
                     </li>
                     <li>
-                      <label className="flex items-center gap-2 pColor text-sm font-semibold">
-                        <FaStar /> {movieDetials?.imdb_rating ? movieDetials?.imdb_rating?.toFixed(1) : movieDetials?.vote_average?.toFixed(1)}
+                      <label className="flex items-center gap-2 text-sm font-semibold">
+                        <FaStar className=" text-[#F3C313]" /> {movieDetials?.imdb_rating ? movieDetials?.imdb_rating?.toFixed(1) : movieDetials?.vote_average?.toFixed(1)}
                       </label>
+                    </li>
+                    <li>
+                      <Image src="/images/imdb-logo.svg" alt="Image" width={40} height={40}/>
                     </li>
                     <li className=" text-sm">{mediaType === 'Movie' ? movieDetials?.runtime + " min" : "EP" + movieDetials?.last_episode_to_air?.episode_number}</li>
 
@@ -254,8 +255,8 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
                 </section>
                 {
                   !isBookmarked && !isMyList && (
-                    <label className="absolute cursor-pointer right-5 top-1/2">
-                      <div className="relative text-white hover:text-amber-500 -mt-3 flex gap-2" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')}>
+                    <label className="absolute cursor-pointer right-5 bottom-1.5">
+                      <div className="relative text-white hover:text-amber-500  flex gap-1" onClick={() => handleBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv', 'planning-to-watch')}>
                         <IoIosAddCircleOutline className="w-6 h-6" /> My List
                       </div>
                     </label>
@@ -264,7 +265,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
 
               </div>
               <div className="w-full p-5 border-t border-1 border-white/5 text-white/50">
-                <p>
+                {/* <p>
                   Country:{" "}
                   <label className="text-white font-light">{movieDetials?.production_countries && movieDetials?.production_countries?.length > 0 ? movieDetials?.production_countries?.map((gen: any) => gen?.name).join(", ") : ""}</label>
                 </p>
@@ -277,7 +278,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
                   <label className="text-white font-light">
                     {movieDetials?.vote_average?.toFixed(2)} by {movieDetials?.vote_count} reviews
                   </label>
-                </p>
+                </p> */}
                 <p className="text-white/50 font-light pt-2">
                   {movieDetials?.overview && movieDetials?.overview.length > 150 ? movieDetials?.overview.slice(0, 150) + "..." : movieDetials?.overview}
                 </p>

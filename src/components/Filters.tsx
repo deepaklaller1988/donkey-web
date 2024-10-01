@@ -291,13 +291,14 @@ export default function Filters({handleFilters, initiallySelected, initiallySear
     { name: 'Most Voted', code: 'vote_count.desc' },
   ];
 
+
   const currentYear = moment().year();
-  const startYear = currentYear - 25;
-  const yearsArray:any = [];
+  const startYear = 1920;
+  const yearsArray: any = [];
   for (let year = currentYear; year >= startYear; year--) {
     yearsArray.push({ year: year });
   }
-
+  
   const type = [
     { name: 'Movie', code: 'movie' },
     { name: 'TV-Shows', code: 'tv' },
