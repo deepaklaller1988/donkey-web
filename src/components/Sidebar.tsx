@@ -31,7 +31,7 @@ const fetchPopularLists = async () => {
     const allMovieData = await Promise.all(
       movieIds.map(async (id: any) => {
         try {
-          const Response = await fetch(
+          const Response = await FetchApi.get(
             `https://api.themoviedb.org/3/movie/${id}?language=en-US`
           );
           return await Response.json();

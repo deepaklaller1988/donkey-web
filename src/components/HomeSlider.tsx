@@ -34,9 +34,7 @@ const fetchTopAll = async () => {
           //     item?.media_type === "movie" ? "movie" : "show"
           //   }`
           // );
-          const certificateResponse = await API.get(`cached/imdb-rating?mediaId=${item.id}&mediaType=${item?.media_type === "movie" ? "movie" : "show"}`);
-
-          const certificateData = await certificateResponse.json();
+          const certificateData = await API.get(`cached/imdb-rating?mediaId=${item.id}&mediaType=${item?.media_type === "movie" ? "movie" : "show"}`);
           let imdbRating = null;
           if (certificateData) {
             if (certificateData.ratings && certificateData.ratings.length > 0) {
