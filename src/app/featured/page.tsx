@@ -37,8 +37,8 @@ export default function Featured() {
   const fetchPopularLists = async (page: number) => {
     try {
       const response = await fetch(
-        `https://mdblist.com/api/lists/14/items?apikey=178glc77gig10s6b8t3nact7g&limit=400`
-        // `https://mdblist.com/api/lists/14/items?apikey=${apiKey}&limit=400`
+        // `https://mdblist.com/api/lists/14/items?apikey=178glc77gig10s6b8t3nact7g&limit=400`
+        `https://mdblist.com/api/lists/14/items?apikey=${apiKey}&limit=400`
       );
       const data = await response.json();
       const movieIds = data.map((item: any) => item.id);

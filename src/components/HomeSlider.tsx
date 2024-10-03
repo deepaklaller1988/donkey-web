@@ -29,11 +29,13 @@ const fetchTopAll = async () => {
     const combinedResults = await Promise.all(
       data.results.map(async (item: any) => {
         try {
-          const certificateResponse = await fetch(
-            `https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}&m=${
-              item?.media_type === "movie" ? "movie" : "show"
-            }`
-          );
+          // const certificateResponse = await fetch(
+          //   `https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}&m=${
+          //     item?.media_type === "movie" ? "movie" : "show"
+          //   }`
+          // );
+          const certificateResponse = await API.get(`cached/imdb-rating?mediaId=${item.id}&mediaType=${item?.media_type === "movie" ? "movie" : "show"}`);
+
           const certificateData = await certificateResponse.json();
           let imdbRating = null;
           if (certificateData) {
