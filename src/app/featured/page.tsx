@@ -37,8 +37,8 @@ export default function Featured() {
   const fetchPopularLists = async (page: number) => {
     try {
       const response = await fetch(
-        // `https://mdblist.com/api/lists/14/items?apikey=178glc77gig10s6b8t3nact7g&limit=400`
-        `https://mdblist.com/api/lists/14/items?apikey=${apiKey}&limit=400`
+        `https://mdblist.com/api/lists/14/items?apikey=178glc77gig10s6b8t3nact7g&limit=400`
+        // `https://mdblist.com/api/lists/14/items?apikey=${apiKey}&limit=400`
       );
       const data = await response.json();
       const movieIds = data.map((item: any) => item.id);
@@ -118,7 +118,7 @@ export default function Featured() {
                     : "POPULAR"}
                 </h3>
               </div>
-              <div className="w-full">
+              {/* <div className="w-full"> */}
                 <div className="w-full py-2">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {filteredData &&
@@ -144,7 +144,7 @@ export default function Featured() {
                     )}
                   </ul>
                 </div>
-              </div>
+              {/* </div> */}
 
                 <Pagination
                   totalPages={totalPages}

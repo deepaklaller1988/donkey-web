@@ -21,7 +21,7 @@ export default function Profile() {
     if (roleLoading) return;
 
     if (!roleData || !roleData.id) {
-      router.push('/dashboard');
+      router.push('/home');
     }
   }, [roleData, roleLoading, router]);
 
