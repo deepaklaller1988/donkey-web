@@ -203,7 +203,7 @@ export default function Home() {
               <div>
                 <Sidebar mediaType={"Popular"} />
               </div>
-              <div>
+              <div className="mt-20">
                 <Sidebar mediaType={"Movie"} />
               </div>
               <div className="mt-20">

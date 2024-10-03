@@ -37,12 +37,11 @@ export default function Featured() {
   const fetchPopularLists = async (page: number) => {
     try {
       const response = await fetch(
-        // `https://mdblist.com/api/lists/14/items?apikey=178glc77gig10s6b8t3nact7g&limit=400`
-        `https://mdblist.com/api/lists/14/items?apikey=${apiKey}&limit=400`
+        // `https://mdblist.com/api/lists/14/items?apikey=${apiKey}&limit=400`
+        `https://api.mdblist.com/lists/14/items/?apikey=${apiKey}&limit=450`
       );
       const data = await response.json();
-      const movieIds = data.map((item: any) => item.id);
-
+      const movieIds = data?.movies?.map((item: any) => item.id);
       const allMovieData = await Promise.all(
         movieIds.map(async (id: any) => {
           try {
@@ -56,10 +55,11 @@ export default function Featured() {
           }
         })
       );
+      const filteredMovieData = allMovieData?.filter((item: any) => item !== null);
 
-      const totalItems = allMovieData.length;
+      const totalItems = filteredMovieData?.length;
       const start = (page - 1) * itemsPerPage;
-      const paginatedData = allMovieData.slice(start, start + itemsPerPage);
+      const paginatedData = filteredMovieData?.slice(start, start + itemsPerPage);
 
       setTotalPages(Math.ceil(totalItems / itemsPerPage));
 

@@ -43,15 +43,12 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
   try {
     const response = await FetchApi.get(`https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US`);
     const data = await response.json();
-
-    let certificate = null;
     let imdbRating = null;
     try {
       
       const certificateResponse = await API.get(`cached/imdb-rating?mediaId=${movieId}&mediaType=${mediaType==='movie' ? 'movie' : 'show'}`);
       // const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}&m=${mediaType==='movie' ? 'movie' : 'show'}`);
       const certificateData = await certificateResponse.json();
-      certificate = certificateData.certification || null;
 
       if(certificateData){
         if(certificateData.ratings && certificateData.ratings.length > 0){
@@ -64,7 +61,6 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
 
     const combinedResults = {
       ...data,
-      certificate,
       imdb_rating: imdbRating,
     };
 

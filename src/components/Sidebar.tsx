@@ -5,7 +5,7 @@ import SidebarCard from "./core/SidebarCard";
 import { useState } from "react";
 import { HiTrendingUp } from "react-icons/hi";
 import { FaRankingStar } from "react-icons/fa6";
-const apiKey =process.env.NEXT_PUBLIC_MDBKEY
+const apiKey = process.env.NEXT_PUBLIC_MDBKEY;
 
 const fetchTop10List = async (mediaType: string, interval: string = "day") => {
   try {
@@ -22,35 +22,35 @@ const fetchTop10List = async (mediaType: string, interval: string = "day") => {
 const fetchPopularLists = async () => {
   try {
     const response = await fetch(
-      // "https://mdblist.com/api/lists/14/items?apikey=178glc77gig10s6b8t3nact7g&limit=10"
-      `https://mdblist.com/api/lists/14/items?apikey=${apiKey}&limit=10`
+      // `https://mdblist.com/api/lists/14/items?apikey=${apiKey}&limit=10`
+      `https://api.mdblist.com/lists/14/items/?apikey=${apiKey}&limit=50`
     );
     const data = await response.json();
-    const movieIds = data.map((item:any) => item.id);
+    const movieIds = data?.movies?.map((item: any) => item.id);
 
     const allMovieData = await Promise.all(
-      movieIds.map(async (id:any) => {
+      movieIds.map(async (id: any) => {
         try {
           const Response = await fetch(
             `https://api.themoviedb.org/3/movie/${id}?language=en-US`
           );
           return await Response.json();
         } catch (err) {
-          console.error(`Error fetching data for ID ${id}:`, err);
           return null;
         }
       })
     );
-    return allMovieData
-    // return allMovieData.filter(movie => movie !== null);
-    } catch (error) {
+
+    const filteredMovieData = allMovieData.filter(
+      (item: any) => item && item.success !== false
+    );
+    return filteredMovieData;
+  } catch (error) {
     console.log("Error fetching data from the first API:", error);
   }
 };
 
-
 export default function Sidebar({ mediaType }: any) {
-
   const [interval, setInterval] = useState<string>("day");
   const { isLoading, data: topList } = useQuery({
     queryKey: ["top-10", mediaType, interval],
@@ -119,7 +119,7 @@ export default function Sidebar({ mediaType }: any) {
       <ul className="flex flex-col gap-3 py-2 mt-[10px]">
         {mediaType === "Popular"
           ? popular && popular.length > 0
-            ? renderMovies(popular, "Movie")
+            ? renderMovies(popular.slice(0, 10), "Movie")
             : ""
           : topList && topList.length > 0
           ? renderMovies(topList.slice(0, 10), mediaType)

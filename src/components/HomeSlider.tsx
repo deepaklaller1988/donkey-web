@@ -47,7 +47,6 @@ const fetchTopAll = async () => {
           }
           return {
             ...item,
-            certificate: certificateData.certification || null,
             imdb_rating: imdbRating,
           };
         } catch (error) {
