@@ -34,14 +34,11 @@ const fetchTopAll = async () => {
           //     item?.media_type === "movie" ? "movie" : "show"
           //   }`
           // );
-          const certificateData = await API.get(`cached/imdb-rating?mediaId=${item.id}&mediaType=${item?.media_type === "movie" ? "movie" : "show"}`);
           let imdbRating = null;
-          if (certificateData) {
-            if (certificateData.ratings && certificateData.ratings.length > 0) {
-              imdbRating = certificateData.ratings.find(
-                (rating: any) => rating.source === "imdb"
-              ).value;
-            }
+          const response = await API.get(`cached/imdb-rating?mediaId=${item.id}&mediaType=${item?.media_type === "movie" ? "movie" : "tv"}`);
+          if(response.success){
+            let res = response.data;
+              imdbRating = res.imdb_rating
           }
           return {
             ...item,

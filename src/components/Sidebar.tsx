@@ -9,6 +9,9 @@ const apiKey = process.env.NEXT_PUBLIC_MDBKEY;
 
 const fetchTop10List = async (mediaType: string, interval: string = "day") => {
   try {
+    if(mediaType === 'Popular'){
+      return [];
+    }
     const response = await FetchApi.get(
       `https://api.themoviedb.org/3/trending/${mediaType.toLowerCase()}/${interval}?language=en-US`
     );
