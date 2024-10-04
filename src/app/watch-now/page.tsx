@@ -46,9 +46,8 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
     let imdbRating = null;
     try {
       
-      const certificateResponse = await API.get(`cached/imdb-rating?mediaId=${movieId}&mediaType=${mediaType==='movie' ? 'movie' : 'show'}`);
+      const certificateData = await API.get(`cached/imdb-rating?mediaId=${movieId}&mediaType=${mediaType==='movie' ? 'movie' : 'show'}`);
       // const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}&m=${mediaType==='movie' ? 'movie' : 'show'}`);
-      const certificateData = await certificateResponse.json();
 
       if(certificateData){
         if(certificateData.ratings && certificateData.ratings.length > 0){
