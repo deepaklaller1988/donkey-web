@@ -195,9 +195,9 @@ export default function HomeSlider() {
                             </b>
                           </li>
                           <li>
-                          <span className='rounded flex items-center gap-2.5 pColor font-semibold pColor bg-gray-900 px-2.5 my-0'>
-                          <FaStar />
-                          {item?.imdb_rating ? item?.imdb_rating?.toFixed(1) : item?.vote_average?.toFixed(1)}
+                          <span className='rounded flex items-center gap-2.5 pColor font-semibold px-2.5 my-0'>
+                          <FaStar className=" text-[#F3C313]" />
+                          <p className="text-white">{item?.imdb_rating ? item?.imdb_rating?.toFixed(1) : item?.vote_average?.toFixed(1)}</p>
                           <Image src="/images/imdb-logo.svg" alt="Image" width={40} height={20}/>
                           </span>
                           </li>

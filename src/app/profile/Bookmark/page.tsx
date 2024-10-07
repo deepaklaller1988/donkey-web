@@ -50,6 +50,7 @@ export default function BookmarkPage() {
     queryKey: ['bookmark', roleData, activeFolder, currentPage],
     queryFn: () => fetchBookmarkList(roleData ? roleData.id : User.id, activeFolder, currentPage, 12),
     enabled: !!(roleData?.id || User.id) && !!activeFolder,
+    staleTime: 60 * 1000,
   });
   const totalPages = bookmarkList?.count
 

@@ -13,6 +13,7 @@ import Loader from "@components/core/Loader";
 // import WatchingPage from "@components/core/WatchingPage";
 import useRole from "@hooks/useRole";
 import { useAuth } from "context/AuthContext";
+import Image from "next/image";
 
 const fetchPopularLists = async (mediaType: string) => {
   try {
@@ -81,7 +82,12 @@ export default function Home() {
       <HomeSlider />
       <div className="w-full">
         <div className="w-full mb-10 md:mb-20">
-          <SocialButton />
+        <div className="share-container max-w-screen-md sm:mx-auto mx-5">
+          <a href="https://fststvpn.com/66fa7e897d554" target="_blank" rel="noopener noreferrer">
+            <Image src="/assets/images/banner.png" alt="Banner" width={800} height={150}/>
+            </a>
+        </div>
+          {/* <SocialButton /> */}
         </div>
         <div className="homewrapper">
           <div className="containerHub flex gap-5 flex-col lg:flex-row">

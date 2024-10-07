@@ -93,6 +93,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
     setIsOpen(false);
   }
 }
+
   const handleUpdateBookmark = async (mediaID: any, mediaType: string, bookmarkType: string) => {
     try {
       let data = {

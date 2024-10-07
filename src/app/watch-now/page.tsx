@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { IoIosArrowRoundForward } from "react-icons/io";
+import { IoIosAddCircleOutline, IoIosArrowRoundForward } from "react-icons/io";
 import Recommended from "@components/Recommended";
 import "./album-detail.css";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
@@ -18,6 +18,8 @@ import User from "@lib/User";
 import ToastProvider from "@components/core/ToasterProvider";
 import useRole from "@hooks/useRole";
 import Link from "next/link";
+import Image from "next/image";
+import { toasterError, toasterSuccess } from "@components/core/Toaster";
 const apiKey =process.env.NEXT_PUBLIC_MDBKEY
 
 
@@ -256,6 +258,31 @@ const mutation = useMutation({
     }
   }, [isPlaying])
 
+  const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: string) => {
+    if (!User.isUserLoggedIn) {
+      toasterError("Please login or signup to use this feature.", 3000, "id")
+    }
+    if(User.isUserLoggedIn){
+    try {
+      let data = {
+        userId: User.id,
+        mediaId: mediaID,
+        mediaType: mediaType,
+        bookmarkType: bookmarkType
+      }
+
+      const result = await API.post("bookmark", data);
+      if (result.success) {
+        toasterSuccess("Media added successfully to List.", 3000, mediaID)
+      } else {
+        toasterError(result?.error?.code, 3000, mediaID);
+      }
+    } catch (error: any) {
+      toasterError(error?.error?.code, 3000, mediaID);
+    }
+  }
+}
+
   if (isLoading || isPopularLoading || isSimilarLoading || isCreditLoading || isEpisodeLoading || roleLoading) {
     return (
       <div>
@@ -305,7 +332,7 @@ const mutation = useMutation({
                 ></div>
               )}
               <div className="absolute w-full z-0 left-0 bottom-0">
-                <img src="/assets/images/slides/shadow.png" alt="shadow" />
+                <img src="/assets/images/slides/shadow.png" alt="shadow" width = "100%" height= "280px" />
               </div>
             </div>
           </section>
@@ -338,7 +365,9 @@ const mutation = useMutation({
                         </li> */}
                         <li>
                           <span className="flex items-center gap-2 pColor font-semibold">
-                            <FaStar /> {watchDetials?.imdb_rating ? watchDetials?.imdb_rating?.toFixed(1) : watchDetials?.vote_average?.toFixed(1)}
+                          <FaStar className=" text-[#F3C313]" />
+                          <p className="text-white">{watchDetials?.imdb_rating ? watchDetials?.imdb_rating?.toFixed(1) : watchDetials?.vote_average?.toFixed(1)}</p>
+                          <Image src="/images/imdb-logo.svg" alt="Image" width={40} height={20}/>
                           </span>
                         </li>
                         <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
@@ -346,11 +375,16 @@ const mutation = useMutation({
                       <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
                         <li className='text-white'>{watchDetials.certificate}</li>
                         {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen: any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
-
-
                       </ul>
                     </section>
-                    <RatingPopUp />
+                    <section className="relative text-white hover:text-amber-500  flex items-end justify-end gap-1">
+                      <div className="flex gap-1 text-[20px] cursor-pointer"
+                       onClick={() => handleBookmark(watchDetials?.id, mediaType === 'movie' ? 'movie' : 'tv', 'planning-to-watch')}
+                       >
+                        <IoIosAddCircleOutline className="w-7 h-7" /> My List
+                      </div>
+                    </section>
+                    {/* <RatingPopUp /> */}
                   </div>
                   <div className="w-full">
                     <p className="text-white/50 mt-3 font-light">
