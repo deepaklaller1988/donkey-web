@@ -90,7 +90,7 @@ export default function Sidebar({ mediaType }: any) {
           {mediaType === "Movie"
             ? "MOVIES"
             : mediaType === "Popular"
-            ? "POPULAR"
+            ? "TRENDING"
             : "TV SHOWS"}
         </h3>
         {mediaType !== "Popular" && (

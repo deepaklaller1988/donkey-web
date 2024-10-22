@@ -8,22 +8,43 @@ import Card from "@components/core/Card";
 import FetchApi from "@lib/FetchApi";
 import { useState } from "react";
 import useTitle from "@hooks/useTitle";
-import SocialButton from "@components/SocialButton";
 import Loader from "@components/core/Loader";
 // import WatchingPage from "@components/core/WatchingPage";
 import useRole from "@hooks/useRole";
 import { useAuth } from "context/AuthContext";
-import Image from "next/image";
+const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
 const fetchPopularLists = async (mediaType: string) => {
+  console.log(mediaType);
+  const mediaTypeLower = mediaType.toLowerCase();
+  const url = `https://api.trakt.tv/${
+    mediaTypeLower === "movie" ? "movies" : "shows"
+  }/popular?limit=50`;
+
   try {
-    const response = await FetchApi.get(
-      `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/top_rated?language=en-US&page=1`
-    );
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        "trakt-api-version": "2",
+        "trakt-api-key": CLIENT_ID,
+      },
+    });
     const data = await response.json();
-    return data.results;
+    const imdbIds = data.map((item: any) => item.ids.tmdb);
+    const tmdbResponses = await Promise.all(
+      imdbIds.map((id: any) =>
+        FetchApi.get(
+          `https://api.themoviedb.org/3/${mediaTypeLower}/${id}?language=en-US`
+        )
+      )
+    );
+
+    const tmdbData = await Promise.all(tmdbResponses.map((res) => res.json()));
+
+    return tmdbData;
   } catch (error) {
-    console.log(error);
+    console.log("Error fetching popular lists:", error);
+    return [];
   }
 };
 
@@ -82,7 +103,7 @@ export default function Home() {
       <HomeSlider />
       <div className="w-full">
         <div className="w-full mb-10 md:mb-20">
-        {/* <div className="share-container max-w-screen-md sm:mx-auto mx-5">
+          {/* <div className="share-container max-w-screen-md sm:mx-auto mx-5">
           <a href="https://fststvpn.com/66fa7e897d554" target="_blank" rel="noopener noreferrer">
             <Image src="/assets/images/banner.png" alt="Banner" width={800} height={150}/>
             </a>
