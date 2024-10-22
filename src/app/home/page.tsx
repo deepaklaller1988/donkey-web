@@ -82,11 +82,11 @@ export default function Home() {
       <HomeSlider />
       <div className="w-full">
         <div className="w-full mb-10 md:mb-20">
-        <div className="share-container max-w-screen-md sm:mx-auto mx-5">
+        {/* <div className="share-container max-w-screen-md sm:mx-auto mx-5">
           <a href="https://fststvpn.com/66fa7e897d554" target="_blank" rel="noopener noreferrer">
             <Image src="/assets/images/banner.png" alt="Banner" width={800} height={150}/>
             </a>
-        </div>
+        </div> */}
           {/* <SocialButton /> */}
         </div>
         <div className="homewrapper">
@@ -163,7 +163,7 @@ export default function Home() {
               <div className="w-full pt-10">
                 <div className="flex items-center gap-4">
                   <h3 className="text-white text-[25px] font-semibold">
-                    CINEMATIC
+                    POPULAR
                   </h3>
                   <section className="flex gap-2">
                     <button

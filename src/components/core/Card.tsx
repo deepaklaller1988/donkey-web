@@ -61,7 +61,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
 
   const handleWatchPopup = () => {
     if (!User.isUserLoggedIn) {
-      toasterError("Please login or signup to use this feature.", 3000, "id")
+      toasterError("You must be signed in to use this feature..", 3000, "id")
     } else {
       setIsOpen(!isOpen);
     }
@@ -69,7 +69,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
 
   const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: string) => {
     if (!User.isUserLoggedIn) {
-      toasterError("Please login or signup to use this feature.", 3000, "id")
+      toasterError("You must be signed in to use this feature..", 3000, "id")
     }
     if(User.isUserLoggedIn){
     try {
@@ -128,7 +128,7 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
       const result = await API.delete("bookmark", data);
       if (result.success) {
         queryClient.invalidateQueries({ queryKey: ['bookmark'] })
-        toasterSuccess(`Media removed successfully from List.`, 3000, mediaID)
+        toasterSuccess(`Removed.`, 3000, mediaID)
       } else {
         toasterError(result?.error?.code, 3000, mediaID);
       }
@@ -276,8 +276,8 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
                 <p className="text-white/50 font-light pt-2">
                   {movieDetials?.overview && movieDetials?.overview.length > 150 ? movieDetials?.overview.slice(0, 150) + "..." : movieDetials?.overview}
                 </p>
-                <button className="text-black flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition m-auto mt-4 mb-2" onClick={() => router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
-                  Watch Now <FaRegCirclePlay className="text-xl" />
+                <button className="text-black font-bold flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition m-auto mt-4 mb-2" onClick={() => router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
+                  Play <FaRegCirclePlay className="text-xl" />
                 </button>
               </div>
             </div>

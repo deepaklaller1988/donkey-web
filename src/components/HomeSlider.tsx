@@ -119,7 +119,7 @@ export default function HomeSlider() {
 
   const handleWatchPopup = () => {
     if (!User.isUserLoggedIn) {
-      toasterError("Please login or signup to use this feature.", 3000, "id");
+      toasterError("You must be signed in to use this feature..", 3000, "id");
     } else {
       setIsOpen(true);
     }
@@ -219,7 +219,7 @@ export default function HomeSlider() {
                         </p>
                         <section className="flex mt-4 gap-4">
                           <button
-                            className="flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition"
+                            className="flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition font-bold"
                             onClick={() =>
                               router.push(
                                 `/watch-now?type=${item.media_type?.toLowerCase()}&id=${
@@ -228,7 +228,7 @@ export default function HomeSlider() {
                               )
                             }
                           >
-                            Watch Now <FaRegCirclePlay className="text-xl" />
+                           Play <FaRegCirclePlay className="text-xl" />
                           </button>
                           <div
                             className="relative flex gap-4"

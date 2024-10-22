@@ -130,7 +130,7 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
               className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition flex gap-4"
             >
               <FaRankingStar className="w-5 h-5" />
-              Popular
+              Hot
             </Link>
             <Link
               href={`/featured?mediaType=movie`}

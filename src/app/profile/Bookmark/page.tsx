@@ -87,7 +87,7 @@ export default function BookmarkPage() {
                 :
                 <>
                   <div className="flex justify-center items-center h-full w-full">
-                      <h3 className="text-white/70 text-[20px] font-semibold mb-6">There is no result...</h3>
+                      <h3 className="text-white/70 text-[20px] font-semibold mb-6">Empty..</h3>
                   </div>
                 </>
               }

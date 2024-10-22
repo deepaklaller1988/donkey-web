@@ -115,7 +115,7 @@ export default function Featured() {
                     ? "MOVIES"
                     : mediaType
                     ? "TV SHOWS"
-                    : "POPULAR"}
+                    : "HOT"}
                 </h3>
               </div>
               {/* <div className="w-full"> */}

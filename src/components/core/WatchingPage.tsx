@@ -67,7 +67,7 @@ export default function WatchingPage({ type }: any) {
                         <>
                             <div className="flex justify-center items-center h-full w-full">
                                 {type == "profile" && (
-                                    <h3 className="text-white/70 text-[20px] font-semibold mb-6">There is no result...</h3>
+                                    <h3 className="text-white/70 text-[20px] font-semibold mb-6">Empty..</h3>
                                 )}
                             </div>
                         </>

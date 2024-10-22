@@ -58,7 +58,7 @@ export default function Header() {
     logOut(), 
     setToken(null)
     router.push("/home");
-    toasterSuccess("LogOut Successfully !", 3000, "id");
+    toasterSuccess("Signed out Successfully.", 3000, "id");
   };
 
   const handleProfile = (type: any) => {
@@ -126,7 +126,7 @@ export default function Header() {
                       <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                     </button>
                     <button onClick={toggleProfile} className="text-white">
-                      <VscAccount className="w-5 h-5 hover:text-amber-500 transition" />
+                      <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
                     <div
                       className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${
@@ -164,7 +164,7 @@ export default function Header() {
                         className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 "
                         onClick={handleLogOut}
                       >
-                        <IoLogOutOutline /> Logout
+                        <IoLogOutOutline /> Sign out
                       </button>
                     </div>
                   </div>
