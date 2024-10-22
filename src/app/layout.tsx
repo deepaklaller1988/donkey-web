@@ -32,6 +32,7 @@ export default function RootLayout({
 
         gtag('config', 'G-7QQKB1XSQF');
         </script> */}
+        <script data-cfasync="false" async type="text/javascript" src="//tj.juglarunioid.com/rV2Wve6XqB3m6BLz1/109807"></script>
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-7QQKB1XSQF"
