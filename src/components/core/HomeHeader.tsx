@@ -204,7 +204,7 @@ export default function Header() {
           data-cfasync="false"
           async
           type="text/javascript"
-          src="//tj.juglarunioid.com/rV2Wve6XqB3m6BLz1/109807"
+          src="//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"
         ></Script>
       )}
 
