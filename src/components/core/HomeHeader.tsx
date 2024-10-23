@@ -199,7 +199,7 @@ export default function Header() {
         />
       ) : null} */}
 
-      {isOpen ? null : (
+      {/* {isOpen ? null : (
         <Script
           data-cfasync="false"
           async
@@ -214,7 +214,7 @@ export default function Header() {
           handleClose={handleClose}
           ProfileType="profile"
         />
-      ) : null}
+      ) : null} */}
 
       <NavBar openSideBar={openSideBar} toggleSidebar={toggleSidebar} />
     </>
