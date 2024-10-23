@@ -26,6 +26,7 @@ export default function RootLayout({
           name="galaksion-domain-verification"
           content="9c215d0ab770acaa88d7a0fbaadb53947827230566f709ea392f337b98b30058"
         />
+        <script data-cfasync="false" async type="text/javascript" src="//gd.jiggleowk.com/r2KRbDFG7isno7/109807"></script>
         {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-7QQKB1XSQF"></script>
         <script>
         window.dataLayer = window.dataLayer || [];
@@ -34,13 +35,7 @@ export default function RootLayout({
 
         gtag('config', 'G-7QQKB1XSQF');
         </script> */}
-        <Script
-          data-cfasync="false"
-          async
-          type="text/javascript"
-          src="//gd.jiggleowk.com/r2KRbDFG7isno7/109807"
-          // strategy="afterInteractive"
-        />
+       
         {/* <script data-cfasync="false" async type="text/javascript" src="//lirotroodles.com/ndMqTp3EaRih1f/109859"></script> */}
         <Script
           async
