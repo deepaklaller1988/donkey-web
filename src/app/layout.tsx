@@ -39,7 +39,8 @@ export default function RootLayout({
           async
           type="text/javascript"
           src="//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"
-        ></Script>{" "}
+          strategy="afterInteractive"
+        />
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-7QQKB1XSQF"
