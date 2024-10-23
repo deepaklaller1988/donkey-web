@@ -191,13 +191,13 @@ export default function Header() {
           </div>
         </div>
       </div>
-      {/* {isOpen ? (
+      {isOpen ? (
         <AuthForm
           isOpen={isOpen}
           handleClose={handleClose}
           ProfileType="profile"
         />
-      ) : null} */}
+      ) : null}
 
       {/* {isOpen ? null : (
         <Script
