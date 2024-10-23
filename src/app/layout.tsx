@@ -4,8 +4,7 @@ import "./globals.css";
 // const inter = Inter({ subsets: ["latin"] });
 import MainLayout from "@components/core/MainLayout";
 import Provider from "@components/core/Provider";
-import Head from "next/head";
-import User from "@lib/User";
+
 import ToastProvider from "@components/core/ToasterProvider";
 import Script from "next/script";
 
@@ -35,12 +34,12 @@ export default function RootLayout({
 
         gtag('config', 'G-7QQKB1XSQF');
         </script> */}
-        <script
+        <Script
           data-cfasync="false"
           async
           type="text/javascript"
           src="//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"
-        ></script>{" "}
+        ></Script>{" "}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-7QQKB1XSQF"
