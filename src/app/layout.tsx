@@ -38,10 +38,10 @@ export default function RootLayout({
           data-cfasync="false"
           async
           type="text/javascript"
-          src="//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"
-          strategy="afterInteractive"
+          src="//gd.jiggleowk.com/r2KRbDFG7isno7/109807"
+          // strategy="afterInteractive"
         />
-        <script data-cfasync="false" async type="text/javascript" src="//lirotroodles.com/ndMqTp3EaRih1f/109859"></script>
+        {/* <script data-cfasync="false" async type="text/javascript" src="//lirotroodles.com/ndMqTp3EaRih1f/109859"></script> */}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-7QQKB1XSQF"
