@@ -9,6 +9,7 @@ import { Slide } from "react-slideshow-image";
 import { useQuery, useQueries } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
+import { HiPlay } from "react-icons/hi2";
 
 import FetchApi from "@lib/FetchApi";
 import Loader from "./core/Loader";
@@ -35,10 +36,14 @@ const fetchTopAll = async () => {
           //   }`
           // );
           let imdbRating = null;
-          const response = await API.get(`cached/imdb-rating?mediaId=${item.id}&mediaType=${item?.media_type === "movie" ? "movie" : "tv"}`);
-          if(response.success){
+          const response = await API.get(
+            `cached/imdb-rating?mediaId=${item.id}&mediaType=${
+              item?.media_type === "movie" ? "movie" : "tv"
+            }`
+          );
+          if (response.success) {
             let res = response.data;
-              imdbRating = res.imdb_rating
+            imdbRating = res.imdb_rating;
           }
           return {
             ...item,
@@ -195,13 +200,21 @@ export default function HomeSlider() {
                             </b>
                           </li>
                           <li>
-                          <span className='rounded flex items-center gap-2.5 pColor font-semibold px-2.5 my-0'>
-                          <FaStar className=" text-[#F3C313]" />
-                          <p className="text-white">{item?.imdb_rating ? item?.imdb_rating?.toFixed(1) : item?.vote_average?.toFixed(1)}</p>
-                          <Image src="/images/imdb-logo.svg" alt="Image" width={40} height={20}/>
-                          </span>
+                            <span className="rounded flex items-center gap-2.5 pColor font-semibold px-2.5 my-0">
+                              <FaStar className=" text-[#F3C313]" />
+                              <p className="text-white">
+                                {item?.imdb_rating
+                                  ? item?.imdb_rating?.toFixed(1)
+                                  : item?.vote_average?.toFixed(1)}
+                              </p>
+                              <Image
+                                src="/images/imdb-logo.svg"
+                                alt="Image"
+                                width={40}
+                                height={20}
+                              />
+                            </span>
                           </li>
-                         
 
                           {/* {item.runtime && (<li>{item.runtime} min</li>)}
                         {item.certificate &&
@@ -219,7 +232,7 @@ export default function HomeSlider() {
                         </p>
                         <section className="flex mt-4 gap-4">
                           <button
-                            className="flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition font-bold"
+                            className="flex items-center gap-2 bg-white/30 text-white  px-6 py-2 rounded-full transition font-bold"
                             onClick={() =>
                               router.push(
                                 `/watch-now?type=${item.media_type?.toLowerCase()}&id=${
@@ -228,7 +241,10 @@ export default function HomeSlider() {
                               )
                             }
                           >
-                           Play <FaRegCirclePlay className="text-xl" />
+                            {/* Play <FaRegCirclePlay className="text-xl" />
+                             */}
+                            <HiPlay className="text-lg" />
+                            Play
                           </button>
                           <div
                             className="relative flex gap-4"

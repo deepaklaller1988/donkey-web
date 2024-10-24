@@ -9,7 +9,7 @@ import FetchApi from "@lib/FetchApi";
 import { useState } from "react";
 import useTitle from "@hooks/useTitle";
 import Loader from "@components/core/Loader";
-// import WatchingPage from "@components/core/WatchingPage";
+import Image from "next/image";
 import useRole from "@hooks/useRole";
 import { useAuth } from "context/AuthContext";
 const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
@@ -102,13 +102,7 @@ export default function Home() {
     <div className="w-full">
       <HomeSlider />
       <div className="w-full">
-        <div className="w-full mb-10 md:mb-20">
-          {/* <div className="share-container max-w-screen-md sm:mx-auto mx-5">
-          <a href="https://fststvpn.com/66fa7e897d554" target="_blank" rel="noopener noreferrer">
-            <Image src="/assets/images/banner.png" alt="Banner" width={800} height={150}/>
-            </a>
-        </div> */}
-          {/* <SocialButton /> */}
+        <div className="w-full mb-10 md:mb-20">        
         </div>
         <div className="homewrapper">
           <div className="containerHub flex gap-5 flex-col lg:flex-row">
@@ -118,13 +112,19 @@ export default function Home() {
                   <WatchingPage type={"home"} />
                 </>
               )} */}
-
               <div className="w-full">
-                <div className="flex items-center gap-4">
+                <div className="flex justify-between  items-center gap-4">
                   <h3 className="text-white text-[25px] font-semibold">
                     LATEST MOVIES
                   </h3>
+                  <button
+                    className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+                    onClick={() => router.push(`/media/movie`)}
+                  >
+                    View More
+                  </button>
                 </div>
+                
                 <div className="w-full py-2">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {latestMovieList && latestMovieList.length > 0
@@ -140,21 +140,33 @@ export default function Home() {
                       : ""}
                   </ul>
                 </div>
-
-                <section className="flex justify-center pt-10">
-                  <button
-                    className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
-                    onClick={() => router.push(`/media/movie`)}
-                  >
-                    View More
-                  </button>
-                </section>
               </div>
-              <div className="w-full pt-10">
-                <div className="flex items-center gap-4">
+              <div className="share-container py-10 max-w-screen-md sm:mx-auto mx-5">
+                <a
+                  href="https://fststvpn.com/66fa7e897d554"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    src="/assets/images/redditbanner3.jpg"
+                    alt="Banner"
+                    width={800}
+                    height={150}
+                  />
+                </a>
+              </div>
+              <div className="w-full">
+                <div className="flex justify-between items-center gap-4">
                   <h3 className="text-white text-[25px] font-semibold">
                     TRENDING SHOWS
                   </h3>
+                  <button
+                    className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+                    onClick={() => router.push(`/media/tv`)}
+                  >
+                    View More
+                  </button>
+
                 </div>
                 <div className="w-full py-2">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
@@ -172,14 +184,7 @@ export default function Home() {
                   </ul>
                 </div>
 
-                <section className="flex justify-center pt-10">
-                  <button
-                    className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
-                    onClick={() => router.push(`/media/tv`)}
-                  >
-                    View More
-                  </button>
-                </section>
+           
               </div>
               <div className="w-full pt-10">
                 <div className="flex items-center gap-4">

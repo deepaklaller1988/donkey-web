@@ -260,7 +260,7 @@ const mutation = useMutation({
 
   const handleBookmark = async (mediaID: any, mediaType: string, bookmarkType: string) => {
     if (!User.isUserLoggedIn) {
-      toasterError("You must be signed in to use this feature..", 3000, "id")
+      toasterError("Please login or signup to use this feature.", 3000, "id")
     }
     if(User.isUserLoggedIn){
     try {
@@ -312,6 +312,8 @@ const mutation = useMutation({
                   {/* --------- vidsrc.to embed link -------- */}
                   <iframe
                     src={`https://vidsrc.pro/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id}${mediaType === 'tv' ? selectedSeason ? '/' + (selectedSeason.season_number || 1) : '/1' : ''}${mediaType === 'tv' ? selectedEpisode ? '/' + selectedEpisode : '/1' : ''}`}
+
+                    // src={`https://vidsrc.dev/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id}${mediaType === 'tv' ? selectedSeason ? '/' + (selectedSeason.season_number || 1) : '/1' : ''}${mediaType === 'tv' ? selectedEpisode ? '/' + selectedEpisode : '/1' : ''}`}
                     className="w-full mt-5 rounded-lg videoFrame"
                     title="Vidsrc video player"
                     referrerPolicy="origin"
@@ -373,7 +375,7 @@ const mutation = useMutation({
                         <li>{mediaType === 'movie' ? watchDetials?.runtime + " min" : "EP" + watchDetials?.last_episode_to_air?.episode_number}</li>
                       </ul>
                       <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
-                        {/* <li className='text-white'>{watchDetials.certificate}</li> */}
+                        <li className='text-white'>{watchDetials.certificate}</li>
                         {watchDetials.genres && watchDetials.genres.length > 0 ? watchDetials.genres.map((gen: any) => (<li key={gen.id}>{gen.name}</li>)) : ""}
                       </ul>
                     </section>

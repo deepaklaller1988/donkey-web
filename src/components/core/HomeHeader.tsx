@@ -16,6 +16,7 @@ import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
 import Image from "next/image";
 import { useAuth } from "context/AuthContext";
+import { GoVideo } from "react-icons/go";
 
 export default function Header() {
   const router = useRouter();
@@ -139,12 +140,12 @@ export default function Header() {
                       >
                         <FaRegUser /> Profile{" "}
                       </button>
-                      {/* <button
+                      <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => handleProfile("watching")}
                       >
                         <GoVideo /> Continue Watching{" "}
-                      </button> */}
+                      </button>
                       <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => {

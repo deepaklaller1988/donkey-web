@@ -43,7 +43,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
       if (data?.data?.accessToken) {
         localStorage.setItem("token", data?.data?.accessToken);
         setToken(data.data?.accessToken);
-        toasterSuccess("Login successfully.", 1000, "id");
+        toasterSuccess("Login successfull.", 1000, "id");
         setUsername(data?.data?.user?.username);
         User.isUserLoggedIn = true;
         User.role();

@@ -13,6 +13,8 @@ import User from "@lib/User";
 import API from "@lib/Api";
 import { toasterError, toasterSuccess } from "./Toaster";
 import { useState } from "react";
+import { HiPlay } from "react-icons/hi2";
+
 const apiKey = process.env.NEXT_PUBLIC_MDBKEY
 
 
@@ -276,8 +278,10 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
                 <p className="text-white/50 font-light pt-2">
                   {movieDetials?.overview && movieDetials?.overview.length > 150 ? movieDetials?.overview.slice(0, 150) + "..." : movieDetials?.overview}
                 </p>
-                <button className="text-black font-bold flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition m-auto mt-4 mb-2" onClick={() => router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
-                  Play <FaRegCirclePlay className="text-xl" />
+                <button className="text-white font-bold flex items-center gap-2 bg-white/30 px-6 py-2 rounded-full transition m-auto mt-4 mb-2" onClick={() => router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
+                  {/* Play <FaRegCirclePlay className="text-xl" /> */}
+                  <HiPlay className="text-lg" />
+                            Play
                 </button>
               </div>
             </div>
