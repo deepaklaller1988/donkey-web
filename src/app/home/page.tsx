@@ -120,7 +120,7 @@ export default function Home() {
                     LATEST MOVIES
                   </h3>
                   <button
-                    className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+                    className="border border-1 rounded-full text-white px-2 mr-20 hover:bg-white hover:text-black transition"
                     onClick={() => router.push(`/media/movie`)}
                   >
                     View More
@@ -131,7 +131,7 @@ export default function Home() {
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {latestMovieList && latestMovieList.length > 0
                       ? latestMovieList
-                          .slice(0, 12)
+                          .slice(0, 16)
                           .map((item: any) => (
                             <Card
                               key={item.id}
@@ -163,7 +163,7 @@ export default function Home() {
                     TRENDING SHOWS
                   </h3>
                   <button
-                    className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+                    className="border border-1 rounded-full mr-20 text-white px-2 hover:bg-white hover:text-black transition"
                     onClick={() => router.push(`/media/tv`)}
                   >
                     View More
@@ -174,7 +174,7 @@ export default function Home() {
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {latestTVList && latestTVList.length > 0
                       ? latestTVList
-                          .slice(0, 12)
+                          .slice(0, 16)
                           .map((item: any) => (
                             <Card
                               key={item.id}
@@ -220,7 +220,7 @@ export default function Home() {
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {popularList && popularList.length > 0
                       ? popularList
-                          .slice(0, 18)
+                          .slice(0, 16)
                           .map((item: any) => (
                             <Card
                               key={item.id}

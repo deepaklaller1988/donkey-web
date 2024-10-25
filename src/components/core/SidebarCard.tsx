@@ -20,14 +20,16 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
 
 function SidebarCard({ movieId, mediaType, index }: any) {
   const mediatype = mediaType.replace(/s$/, "");
-  const router = useRouter();
+  const capitalizedMediaType = mediatype === "tv" 
+  ? mediatype.toUpperCase()
+  : mediatype.charAt(0).toUpperCase() + mediatype.slice(1);  const router = useRouter();
   const {
     isLoading,
     error,
     data: cardDetials,
   } = useQuery<any>({
-    queryKey: ["side-card-detials", movieId, mediatype],
-    queryFn: () => fetchDetails(movieId, mediatype),
+    queryKey: ["side-card-detials", movieId, capitalizedMediaType],
+    queryFn: () => fetchDetails(movieId, capitalizedMediaType),
   });
 
   if (isLoading) {
@@ -41,7 +43,7 @@ function SidebarCard({ movieId, mediaType, index }: any) {
         className={`cursor-pointer ${index ? "pl-[15px]" : ""}`}
         onClick={() =>
           router.push(
-            `/watch-now?type=${mediatype?.toLowerCase()=="movie"?"movie":"tv"}&id=${movieId}`
+            `/watch-now?type=${capitalizedMediaType?.toLowerCase()=="movie"?"movie":"tv"}&id=${movieId}`
           )
         }
       >
@@ -74,8 +76,8 @@ function SidebarCard({ movieId, mediaType, index }: any) {
                 : cardDetials?.title}
             </h4>
             <ul className="text-white/40 flex gap-2">
-              <li className="text-sm">{mediatype}</li>
-              {mediatype === "Movie" ? (
+              <li className="text-sm">{capitalizedMediaType}</li>
+              {capitalizedMediaType === "Movie" ? (
                 <>
                   .<li className="text-sm">{cardDetials?.runtime} min</li>
                 </>
@@ -93,7 +95,7 @@ function SidebarCard({ movieId, mediaType, index }: any) {
               )}
             </ul>
             <label className="absolute right-3 top-1/2 -mt-[10px] rounded-full px-2 text-sm transition">
-              {mediatype === "Movie"
+              {capitalizedMediaType === "Movie"
                 ? moment(cardDetials?.release_date).year()
                 : cardDetials?.last_air_date
                 ? new Date(cardDetials.last_air_date).getFullYear()

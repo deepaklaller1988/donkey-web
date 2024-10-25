@@ -168,7 +168,7 @@ function Card({ episodeId,seasonId,movieId, mediaType, quality, isBookmarked = f
   return (
     <>
       {movieDetials && (<>
-        <li key={movieId} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 cursor-pointer cardSet relative" >
+        <li key={movieId} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-[12%] cursor-pointer cardSet relative" >
           <div className="relative w-full" onMouseEnter={()=> setIsDeletable(isBookmarked || isMyList ? true : false)} onMouseLeave={() => {
            setIsDeletable(false)
            setIsOpen(false)}
