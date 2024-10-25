@@ -12,7 +12,7 @@ import Image from "next/image";
 import User from "@lib/User";
 import API from "@lib/Api";
 import { toasterError, toasterSuccess } from "./Toaster";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const apiKey = process.env.NEXT_PUBLIC_MDBKEY
 
 
@@ -45,10 +45,12 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
 
 
 
-function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = false, queryClient }: any) {
+function Card({ movieId, mediaType, quality, index, isBookmarked = false, isMyList = false, queryClient }: any) {
 
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false)
+  const [width, setWidth] = useState(window.innerWidth);
+
   const [isDeletable, setIsDeletable] = useState(false);
   const {
     isLoading,
@@ -58,6 +60,18 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
     queryKey: ['card-detials', movieId, mediaType],
     queryFn: () => fetchDetails(movieId, mediaType),
   });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleWatchPopup = () => {
     if (!User.isUserLoggedIn) {
@@ -214,8 +228,17 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
               </ul>
             </section>
 
-            <div className="albumDetail absolute bg-zinc-800 rounded-xl top-20 left-full z-50 w-[350px]">
-              <div className="w-full p-5 relative">
+            <div
+                className={`albumDetail absolute bg-zinc-800 rounded-xl top-20 ${
+                  index + 1 === 1
+                    ? "left-full"
+                    : (index + 1) % 6 === 0 && width > 1280
+                    ? "right-full"
+                    : (index + 1) % 5 === 0 && width > 1024 && width < 1280
+                    ? "right-full"
+                    : "left-full"
+                } z-50 w-[350px]`}
+              >              <div className="w-full p-5 relative">
                 <section className="pr-16">
                   <h2 className="text-white text-lg">{movieDetials?.title || movieDetials?.name}</h2>
                   <ul className="py-1 flex flex-wrap items-center text-white gap-4 font-light">
