@@ -45,10 +45,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
   }
 };
 
-
-
-function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = false, queryClient }: any) {
-
+function Card({ episodeId,seasonId,movieId, mediaType, quality, isBookmarked = false, isMyList = false, queryClient }: any) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false)
   const [isDeletable, setIsDeletable] = useState(false);
@@ -162,7 +159,6 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
     }
   }
 
-
   if (isLoading) {
     return (
       <CardSkeleton />
@@ -177,7 +173,10 @@ function Card({ movieId, mediaType, quality, isBookmarked = false, isMyList = fa
            setIsDeletable(false)
            setIsOpen(false)}
           }>
-            <span className="relative folderOpened" onClick={() => router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`)}>
+            <span className="relative folderOpened" onClick={() => 
+              router.push(`/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${seasonId}&episodeId=${episodeId}`)
+            }
+              >
               {/* <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" /> */}
               <img
                 className="rounded-xl w-full"

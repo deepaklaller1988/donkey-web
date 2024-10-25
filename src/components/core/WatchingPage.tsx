@@ -61,6 +61,8 @@ export default function WatchingPage({ type }: any) {
                                 mediaType={item.media_type === 'movie' ? 'Movie' : 'TV'}
                                 isMyList={true}
                                 queryClient={queryClient}
+                                episodeId={item?.episode_id}
+                                seasonId={item?.season_id}
                             />
                         ))
                     ) : (

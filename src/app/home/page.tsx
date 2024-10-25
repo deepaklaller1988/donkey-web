@@ -15,7 +15,6 @@ import { useAuth } from "context/AuthContext";
 const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
 const fetchPopularLists = async (mediaType: string) => {
-  console.log(mediaType);
   const mediaTypeLower = mediaType.toLowerCase();
   const url = `https://api.trakt.tv/${
     mediaTypeLower === "movie" ? "movies" : "shows"
@@ -100,7 +99,10 @@ export default function Home() {
   }
   return (
     <div className="w-full">
-      <HomeSlider />
+      <div className="w-full flex justify-between homeSliderCZHub">
+        <div className="homeSliderCZ"><HomeSlider /></div>
+        <div className="min-w-[400px] max-w-[400px] homeSliderCZSidebar"><Sidebar mediaType={"Popular"} /></div>
+      </div>
       <div className="w-full">
         <div className="w-full mb-10 md:mb-20">        
         </div>
@@ -231,17 +233,17 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="min-w-full md:min-w-[376px]">
-              <div>
+            {/* <div className="min-w-full md:min-w-[376px]"> */}
+              {/* <div>
                 <Sidebar mediaType={"Popular"} />
-              </div>
-              <div className="mt-20">
+              </div> */}
+              {/* <div className="mt-20">
                 <Sidebar mediaType={"Movie"} />
               </div>
               <div className="mt-20">
                 <Sidebar mediaType={"TV"} />
-              </div>
-            </div>
+              </div> */}
+            {/* </div> */}
           </div>
         </div>
       </div>

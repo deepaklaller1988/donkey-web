@@ -232,7 +232,7 @@ export default function HomeSlider() {
                         </p>
                         <section className="flex mt-4 gap-4">
                           <button
-                            className="flex items-center gap-2 bg-white/30 text-white  px-6 py-2 rounded-full transition font-bold"
+                            className="btnBgBlur flex items-center gap-2 text-white  px-6 py-2 rounded-full transition font-bold"
                             onClick={() =>
                               router.push(
                                 `/watch-now?type=${item.media_type?.toLowerCase()}&id=${

@@ -1,0 +1,11 @@
+.homeSliderCZ {
+    max-width: calc(100% - 400px);
+    width:100%;
+}
+
+.homeSliderCZSidebar {
+    padding-top: 100px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
+}
