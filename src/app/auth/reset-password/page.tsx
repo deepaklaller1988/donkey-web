@@ -2,18 +2,23 @@
 import Button from "@components/buttons/Button";
 import API from "@lib/Api";
 import { useMutation } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toasterError, toasterSuccess } from "@components/core/Toaster";
 import { handleError } from "@lib/errorHandler";
+import { useAdContext } from "context/AdContext";
 
 export default function ResetPassword() {
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const  {disableAds}:any = useAdContext();
   const searchToken = searchParams.get("token");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+      disableAds(); 
+  }, [ disableAds]);
 
   const mutation = useMutation({
     mutationFn: async (formData: any) => {

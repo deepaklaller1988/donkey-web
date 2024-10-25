@@ -16,13 +16,14 @@ import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
 import Image from "next/image";
 import { useAuth } from "context/AuthContext";
-import Script from "next/script";
+import { useAdContext } from "../../context/AdContext";
 
 export default function Header() {
   const router = useRouter();
   const path = usePathname();
   const route = path.split("/");
   const { setActiveTab } = useProfileTab();
+  const  {disableAds}:any = useAdContext();
   const { token, setToken }: any = useAuth();
   const [isOpen, isClose] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);
@@ -38,6 +39,11 @@ export default function Header() {
   const toggleProfile = () => {
     setOpenProfile(!OpenProfile);
   };
+  useEffect(() => {
+    if (isOpen) {
+      disableAds(); 
+    }
+  }, [isOpen, disableAds]);
 
   const handleClickOutside = (event: any) => {
     if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -180,7 +186,7 @@ export default function Header() {
                     </button>
                     <button
                       className="text-white font-semibold p-2 px-6 rounded-full border-2 border-white transition hover:bg-white hover:text-black"
-                      onClick={() => isClose(true)}
+                      onClick={() => {disableAds(), isClose(true)}}
                     >
                       Log in
                     </button>
@@ -198,24 +204,6 @@ export default function Header() {
           ProfileType="profile"
         />
       ) : null}
-
-      {/* {isOpen ? null : (
-        <Script
-          data-cfasync="false"
-          async
-          type="text/javascript"
-          src="//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"
-        ></Script>
-      )}
-
-      {isOpen ? (
-        <AuthForm
-          isOpen={isOpen}
-          handleClose={handleClose}
-          ProfileType="profile"
-        />
-      ) : null} */}
-
       <NavBar openSideBar={openSideBar} toggleSidebar={toggleSidebar} />
     </>
   );
