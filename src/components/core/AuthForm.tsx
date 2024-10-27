@@ -43,8 +43,8 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
       if (data?.data?.accessToken) {
         localStorage.setItem("token", data?.data?.accessToken);
         setToken(data.data?.accessToken);
-        toasterSuccess("Login successfully !", 1000, "id");
-        setUsername(data?.data?.user?.username)
+        toasterSuccess("Login successfull.", 1000, "id");
+        setUsername(data?.data?.user?.username);
         User.isUserLoggedIn = true;
         User.role();
         handleClose();
@@ -117,9 +117,9 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
     <div className="loginRegisterForgotForm flex items-center justify-center fixed top-0 left-0 z-20 w-full h-screen bg-black/70">
       <section className="max-h-[90vh] overflow-auto p-6 w-full max-w-[400px] bg-zinc-800 rounded-lg">
         <h2 className="text-white text-[30px] pb-2 flex items-center justify-between">
-          {type === "login" && "Login"}
-          {type === "forgot" && "Forgot Password"}
-          {type === "register" && "Account Sign up"}
+          {type === "login" && "Sign in"}
+          {type === "forgot" && "Reset Password"}
+          {type === "register" && "Sign up"}
           {type === "profile" && "Info"}
           {type !== "profile" && (
             <IoMdClose
@@ -130,8 +130,8 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
         </h2>
         {type === "forgot" && (
           <p className="text-sm text-white/50 pb-4">
-            We will send an email to your box, just follow that link to set your
-            new password.
+            We will send you an email with instructions on how to reset
+            password.
           </p>
         )}
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
@@ -142,7 +142,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
             <>
               {type !== "profile" && (
                 <div className="w-full flex flex-col gap-1">
-                  <label className="text-white/50">Email</label>
+                  {/* <label className="text-white/50">Email</label> */}
                   <input
                     className="p-2 px-4 rounded-lg bg-white/5 text-white"
                     type="email"
@@ -155,7 +155,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
 
               {type === "login" && (
                 <div className="w-full flex flex-col gap-1">
-                  <label className="text-white/50">Password</label>
+                  {/* <label className="text-white/50">Password</label> */}
                   <input
                     className="p-2 px-4 rounded-lg bg-white/5 text-white"
                     type="password"
@@ -173,14 +173,14 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
                         key={fieldName}
                         className="w-full flex flex-col gap-1"
                       >
-                        <label htmlFor={fieldName} className="text-white/50">
+                        {/* <label htmlFor={fieldName} className="text-white/50">
                           {fieldName === "repeatPassword"
                             ? "Repeat Password"
                             : `${fieldName
                                 .charAt(0)
                                 .toUpperCase()}${fieldName.slice(1)}`}{" "}
                           <sup>*</sup>
-                        </label>
+                        </label> */}
                         <input
                           id={fieldName}
                           className="p-2 px-4 rounded-lg bg-white/5 text-white"
@@ -189,7 +189,6 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
                               ? "password"
                               : "text"
                           }
-                          
                           name={fieldName}
                           placeholder={
                             fieldName === "repeatPassword"
@@ -218,8 +217,8 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
           </div>
           <div>
             <Button type="submit">
-              {type === "login" && "Sign In"}
-              {type === "register" && "Sign up"}
+              {type === "login" && "Continue"}
+              {type === "register" && "Continue"}
               {type === "forgot" && "Forgot password"}
             </Button>
           </div>
@@ -227,20 +226,21 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
             <>
               <div className="w-full mt-4">
                 <button
-                  className="pColor flex gap-2 items-center"
+                  className="text-white flex gap-2 items-center"
                   onClick={() => setType("forgot")}
                 >
-                  Forgot your Password{" "}
+                  Forgot Password?{" "}
                   <IoIosArrowRoundForward className="w-6 h-6" />
                 </button>
               </div>
               <div className="w-full mb-4">
                 <button
-                  className="pColor flex gap-2 items-center"
+                  className="text-white flex gap-2 items-center"
                   onClick={() => setType("register")}
                 >
-                  Sign up for a new account{" "}
-                  <IoIosArrowRoundForward className="w-6 h-6" />
+                  New?
+                  <span className="pColor">Sign up now </span>{" "}
+                  <span className="pColor"><IoIosArrowRoundForward className="w-6 h-6" /></span> 
                 </button>
               </div>
             </>

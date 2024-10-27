@@ -8,10 +8,13 @@ span.p-dropdown-label.p-inputtext.p-placeholder, span.p-dropdown-label.p-inputte
     margin-top: 5px;
     color: #999;
 }
-
+.p-dropdown-panel {
+    max-width: 250px;
+}
 li.p-dropdown-item {
-    padding: 5px 75px;
+    padding: 5px;
     text-align: center;
+    white-space: break-spaces;
 }
 
 li.p-dropdown-item.p-highlight.p-focus, li.p-dropdown-item.p-highlight, li.p-dropdown-item:hover {

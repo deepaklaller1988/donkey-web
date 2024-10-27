@@ -14,8 +14,15 @@ import Pagination from "@components/core/Pagination";
 const fetchLatestData = async (option: any, page: number=1) => {
     try {
         if(option==='movie' || option==='tv'){
+            let url = '';
             const pageNumber = Math.min(page, 500);
-            const response = await fetch(`https://vidsrc.xyz/${option=== 'movie' ? "movies" : "tvshows"}/latest/page-${pageNumber}.json`);
+            if (option === 'movie') {
+                url = `https://api.themoviedb.org/3/${option}/popular?language=en-US&page=${pageNumber}`;
+            } else {
+                url = `https://api.themoviedb.org/3/trending/tv/day?language=en-US&page=${pageNumber}`;
+            }
+            // const response = await fetch(`https://vidsrc.xyz/${option=== 'movie' ? "movies" : "tvshows"}/latest/page-${pageNumber}.json`);
+            const response = await FetchApi.get(url);
             const data = await response.json();
             return data;
         }else if(option === 'recent'){
@@ -51,9 +58,11 @@ const fetchSearchedData = async (selectedOptions: any, searched: string, page: n
 
 const fetchRecentlyUpdated = async (mediaType: any) => {
     try {
-        const response = await fetch(`https://vidsrc.to/vapi/${mediaType}/add/1`);
+        // const response = await fetch(`https://vidsrc.to/vapi/${mediaType}/add/1`);
+        const response = await fetch(`https://vidsrc.xyz/${mediaType=== 'movie' ? "movies" : "tvshows"}/latest/page-1.json`);
         const data = await response.json();
-        return data.result
+        // return data.result
+        return data
     } catch (error) {
         console.log(error);
     }
@@ -73,7 +82,7 @@ const fetchFilteredData = async (selectedOptions: any, page: number) => {
 
 export default function MediaPage({ params }: { params: { slug: string } }) {
     const {slug} = params
-    useTitle(slug === 'search' ? "Results"  : slug === 'recent' ? "Recently Updated" :`Latest ${slug === 'movie' ? "Movies" : "TV Shows"}`);
+    useTitle(slug === 'search' ? "Results"  : slug === 'recent' ? "Recently Updated" :` ${slug === 'movie' ? "Latest Movies" : "Trending Shows"}`);
     const searchParams = useSearchParams();
     const searchQuery: any = searchParams.get("query");
     const countryCode: any = searchParams.get("country");
@@ -127,7 +136,7 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
             if(slug == 'recent'){
                 setTotalPages(latestData.total_pages);
             }else{
-                setTotalPages(latestData.pages);
+                setTotalPages(latestData.total_pages);
             }
         }
 
@@ -171,7 +180,7 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                             <div className="w-full">
                                 <div className="w-full">
                                     <div className="flex items-center gap-4">
-                                        <h3 className="text-white text-[25px] font-semibold">{slug === 'movie' ? "LATEST MOVIES" : slug === 'tv' ? "LATEST TV SHOWS" : slug === 'recent' ? 'RECENTLY UPDATED' : 'RESULTS'}</h3>
+                                        <h3 className="text-white text-[25px] font-semibold">{slug === 'movie' ? "LATEST MOVIES" : slug === 'tv' ? "TRENDING SHOWS" : slug === 'recent' ? 'RECENTLY UPDATED' : 'RESULTS'}</h3>
                                     </div>
                                     {slug === 'search' && (<><Filters handleFilters={handleFilters} initiallySelected={selectedOptions} initiallySearch={search} /> </>)}
                                     {/* <Filters handleFilters={handleFilters} initiallySelected={selectedOptions} /> */}
@@ -198,9 +207,9 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                                             </ul>
                                         ) : (
                                             <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-                                                {latestData && latestData.result?.length > 0 ? (
-                                                    latestData.result.map((item: any) => (
-                                                        <Card key={item.tmdb_id} movieId={item.tmdb_id} mediaType={slug === 'movie' ? 'Movie' : 'TV'} quality={item.quality === '1080p' ? 'HD' : item.quality === '720p' ? 'CAM' : item.quality} />
+                                                {latestData && latestData.results?.length > 0 ? (
+                                                    latestData.results.map((item: any) => (
+                                                        <Card key={item.id} movieId={item.id} mediaType={slug === 'movie' ? 'Movie' : 'TV'} quality={item.quality === '1080p' ? 'HD' : item.quality === '720p' ? 'CAM' : item.quality} />
                                                     ))
                                                 ) : (
                                                     <p className="text-white text-[20px]">No results found.</p>
@@ -217,7 +226,8 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                             </div>
                             <div className="min-w-full md:min-w-[376px]">
                                 {/* Sidebar */}
-                                <Recommended title={slug != 'recent' ? "RECENTLY UPDATED" : 'NEWLY ADDED'} data={recentData && recentData?.items.length > 0 ? recentData?.items.slice(0, 10) : []} mediaType={slug === 'tv' ? 'TV' : 'Movie'} />
+                                {/* <Recommended title={slug != 'recent' ? "RECENTLY UPDATED" : 'NEWLY ADDED'} data={recentData && recentData?.items.length > 0 ? recentData?.items.slice(0, 10) : []} mediaType={slug === 'tv' ? 'TV' : 'Movie'} /> */}
+                                <Recommended title={slug != 'recent' ? "RECENTLY UPDATED" : 'NEWLY ADDED'} data={recentData && recentData?.result.length > 0 ? recentData?.result.slice(0, 10) : []} mediaType={slug === 'tv' ? 'TV' : 'Movie'} />
                             </div>
                         </div>
                     </div>

@@ -1,35 +1,37 @@
 import { HiMenuAlt1 } from "react-icons/hi";
 import HomeSearchbar from "../HomeSearchbar";
-import { FaRegUser, FaUserCircle } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
-import { GoVideo } from "react-icons/go";
 import { FaPlus } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import AuthForm from "./AuthForm";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { logOut } from "@lib/userToken";
 import { IoSearch } from "react-icons/io5";
 import NavBar from "./NavBar";
-import User from "@lib/User";
-import useRole from "@hooks/useRole";
+
 import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
+import Image from "next/image";
+import { useAuth } from "context/AuthContext";
+import { GoVideo } from "react-icons/go";
+import Script from "next/script";
 
 export default function Header() {
   const router = useRouter();
   const path = usePathname();
   const route = path.split("/");
-  const [roleLoading, roleData] = useRole();
-  const { setActiveTab } = useProfileTab()
+  const { setActiveTab } = useProfileTab();
+  const { token, setToken }: any = useAuth();
   const [isOpen, isClose] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [OpenSearch, setOpenSearch] = useState(false);
   const [openSideBar, setOpenSidebar] = useState(false);
-  const profileRef:any = useRef(null);
-  
-  
+
+  const profileRef: any = useRef(null);
+
   const isHome = () => {
     return route.includes("home") ? true : false;
   };
@@ -38,9 +40,9 @@ export default function Header() {
     setOpenProfile(!OpenProfile);
   };
 
-  const handleClickOutside = (event:any) => {
+  const handleClickOutside = (event: any) => {
     if (profileRef.current && !profileRef.current.contains(event.target)) {
-      setOpenProfile(false); 
+      setOpenProfile(false);
     }
   };
 
@@ -55,36 +57,35 @@ export default function Header() {
   };
   const handleLogOut = () => {
     setOpenProfile(false);
-    logOut(), router.push("/dashboard");
-    toasterSuccess("LogOut Successfully !", 3000, "id");
+    logOut(), setToken(null);
+    router.push("/home");
+    toasterSuccess("Signed out Successfully.", 3000, "id");
   };
+
   const handleProfile = (type: any) => {
     if (path.includes("profile")) {
-      setActiveTab(type)
-     
-      setOpenProfile(!OpenProfile)
-
+      setActiveTab(type);
+      setOpenProfile(!OpenProfile);
+    } else {
+      router.push("/profile");
+      setOpenProfile(!OpenProfile);
+      setActiveTab(type);
     }
-    else {
-      router.push("/profile")
-      setOpenProfile(!OpenProfile)
-      setActiveTab(type)
-
-    }
-  }
+  };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
     <>
       <div
-        className={`header ${isHome() ? "" : "bg-white/10"
-          } p-2 py-3 absolute z-10 w-full top-0 right-0`}
+        className={`header ${
+          isHome() ? "" : "bg-white/10"
+        } p-2 py-3 absolute z-10 w-full top-0 right-0`}
       >
         <div className="homewrapper">
           <div className="headerInner flex items-center justify-between relative">
@@ -96,7 +97,9 @@ export default function Header() {
                 href="/home"
                 className="w-[120px] md:w-[150px] block m-auto"
               >
-                <img
+                <Image
+                  width={150}
+                  height={57}
                   className="max-w-full"
                   src="/assets/images/logo.png"
                   alt="logo"
@@ -104,15 +107,17 @@ export default function Header() {
               </Link>
             </section>
             <div
-              className={`mobileSearch w-full ${OpenSearch ? "openMobileSearch" : ""
-                }`}
+              className={`mobileSearch w-full ${
+                OpenSearch ? "openMobileSearch" : ""
+              }`}
             >
-              <HomeSearchbar />
+              <HomeSearchbar path={path} />
             </div>
-            <section 
+            <section
               ref={profileRef}
-            className="flex justify-end min-w-auto md:min-w-[196px]" >
-              {User.isUserLoggedIn ? (
+              className="flex justify-end min-w-auto md:min-w-[196px]"
+            >
+              {token ? (
                 <>
                   <div className="relative flex gap-4">
                     <button
@@ -121,12 +126,13 @@ export default function Header() {
                     >
                       <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                     </button>
-                    <button onClick={toggleProfile} className="text-white" >
-                      <VscAccount className="w-5 h-5 hover:text-amber-500 transition" />
+                    <button onClick={toggleProfile} className="text-white">
+                      <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
                     <div
-                      className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${OpenProfile ? "openProfileLinks" : ""
-                        }`}
+                      className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${
+                        OpenProfile ? "openProfileLinks" : ""
+                      }`}
                     >
                       <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
@@ -142,9 +148,11 @@ export default function Header() {
                       </button>
                       <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
-                        onClick={() => {handleProfile("Bookmark") }}
+                        onClick={() => {
+                          handleProfile("Bookmark");
+                        }}
                       >
-                        <FaPlus /> WatchList{" "}
+                        <FaPlus /> My List{" "}
                       </button>
                       {/* <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
@@ -157,7 +165,7 @@ export default function Header() {
                         className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 "
                         onClick={handleLogOut}
                       >
-                        <IoLogOutOutline /> Logout
+                        <IoLogOutOutline /> Sign out
                       </button>
                     </div>
                   </div>
@@ -172,10 +180,10 @@ export default function Header() {
                       <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                     </button>
                     <button
-                      className="text-white font-semibold p-2 px-6 rounded-full border border-2 border-white transition hover:bg-white hover:text-black"
+                      className="text-white font-semibold p-2 px-6 rounded-full border-2 border-white transition hover:bg-white hover:text-black"
                       onClick={() => isClose(true)}
                     >
-                      Login
+                      Log in
                     </button>
                   </div>
                 </>
@@ -191,6 +199,23 @@ export default function Header() {
           ProfileType="profile"
         />
       ) : null}
+
+      {/* {isOpen ? null : (
+        <Script
+          data-cfasync="false"
+          async
+          type="text/javascript"
+          src="//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"
+        ></Script>
+      )}
+
+      {isOpen ? (
+        <AuthForm
+          isOpen={isOpen}
+          handleClose={handleClose}
+          ProfileType="profile"
+        />
+      ) : null} */}
 
       <NavBar openSideBar={openSideBar} toggleSidebar={toggleSidebar} />
     </>

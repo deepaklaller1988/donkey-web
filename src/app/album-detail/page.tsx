@@ -187,7 +187,7 @@ export default function FiltersPage() {
                                                         <p>Genre: <label className="text-white font-light">United States</label></p>
                                                         <p>Scores: <label className="text-white font-light">8.38 by 740 reviews</label></p>
                                                         <p className='text-white/50 font-light pt-2'>A group of high-end professional thieves start to feel the heat from the LAPD when they unknowingly leave a verbal clue at their latest heist.</p>
-                                                        <button className='text-black flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition m-auto mt-4 mb-2'>Watch Now <FaRegCirclePlay className='text-xl' /></button>
+                                                        <button className='text-black flex items-center gap-2 pbgColor px-6 py-2 rounded-full transition m-auto mt-4 mb-2 font-bold'>Play <FaRegCirclePlay className='text-xl' /></button>
                                                     </div>
                                                 </div>
                                             </li>

@@ -109,7 +109,6 @@ const RatingPopUp = () => {
   });
 
   const handleRating = (rate: number) => {
-    console.log(rate,"rate===")
     if (hasRated) {
       return;
     }
@@ -155,18 +154,18 @@ const RatingPopUp = () => {
           allowHover={!hasRated}
           fillColor="orange"
           allowFraction
-          emptyColor="white"
+          emptyColor="#8B8989"
           readonly={hasRated}
           style={{ transition: "transform 0.3s" }}
         />
       </span>
       <div
-        className="text-white"
-        style={{ width: "100px", textAlign: "center" }}
+        // className="text-white"
+        style={{ color: "#8B8989", width: "100px", textAlign: "center" }}
       >
         {(hoverValue !== 0 || rating !== 0) && getLabel(hoverValue || rating)}
       </div>
-      <p className="text-white text-sm">
+      <p className="text-sm" style={{ color: "#8B8989" }} >
         <b className="text-sm">{reviewCount.average_rating}</b> of <b className="text-sm">10</b> ( {reviewCount.totalReviews} reviews)
       </p>
 

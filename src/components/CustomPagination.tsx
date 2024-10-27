@@ -16,7 +16,6 @@ const CustomPagination: React.FC<PaginationProps> = ({
   onPageChange
 }) => {
   const [pages, setPages] = useState(Math.ceil(totalItems / itemsPerPage));
-
   useEffect(() => {
     const updatedTotalPages = Math.ceil(totalItems / itemsPerPage);
     setPages(updatedTotalPages);
@@ -40,10 +39,8 @@ const CustomPagination: React.FC<PaginationProps> = ({
   const shouldShowPagination = totalItems > 0;
 
   const calculatedTotalPages = Math.ceil(totalPages / itemsPerPage);
-
-
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-center mt-6">
       {shouldShowPagination && (
         <>
           <button

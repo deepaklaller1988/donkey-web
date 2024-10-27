@@ -42,7 +42,10 @@ body {
   font-size: 16px;
   outline: none;
 }
-
+.btnBgBlur {
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,.2);
+}
 .pColor {
   color: #fea500 !important;
 }
@@ -121,7 +124,7 @@ body {
   100% {opacity:1;}
 }
 .sliderContentSet {
-  max-width: 800px;
+  max-width: 600px;
   animation: sliderContent 1s;
 }
 
@@ -210,10 +213,10 @@ section.listTop10:hover b {
 .footerSet {
   background-image: url(/assets/images/donkeyF.png);
   height: 475px;
-  background-size: 100% auto;
+  background-size: 110% auto;
   position: relative;
   background-color: #151515;
-  background-position: center bottom 80px;
+  background-position: center bottom;
   background-repeat: no-repeat
 }
 
@@ -385,12 +388,16 @@ section.closeMenu {
 .intellesense{transition:.5s; max-height:0;}
 .intellesense.intellesenseOpen{ max-height:1000px;}
 .intellesense div:last-child{border:none;}
+.p-multiselect-panel{max-width:500px}
+ul.p-multiselect-items{min-width: 200px;}
 @media only screen and (max-width: 1023px){
   .cardSet:hover .albumDetail {
     display: none;
   }
 }
 @media only screen and (max-width: 767px){
+  .navInners section{width:150px}
+  .navInners section a{width:100%;}
   .mobileSearch {
     position: absolute;
     left: 0;
@@ -412,3 +419,21 @@ ul.indicators {
   height: 350px;
 }
 }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 20px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #fea500 ;
+  border-radius: 100vh;
+}
+/* 
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+} */

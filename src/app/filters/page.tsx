@@ -164,7 +164,7 @@ export default function FiltersPage() {
                                                         <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
                                                     ))
                                                 ) : (
-                                                    <p>No results found.</p>
+                                                    <p className="text-white text-[25px] font-semibold">No results found.</p>
                                                 )}
                                             </ul>
                                         ) : (
@@ -174,7 +174,7 @@ export default function FiltersPage() {
                                                         <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
                                                     ))
                                                 ) : (
-                                                    <p>No results found.</p>
+                                                    <p className="text-white text-[25px] font-semibold">No results found.</p>
                                                 )}
                                             </ul>
                                         )}

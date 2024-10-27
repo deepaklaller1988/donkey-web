@@ -6,7 +6,7 @@ import API from "@lib/Api";
 import { toasterError, toasterSuccess } from "@components/core/Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
 
-export default function UserProfile() {
+export default function UserProfile({setNameUpdated}:any) {
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -46,9 +46,9 @@ export default function UserProfile() {
 
   const mutation = useMutation({
     mutationFn: async (formData: any) => {
-      if (!showChangePassword) {
-        return;
-      }
+      // if (!showChangePassword) {
+      //   return;
+      // }
       const data = Object.fromEntries(formData.entries());
       return await API.post("user/update-userdetail", {
         userId: User.id,
@@ -60,6 +60,7 @@ export default function UserProfile() {
       setShowChangePassword(false);
       setUsername(userData.username);
       User.username = userData.username;
+      setNameUpdated(userData.username);
       toasterSuccess("Profile updated successfully", 3000, "id");
       setIsSaveButtonEnabled(false);
     },
@@ -168,9 +169,9 @@ export default function UserProfile() {
               </>
             )}
 
-            <div className="w-full mt-2 text-center">
+            <div className="w-full mt-3 text-center">
               <button
-                className="p-1 px-4 rounded-lg bg-white/5 text-white"
+                className="py-2 px-4 w-full rounded-lg text-black font-semibold bg-[#FFA500] text-lg"
                 type="submit"
                 disabled={
                   !isSaveButtonEnabled ||
