@@ -16,7 +16,7 @@ export default function Featured() {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 24;
 
   const fetchMovies = async (page: number) => {
     try {
@@ -125,8 +125,9 @@ export default function Featured() {
                     ((mediaType && filteredData.results?.length > 0) ||
                       (!mediaType && filteredData.length > 0)) ? (
                       (mediaType ? filteredData.results : filteredData).map(
-                        (item: any) => (
+                        (item: any,index:number) => (
                           <Card
+                          index={index}
                             key={item.id}
                             movieId={item.id}
                             mediaType={

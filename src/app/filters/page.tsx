@@ -17,8 +17,14 @@ const fetchFilteredData = async (selectedOptions: any, page: number) => {
         const pageNumber = Math.min(page, 500);
         const response = await FetchApi.get(`https://api.themoviedb.org/3/discover/${selectedOptions.selectedMedia}?include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&with_origin_country=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
         const data = await response.json();
-        return data;
-    } catch (error) {
+        if (data.results.length === 20 && pageNumber < 500) {
+            const additionalResponse = await FetchApi.get(`https://api.themoviedb.org/3/discover/${selectedOptions.selectedMedia}?include_adult=false&include_video=false&language=en-US&page=${pageNumber + 1}&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&with_origin_country=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
+            const additionalData = await additionalResponse.json();
+            data.results = [...data.results, ...additionalData.results].slice(0, 24);
+        }
+
+        return data;    } 
+        catch (error) {
         console.log(error);
     }
 };

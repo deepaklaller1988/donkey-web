@@ -74,8 +74,9 @@ export default function BookmarkPage() {
               <Loader />
             </>) : (<ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
               {bookmarkList && bookmarkList.data.length > 0
-                ? bookmarkList.data?.map((item: any) => (
+                ? bookmarkList.data?.map((item: any,index:number) => (
                   <Card
+                  index={index}
                     key={item.id}
                     movieId={item.media_id}
                     mediaType={item.media_type === "movie" ? "Movie" : "TV"}
