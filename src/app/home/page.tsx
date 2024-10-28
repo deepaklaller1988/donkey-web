@@ -99,13 +99,16 @@ export default function Home() {
   }
   return (
     <div className="w-full">
-      <div className="w-full flex justify-between homeSliderCZHub">
-        <div className="homeSliderCZ"><HomeSlider /></div>
-        <div className="min-w-[400px] max-w-[400px] homeSliderCZSidebar"><Sidebar mediaType={"Popular"} /></div>
+      <div className="w-full flex flex-col lg:flex-row justify-between homeSliderCZHub">
+        <div className="homeSliderCZ">
+          <HomeSlider />
+        </div>
+        <div className="lg:min-w-[400px] min-w-100% max-w-100% lg:max-w-[400px] homeSliderCZSidebar">
+          <Sidebar mediaType={"Popular"} />
+        </div>
       </div>
       <div className="w-full">
-        <div className="w-full mb-10 md:mb-20">        
-        </div>
+        <div className="w-full mb-10 md:mb-20"></div>
         <div className="homewrapper">
           <div className="containerHub flex gap-5 flex-col lg:flex-row">
             <div className="w-full">
@@ -126,7 +129,7 @@ export default function Home() {
                     View More
                   </button>
                 </div>
-                
+
                 <div className="w-full py-2">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {latestMovieList && latestMovieList.length > 0
@@ -168,7 +171,6 @@ export default function Home() {
                   >
                     View More
                   </button>
-
                 </div>
                 <div className="w-full py-2">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
@@ -185,8 +187,6 @@ export default function Home() {
                       : ""}
                   </ul>
                 </div>
-
-           
               </div>
               <div className="w-full pt-10">
                 <div className="flex items-center gap-4">
@@ -234,10 +234,10 @@ export default function Home() {
               </div>
             </div>
             {/* <div className="min-w-full md:min-w-[376px]"> */}
-              {/* <div>
+            {/* <div>
                 <Sidebar mediaType={"Popular"} />
               </div> */}
-              {/* <div className="mt-20">
+            {/* <div className="mt-20">
                 <Sidebar mediaType={"Movie"} />
               </div>
               <div className="mt-20">
