@@ -118,6 +118,7 @@ export default function Home() {
                 </>
               )} */}
               <div className="w-full">
+                <div className="homewrapper">
                 <div className="flex justify-between  items-center gap-4">
                   <h3 className="text-white text-[25px] font-semibold">
                     LATEST MOVIES
@@ -130,7 +131,7 @@ export default function Home() {
                   </button>
                 </div>
 
-                <div className="w-full py-2">
+                <div className="w-fullSearch">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {latestMovieList && latestMovieList.length > 0
                       ? latestMovieList
@@ -144,6 +145,7 @@ export default function Home() {
                           ))
                       : ""}
                   </ul>
+                </div>
                 </div>
               </div>
               <div className="share-container py-10 max-w-screen-md sm:mx-auto mx-5">

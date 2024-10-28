@@ -66,7 +66,7 @@ export default function HomeSearchbar({path}:any) {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
           router.push(`/media/search?query=${encodeURIComponent(searchQuery)}`);
-          setSearchQuery('');  // Clear the input field after search
+          setSearchQuery(''); 
         }
       };
 
