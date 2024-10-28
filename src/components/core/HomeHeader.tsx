@@ -119,7 +119,7 @@ export default function Header() {
                 OpenSearch ? "openMobileSearch" : ""
               }`}
             >
-             {(path=="/home" && OpenSearch) ?
+             {(path=="/home" || OpenSearch) ?
              <>
               <HomeSearchbar path={path} />
              </>: <HomeSearchbar path={path} />}
@@ -137,7 +137,8 @@ export default function Header() {
                     className="text-white block md:hidden"
                   >
                     <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
-                  </button>}
+                  </button>
+              }
                     <button onClick={toggleProfile} className="text-white">
                       <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
@@ -186,7 +187,9 @@ export default function Header() {
                 <>
                   <div className="flex gap-4">
                     <button onClick={toggleSearch} className="text-white">
-                   <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
+                  {path==="/home" && <>
+                    <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
+                  </>} 
                     </button>
                     <button
                       className="text-white font-semibold p-2 px-6 rounded-full border-2 border-white transition hover:bg-white hover:text-black"

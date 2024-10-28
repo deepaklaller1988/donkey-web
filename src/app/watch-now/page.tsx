@@ -218,7 +218,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     const handleMessage = (event: any) => {
-      if (event.origin !== "https://vidsrc.pro") return;
+      if (event.origin !== "https://vidsrc.dev") return;
 
       try {
         const data = event.data;
