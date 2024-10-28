@@ -244,7 +244,11 @@ function Card({
                 }
               >
                 {/* <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" /> */}
-                <img
+                <Image
+                  alt="image"
+                  quality={100}
+                  height={100}
+                  width={100}
                   className="rounded-xl w-full"
                   src={`${
                     movieDetials?.poster_path
@@ -252,7 +256,6 @@ function Card({
                         movieDetials?.poster_path
                       : "/assets/images/miss.jpg"
                   }`}
-                  alt="album"
                 />
                 {/* <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
                 {quality ? quality : "HD"}
@@ -262,7 +265,11 @@ function Card({
               {isMyList && isDeletable && (
                 <label className="absolute z-0 top-1 right-0 font-bold px-1 rounded-l-xl">
                   <div className="relative flex gap-4 hover:cursor-pointer">
-                    <img
+                    <Image
+                      alt="image"
+                      // quality={1}
+                      height={1}
+                      width={1}
                       className="w-8 h-8"
                       src="/assets/images/cross.png"
                       onClick={() =>
@@ -329,10 +336,10 @@ function Card({
                 //     : "left-full"
                 // } z-50 w-[350px]`}
                 className={`albumDetail absolute bg-zinc-800 rounded-xl top-20 ${
-                  (index + 1) % 8 === 7 || (index + 1) % 8 === 0 ? "right-full" : "left-full"
+                  (index + 1) % 8 === 7 || (index + 1) % 8 === 0
+                    ? "right-full"
+                    : "left-full"
                 } z-50 w-[350px]`}
-                
-                
               >
                 {" "}
                 <div className="w-full p-5 relative">
@@ -358,6 +365,7 @@ function Card({
                       </li>
                       <li>
                         <Image
+                          quality={10}
                           src="/images/imdb-logo.svg"
                           alt="Image"
                           width={40}

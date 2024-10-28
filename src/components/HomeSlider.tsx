@@ -173,62 +173,66 @@ export default function HomeSlider() {
     <>
       <div className="w-full relative h-full">
         <Slide indicators={indicators}>
-        {combinedList &&
+          {combinedList &&
             combinedList.length > 0 &&
             combinedList.map((item: any, index: number) => (
               <div key={item.id} className="each-slide-effect slideMain">
-            <img
+                <Image
+                  quality={100}
+                  height={1000}
+                  width={1000}
                   src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
                   alt="slide"
                 />
-              <div className="sliderSet">
-                <div className="sliderContent relative z-10">
-                  <div className="homewrapper">
-                    <div className="sliderContentSet pl-0 md:pl-4 flex flex-col justify-center">
-                      <span className="text-white/70 flex items-center">
-                        <BsFire className="mr-1" /> Trending
-                      </span>
-                      <h2 className="text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:pb-2">
-                      {item.title ? item.title : item.name}
-                      </h2>
-                      <ul className="py-1 flex flex-wrap items-center text-white gap-x-3">
-                        <li>
-                          <b className="font-bold">
-                          {item.release_date
+                <div className="sliderSet">
+                  <div className="sliderContent relative z-10">
+                    <div className="homewrapper">
+                      <div className="sliderContentSet pl-0 md:pl-4 flex flex-col justify-center">
+                        <span className="text-white/70 flex items-center">
+                          <BsFire className="mr-1" /> Trending
+                        </span>
+                        <h2 className="text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:pb-2">
+                          {item.title ? item.title : item.name}
+                        </h2>
+                        <ul className="py-1 flex flex-wrap items-center text-white gap-x-3">
+                          <li>
+                            <b className="font-bold">
+                              {item.release_date
                                 ? moment(item.release_date).year()
                                 : ""}
-                          </b>
-                        </li>
-                        <li>
-                          <span className="rounded flex items-center gap-2.5 pColor font-semibold px-2.5 my-0">
-                            <FaStar className=" text-[#F3C313]" />
-                            <p className="text-white">
-                            {item?.imdb_rating
+                            </b>
+                          </li>
+                          <li>
+                            <span className="rounded flex items-center gap-2.5 pColor font-semibold px-2.5 my-0">
+                              <FaStar className=" text-[#F3C313]" />
+                              <p className="text-white">
+                                {item?.imdb_rating
                                   ? item?.imdb_rating?.toFixed(1)
                                   : item?.vote_average?.toFixed(1)}
-                            </p>
-                            <Image
-                              src="/images/imdb-logo.svg"
-                              alt="Image"
-                              width={40}
-                              height={20}
-                            />
-                          </span>
-                        </li>
+                              </p>
+                              <Image
+                                quality={10}
+                                src="/images/imdb-logo.svg"
+                                alt="Image"
+                                width={40}
+                                height={20}
+                              />
+                            </span>
+                          </li>
 
-                        {item.genres && item.genres.length > 0
+                          {item.genres && item.genres.length > 0
                             ? item.genres.map((gen: any) => (
                                 <li key={gen.id}>{gen.name}</li>
                               ))
                             : ""}
-                      </ul>
-                      <p className="text-white hidden md:block">
-                      {item?.overview && item?.overview.length > 250
+                        </ul>
+                        <p className="text-white hidden md:block">
+                          {item?.overview && item?.overview.length > 250
                             ? item?.overview.slice(0, 250) + "..."
                             : item?.overview}
-                      </p>
-                      <section className="flex mt-4 gap-4">
-                      <button
+                        </p>
+                        <section className="flex mt-4 gap-4">
+                          <button
                             className="btnBgBlur flex items-center gap-2 text-white  px-6 py-2 rounded-full transition font-bold"
                             onClick={() =>
                               router.push(
@@ -238,14 +242,14 @@ export default function HomeSlider() {
                               )
                             }
                           >
-                          <HiPlay className="text-lg" />
-                          Play
-                        </button>
-                        <div
-                          className="relative flex gap-4"
-                          onMouseLeave={() => setIsOpen(false)}
-                        >
-                           <button
+                            <HiPlay className="text-lg" />
+                            Play
+                          </button>
+                          <div
+                            className="relative flex gap-4"
+                            onMouseLeave={() => setIsOpen(false)}
+                          >
+                            <button
                               className="flex items-center gap-2 transition text-white hover:text-amber-500 px-6 py-2 font-semibold"
                               onClick={() => {
                                 handleWatchPopup();
@@ -256,23 +260,23 @@ export default function HomeSlider() {
                                 );
                               }}
                             >
-                            <FaPlus className="w-5 h-5" /> My List
-                          </button>
-                        </div>
-                      </section>
+                              <FaPlus className="w-5 h-5" /> My List
+                            </button>
+                          </div>
+                        </section>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="absolute w-full z-0 left-0 bottom-0 flex items-end">
-                  <img
-                    className="w-full h-[70px]"
-                    src="/assets/images/slides/shadow.png"
-                    alt="shadow"
-                  />
+                  <div className="absolute w-full z-0 left-0 bottom-0 flex items-end">
+                    <img
+                      className="w-full h-[70px]"
+                      src="/assets/images/slides/shadow.png"
+                      alt="shadow"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </Slide>
       </div>
     </>

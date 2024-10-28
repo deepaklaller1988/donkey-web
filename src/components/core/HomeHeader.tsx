@@ -105,6 +105,7 @@ export default function Header() {
                 className="w-[120px] md:w-[150px] block m-auto"
               >
                 <Image
+                 quality={10}
                   width={150}
                   height={57}
                   className="max-w-full"

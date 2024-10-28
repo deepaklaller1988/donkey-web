@@ -160,6 +160,8 @@ export default function Home() {
                     alt="Banner"
                     width={800}
                     height={150}
+                    quality={10}
+
                   />
                 </a>
               </div>

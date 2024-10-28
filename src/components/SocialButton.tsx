@@ -97,28 +97,36 @@ export default function SocialButton() {
 
                 <FacebookMessengerShareButton url={`https://www.donkey.to/`} appId="">
                     <div className="bg-zinc-500/20 rounded-md p-2 md:px-4 py-2 flex items-center justify-center text-white" onClick={() => handleCounts("messager_count")}>
-                        <Image src="/images/messager.png" alt="Messenger" width={20} height={20} />
+                        <Image 
+                         quality={10}
+                        src="/images/messager.png" alt="Messenger" width={20} height={20} />
                         <span className="hidden md:block ml-2 text-[15px]" >{formatCount(counts?.messager_count)}</span>
                     </div>
                 </FacebookMessengerShareButton>
 
                 <RedditShareButton url={`https://www.donkey.to/`}>
                     <div className=" bg-zinc-500/20 rounded-md p-2 md:px-4 py-2 flex items-center justify-center text-white" onClick={() => handleCounts("reddit_count")}>
-                        <Image src="/images/reddit.png" alt="Reddit" width={20} height={20} />
+                        <Image 
+                         quality={10}
+                        src="/images/reddit.png" alt="Reddit" width={20} height={20} />
                         <span className="hidden md:block ml-2 text-[15px]">{formatCount(counts?.reddit_count)}</span>
                     </div>
                 </RedditShareButton>
 
                 <WhatsappShareButton url={`https://www.donkey.to/`}>
                     <div className="bg-zinc-500/20 rounded-md p-2 md:px-4 py-2 flex items-center justify-center text-white" onClick={() => handleCounts("whatsapp_count")}>
-                        <Image src="/images/whatsapp.png" alt="WhatsApp" width={20} height={20} />
+                        <Image
+                         quality={10}
+                        src="/images/whatsapp.png" alt="WhatsApp" width={20} height={20} />
                         <span className="hidden md:block ml-2 text-[15px]" >{formatCount(counts?.whatsapp_count)}</span>
                     </div>
                 </WhatsappShareButton>
 
                 <TelegramShareButton url={`https://www.donkey.to/`}>
                     <div className="bg-zinc-500/20 rounded-md p-2 md:px-4 py-2 flex items-center justify-center text-white" onClick={() => handleCounts("telegram_count")}>
-                        <Image src="/images/telegram.png" alt="Telegram" width={20} height={20} />
+                        <Image 
+                         quality={10}
+                        src="/images/telegram.png" alt="Telegram" width={20} height={20} />
                         <span className="hidden md:block ml-2 text-[15px]" >{formatCount(counts?.telegram_count)}</span>
                     </div>
                 </TelegramShareButton>

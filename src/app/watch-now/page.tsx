@@ -413,6 +413,7 @@ export default function WatchNow() {
                                 alt="Image"
                                 width={40}
                                 height={20}
+                                quality={10}
                               />
                             </span>
                           </li>
