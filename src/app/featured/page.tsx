@@ -16,7 +16,7 @@ export default function Featured() {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const itemsPerPage = 24;
+  const itemsPerPage = 20;
 
   const fetchMovies = async (page: number) => {
     try {
@@ -26,14 +26,14 @@ export default function Featured() {
           mediaType === "movie" ? "movie" : "tv"
         }?include_adult=false&include_video=false&language=en-US&page=${pageNumber}`
       );
-
-      const data = await response.json();
+  
+      const data = await response.json();  
       return data;
     } catch (error) {
       console.log(error);
     }
   };
-
+  
   const fetchPopularLists = async (page: number) => {
     try {
       const response = await fetch(
@@ -151,6 +151,7 @@ export default function Featured() {
                   totalPages={totalPages}
                   onPageChange={handlePageChange}
                   currentPage={currentPage}
+                  itemsPerPage={itemsPerPage}
                 />
             </div>
           </div>

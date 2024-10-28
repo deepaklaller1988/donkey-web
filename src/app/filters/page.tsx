@@ -61,7 +61,7 @@ export default function FiltersPage() {
     let genre = genreId ? genreId : "";
     let media = mediaType ? mediaType : "movie";
     let country = countryCode ? countryCode : "";
-
+    const itemsPerPage = 16; 
     const [selectedOptions, setSelectedOptions] = useState<any>({
         selectedMedia: media,
         selectedYear: "",
@@ -166,8 +166,8 @@ export default function FiltersPage() {
                                         {searchQuery ? (
                                             <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                                 {searchedData && searchedData.results?.length > 0 ? (
-                                                    searchedData.results.map((item: any) => (
-                                                        <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
+                                                    searchedData.results.map((item: any,index:any) => (
+                                                        <Card index={index} key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
                                                     ))
                                                 ) : (
                                                     <p className="text-white text-[25px] font-semibold">No results found.</p>
@@ -176,8 +176,8 @@ export default function FiltersPage() {
                                         ) : (
                                             <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                                 {filteredData && filteredData.results?.length > 0 ? (
-                                                    filteredData.results.map((item: any) => (
-                                                        <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
+                                                    filteredData.results.map((item: any,index:any) => (
+                                                        <Card index={index} key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
                                                     ))
                                                 ) : (
                                                     <p className="text-white text-[25px] font-semibold">No results found.</p>
@@ -190,6 +190,7 @@ export default function FiltersPage() {
                                     totalPages={totalPages}
                                     onPageChange={handlePageChange}
                                     currentPage={currentPage}
+                                    itemsPerPage={itemsPerPage}
                                 />
                             </div>
                             <div className="min-w-full md:min-w-[376px]">

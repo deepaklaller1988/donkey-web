@@ -699,8 +699,9 @@ export default function WatchNow() {
                       {popularList && popularList.length > 0
                         ? popularList
                             .slice(0, 24)
-                            .map((item: any) => (
+                            .map((item: any,index:any) => (
                               <Card
+                              index={index}
                                 key={item.id}
                                 movieId={item.id}
                                 mediaType={

@@ -223,7 +223,7 @@ function Card({
         <>
           <li
             key={movieId}
-            className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-[12%] cursor-pointer cardSet relative"
+            className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-[12.5%]  cursor-pointer cardSet relative"
           >
             <div
               className="relative w-full"

@@ -119,33 +119,34 @@ export default function Home() {
               )} */}
               <div className="w-full">
                 <div className="homewrapper">
-                <div className="flex justify-between  items-center gap-4">
-                  <h3 className="text-white text-[25px] font-semibold">
-                    LATEST MOVIES
-                  </h3>
-                  <button
-                    className="border border-1 rounded-full text-white px-2 mr-20 hover:bg-white hover:text-black transition"
-                    onClick={() => router.push(`/media/movie`)}
-                  >
-                    View More
-                  </button>
-                </div>
+                  <div className="flex justify-between  items-center gap-4">
+                    <h3 className="text-white text-[25px] font-semibold">
+                      LATEST MOVIES
+                    </h3>
+                    <button
+                      className="border border-1 rounded-full text-white px-2 mr-20 hover:bg-white hover:text-black transition"
+                      onClick={() => router.push(`/media/movie`)}
+                    >
+                      View More
+                    </button>
+                  </div>
 
-                <div className="w-fullSearch">
-                  <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-                    {latestMovieList && latestMovieList.length > 0
-                      ? latestMovieList
-                          .slice(0, 16)
-                          .map((item: any) => (
-                            <Card
-                              key={item.id}
-                              movieId={item.id}
-                              mediaType={"Movie"}
-                            />
-                          ))
-                      : ""}
-                  </ul>
-                </div>
+                  <div className="w-fullSearch">
+                    <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10 justify-center">
+                      {latestMovieList && latestMovieList.length > 0
+                        ? latestMovieList
+                            .slice(0, 16)
+                            .map((item: any, index: any) => (
+                              <Card
+                                index={index}
+                                key={item.id}
+                                movieId={item.id}
+                                mediaType={"Movie"}
+                              />
+                            ))
+                        : ""}
+                    </ul>
+                  </div>
                 </div>
               </div>
               <div className="share-container py-10 max-w-screen-md sm:mx-auto mx-5">
@@ -179,8 +180,9 @@ export default function Home() {
                     {latestTVList && latestTVList.length > 0
                       ? latestTVList
                           .slice(0, 16)
-                          .map((item: any) => (
+                          .map((item: any, index: any) => (
                             <Card
+                              index={index}
                               key={item.id}
                               movieId={item.id}
                               mediaType={"TV"}
@@ -223,8 +225,9 @@ export default function Home() {
                     {popularList && popularList.length > 0
                       ? popularList
                           .slice(0, 16)
-                          .map((item: any) => (
+                          .map((item: any,index:any) => (
                             <Card
+                            index={index}
                               key={item.id}
                               movieId={item.id}
                               mediaType={selectedMedia}

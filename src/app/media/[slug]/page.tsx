@@ -81,6 +81,7 @@ const fetchFilteredData = async (selectedOptions: any, page: number) => {
 
 
 export default function MediaPage({ params }: { params: { slug: string } }) {
+    const itemsPerPage = 16; 
     const {slug} = params
     useTitle(slug === 'search' ? "Results"  : slug === 'recent' ? "Recently Updated" :` ${slug === 'movie' ? "Latest Movies" : "Trending Shows"}`);
     const searchParams = useSearchParams();
@@ -188,8 +189,8 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                                         {slug === 'search' ? (
                                             <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                                 {searchedData && searchedData.results?.length > 0 ? (
-                                                    searchedData.results.map((item: any) => (
-                                                        <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' || item.media_type==='movie' ? 'Movie' : 'TV'} />
+                                                    searchedData.results.map((item: any,index:any) => (
+                                                        <Card index={index} key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' || item.media_type==='movie' ? 'Movie' : 'TV'} />
                                                     ))
                                                 ) : (
                                                     <p className="text-white text-[20px]">No results found.</p>
@@ -198,8 +199,8 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                                         ) : slug === 'recent' ? (
                                             <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                                 {latestData && latestData.results?.length > 0 ? (
-                                                    latestData.results.map((item: any) => (
-                                                        <Card key={item.id} movieId={item.id} mediaType={item.media_type === 'movie' ? 'Movie' : 'TV'} />
+                                                    latestData.results.map((item: any,index:any) => (
+                                                        <Card index={index} key={item.id} movieId={item.id} mediaType={item.media_type === 'movie' ? 'Movie' : 'TV'} />
                                                     ))
                                                 ) : (
                                                     <p className="text-white text-[20px]">No results found.</p>
@@ -208,8 +209,8 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                                         ) : (
                                             <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                                 {latestData && latestData.results?.length > 0 ? (
-                                                    latestData.results.map((item: any) => (
-                                                        <Card key={item.id} movieId={item.id} mediaType={slug === 'movie' ? 'Movie' : 'TV'} quality={item.quality === '1080p' ? 'HD' : item.quality === '720p' ? 'CAM' : item.quality} />
+                                                    latestData.results.map((item: any,index:any) => (
+                                                        <Card index={index} key={item.id} movieId={item.id} mediaType={slug === 'movie' ? 'Movie' : 'TV'} quality={item.quality === '1080p' ? 'HD' : item.quality === '720p' ? 'CAM' : item.quality} />
                                                     ))
                                                 ) : (
                                                     <p className="text-white text-[20px]">No results found.</p>
@@ -222,6 +223,7 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                                     totalPages={totalPages}
                                     onPageChange={handlePageChange}
                                     currentPage={currentPage}
+                                    itemsPerPage={itemsPerPage}
                                 />
                             </div>
                             <div className="min-w-full md:min-w-[376px]">
