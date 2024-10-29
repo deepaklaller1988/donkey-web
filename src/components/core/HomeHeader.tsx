@@ -194,15 +194,15 @@ export default function Header() {
                 <>
                   <div className="flex gap-4">
                     <button onClick={toggleSearch} className="text-white">
-                      {path === "/home" && (
-                        <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
-                      )}
+                      {/* {path === "/home" && (
+                        <IoSearch className="w-6 h-6 hover:text-amber-500 transition"  />
+                      )} */}
                     </button>
                     <button
                       className="text-white font-semibold p-2 px-6 rounded-full border-2 border-white transition hover:bg-white hover:text-black"
                       onClick={() => {
                         setIsOpen(true);
-                        setIsScriptActive(false); // Disable script on login button click
+                        setIsScriptActive(false);
                       }}
                     >
                       Sign in
