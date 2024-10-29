@@ -236,8 +236,8 @@ function Card({
                 onClick={() =>
                   router.push(
                     `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${
-                      seasonId ? seasonId : ""
-                    }&episodeId=${episodeId ? episodeId : ""}`
+                      seasonId ? seasonId : 1
+                    }&episodeId=${episodeId ? episodeId : 1}`
                   )
                 }
               >

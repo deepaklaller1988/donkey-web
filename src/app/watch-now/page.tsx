@@ -110,7 +110,7 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-
+console.log(selectedEpisode,"===========selectedEpisode")
   const userId = User.id;
   const {
     isLoading,
@@ -346,7 +346,6 @@ export default function WatchNow() {
                             : "/1"
                           : ""
                       }`}
-                      // src={`https://vidsrc.dev/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id}${mediaType === 'tv' ? selectedSeason ? '/' + (selectedSeason.season_number || 1) : '/1' : ''}${mediaType === 'tv' ? selectedEpisode ? '/' + selectedEpisode : '/1' : ''}`}
                       className="w-full mt-5 rounded-lg videoFrame"
                       title="Vidsrc video player"
                       referrerPolicy="origin"
@@ -354,8 +353,7 @@ export default function WatchNow() {
                       allowFullScreen
                       ref={videoRef}
                       id="myiframe"
-                      // onTimeUpdate={() => handleTimeUpdate(watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id)}
-                      // onLoad={() => handleTimeUpdate(watchDetials.id ? watchDetials.id : watchDetials.imdb_id)}
+                     
                     ></iframe>
                   </div>
                 </div>
@@ -406,11 +404,6 @@ export default function WatchNow() {
                                 : moment(watchDetials?.first_air_date).year()}
                             </b>
                           </li>
-                          {/* <li>
-                          <label className="rounded-full pbgColor text-black font-bold px-2">
-                            HD
-                          </label>
-                        </li> */}
                           <li>
                             <span className="flex items-center gap-2 pColor font-semibold">
                               <FaStar className=" text-[#F3C313]" />
@@ -437,7 +430,6 @@ export default function WatchNow() {
                           </li>
                         </ul>
                         <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
-                          {/* <li className='text-white'>{watchDetials.certificate}</li> */}
                           {watchDetials.genres && watchDetials.genres.length > 0
                             ? watchDetials.genres.map((gen: any) => (
                                 <li key={gen.id}>{gen.name}</li>
@@ -459,7 +451,6 @@ export default function WatchNow() {
                           <IoIosAddCircleOutline className="w-7 h-7" /> My List
                         </div>
                       </section>
-                      {/* <RatingPopUp /> */}
                     </div>
                     <div className="w-full">
                       <p className="text-white/50 mt-3 font-light">
