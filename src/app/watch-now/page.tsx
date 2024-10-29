@@ -125,8 +125,16 @@ export default function WatchNow() {
     if (seasonId) {
       setSelectedSeason(seasonId);
     }
+    else{
+      setSelectedSeason(1);
+
+    }
     if (episodeId) {
       setSelectedEpisode(Number(episodeId));
+    }
+    else{
+      setSelectedEpisode(1);
+
     }
   }, [seasonId, episodeId]);
 
@@ -218,7 +226,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     const handleMessage = (event: any) => {
-      if (event.origin !== "https://vidsrc.dev") return;
+      if (event.origin !== "https://vidsrc.pro") return;
 
       try {
         const data = event.data;
@@ -626,12 +634,22 @@ export default function WatchNow() {
                                   <>
                                     <li key={item?.episode_number}>
                                       <div
+                                        // className={`text-[14px] py-3 px-4 block ${
+                                        //   item?.episode_number ===
+                                        //   selectedEpisode
+                                        //     ? "episodeActive"
+                                        //     : ""
+                                        // }`}
                                         className={`text-[14px] py-3 px-4 block ${
-                                          item?.episode_number ===
-                                          selectedEpisode
+                                          selectedEpisode === undefined
+                                            ? item?.episode_number === 1
+                                              ? "episodeActive"
+                                              : ""
+                                            : item?.episode_number === selectedEpisode
                                             ? "episodeActive"
                                             : ""
                                         }`}
+                                        
                                         onClick={() =>
                                           setSelectedEpisode(
                                             item?.episode_number
