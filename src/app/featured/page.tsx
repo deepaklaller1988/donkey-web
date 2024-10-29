@@ -16,7 +16,7 @@ export default function Featured() {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 16;
 
   const fetchMovies = async (page: number) => {
     try {
@@ -26,14 +26,19 @@ export default function Featured() {
           mediaType === "movie" ? "movie" : "tv"
         }?include_adult=false&include_video=false&language=en-US&page=${pageNumber}`
       );
-  
-      const data = await response.json();  
-      return data;
+
+      const data = await response.json();
+      const limitedData = {
+        ...data,
+        results: data.results.slice(0, 16),
+      };
+
+      return limitedData;
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   const fetchPopularLists = async (page: number) => {
     try {
       const response = await fetch(
@@ -55,11 +60,16 @@ export default function Featured() {
           }
         })
       );
-      const filteredMovieData = allMovieData?.filter((item: any) => item !== null);
+      const filteredMovieData = allMovieData?.filter(
+        (item: any) => item !== null
+      );
 
       const totalItems = filteredMovieData?.length;
       const start = (page - 1) * itemsPerPage;
-      const paginatedData = filteredMovieData?.slice(start, start + itemsPerPage);
+      const paginatedData = filteredMovieData?.slice(
+        start,
+        start + itemsPerPage
+      );
 
       setTotalPages(Math.ceil(totalItems / itemsPerPage));
 
@@ -92,7 +102,7 @@ export default function Featured() {
   };
 
   useEffect(() => {
-    setCurrentPage(1); 
+    setCurrentPage(1);
   }, [mediaType]);
 
   if (isLoading || roleLoading) {
@@ -119,40 +129,42 @@ export default function Featured() {
                 </h3>
               </div>
               {/* <div className="w-full"> */}
-                <div className="w-full py-2">
-                  <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-                    {filteredData &&
-                    ((mediaType && filteredData.results?.length > 0) ||
-                      (!mediaType && filteredData.length > 0)) ? (
-                      (mediaType ? filteredData.results : filteredData).map(
-                        (item: any,index:number) => (
-                          <Card
+              <div className="w-full py-2">
+                <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+                  {filteredData &&
+                  ((mediaType && filteredData.results?.length > 0) ||
+                    (!mediaType && filteredData.length > 0)) ? (
+                    (mediaType ? filteredData.results : filteredData).map(
+                      (item: any, index: number) => (
+                        <Card
                           index={index}
-                            key={item.id}
-                            movieId={item.id}
-                            mediaType={
-                              !mediaType
-                                ? "Movie"
-                                : mediaType === "movie"
-                                ? "Movie"
-                                : "TV"
-                            }
-                          />
-                        )
+                          key={item.id}
+                          movieId={item.id}
+                          mediaType={
+                            !mediaType
+                              ? "Movie"
+                              : mediaType === "movie"
+                              ? "Movie"
+                              : "TV"
+                          }
+                        />
                       )
-                    ) : (
-                      <p className="text-white text-[25px] font-semibold">No results found.</p>
-                    )}
-                  </ul>
-                </div>
+                    )
+                  ) : (
+                    <p className="text-white text-[25px] font-semibold">
+                      No results found.
+                    </p>
+                  )}
+                </ul>
+              </div>
               {/* </div> */}
 
-                <Pagination
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                  currentPage={currentPage}
-                  itemsPerPage={itemsPerPage}
-                />
+              <Pagination
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                currentPage={currentPage}
+                itemsPerPage={itemsPerPage}
+              />
             </div>
           </div>
         </div>

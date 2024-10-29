@@ -267,9 +267,9 @@ function Card({
                   <div className="relative flex gap-4 hover:cursor-pointer">
                     <Image
                       alt="image"
-                      // quality={1}
-                      height={1}
-                      width={1}
+                      quality={100}
+                      height={100}
+                      width={100}
                       className="w-8 h-8"
                       src="/assets/images/cross.png"
                       onClick={() =>
@@ -365,7 +365,7 @@ function Card({
                       </li>
                       <li>
                         <Image
-                          quality={10}
+                          quality={30}
                           src="/images/imdb-logo.svg"
                           alt="Image"
                           width={40}

@@ -83,12 +83,11 @@ export default function Header() {
     };
   }, []);
 
-  // Add the script only when `isScriptActive` is true
   useEffect(() => {
     const scriptId = "conditional-script";
     if (isScriptActive && !document.getElementById(scriptId)) {
       const script = document.createElement("script");
-      script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"; // Your script URL
+      script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"; 
       script.id = scriptId;
       document.body.appendChild(script);
     } else if (!isScriptActive) {
@@ -117,7 +116,7 @@ export default function Header() {
                 className="w-[120px] md:w-[150px] block m-auto"
               >
                 <Image
-                  quality={10}
+                  quality={30}
                   width={150}
                   height={57}
                   className="max-w-full"
@@ -131,13 +130,7 @@ export default function Header() {
                 OpenSearch ? "openMobileSearch" : ""
               }`}
             >
-              {path == "/home" || OpenSearch ? (
-                <>
-                  <HomeSearchbar path={path} />
-                </>
-              ) : (
-                <HomeSearchbar path={path} />
-              )}
+             { OpenSearch && <HomeSearchbar path={path} />}
             </div>
             <section
               ref={profileRef}
@@ -146,14 +139,10 @@ export default function Header() {
               {token ? (
                 <>
                   <div className="relative flex gap-4">
-                    {path === "/home" && (
-                      <button
-                        onClick={toggleSearch}
-                        className="text-white block md:hidden"
-                      >
-                        <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
-                      </button>
-                    )}
+                  <button onClick={toggleSearch} className="text-white">
+                    {<IoSearch className="w-6 h-6 hover:text-amber-500 transition" />}
+
+                    </button>
                     <button onClick={toggleProfile} className="text-white">
                       <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
@@ -194,9 +183,8 @@ export default function Header() {
                 <>
                   <div className="flex gap-4">
                     <button onClick={toggleSearch} className="text-white">
-                      {/* {path === "/home" && (
-                        <IoSearch className="w-6 h-6 hover:text-amber-500 transition"  />
-                      )} */}
+                    {isHome() && <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />}
+
                     </button>
                     <button
                       className="text-white font-semibold p-2 px-6 rounded-full border-2 border-white transition hover:bg-white hover:text-black"
