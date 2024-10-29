@@ -21,7 +21,6 @@ import { toasterError, toasterSuccess } from "./core/Toaster";
 const apiKey = process.env.NEXT_PUBLIC_MDBKEY;
 const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
-
 // const fetchTopAll = async () => {
 //   try {
 //     const response = await FetchApi.get(
@@ -31,7 +30,7 @@ const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
 //     const combinedResults = await Promise.all(
 //       data.results.map(async (item: any) => {
-//         try {   
+//         try {
 //           let imdbRating = null;
 //           const response = await API.get(
 //             `cached/imdb-rating?mediaId=${item.id}&mediaType=${
@@ -68,8 +67,12 @@ const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 const fetchTopAll = async () => {
   try {
     const [moviesResponse, tvResponse] = await Promise.all([
-      FetchApi.get("https://api.themoviedb.org/3/trending/movie/day?language=en-US&limit=10"),
-      FetchApi.get("https://api.themoviedb.org/3/trending/tv/day?language=en-US&limit=10")
+      FetchApi.get(
+        "https://api.themoviedb.org/3/trending/movie/day?language=en-US&limit=10"
+      ),
+      FetchApi.get(
+        "https://api.themoviedb.org/3/trending/tv/day?language=en-US&limit=10"
+      ),
     ]);
 
     const moviesData = await moviesResponse.json();
@@ -77,18 +80,25 @@ const fetchTopAll = async () => {
 
     const fetchWithImdbRating = async (item: any, mediaType: string) => {
       try {
-        const response = await API.get(`cached/imdb-rating?mediaId=${item.id}&mediaType=${mediaType}`);
+        const response = await API.get(
+          `cached/imdb-rating?mediaId=${item.id}&mediaType=${mediaType}`
+        );
         const imdbRating = response.success ? response.data.imdb_rating : null;
 
         return { ...item, imdb_rating: imdbRating };
       } catch (error) {
-        console.error(`Failed to fetch IMDb rating for item ID ${item.id}:`, error);
+        console.error(
+          `Failed to fetch IMDb rating for item ID ${item.id}:`,
+          error
+        );
         return { ...item, imdb_rating: null };
       }
     };
 
     const moviesWithRatings = await Promise.all(
-      moviesData.results.map((movie: any) => fetchWithImdbRating(movie, "movie"))
+      moviesData.results.map((movie: any) =>
+        fetchWithImdbRating(movie, "movie")
+      )
     );
 
     const tvWithRatings = await Promise.all(
@@ -96,7 +106,7 @@ const fetchTopAll = async () => {
     );
 
     const combinedResults = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       if (moviesWithRatings[i]) combinedResults.push(moviesWithRatings[i]);
       if (tvWithRatings[i]) combinedResults.push(tvWithRatings[i]);
     }
@@ -107,7 +117,6 @@ const fetchTopAll = async () => {
     return [];
   }
 };
-
 
 const getDetail = async (item: any) => {
   try {
@@ -217,8 +226,10 @@ export default function HomeSlider() {
           {combinedList &&
             combinedList.length > 0 &&
             combinedList.map((item: any, index: number) => (
-              <div key={item.id} className="each-slide-effect slideMain relative">
-                
+              <div
+                key={item.id}
+                className="each-slide-effect slideMain relative"
+              >
                 <Image
                   quality={100}
                   height={1000}
@@ -310,7 +321,10 @@ export default function HomeSlider() {
                     </div>
                   </div>
                   <div className="absolute w-full z-0 left-0 bottom-0 flex items-end">
-                    <img
+                    <Image
+                      height={1000}
+                      width={1000}
+                      quality={100}
                       className="w-full h-[70px]"
                       src="/assets/images/slides/shadow.png"
                       alt="shadow"

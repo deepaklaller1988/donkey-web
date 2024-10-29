@@ -1,6 +1,5 @@
 import { BiSolidRightArrowSquare } from "react-icons/bi";
-import { PiXLogoBold } from "react-icons/pi";
-import { FaRedditAlien } from "react-icons/fa6";
+import Image from "next/image";
 import Link from "next/link";
 export default function Footer() {
 
@@ -26,7 +25,11 @@ export default function Footer() {
                     </ul>
                 </section>
                 <section className="relative top-0 lg:top-[25px]">
-                    <a href="" className="w-[150px] block mb-4"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
+                    <a href="" className="w-[150px] block mb-4"><Image
+                    height={1000}
+                    width={1000}
+                    quality={100} 
+                    className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
                     {/* <div className="w-full flex items-center justify-center md:justify-end gap-4 mb-2 md:mb-0 ">
                         <a href="https://x.com/to_donkey" target="_blank" className="text-white hover:text-yellow-500 transition" title="twitter"><PiXLogoBold className="w-6 h-6"/></a>
                         <a href="https://www.reddit.com/r/donkey_to/" target="_blank" className="text-white hover:text-yellow-500 transition" title="Reddit"><FaRedditAlien className="w-6 h-6"/></a>

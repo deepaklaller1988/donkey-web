@@ -120,7 +120,7 @@ export default function HomeSearchbar({path}:any) {
                                 <span className="rounded-lg overflow-hidden max-w-[50px] max-h-[50px]">
                                
                                 <Image 
-                                 quality={10}
+                                 quality={20}
                                 className="w-full block" width={100} height={40} src={`${item?.poster_path ? "https://image.tmdb.org/t/p/original" + item?.poster_path : "/assets/images/miss.jpg"}`} alt="album" />
                                 </span>
                                 <span>

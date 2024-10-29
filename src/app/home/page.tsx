@@ -104,7 +104,7 @@ export default function Home() {
   const { token }: any = useAuth();
   useTitle("Home");
   const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
-  const { data: popularList } = useQuery({
+  const { isLoading: ispopularLoading, data: popularList } = useQuery({
     queryKey: ["popular", selectedMedia],
     queryFn: () => fetchPopularLists(selectedMedia),
   });
@@ -118,7 +118,7 @@ export default function Home() {
     queryFn: () => fetchLatestList("movie"),
   });
 
-  if (movieLoading || tvLoading || roleLoading) {
+  if (movieLoading || tvLoading || roleLoading ) {
     return (
       <div>
         <Loader />
@@ -140,11 +140,6 @@ export default function Home() {
         <div className="homewrapper">
           <div className="containerHub flex gap-5 flex-col lg:flex-row">
             <div className="w-full">
-              {/* {token && (
-                <>
-                  <WatchingPage type={"home"} />
-                </>
-              )} */}
               <div className="w-full">
                 <div className="homewrapper">
                   <div className="flex justify-between  items-center gap-4">
@@ -170,6 +165,7 @@ export default function Home() {
                                 key={item.id}
                                 movieId={item.id}
                                 mediaType={"Movie"}
+                                isLoading={movieLoading}
                               />
                             ))
                         : ""}
@@ -188,7 +184,7 @@ export default function Home() {
                     alt="Banner"
                     width={800}
                     height={150}
-                    quality={10}
+                    quality={20}
 
                   />
                 </a>
@@ -216,6 +212,8 @@ export default function Home() {
                               key={item.id}
                               movieId={item.id}
                               mediaType={"TV"}
+                              isLoading={tvLoading}
+
                             />
                           ))
                       : ""}
@@ -252,6 +250,7 @@ export default function Home() {
                 </div>
                 <div className="w-full py-2">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
+
                     {popularList && popularList.length > 0
                       ? popularList
                           .slice(0, 16)
@@ -261,6 +260,7 @@ export default function Home() {
                               key={item.id}
                               movieId={item.id}
                               mediaType={selectedMedia}
+                              isLoading={ispopularLoading}
                             />
                           ))
                       : ""}
@@ -268,17 +268,6 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            {/* <div className="min-w-full md:min-w-[376px]"> */}
-            {/* <div>
-                <Sidebar mediaType={"Popular"} />
-              </div> */}
-            {/* <div className="mt-20">
-                <Sidebar mediaType={"Movie"} />
-              </div>
-              <div className="mt-20">
-                <Sidebar mediaType={"TV"} />
-              </div> */}
-            {/* </div> */}
           </div>
         </div>
       </div>

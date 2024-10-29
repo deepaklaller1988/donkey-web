@@ -3,7 +3,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import Loader from "./Loader";
+import Image from "next/image";
 import SidebarSkeleton from "@components/SidebarSkeleton";
 
 const fetchDetails = async (movieId: number, mediaType: string) => {
@@ -18,11 +18,13 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
   }
 };
 
-function SidebarCard({ movieId, mediaType, index }: any) {
+function SidebarCard({ movieId, mediaType, index,isPopular }: any) {
   const mediatype = mediaType.replace(/s$/, "");
-  const capitalizedMediaType = mediatype === "tv" 
-  ? mediatype.toUpperCase()
-  : mediatype.charAt(0).toUpperCase() + mediatype.slice(1);  const router = useRouter();
+  const capitalizedMediaType =
+    mediatype === "tv"
+      ? mediatype.toUpperCase()
+      : mediatype.charAt(0).toUpperCase() + mediatype.slice(1);
+  const router = useRouter();
   const {
     isLoading,
     error,
@@ -32,7 +34,7 @@ function SidebarCard({ movieId, mediaType, index }: any) {
     queryFn: () => fetchDetails(movieId, capitalizedMediaType),
   });
 
-  if (isLoading) {
+  if (isLoading || isPopular) {
     return <SidebarSkeleton index={index} />;
   }
 
@@ -43,13 +45,18 @@ function SidebarCard({ movieId, mediaType, index }: any) {
         className={`cursor-pointer ${index ? "pl-[15px]" : ""}`}
         onClick={() =>
           router.push(
-            `/watch-now?type=${capitalizedMediaType?.toLowerCase()=="movie"?"movie":"tv"}&id=${movieId}`
+            `/watch-now?type=${
+              capitalizedMediaType?.toLowerCase() == "movie" ? "movie" : "tv"
+            }&id=${movieId}`
           )
         }
       >
         <section className="flex items-center relative listTop10 bg-white/5  hover:bg-white/10 transition rounded-md">
           <span className="relative min-w-[50px] w-[50px]">
-            <img
+            <Image
+              height={1000}
+              width={1000}
+              quality={100}
               className="rounded-md w-full"
               src={`${
                 cardDetials?.poster_path

@@ -79,19 +79,19 @@ const fetchSimilarLists = async (movieId: number, mediaType: string) => {
   }
 };
 
-const fetchPopularLists = async (mediaType: string,pages=2) => {
+const fetchPopularLists = async (mediaType: string, pages = 2) => {
   try {
     const allResults = [];
     for (let page = 1; page <= pages; page++) {
+      const response = await FetchApi.get(
+        `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/popular?language=en-US&page=${pages}`
+      );
+      const data = await response.json();
+      allResults.push(...data.results);
+    }
 
-    const response = await FetchApi.get(
-      `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/popular?language=en-US&page=${pages}`
-    );
-    const data = await response.json();
-    allResults.push(...data.results);
-  }
-
-  return allResults;  } catch (error) {
+    return allResults;
+  } catch (error) {
     console.log(error);
     return [];
   }
@@ -124,17 +124,13 @@ export default function WatchNow() {
   useEffect(() => {
     if (seasonId) {
       setSelectedSeason(seasonId);
-    }
-    else{
+    } else {
       setSelectedSeason(1);
-
     }
     if (episodeId) {
       setSelectedEpisode(Number(episodeId));
-    }
-    else{
+    } else {
       setSelectedEpisode(1);
-
     }
   }, [seasonId, episodeId]);
 
@@ -313,14 +309,16 @@ export default function WatchNow() {
         <>
           <div className="w-full ">
             <section className="relative">
-              <img
+              <Image
+                height={1000}
+                width={1000}
+                quality={100}
                 className="bgAlbumDetail"
                 src={`${
                   watchDetials?.backdrop_path
                     ? `https://image.tmdb.org/t/p/original${watchDetials?.backdrop_path}`
                     : "assets/images/slides/1.jpg"
                 }`}
-                // "assets/images/slides/1.jpg"
                 alt="Video"
               />
               <div className="w-full h-full absolute top-0 left-0 z-0 pt-[80px]">
@@ -368,11 +366,13 @@ export default function WatchNow() {
                   ></div>
                 )}
                 <div className="absolute w-full z-0 left-0 bottom-0">
-                  <img
+                  <Image
+                    quality={100}
                     src="/assets/images/slides/shadow.png"
                     alt="shadow"
-                    width="100%"
-                    height="280px"
+                    className="w-full h-[280px]"
+                    height={50}
+                    width={50}
                   />
                 </div>
               </div>
@@ -383,7 +383,10 @@ export default function WatchNow() {
               <div className="w-full flex flex-col lg:flex-row gap-5">
                 <div className="w-full flex flex-col md:flex-row gap-5">
                   <section className="min-w-[170px] max-w-[170px] md:min-w-[270px] md:max-w-[270px] m-auto md:m-0">
-                    <img
+                    <Image
+                      height={1000}
+                      width={1000}
+                      quality={100}
                       className="w-full rounded-lg"
                       src={`https://image.tmdb.org/t/p/original${watchDetials?.poster_path}`}
                       alt="album"
@@ -421,7 +424,7 @@ export default function WatchNow() {
                                 alt="Image"
                                 width={40}
                                 height={20}
-                                quality={10}
+                                quality={20}
                               />
                             </span>
                           </li>
@@ -604,7 +607,17 @@ export default function WatchNow() {
                                 : []
                             }
                             optionLabel="name"
-                            placeholder={selectedSeason?"Season" + `\n` +`${selectedSeason=="undefined"?"1":selectedSeason}`:"Season 1"}
+                            placeholder={
+                              selectedSeason
+                                ? "Season" +
+                                  `\n` +
+                                  `${
+                                    selectedSeason == "undefined"
+                                      ? "1"
+                                      : selectedSeason
+                                  }`
+                                : "Season 1"
+                            }
                             className="episodeSelection p-3 px-20"
                           />
                         </>
@@ -645,11 +658,11 @@ export default function WatchNow() {
                                             ? item?.episode_number === 1
                                               ? "episodeActive"
                                               : ""
-                                            : item?.episode_number === selectedEpisode
+                                            : item?.episode_number ===
+                                              selectedEpisode
                                             ? "episodeActive"
                                             : ""
                                         }`}
-                                        
                                         onClick={() =>
                                           setSelectedEpisode(
                                             item?.episode_number
@@ -718,9 +731,9 @@ export default function WatchNow() {
                       {popularList && popularList.length > 0
                         ? popularList
                             .slice(0, 24)
-                            .map((item: any,index:any) => (
+                            .map((item: any, index: any) => (
                               <Card
-                              index={index}
+                                index={index}
                                 key={item.id}
                                 movieId={item.id}
                                 mediaType={

@@ -200,11 +200,7 @@ function Card({
       const result = await API.delete("mediaprogress", data);
       if (result.success) {
         queryClient.invalidateQueries({ queryKey: ["watch-movies"] });
-        toasterSuccess(
-          `Removed`,
-          3000,
-          mediaID
-        );
+        toasterSuccess(`Removed`, 3000, mediaID);
       } else {
         toasterError("Failed to delete movie.", 3000, mediaID);
       }
@@ -239,7 +235,9 @@ function Card({
                 className="relative folderOpened"
                 onClick={() =>
                   router.push(
-                    `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${seasonId?seasonId:""}&episodeId=${episodeId?episodeId:""}`
+                    `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${
+                      seasonId ? seasonId : ""
+                    }&episodeId=${episodeId ? episodeId : ""}`
                   )
                 }
               >
@@ -288,7 +286,11 @@ function Card({
                   <div className="relative flex gap-4">
                     <div className="relative flex gap-4">
                       {/* <TiDelete className=" w-8 h-8 m-1 " color="red" onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} /> */}
-                      <img
+                      <Image
+                        alt="Image"
+                        height={1000}
+                        width={1000}
+                        quality={100}
                         className="w-8 h-8"
                         src="/assets/images/cross.png"
                         onClick={() =>

@@ -60,7 +60,7 @@ export default function Sidebar({ mediaType }: any) {
         mediaType={mediaType}
         index={index + 1}
         isPopular={isPopular}
-      />
+        />
     ));
   };
 
@@ -107,8 +107,7 @@ export default function Sidebar({ mediaType }: any) {
           ? popular && popular.length > 0
             ? renderMovies(popular.slice(0, 5), interval)
             : ""
-          : // : topList && topList.length > 0
-            // ? renderMovies(topList.slice(0, 10), mediaType)
+          : 
             ""}
       </ul>
     </div>
