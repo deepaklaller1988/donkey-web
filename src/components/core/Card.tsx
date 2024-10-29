@@ -239,7 +239,7 @@ function Card({
                 className="relative folderOpened"
                 onClick={() =>
                   router.push(
-                    `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${seasonId}&episodeId=${episodeId}`
+                    `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${seasonId?seasonId:""}&episodeId=${episodeId?episodeId:""}`
                   )
                 }
               >
