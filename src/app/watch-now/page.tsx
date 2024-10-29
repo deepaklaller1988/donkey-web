@@ -596,7 +596,7 @@ export default function WatchNow() {
                                 : []
                             }
                             optionLabel="name"
-                            placeholder={selectedSeason?"Season" + `\n` +`${selectedSeason}`:"Season 1"}
+                            placeholder={selectedSeason?"Season" + `\n` +`${selectedSeason=="undefined"?"1":selectedSeason}`:"Season 1"}
                             className="episodeSelection p-3 px-20"
                           />
                         </>
