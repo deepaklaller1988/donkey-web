@@ -94,13 +94,12 @@ const fetchRecentlyUpdated = async (mediaType: any) => {
       }/latest/page-1.json`
     );
     const data = await response.json();
-    console.log(data,"============")
- const filteredData = data.result?.filter((item: any) => item.tmdb_id !== null);
-    
-    return filteredData;  
-    return data;  
+    const filteredData = data.result?.filter(
+      (item: any) => item.tmdb_id !== null
+    );
 
-} catch (error) {
+    return filteredData;
+  } catch (error) {
     console.log(error);
   }
 };

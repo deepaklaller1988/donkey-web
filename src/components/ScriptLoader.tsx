@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 const ScriptLoader = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [shouldLoadScript, setShouldLoadScript] = useState(true);
-
+console.log(pathname)
   useEffect(() => {
     if (pathname.includes("watch-now") || pathname.includes("profile")) {
       setShouldLoadScript(false);

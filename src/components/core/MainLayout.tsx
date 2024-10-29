@@ -1,15 +1,13 @@
 "use client";
 import React, { createContext, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Header from "@components/core/HomeHeader";
 import Footer from "@components/core/Footer";
 import User from "@lib/User";
 import { getToken } from "@lib/userToken";
 
 export default function MainLayout({ children }: any) {
-  const [loading, setLoading] = useState(false);
   const path = usePathname();
-  const searchParams: any = useSearchParams();
   const route = path.split("/");
 
   const isHome = () => {

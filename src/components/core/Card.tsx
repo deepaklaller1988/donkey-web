@@ -201,7 +201,7 @@ function Card({
       if (result.success) {
         queryClient.invalidateQueries({ queryKey: ["watch-movies"] });
         toasterSuccess(
-          `Media removed successfully from My List.`,
+          `Removed`,
           3000,
           mediaID
         );
@@ -432,7 +432,7 @@ function Card({
                       : movieDetials?.overview}
                   </p>
                   <button
-                    className="text-white font-bold flex items-center gap-2 bg-white/30 px-6 py-2 rounded-full transition m-auto mt-4 mb-2"
+                    className="btnBgBlur text-white font-bold flex items-center gap-2 bg-white/30 px-6 py-2 rounded-full transition m-auto mt-4 mb-2"
                     onClick={() =>
                       router.push(
                         `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}`

@@ -19,54 +19,95 @@ import User from "@lib/User";
 import API from "@lib/Api";
 import { toasterError, toasterSuccess } from "./core/Toaster";
 const apiKey = process.env.NEXT_PUBLIC_MDBKEY;
+const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
+
+
+// const fetchTopAll = async () => {
+//   try {
+//     const response = await FetchApi.get(
+//       "https://api.themoviedb.org/3/trending/all/day?language=en-US"
+//     );
+//     const data = await response.json();
+
+//     const combinedResults = await Promise.all(
+//       data.results.map(async (item: any) => {
+//         try {   
+//           let imdbRating = null;
+//           const response = await API.get(
+//             `cached/imdb-rating?mediaId=${item.id}&mediaType=${
+//               item?.media_type === "movie" ? "movie" : "tv"
+//             }`
+//           );
+//           if (response.success) {
+//             let res = response.data;
+//             imdbRating = res.imdb_rating;
+//           }
+//           return {
+//             ...item,
+//             imdb_rating: imdbRating,
+//           };
+//         } catch (error) {
+//           console.error(
+//             `Failed to fetch certificate for item ID ${item.id}:`,
+//             error
+//           );
+//           return {
+//             ...item,
+//             certificate: null,
+//           };
+//         }
+//       })
+//     );
+
+//     return combinedResults;
+//   } catch (error) {
+//     console.error("Failed to fetch data from the primary API:", error);
+//   }
+// };
 
 const fetchTopAll = async () => {
   try {
-    const response = await FetchApi.get(
-      "https://api.themoviedb.org/3/trending/all/day?language=en-US"
-    );
-    const data = await response.json();
+    const [moviesResponse, tvResponse] = await Promise.all([
+      FetchApi.get("https://api.themoviedb.org/3/trending/movie/day?language=en-US&limit=10"),
+      FetchApi.get("https://api.themoviedb.org/3/trending/tv/day?language=en-US&limit=10")
+    ]);
 
-    const combinedResults = await Promise.all(
-      data.results.map(async (item: any) => {
-        try {
-          // const certificateResponse = await fetch(
-          //   `https://mdblist.com/api/?apikey=${apiKey}&tm=${item.id}&m=${
-          //     item?.media_type === "movie" ? "movie" : "show"
-          //   }`
-          // );
-          let imdbRating = null;
-          const response = await API.get(
-            `cached/imdb-rating?mediaId=${item.id}&mediaType=${
-              item?.media_type === "movie" ? "movie" : "tv"
-            }`
-          );
-          if (response.success) {
-            let res = response.data;
-            imdbRating = res.imdb_rating;
-          }
-          return {
-            ...item,
-            imdb_rating: imdbRating,
-          };
-        } catch (error) {
-          console.error(
-            `Failed to fetch certificate for item ID ${item.id}:`,
-            error
-          );
-          return {
-            ...item,
-            certificate: null,
-          };
-        }
-      })
+    const moviesData = await moviesResponse.json();
+    const tvData = await tvResponse.json();
+
+    const fetchWithImdbRating = async (item: any, mediaType: string) => {
+      try {
+        const response = await API.get(`cached/imdb-rating?mediaId=${item.id}&mediaType=${mediaType}`);
+        const imdbRating = response.success ? response.data.imdb_rating : null;
+
+        return { ...item, imdb_rating: imdbRating };
+      } catch (error) {
+        console.error(`Failed to fetch IMDb rating for item ID ${item.id}:`, error);
+        return { ...item, imdb_rating: null };
+      }
+    };
+
+    const moviesWithRatings = await Promise.all(
+      moviesData.results.map((movie: any) => fetchWithImdbRating(movie, "movie"))
     );
+
+    const tvWithRatings = await Promise.all(
+      tvData.results.map((show: any) => fetchWithImdbRating(show, "tv"))
+    );
+
+    const combinedResults = [];
+    for (let i = 0; i < 10; i++) {
+      if (moviesWithRatings[i]) combinedResults.push(moviesWithRatings[i]);
+      if (tvWithRatings[i]) combinedResults.push(tvWithRatings[i]);
+    }
 
     return combinedResults;
   } catch (error) {
     console.error("Failed to fetch data from the primary API:", error);
+    return [];
   }
 };
+
 
 const getDetail = async (item: any) => {
   try {
@@ -163,7 +204,7 @@ export default function HomeSlider() {
 
   if (isLoading || roleLoading) {
     return (
-      <div>
+      <div className="mt-52">
         <Loader />
       </div>
     );
@@ -176,7 +217,8 @@ export default function HomeSlider() {
           {combinedList &&
             combinedList.length > 0 &&
             combinedList.map((item: any, index: number) => (
-              <div key={item.id} className="each-slide-effect slideMain">
+              <div key={item.id} className="each-slide-effect slideMain relative">
+                
                 <Image
                   quality={100}
                   height={1000}
@@ -187,10 +229,10 @@ export default function HomeSlider() {
                 <div className="sliderSet">
                   <div className="sliderContent relative z-10">
                     <div className="homewrapper">
-                      <div className="sliderContentSet pl-0 md:pl-4 flex flex-col justify-center">
-                        <span className="text-white/70 flex items-center">
+                      <div className="sliderContentSet pl-0 md:pl-4 flex flex-col justify-center pt-8">
+                        {/* <span className="text-white/70 flex items-center">
                           <BsFire className="mr-1" /> Trending
-                        </span>
+                        </span> */}
                         <h2 className="text-[30px] md:text-[40px] lg:text-[50px] font-bold text-white py-0 md:pb-2">
                           {item.title ? item.title : item.name}
                         </h2>

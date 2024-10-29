@@ -46,6 +46,10 @@ body {
   backdrop-filter: blur(10px);
   background: rgba(255,255,255,.2);
 }
+.btnBgBlur:hover {
+  backdrop-filter: blur(5px);
+  background: rgba(255,255,255,.15);
+}
 .pColor {
   color: #fea500 !important;
 }
@@ -85,7 +89,7 @@ body {
 }
 
 .slideMain .sliderSet {
-  height: 100%;
+  height: calc(100% + 18px);
   width: 100%;
   position: absolute;
   top: 0;
@@ -423,6 +427,16 @@ ul.indicators {
 .footerSet {
   height: 350px;
 }
+}
+
+@media only screen and (max-width: 480px){
+  .phoneFooter {
+    position: relative;
+    top: -60px;
+}
+  .footerSet {
+    height: 250px;
+  }
 }
 ::-webkit-scrollbar {
   width: 6px;

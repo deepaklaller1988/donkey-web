@@ -311,7 +311,7 @@ export default function WatchNow() {
     <div className="w-full">
       {watchDetials && (
         <>
-          <div className="w-full pt-20">
+          <div className="w-full ">
             <section className="relative">
               <img
                 className="bgAlbumDetail"
@@ -323,7 +323,7 @@ export default function WatchNow() {
                 // "assets/images/slides/1.jpg"
                 alt="Video"
               />
-              <div className="w-full h-full absolute top-0 left-0 z-0">
+              <div className="w-full h-full absolute top-0 left-0 z-0 pt-[80px]">
                 <div className="homewrapper relative z-10">
                   <div className="w-full">
                     {/*------- vidsrc.me ----- */}

@@ -6,7 +6,7 @@ export default function Footer() {
 
     return (
         <div className="w-full mt-20 md:mt-40 footerSet flex flex-col justify-end">
-            <div className="w-full flex items-center md:items-end justify-between px-4 flex-col-reverse md:flex-row">
+            <div className="phoneFooter w-full flex items-center md:items-end justify-between px-4 flex-col-reverse md:flex-row">
                 <section>
                     <ul className="flex flex-col md:flex-row text-white/60 font-light f-Links">
                         <li className="hidden md:block">

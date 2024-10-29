@@ -14,6 +14,40 @@ import useRole from "@hooks/useRole";
 import { useAuth } from "context/AuthContext";
 const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
+
+const fetchTrendingList = async (mediaType: string) => {
+  const mediaTypeLower = mediaType.toLowerCase();
+  const url = `https://api.trakt.tv/shows/trending?limit=50`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        "trakt-api-version": "2",
+        "trakt-api-key": CLIENT_ID,
+      },
+    });
+    const data = await response.json();
+    const imdbIds = data.map((item: any) =>
+      mediaTypeLower === "movies" ? item.movie?.ids.imdb : item.show?.ids.tmdb
+    );
+    const tmdbResponses = await Promise.all(
+      imdbIds.map((id: any) =>
+        FetchApi.get(
+          `https://api.themoviedb.org/3/${
+            mediaTypeLower === "movies" ? "movie" : "tv"
+          }/${id}?language=en-US`
+        )
+      )
+    );
+
+    const tmdbData = await Promise.all(tmdbResponses.map((res) => res.json()));
+    return tmdbData;
+  } catch (error) {
+    console.log("Error fetching popular lists:", error);
+    return [];
+  }
+};
 const fetchPopularLists = async (mediaType: string) => {
   const mediaTypeLower = mediaType.toLowerCase();
   const url = `https://api.trakt.tv/${
@@ -39,7 +73,6 @@ const fetchPopularLists = async (mediaType: string) => {
     );
 
     const tmdbData = await Promise.all(tmdbResponses.map((res) => res.json()));
-
     return tmdbData;
   } catch (error) {
     console.log("Error fetching popular lists:", error);
@@ -56,13 +89,8 @@ const fetchLatestList = async (mediaType: string) => {
   }
   try {
     const response = await FetchApi.get(url);
-    // let response = await fetch(`https://vidsrc.to/vapi/${mediaType}/new/1`, { method: "GET", });
     const data = await response.json();
-    // if (data.status === 200) {
-    //     if (data.result) return data.result.items;
-    // } else {
-    //     return [];
-    // }
+
     return data.results;
   } catch (error) {
     console.log(error);
@@ -82,7 +110,7 @@ export default function Home() {
   });
   const { isLoading: tvLoading, data: latestTVList } = useQuery({
     queryKey: ["latest-movies", "tv"],
-    queryFn: () => fetchLatestList("tv"),
+    queryFn: () => fetchTrendingList("tv"),
   });
 
   const { isLoading: movieLoading, data: latestMovieList } = useQuery({
@@ -108,7 +136,7 @@ export default function Home() {
         </div>
       </div>
       <div className="w-full">
-        <div className="w-full mb-10 md:mb-20"></div>
+        <div className="w-full mb-6 md:mb-12"></div>
         <div className="homewrapper">
           <div className="containerHub flex gap-5 flex-col lg:flex-row">
             <div className="w-full">
@@ -151,7 +179,7 @@ export default function Home() {
               </div>
               <div className="share-container py-10 max-w-screen-md sm:mx-auto mx-5">
                 <a
-                  href="https://fststvpn.com/66fa7e897d554"
+                  href="https://www.reddit.com/r/donkey_to/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

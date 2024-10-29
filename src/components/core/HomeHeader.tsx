@@ -23,11 +23,11 @@ export default function Header() {
   const route = path.split("/");
   const { setActiveTab } = useProfileTab();
   const { token, setToken }: any = useAuth();
-  const [isOpen, setIsOpen] = useState(false); // Updated to `setIsOpen`
+  const [isOpen, setIsOpen] = useState(false); 
   const [OpenProfile, setOpenProfile] = useState(false);
   const [OpenSearch, setOpenSearch] = useState(false);
   const [openSideBar, setOpenSidebar] = useState(false);
-  const [isScriptActive, setIsScriptActive] = useState(true); // Added script state
+  const [isScriptActive, setIsScriptActive] = useState(true); 
 
   const profileRef: any = useRef(null);
 
@@ -85,9 +85,9 @@ export default function Header() {
 
   useEffect(() => {
     const scriptId = "conditional-script";
-    if (isScriptActive &&  !isOpen && !document.getElementById(scriptId)) {
+    if (isScriptActive && !isOpen && !document.getElementById(scriptId)) {
       const script = document.createElement("script");
-      script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"; 
+      script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807";
       script.id = scriptId;
       document.body.appendChild(script);
     } else if (!isScriptActive || isOpen) {
@@ -96,14 +96,32 @@ export default function Header() {
         script.remove();
       }
     }
-  }, [isScriptActive,isOpen]);
+  }, [isScriptActive, isOpen]);
+
+  const handleAdClick = (event: any) => {
+    const adFreeZones = ["login-button", "search-button", "profile-button"];
+
+    const targetId = event.target.id;
+
+    if (!adFreeZones.includes(targetId)) {
+      setIsScriptActive(true);
+    }
+  };
+
+  const handleDisableAds = () => {
+    setIsScriptActive(false); 
+  };
 
   return (
     <>
       <div
+        // className={`header ${
+        //   isHome() ? "" : "bg-white/10"
+        // } p-2 py-3 absolute z-10 w-full top-0 right-0`}
         className={`header ${
-          isHome() ? "" : "bg-white/10"
+          isHome() ? "" : ""
         } p-2 py-3 absolute z-10 w-full top-0 right-0`}
+        onClick={handleAdClick}
       >
         <div className="homewrapper">
           <div className="headerInner flex items-center justify-between relative">
@@ -130,7 +148,7 @@ export default function Header() {
                 OpenSearch ? "openMobileSearch" : ""
               }`}
             >
-             { OpenSearch && <HomeSearchbar path={path} />}
+              {OpenSearch && <HomeSearchbar path={path} />}
             </div>
             <section
               ref={profileRef}
@@ -139,11 +157,12 @@ export default function Header() {
               {token ? (
                 <>
                   <div className="relative flex gap-4">
-                  <button onClick={toggleSearch} className="text-white">
-                    {<IoSearch className="w-6 h-6 hover:text-amber-500 transition" />}
-
+                    <button id="search-button" onClick={toggleSearch} className="text-white">
+                      {
+                        <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
+                      }
                     </button>
-                    <button onClick={toggleProfile} className="text-white">
+                    <button   id="profile-button" onClick={toggleProfile} className="text-white">
                       <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
                     <div
@@ -152,24 +171,28 @@ export default function Header() {
                       }`}
                     >
                       <button
+                        id="profile-button"
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => handleProfile("profile")}
                       >
                         <FaRegUser /> Profile{" "}
                       </button>
                       <button
+                        id="profile-button"
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => handleProfile("watching")}
                       >
                         <GoVideo /> Continue Watching{" "}
                       </button>
                       <button
+                        id="profile-button"
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
                         onClick={() => handleProfile("Bookmark")}
                       >
                         <FaPlus /> My List{" "}
                       </button>
                       <button
+                        id="profile-button"
                         type="button"
                         className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2"
                         onClick={handleLogOut}
@@ -182,11 +205,13 @@ export default function Header() {
               ) : (
                 <>
                   <div className="flex gap-4">
-                    <button onClick={toggleSearch} className="text-white">
-                    { <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />}
-
+                    <button id="search-button" onClick={toggleSearch} className="text-white">
+                      {
+                        <IoSearch  className="w-6 h-6 hover:text-amber-500 transition" />
+                      }
                     </button>
                     <button
+                      id="login-button"
                       className="text-white font-semibold p-2 px-6 rounded-full border-2 border-white transition hover:bg-white hover:text-black"
                       onClick={() => {
                         setIsOpen(true);
@@ -207,6 +232,7 @@ export default function Header() {
           isOpen={isOpen}
           handleClose={handleClose}
           ProfileType="profile"
+          disableAds={handleDisableAds} 
         />
       ) : null}
       <NavBar openSideBar={openSideBar} toggleSidebar={toggleSidebar} />

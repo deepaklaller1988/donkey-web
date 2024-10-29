@@ -10,7 +10,7 @@ import User from "@lib/User";
 import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
 
-const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
+const AuthForm = ({ handleCaptchaChange, handleClose,disableAds }: any) => {
   const { setToken }: any = useAuth();
   const recaptchaRef = useRef<any>(null);
   const [type, setType] = useState("login");
@@ -112,6 +112,19 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
     setCaptchaValue(value);
     handleCaptchaChange(value);
   };
+
+  const handleClickOutside = (event:any) => {
+    if (event.target.closest('.loginRegisterForgotForm')) {
+      disableAds();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="loginRegisterForgotForm flex items-center justify-center fixed top-0 left-0 z-20 w-full h-screen bg-black/70">
@@ -252,7 +265,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
                 onClick={() => setType("login")}
                 className="pColor cursor-pointer flex gap-2 items-center"
               >
-                Login Here <IoIosArrowRoundForward className="w-6 h-6" />
+                Sign in <IoIosArrowRoundForward className="w-6 h-6" />
               </a>
             </div>
           )}
