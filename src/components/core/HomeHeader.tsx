@@ -183,7 +183,7 @@ export default function Header() {
                 <>
                   <div className="flex gap-4">
                     <button onClick={toggleSearch} className="text-white">
-                    {isHome() && <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />}
+                    { <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />}
 
                     </button>
                     <button
