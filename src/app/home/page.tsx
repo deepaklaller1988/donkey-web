@@ -6,14 +6,13 @@ import HomeSlider from "@components/HomeSlider";
 import Sidebar from "@components/Sidebar";
 import Card from "@components/core/Card";
 import FetchApi from "@lib/FetchApi";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import useTitle from "@hooks/useTitle";
 import Loader from "@components/core/Loader";
 import Image from "next/image";
 import useRole from "@hooks/useRole";
 import { useAuth } from "context/AuthContext";
 const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
-
 
 const fetchTrendingList = async (mediaType: string) => {
   const mediaTypeLower = mediaType.toLowerCase();
@@ -118,7 +117,7 @@ export default function Home() {
     queryFn: () => fetchLatestList("movie"),
   });
 
-  if (movieLoading || tvLoading || roleLoading ) {
+  if (movieLoading || tvLoading || roleLoading) {
     return (
       <div>
         <Loader />
@@ -185,7 +184,6 @@ export default function Home() {
                     width={800}
                     height={150}
                     quality={20}
-
                   />
                 </a>
               </div>
@@ -213,7 +211,6 @@ export default function Home() {
                               movieId={item.id}
                               mediaType={"TV"}
                               isLoading={tvLoading}
-
                             />
                           ))
                       : ""}
@@ -250,18 +247,21 @@ export default function Home() {
                 </div>
                 <div className="w-full py-2">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-
                     {popularList && popularList.length > 0
                       ? popularList
                           .slice(0, 16)
-                          .map((item: any,index:any) => (
-                            <Card
-                            index={index}
-                              key={item.id}
-                              movieId={item.id}
-                              mediaType={selectedMedia}
-                              isLoading={ispopularLoading}
-                            />
+                          .map((item: any, index: any) => (
+                            <>
+                              <Suspense fallback={<Loader />}>
+                                <Card
+                                  index={index}
+                                  key={item.id}
+                                  movieId={item.id}
+                                  mediaType={selectedMedia}
+                                  isLoading={ispopularLoading}
+                                />
+                              </Suspense>
+                            </>
                           ))
                       : ""}
                   </ul>

@@ -4,6 +4,7 @@ import "./homeEnter.css";
 import Searchbar from "@components/Searchbar";
 import useTitle from "@hooks/useTitle";
 import SocialButton from "@components/SocialButton";
+import Image from "next/image";
 export default function Home() {
     useTitle("Dashboard");
     return (<>
@@ -12,7 +13,7 @@ export default function Home() {
                 <div className="enterHomeInner bg-zinc-900 rounded-[30px]">
                     <div className="w-full p-4 md:p-10">
                         <div className="enterHeader">
-                            <a href="" className="w-[120px] md:w-[180px] block m-auto"><img className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
+                            <a href="" className="w-[120px] md:w-[180px] block m-auto"><Image width={1000} height={1000} quality={100} className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
                         </div>
                         <h1 className="text-[18px] md:text-[26px] font-medium text-center py-5 text-white/40">Watch HD Movies & TV Shows online for Free!</h1>
                         <Searchbar />

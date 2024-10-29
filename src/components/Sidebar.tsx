@@ -2,8 +2,9 @@
 import { useQuery, UseQueryOptions  } from "@tanstack/react-query";
 import FetchApi from "@lib/FetchApi";
 import SidebarCard from "./core/SidebarCard";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { HiTrendingUp } from "react-icons/hi";
+import Loader from "./core/Loader";
 const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
 
@@ -49,11 +50,12 @@ export default function Sidebar({ mediaType }: any) {
   const { isLoading: isPopular, data: popular } = useQuery({
     queryKey: ["popular", interval],
     queryFn: () => fetchPopularLists(interval),
-    staleTime: 1000 * 60 * 5, // Data remains fresh for 5 minutes
+    staleTime: 1000 * 60 * 5,
     });
 
   const renderMovies = (items: any[], mediaType: string) => {
     return items.map((item: any, index: number) => (
+      <Suspense fallback={<Loader/>}>
       <SidebarCard
         key={item.id}
         movieId={item.id}
@@ -61,6 +63,7 @@ export default function Sidebar({ mediaType }: any) {
         index={index + 1}
         isPopular={isPopular}
         />
+        </Suspense>
     ));
   };
 
