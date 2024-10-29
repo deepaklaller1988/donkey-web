@@ -11,26 +11,23 @@ import Link from "next/link";
 import { logOut } from "@lib/userToken";
 import { IoSearch } from "react-icons/io5";
 import NavBar from "./NavBar";
-
 import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
 import Image from "next/image";
 import { useAuth } from "context/AuthContext";
 import { GoVideo } from "react-icons/go";
-import Script from "next/script";
-import { useAdContext } from "../../context/AdContext";
 
 export default function Header() {
   const router = useRouter();
   const path = usePathname();
   const route = path.split("/");
   const { setActiveTab } = useProfileTab();
-  const  {disableAds}:any = useAdContext();
   const { token, setToken }: any = useAuth();
-  const [isOpen, isClose] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Updated to `setIsOpen`
   const [OpenProfile, setOpenProfile] = useState(false);
   const [OpenSearch, setOpenSearch] = useState(false);
   const [openSideBar, setOpenSidebar] = useState(false);
+  const [isScriptActive, setIsScriptActive] = useState(true); // Added script state
 
   const profileRef: any = useRef(null);
 
@@ -41,11 +38,6 @@ export default function Header() {
   const toggleProfile = () => {
     setOpenProfile(!OpenProfile);
   };
-  useEffect(() => {
-    if (isOpen) {
-      disableAds(); 
-    }
-  }, [isOpen, disableAds]);
 
   const handleClickOutside = (event: any) => {
     if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -56,12 +48,16 @@ export default function Header() {
   const toggleSearch = () => {
     setOpenSearch(!OpenSearch);
   };
+
   const toggleSidebar = () => {
     setOpenSidebar(!openSideBar);
   };
+
   const handleClose = () => {
-    isClose(false);
+    setIsOpen(false); // Close AuthForm
+    setIsScriptActive(true); // Enable script after closing AuthForm
   };
+
   const handleLogOut = () => {
     setOpenProfile(false);
     logOut(), setToken(null);
@@ -87,6 +83,22 @@ export default function Header() {
     };
   }, []);
 
+  // Add the script only when `isScriptActive` is true
+  useEffect(() => {
+    const scriptId = "conditional-script";
+    if (isScriptActive && !document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"; // Your script URL
+      script.id = scriptId;
+      document.body.appendChild(script);
+    } else if (!isScriptActive) {
+      const script = document.getElementById(scriptId);
+      if (script) {
+        script.remove();
+      }
+    }
+  }, [isScriptActive]);
+
   return (
     <>
       <div
@@ -105,7 +117,7 @@ export default function Header() {
                 className="w-[120px] md:w-[150px] block m-auto"
               >
                 <Image
-                 quality={10}
+                  quality={10}
                   width={150}
                   height={57}
                   className="max-w-full"
@@ -119,10 +131,13 @@ export default function Header() {
                 OpenSearch ? "openMobileSearch" : ""
               }`}
             >
-             {(path=="/home" || OpenSearch) ?
-             <>
-              <HomeSearchbar path={path} />
-             </>: <HomeSearchbar path={path} />}
+              {path == "/home" || OpenSearch ? (
+                <>
+                  <HomeSearchbar path={path} />
+                </>
+              ) : (
+                <HomeSearchbar path={path} />
+              )}
             </div>
             <section
               ref={profileRef}
@@ -131,14 +146,14 @@ export default function Header() {
               {token ? (
                 <>
                   <div className="relative flex gap-4">
-                   {path==="/home" &&
-                    <button
-                    onClick={toggleSearch}
-                    className="text-white block md:hidden"
-                  >
-                    <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
-                  </button>
-              }
+                    {path === "/home" && (
+                      <button
+                        onClick={toggleSearch}
+                        className="text-white block md:hidden"
+                      >
+                        <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
+                      </button>
+                    )}
                     <button onClick={toggleProfile} className="text-white">
                       <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
@@ -161,21 +176,13 @@ export default function Header() {
                       </button>
                       <button
                         className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
-                        onClick={() => {
-                          handleProfile("Bookmark");
-                        }}
+                        onClick={() => handleProfile("Bookmark")}
                       >
                         <FaPlus /> My List{" "}
                       </button>
-                      {/* <button
-                        className="p-2 px-3 text-white/50 transition hover:text-white flex items-center gap-2"
-                        onClick={() => handleProfile("settings") }
-                      >
-                        <IoSettingsOutline /> Settings
-                      </button> */}
                       <button
                         type="button"
-                        className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2 "
+                        className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2"
                         onClick={handleLogOut}
                       >
                         <IoLogOutOutline /> Sign out
@@ -187,13 +194,16 @@ export default function Header() {
                 <>
                   <div className="flex gap-4">
                     <button onClick={toggleSearch} className="text-white">
-                  {path==="/home" && <>
-                    <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
-                  </>} 
+                      {path === "/home" && (
+                        <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
+                      )}
                     </button>
                     <button
                       className="text-white font-semibold p-2 px-6 rounded-full border-2 border-white transition hover:bg-white hover:text-black"
-                      onClick={() => {disableAds(), isClose(true)}}
+                      onClick={() => {
+                        setIsOpen(true);
+                        setIsScriptActive(false); // Disable script on login button click
+                      }}
                     >
                       Sign in
                     </button>

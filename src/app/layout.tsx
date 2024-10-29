@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import MainLayout from "@components/core/MainLayout";
 import Provider from "@components/core/Provider";
-
+import ScriptLoader from "@components/ScriptLoader";
 import ToastProvider from "@components/core/ToasterProvider";
 import Script from "next/script";
-import AdComponent from "@components/Ad";
 
 export const metadata: Metadata = {
   title: "Donkey | Watch Free Movies Online",
@@ -25,12 +24,6 @@ export default function RootLayout({
           name="galaksion-domain-verification"
           content="9c215d0ab770acaa88d7a0fbaadb53947827230566f709ea392f337b98b30058"
         />
-        <script
-          data-cfasync="false"
-          async
-          type="text/javascript"
-          src="//ov.karatssashoon.com/ru6n6uHs5us7/109807"
-        ></script>
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-7QQKB1XSQF"
@@ -46,7 +39,9 @@ export default function RootLayout({
       </head>
       <body>
         <Provider>
-          <MainLayout>{children}</MainLayout>
+          <ScriptLoader>
+            <MainLayout>{children}</MainLayout>
+          </ScriptLoader>
           <ToastProvider />
         </Provider>
       </body>
