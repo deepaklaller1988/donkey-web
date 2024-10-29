@@ -55,7 +55,7 @@ export default function Header() {
 
   const handleClose = () => {
     setIsOpen(false); // Close AuthForm
-    setIsScriptActive(true); // Enable script after closing AuthForm
+    setIsScriptActive(false); // Enable script after closing AuthForm
   };
 
   const handleLogOut = () => {
@@ -85,18 +85,18 @@ export default function Header() {
 
   useEffect(() => {
     const scriptId = "conditional-script";
-    if (isScriptActive && !document.getElementById(scriptId)) {
+    if (isScriptActive &&  !isOpen && !document.getElementById(scriptId)) {
       const script = document.createElement("script");
       script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"; 
       script.id = scriptId;
       document.body.appendChild(script);
-    } else if (!isScriptActive) {
+    } else if (!isScriptActive || isOpen) {
       const script = document.getElementById(scriptId);
       if (script) {
         script.remove();
       }
     }
-  }, [isScriptActive]);
+  }, [isScriptActive,isOpen]);
 
   return (
     <>
