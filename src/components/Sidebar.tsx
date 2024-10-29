@@ -76,14 +76,15 @@ const fetchPopularLists = async (mediaType: string) => {
     const tmdbResponses = await Promise.all(
       imdbIds.map((id: any) =>
         FetchApi.get(
-          `https://api.themoviedb.org/3/${mediaTypeLower==="movies"?"movie":"tv"}/${id}?language=en-US`
+          `https://api.themoviedb.org/3/${
+            mediaTypeLower === "movies" ? "movie" : "tv"
+          }/${id}?language=en-US`
         )
       )
     );
 
     const tmdbData = await Promise.all(tmdbResponses.map((res) => res.json()));
     return tmdbData;
-
   } catch (error) {
     console.log("Error fetching popular lists:", error);
     return [];
@@ -124,7 +125,7 @@ const fetchPopularLists = async (mediaType: string) => {
 export default function Sidebar({ mediaType }: any) {
   const [interval, setInterval] = useState<string>("movies");
   const { isLoading: isPopular, data: popular } = useQuery({
-    queryKey: ["popular",interval],
+    queryKey: ["popular", interval],
     queryFn: () => fetchPopularLists(interval),
   });
 
@@ -146,7 +147,7 @@ export default function Sidebar({ mediaType }: any) {
       <div className="flex items-center gap-4 justify-between">
         <h3 className="text-white text-[25px] font-semibold flex items-center gap-1">
           {mediaType === "Popular" ? (
-            <FaRankingStar className="text-amber-500 mr-1 w-8 h-8" />
+            <HiTrendingUp className="text-amber-500 mr-1 w-8 h-8" />
           ) : (
             <HiTrendingUp className="mr-1 text-amber-500 w-8 h-8" />
           )}
@@ -157,40 +158,39 @@ export default function Sidebar({ mediaType }: any) {
             : "TV SHOWS"}
         </h3>
         {/* {mediaType !== "Popular" && ( */}
-          <section className="flex gap-2">
-            <button
-              className={`${
-                interval === "movies"
-                  ? "pbgColor rounded-full text-black px-2"
-                  : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
-              }`}
-              onClick={() => setInterval("movies")}
-            >
-              Movies
-            </button>
-            <button
-              className={`${
-                interval === "tv"
-                  ? "pbgColor rounded-full text-black px-2"
-                  : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
-              }`}
-              onClick={() => setInterval("tv")}
-            >
-              Shows
-            </button>
-            {/* <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition">Month</button> */}
-          </section>
+        <section className="flex gap-2">
+          <button
+            className={`${
+              interval === "movies"
+                ? "pbgColor rounded-full text-black px-2"
+                : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+            }`}
+            onClick={() => setInterval("movies")}
+          >
+            Movies
+          </button>
+          <button
+            className={`${
+              interval === "tv"
+                ? "pbgColor rounded-full text-black px-2"
+                : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+            }`}
+            onClick={() => setInterval("tv")}
+          >
+            Shows
+          </button>
+          {/* <button className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition">Month</button> */}
+        </section>
         {/* )} */}
       </div>
       <ul className="flex flex-col gap-3 py-2 mt-[10px]">
         {mediaType === "Popular"
           ? popular && popular.length > 0
-            ? renderMovies(popular.slice(0, 10),interval )
+            ? renderMovies(popular.slice(0, 5), interval)
             : ""
-          // : topList && topList.length > 0
-          // ? renderMovies(topList.slice(0, 10), mediaType)
-          : ""
-          }
+          : // : topList && topList.length > 0
+            // ? renderMovies(topList.slice(0, 10), mediaType)
+            ""}
       </ul>
     </div>
   );

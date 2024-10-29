@@ -4,9 +4,10 @@ interface PaginationProps {
     totalPages: number;
     onPageChange: (page: number) => void;
     currentPage: number;
+    itemsPerPage: number;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ totalPages, onPageChange, currentPage }) => {
+const Pagination: React.FC<PaginationProps> = ({ totalPages, onPageChange, currentPage ,itemsPerPage}) => {
     const maxPages = Math.min(totalPages, 500);
 
     const handlePageChange = (page: number) => {

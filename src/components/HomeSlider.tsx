@@ -171,20 +171,23 @@ export default function HomeSlider() {
 
   return (
     <>
-      <div className="w-full relative">
+      <div className="w-full relative h-full">
         <Slide indicators={indicators}>
           {combinedList &&
             combinedList.length > 0 &&
             combinedList.map((item: any, index: number) => (
               <div key={item.id} className="each-slide-effect slideMain">
-                <img
+                <Image
+                  quality={100}
+                  height={1000}
+                  width={1000}
                   src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
                   alt="slide"
                 />
                 <div className="sliderSet">
                   <div className="sliderContent relative z-10">
                     <div className="homewrapper">
-                      <div className="sliderContentSet pl-0 md:pl-4">
+                      <div className="sliderContentSet pl-0 md:pl-4 flex flex-col justify-center">
                         <span className="text-white/70 flex items-center">
                           <BsFire className="mr-1" /> Trending
                         </span>
@@ -208,6 +211,7 @@ export default function HomeSlider() {
                                   : item?.vote_average?.toFixed(1)}
                               </p>
                               <Image
+                                quality={10}
                                 src="/images/imdb-logo.svg"
                                 alt="Image"
                                 width={40}
@@ -216,9 +220,6 @@ export default function HomeSlider() {
                             </span>
                           </li>
 
-                          {/* {item.runtime && (<li>{item.runtime} min</li>)}
-                        {item.certificate &&
-                          <li><label className='text-white'>{item.certificate}</label></li>} */}
                           {item.genres && item.genres.length > 0
                             ? item.genres.map((gen: any) => (
                                 <li key={gen.id}>{gen.name}</li>
@@ -241,8 +242,6 @@ export default function HomeSlider() {
                               )
                             }
                           >
-                            {/* Play <FaRegCirclePlay className="text-xl" />
-                             */}
                             <HiPlay className="text-lg" />
                             Play
                           </button>
@@ -268,9 +267,9 @@ export default function HomeSlider() {
                       </div>
                     </div>
                   </div>
-                  <div className="absolute w-full z-0 left-0 bottom-0">
+                  <div className="absolute w-full z-0 left-0 bottom-0 flex items-end">
                     <img
-                      className="w-full h-[100px] md:h-[280px]"
+                      className="w-full h-[70px]"
                       src="/assets/images/slides/shadow.png"
                       alt="shadow"
                     />

@@ -66,7 +66,7 @@ export default function HomeSearchbar({path}:any) {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
           router.push(`/media/search?query=${encodeURIComponent(searchQuery)}`);
-          setSearchQuery('');  // Clear the input field after search
+          setSearchQuery(''); 
         }
       };
 
@@ -118,7 +118,10 @@ export default function HomeSearchbar({path}:any) {
                                 setSearchQuery("")
                             }} className="flex gap-2 p-3 transition hover:bg-black/20">
                                 <span className="rounded-lg overflow-hidden max-w-[50px] max-h-[50px]">
-                                   <Image className="w-full block" width={100} height={40} src={`${item?.poster_path ? "https://image.tmdb.org/t/p/original" + item?.poster_path : "/assets/images/miss.jpg"}`} alt="album" />
+                               
+                                <Image 
+                                 quality={10}
+                                className="w-full block" width={100} height={40} src={`${item?.poster_path ? "https://image.tmdb.org/t/p/original" + item?.poster_path : "/assets/images/miss.jpg"}`} alt="album" />
                                 </span>
                                 <span>
                                     <b className="text-white font-semibold">{(item?.title && item.title.length > 40) ? item?.title?.slice(0,40) + "..." : (item?.name && item?.name.length > 40 ) ? item?.name?.slice(0,40) + "..." : item?.name ? item?.name : item?.title}</b>

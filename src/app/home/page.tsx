@@ -99,13 +99,16 @@ export default function Home() {
   }
   return (
     <div className="w-full">
-      <div className="w-full flex justify-between homeSliderCZHub">
-        <div className="homeSliderCZ"><HomeSlider /></div>
-        <div className="min-w-[400px] max-w-[400px] homeSliderCZSidebar"><Sidebar mediaType={"Popular"} /></div>
+      <div className="w-full flex flex-col lg:flex-row justify-between homeSliderCZHub">
+        <div className="homeSliderCZ">
+          <HomeSlider />
+        </div>
+        <div className="lg:min-w-[400px] min-w-100% max-w-100% lg:max-w-[400px] homeSliderCZSidebar">
+          <Sidebar mediaType={"Popular"} />
+        </div>
       </div>
       <div className="w-full">
-        <div className="w-full mb-10 md:mb-20">        
-        </div>
+        <div className="w-full mb-10 md:mb-20"></div>
         <div className="homewrapper">
           <div className="containerHub flex gap-5 flex-col lg:flex-row">
             <div className="w-full">
@@ -115,32 +118,35 @@ export default function Home() {
                 </>
               )} */}
               <div className="w-full">
-                <div className="flex justify-between  items-center gap-4">
-                  <h3 className="text-white text-[25px] font-semibold">
-                    LATEST MOVIES
-                  </h3>
-                  <button
-                    className="border border-1 rounded-full text-white px-2 mr-20 hover:bg-white hover:text-black transition"
-                    onClick={() => router.push(`/media/movie`)}
-                  >
-                    View More
-                  </button>
-                </div>
-                
-                <div className="w-full py-2">
-                  <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-                    {latestMovieList && latestMovieList.length > 0
-                      ? latestMovieList
-                          .slice(0, 16)
-                          .map((item: any) => (
-                            <Card
-                              key={item.id}
-                              movieId={item.id}
-                              mediaType={"Movie"}
-                            />
-                          ))
-                      : ""}
-                  </ul>
+                <div className="homewrapper">
+                  <div className="flex justify-between  items-center gap-4">
+                    <h3 className="text-white text-[25px] font-semibold">
+                      LATEST MOVIES
+                    </h3>
+                    <button
+                      className="border border-1 rounded-full text-white px-2 mr-2 hover:bg-white hover:text-black transition"
+                      onClick={() => router.push(`/media/movie`)}
+                    >
+                      View More
+                    </button>
+                  </div>
+
+                  <div className="w-fullSearch">
+                    <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10 justify-center">
+                      {latestMovieList && latestMovieList.length > 0
+                        ? latestMovieList
+                            .slice(0, 16)
+                            .map((item: any, index: any) => (
+                              <Card
+                                index={index}
+                                key={item.id}
+                                movieId={item.id}
+                                mediaType={"Movie"}
+                              />
+                            ))
+                        : ""}
+                    </ul>
+                  </div>
                 </div>
               </div>
               <div className="share-container py-10 max-w-screen-md sm:mx-auto mx-5">
@@ -154,6 +160,8 @@ export default function Home() {
                     alt="Banner"
                     width={800}
                     height={150}
+                    quality={10}
+
                   />
                 </a>
               </div>
@@ -163,20 +171,20 @@ export default function Home() {
                     TRENDING SHOWS
                   </h3>
                   <button
-                    className="border border-1 rounded-full mr-20 text-white px-2 hover:bg-white hover:text-black transition"
+                    className="border border-1 rounded-full mr-2 text-white px-2 hover:bg-white hover:text-black transition"
                     onClick={() => router.push(`/media/tv`)}
                   >
                     View More
                   </button>
-
                 </div>
                 <div className="w-full py-2">
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {latestTVList && latestTVList.length > 0
                       ? latestTVList
                           .slice(0, 16)
-                          .map((item: any) => (
+                          .map((item: any, index: any) => (
                             <Card
+                              index={index}
                               key={item.id}
                               movieId={item.id}
                               mediaType={"TV"}
@@ -185,8 +193,6 @@ export default function Home() {
                       : ""}
                   </ul>
                 </div>
-
-           
               </div>
               <div className="w-full pt-10">
                 <div className="flex items-center gap-4">
@@ -221,8 +227,9 @@ export default function Home() {
                     {popularList && popularList.length > 0
                       ? popularList
                           .slice(0, 16)
-                          .map((item: any) => (
+                          .map((item: any,index:any) => (
                             <Card
+                            index={index}
                               key={item.id}
                               movieId={item.id}
                               mediaType={selectedMedia}
@@ -234,10 +241,10 @@ export default function Home() {
               </div>
             </div>
             {/* <div className="min-w-full md:min-w-[376px]"> */}
-              {/* <div>
+            {/* <div>
                 <Sidebar mediaType={"Popular"} />
               </div> */}
-              {/* <div className="mt-20">
+            {/* <div className="mt-20">
                 <Sidebar mediaType={"Movie"} />
               </div>
               <div className="mt-20">

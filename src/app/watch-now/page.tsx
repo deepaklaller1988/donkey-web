@@ -79,18 +79,23 @@ const fetchSimilarLists = async (movieId: number, mediaType: string) => {
   }
 };
 
-const fetchPopularLists = async (mediaType: string) => {
+const fetchPopularLists = async (mediaType: string,pages=2) => {
   try {
+    const allResults = [];
+    for (let page = 1; page <= pages; page++) {
+
     const response = await FetchApi.get(
-      `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/popular?language=en-US&page=1`
+      `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/popular?language=en-US&page=${pages}`
     );
     const data = await response.json();
-    return data.results;
-  } catch (error) {
+    allResults.push(...data.results);
+  }
+
+  return allResults;  } catch (error) {
     console.log(error);
+    return [];
   }
 };
-
 
 export default function WatchNow() {
   const [roleLoading, roleData] = useRole();
@@ -101,7 +106,7 @@ export default function WatchNow() {
   const seasonId: any = searchParams.get("seasonId");
   const episodeId: any = searchParams.get("episodeId");
   const [selectedSeason, setSelectedSeason] = useState<any>(null);
-  const [selectedEpisode, setSelectedEpisode] = useState<any>(1);
+  const [selectedEpisode, setSelectedEpisode] = useState<any>(null);
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -116,15 +121,14 @@ export default function WatchNow() {
     queryFn: () => fetchDetails(movieId, mediaType),
   });
 
-  // useEffect(() => {
-  //   if (seasonId && watchDetials?.seasons) {
-  //     const initialSeason = watchDetials?.seasons.find(
-  //       (item: any) => item.season_number === Number(seasonId)
-  //     );
-  //     console.log(initialSeason,"initialSeason==")
-  //     if (initialSeason) setSelectedSeason(initialSeason.name);
-  //   }
-  // }, [seasonId, watchDetials?.seasons]);
+  useEffect(() => {
+    if (seasonId) {
+      setSelectedSeason(seasonId);
+    }
+    if (episodeId) {
+      setSelectedEpisode(Number(episodeId));
+    }
+  }, [seasonId, episodeId]);
 
   const fetchEpisodesLists = async (
     mediaType: string,
@@ -214,7 +218,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     const handleMessage = (event: any) => {
-      if (event.origin !== "https://vidsrc.pro") return;
+      if (event.origin !== "https://vidsrc.dev") return;
 
       try {
         const data = event.data;
@@ -319,23 +323,20 @@ export default function WatchNow() {
 
                     {/* --------- vidsrc.to embed link -------- */}
                     <iframe
-                      src={`https://vidsrc.pro/embed/${mediaType}/${
+                      src={`https://vidsrc.dev/embed/${mediaType}/${
                         watchDetials.imdb_id
                           ? watchDetials.imdb_id
                           : watchDetials.id
                       }${
                         mediaType === "tv"
-                          ? (seasonId ? seasonId : selectedSeason)
-                            ? "/" +
-                              (seasonId
-                                ? seasonId
-                                : selectedSeason.season_number || 1)
+                          ? selectedSeason
+                            ? "/" + (selectedSeason.season_number || 1)
                             : "/1"
                           : ""
                       }${
                         mediaType === "tv"
-                          ? (episodeId ? episodeId : selectedEpisode)
-                            ? "/" + (episodeId ? episodeId : selectedEpisode)
+                          ? selectedEpisode
+                            ? "/" + selectedEpisode
                             : "/1"
                           : ""
                       }`}
@@ -412,6 +413,7 @@ export default function WatchNow() {
                                 alt="Image"
                                 width={40}
                                 height={20}
+                                quality={10}
                               />
                             </span>
                           </li>
@@ -581,9 +583,6 @@ export default function WatchNow() {
                       ) : (
                         <>
                           <Dropdown
-                            // value={
-                            //   seasonId ? `Season ${Number(seasonId)}` : selectedSeason
-                            // }
                             value={selectedSeason}
                             onChange={(e: DropdownChangeEvent) =>
                               handleSeasonChange(e)
@@ -597,7 +596,7 @@ export default function WatchNow() {
                                 : []
                             }
                             optionLabel="name"
-                            // placeholder="Season 1"
+                            placeholder={selectedSeason?"Season" + `\n` +`${selectedSeason}`:"Season 1"}
                             className="episodeSelection p-3 px-20"
                           />
                         </>
@@ -624,13 +623,12 @@ export default function WatchNow() {
                             episodesList.episodes &&
                             episodesList.episodes.length > 0
                               ? episodesList.episodes.map((item: any) => (
-                                console.log(item),
                                   <>
                                     <li key={item?.episode_number}>
                                       <div
                                         className={`text-[14px] py-3 px-4 block ${
                                           item?.episode_number ===
-                                         (episodeId?Number(episodeId): selectedEpisode)
+                                          selectedEpisode
                                             ? "episodeActive"
                                             : ""
                                         }`}
@@ -701,9 +699,10 @@ export default function WatchNow() {
                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                       {popularList && popularList.length > 0
                         ? popularList
-                            .slice(0, 18)
-                            .map((item: any) => (
+                            .slice(0, 24)
+                            .map((item: any,index:any) => (
                               <Card
+                              index={index}
                                 key={item.id}
                                 movieId={item.id}
                                 mediaType={

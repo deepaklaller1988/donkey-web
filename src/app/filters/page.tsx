@@ -17,8 +17,14 @@ const fetchFilteredData = async (selectedOptions: any, page: number) => {
         const pageNumber = Math.min(page, 500);
         const response = await FetchApi.get(`https://api.themoviedb.org/3/discover/${selectedOptions.selectedMedia}?include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&with_origin_country=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
         const data = await response.json();
-        return data;
-    } catch (error) {
+        if (data.results.length === 20 && pageNumber < 500) {
+            const additionalResponse = await FetchApi.get(`https://api.themoviedb.org/3/discover/${selectedOptions.selectedMedia}?include_adult=false&include_video=false&language=en-US&page=${pageNumber + 1}&sort_by=${selectedOptions.selectedFilter}&${selectedOptions.selectedMedia === 'movie' ? "primary_release_year=" + selectedOptions.selectedYear : "first_air_date_year=" + selectedOptions.selectedYear}&with_origin_country=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres}`);
+            const additionalData = await additionalResponse.json();
+            data.results = [...data.results, ...additionalData.results].slice(0, 24);
+        }
+
+        return data;    } 
+        catch (error) {
         console.log(error);
     }
 };
@@ -55,7 +61,7 @@ export default function FiltersPage() {
     let genre = genreId ? genreId : "";
     let media = mediaType ? mediaType : "movie";
     let country = countryCode ? countryCode : "";
-
+    const itemsPerPage = 16; 
     const [selectedOptions, setSelectedOptions] = useState<any>({
         selectedMedia: media,
         selectedYear: "",
@@ -160,8 +166,8 @@ export default function FiltersPage() {
                                         {searchQuery ? (
                                             <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                                 {searchedData && searchedData.results?.length > 0 ? (
-                                                    searchedData.results.map((item: any) => (
-                                                        <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
+                                                    searchedData.results.map((item: any,index:any) => (
+                                                        <Card index={index} key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
                                                     ))
                                                 ) : (
                                                     <p className="text-white text-[25px] font-semibold">No results found.</p>
@@ -170,8 +176,8 @@ export default function FiltersPage() {
                                         ) : (
                                             <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                                                 {filteredData && filteredData.results?.length > 0 ? (
-                                                    filteredData.results.map((item: any) => (
-                                                        <Card key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
+                                                    filteredData.results.map((item: any,index:any) => (
+                                                        <Card index={index} key={item.id} movieId={item.id} mediaType={selectedOptions.selectedMedia === 'movie' ? 'Movie' : 'TV'} />
                                                     ))
                                                 ) : (
                                                     <p className="text-white text-[25px] font-semibold">No results found.</p>
@@ -184,6 +190,7 @@ export default function FiltersPage() {
                                     totalPages={totalPages}
                                     onPageChange={handlePageChange}
                                     currentPage={currentPage}
+                                    itemsPerPage={itemsPerPage}
                                 />
                             </div>
                             <div className="min-w-full md:min-w-[376px]">

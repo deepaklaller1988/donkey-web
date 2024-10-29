@@ -26,14 +26,14 @@ export default function Featured() {
           mediaType === "movie" ? "movie" : "tv"
         }?include_adult=false&include_video=false&language=en-US&page=${pageNumber}`
       );
-
-      const data = await response.json();
+  
+      const data = await response.json();  
       return data;
     } catch (error) {
       console.log(error);
     }
   };
-
+  
   const fetchPopularLists = async (page: number) => {
     try {
       const response = await fetch(
@@ -125,8 +125,9 @@ export default function Featured() {
                     ((mediaType && filteredData.results?.length > 0) ||
                       (!mediaType && filteredData.length > 0)) ? (
                       (mediaType ? filteredData.results : filteredData).map(
-                        (item: any) => (
+                        (item: any,index:number) => (
                           <Card
+                          index={index}
                             key={item.id}
                             movieId={item.id}
                             mediaType={
@@ -150,6 +151,7 @@ export default function Featured() {
                   totalPages={totalPages}
                   onPageChange={handlePageChange}
                   currentPage={currentPage}
+                  itemsPerPage={itemsPerPage}
                 />
             </div>
           </div>
