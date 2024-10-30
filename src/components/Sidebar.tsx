@@ -55,9 +55,8 @@ export default function Sidebar({ mediaType }: any) {
 
   const renderMovies = (items: any[], mediaType: string) => {
     return items.map((item: any, index: number) => (
-      <Suspense fallback={<Loader/>}>
+      <Suspense fallback={<Loader/>} key={item.id}>
       <SidebarCard
-        key={item.id}
         movieId={item.id}
         mediaType={mediaType}
         index={index + 1}
