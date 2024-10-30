@@ -83,20 +83,20 @@ export default function Header() {
     };
   }, []);
 
-  useEffect(() => {
-    const scriptId = "conditional-script";
-    if (isScriptActive && !isOpen && !document.getElementById(scriptId)) {
-      const script = document.createElement("script");
-      script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807";
-      script.id = scriptId;
-      document.body.appendChild(script);
-    } else if (!isScriptActive || isOpen) {
-      const script = document.getElementById(scriptId);
-      if (script) {
-        script.remove();
-      }
-    }
-  }, [isScriptActive, isOpen]);
+  // useEffect(() => {
+  //   const scriptId = "conditional-script";
+  //   if (isScriptActive && !isOpen && !document.getElementById(scriptId)) {
+  //     const script = document.createElement("script");
+  //     script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807";
+  //     script.id = scriptId;
+  //     document.body.appendChild(script);
+  //   } else if (!isScriptActive || isOpen) {
+  //     const script = document.getElementById(scriptId);
+  //     if (script) {
+  //       script.remove();
+  //     }
+  //   }
+  // }, [isScriptActive, isOpen]);
 
   const handleAdClick = (event: any) => {
     const adFreeZones = ["login-button", "search-button", "profile-button"];

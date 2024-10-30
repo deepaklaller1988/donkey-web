@@ -110,7 +110,6 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-console.log(selectedEpisode,"===========selectedEpisode")
   const userId = User.id;
   const {
     isLoading,
