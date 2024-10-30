@@ -16,6 +16,7 @@ import { useProfileTab } from "context/ProfileTabContext";
 import Image from "next/image";
 import { useAuth } from "context/AuthContext";
 import { GoVideo } from "react-icons/go";
+import SignInButton from "@components/buttons/SignInButton";
 
 export default function Header() {
   const router = useRouter();
@@ -23,12 +24,10 @@ export default function Header() {
   const route = path.split("/");
   const { setActiveTab } = useProfileTab();
   const { token, setToken }: any = useAuth();
-  const [isOpen, setIsOpen] = useState(false); 
+  const [isOpen, setIsOpen] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [OpenSearch, setOpenSearch] = useState(false);
   const [openSideBar, setOpenSidebar] = useState(false);
-  const [isScriptActive, setIsScriptActive] = useState(true); 
-
   const profileRef: any = useRef(null);
 
   const isHome = () => {
@@ -54,8 +53,7 @@ export default function Header() {
   };
 
   const handleClose = () => {
-    setIsOpen(false); // Close AuthForm
-    setIsScriptActive(false); // Enable script after closing AuthForm
+    setIsOpen(false);
   };
 
   const handleLogOut = () => {
@@ -83,33 +81,10 @@ export default function Header() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const scriptId = "conditional-script";
-  //   if (isScriptActive && !isOpen && !document.getElementById(scriptId)) {
-  //     const script = document.createElement("script");
-  //     script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807";
-  //     script.id = scriptId;
-  //     document.body.appendChild(script);
-  //   } else if (!isScriptActive || isOpen) {
-  //     const script = document.getElementById(scriptId);
-  //     if (script) {
-  //       script.remove();
-  //     }
-  //   }
-  // }, [isScriptActive, isOpen]);
 
-  const handleAdClick = (event: any) => {
-    const adFreeZones = ["login-button", "search-button", "profile-button"];
-
-    const targetId = event.target.id;
-
-    if (!adFreeZones.includes(targetId)) {
-      setIsScriptActive(true);
-    }
-  };
-
-  const handleDisableAds = () => {
-    setIsScriptActive(false); 
+  const handleClick = () => {
+    localStorage.setItem('hasClicked', 'true'); 
+       setIsOpen(true);
   };
 
   return (
@@ -121,7 +96,6 @@ export default function Header() {
         className={`header ${
           isHome() ? "" : ""
         } p-2 py-3 absolute z-10 w-full top-0 right-0`}
-        onClick={handleAdClick}
       >
         <div className="homewrapper">
           <div className="headerInner flex items-center justify-between relative">
@@ -157,12 +131,20 @@ export default function Header() {
               {token ? (
                 <>
                   <div className="relative flex gap-4">
-                    <button id="search-button" onClick={toggleSearch} className="text-white">
+                    <button
+                      id="search-button"
+                      onClick={toggleSearch}
+                      className="text-white"
+                    >
                       {
                         <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                       }
                     </button>
-                    <button   id="profile-button" onClick={toggleProfile} className="text-white">
+                    <button
+                      id="profile-button"
+                      onClick={toggleProfile}
+                      className="text-white"
+                    >
                       <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
                     <div
@@ -205,21 +187,29 @@ export default function Header() {
               ) : (
                 <>
                   <div className="flex gap-4">
-                    <button id="search-button" onClick={toggleSearch} className="text-white">
+                    <button
+                      id="search-button"
+                      onClick={toggleSearch}
+                      className="text-white"
+                    >
                       {
-                        <IoSearch  className="w-6 h-6 hover:text-amber-500 transition" />
+                        <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                       }
                     </button>
-                    <button
+                    {/* <button
                       id="login-button"
                       className="text-white font-semibold p-2 px-6 rounded-full border-2 border-white transition hover:bg-white hover:text-black"
                       onClick={() => {
                         setIsOpen(true);
-                        setIsScriptActive(false);
+                        // setIsScriptActive(false);
+                        // const script = document.createElement("script");
+                        // document.body.removeChild(script);
+
                       }}
                     >
                       Sign in
-                    </button>
+                    </button> */}
+                    <SignInButton id="login-button" onClick={handleClick} />
                   </div>
                 </>
               )}
@@ -232,7 +222,7 @@ export default function Header() {
           isOpen={isOpen}
           handleClose={handleClose}
           ProfileType="profile"
-          disableAds={handleDisableAds} 
+          // disableAds={handleDisableAds}
         />
       ) : null}
       <NavBar openSideBar={openSideBar} toggleSidebar={toggleSidebar} />

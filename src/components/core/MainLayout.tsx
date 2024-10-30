@@ -25,6 +25,7 @@ export default function MainLayout({ children }: any) {
       {isHome() ? (
         <>
           <div className="w-full">
+          {/* <AdComponent /> */}
             <Header />
             {children}
             <Footer />

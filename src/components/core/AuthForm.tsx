@@ -10,7 +10,7 @@ import User from "@lib/User";
 import { toasterSuccess } from "./Toaster";
 import { useProfileTab } from "context/ProfileTabContext";
 
-const AuthForm = ({ handleCaptchaChange, handleClose,disableAds }: any) => {
+const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const { setToken }: any = useAuth();
   const recaptchaRef = useRef<any>(null);
   const [type, setType] = useState("login");
@@ -113,18 +113,18 @@ const AuthForm = ({ handleCaptchaChange, handleClose,disableAds }: any) => {
     handleCaptchaChange(value);
   };
 
-  const handleClickOutside = (event:any) => {
-    if (event.target.closest('.loginRegisterForgotForm')) {
-      disableAds();
-    }
-  };
+  // const handleClickOutside = (event:any) => {
+  //   if (event.target.closest('.loginRegisterForgotForm')) {
+  //     disableAds();
+  //   }
+  // };
 
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.addEventListener('click', handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener('click', handleClickOutside);
+  //   };
+  // }, []);
 
   return (
     <div className="loginRegisterForgotForm flex items-center justify-center fixed top-0 left-0 z-20 w-full h-screen bg-black/70">

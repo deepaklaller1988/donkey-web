@@ -221,7 +221,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     const handleMessage = (event: any) => {
-      if (event.origin !== "https://vidsrc.pro") return;
+      if (event.origin !== "https://vidsrc.dev") return;
 
       try {
         const data = event.data;
@@ -250,8 +250,9 @@ export default function WatchNow() {
           media_id: mediaId.toString(),
           media_type: mediaType,
           progress_time: "12",
-          season_id: episodesList && episodesList.season_number,
-          episode_id: selectedEpisode,
+          season_id:
+            mediaType == "tv" ? episodesList && episodesList.season_number : "",
+          episode_id: mediaType == "tv" ? selectedEpisode : "",
           status: true,
         });
       }
@@ -352,7 +353,6 @@ export default function WatchNow() {
                       allowFullScreen
                       ref={videoRef}
                       id="myiframe"
-                     
                     ></iframe>
                   </div>
                 </div>
@@ -637,12 +637,6 @@ export default function WatchNow() {
                                   <>
                                     <li key={item?.episode_number}>
                                       <div
-                                        // className={`text-[14px] py-3 px-4 block ${
-                                        //   item?.episode_number ===
-                                        //   selectedEpisode
-                                        //     ? "episodeActive"
-                                        //     : ""
-                                        // }`}
                                         className={`text-[14px] py-3 px-4 block ${
                                           selectedEpisode === undefined
                                             ? item?.episode_number === 1
@@ -653,11 +647,40 @@ export default function WatchNow() {
                                             ? "episodeActive"
                                             : ""
                                         }`}
-                                        onClick={() =>
+                                        onClick={() => {
                                           setSelectedEpisode(
                                             item?.episode_number
-                                          )
-                                        }
+                                          );
+
+                                          // Trigger the API call
+                                          const mediaId = watchDetials.id
+                                            ? watchDetials.id
+                                            : watchDetials.imdb_id;
+                                          if (
+                                            videoRef.current &&
+                                            userId &&
+                                            mediaId &&
+                                            mediaType
+                                          ) {
+                                            mutation.mutate({
+                                              user_id: Number(userId),
+                                              media_id: mediaId.toString(),
+                                              media_type: mediaType,
+                                              progress_time: "12", 
+                                              season_id:
+                                                mediaType == "tv"
+                                                  ?
+                                                  selectedSeason&&  selectedSeason.season_number
+                                                  : ""
+                                                  ,
+                                              episode_id:
+                                                mediaType === "tv"
+                                                  ? item.episode_number
+                                                  : "",
+                                              status: true,
+                                            });
+                                          }
+                                        }}
                                       >
                                         Episode {item?.episode_number}:{" "}
                                         {item?.name}
