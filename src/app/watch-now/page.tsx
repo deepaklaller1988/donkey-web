@@ -121,17 +121,34 @@ export default function WatchNow() {
   });
 
   useEffect(() => {
-    if (seasonId) {
-      setSelectedSeason(seasonId);
-    } else {
-      setSelectedSeason(1);
-    }
-    if (episodeId) {
-      setSelectedEpisode(Number(episodeId));
-    } else {
-      setSelectedEpisode(1);
-    }
-  }, [seasonId, episodeId]);
+    const initializeValues = async () => {
+      if (userId) {
+        try {
+          const response = await API.get(`mediaprogress/tv?user_id=${userId}&media_type=${mediaType}&media_id=${movieId}`);
+          if (response.data) {
+            const { season_id, episode_id } = response.data[0];
+
+            setSelectedSeason(season_id ? Number(season_id) : (seasonId ? Number(seasonId) : 1));
+            setSelectedEpisode(episode_id ? Number(episode_id) : (episodeId ? Number(episodeId) : 1));
+          } else {
+            console.error('No progress found, using provided IDs');
+            setSelectedSeason(seasonId ? Number(seasonId) : 1);
+            setSelectedEpisode(episodeId ? Number(episodeId) : 1);
+          }
+        } catch (error) {
+          console.error('Error fetching media progress:', error);
+          setSelectedSeason(seasonId ? Number(seasonId) : 1);
+          setSelectedEpisode(episodeId ? Number(episodeId) : 1);
+        }
+      } else {
+        setSelectedSeason(seasonId ? Number(seasonId) : 1);
+        setSelectedEpisode(episodeId ? Number(episodeId) : 1);
+      }
+    };
+  
+    initializeValues();
+  }, [userId, movieId, mediaType, seasonId, episodeId]);
+  
 
   const fetchEpisodesLists = async (
     mediaType: string,
@@ -250,9 +267,8 @@ export default function WatchNow() {
           media_id: mediaId.toString(),
           media_type: mediaType,
           progress_time: "12",
-          season_id:
-            mediaType == "tv" ? episodesList && episodesList.season_number : "",
-          episode_id: mediaType == "tv" ? selectedEpisode : "",
+          season_id: mediaType == "tv" ? selectedSeason:1,
+          episode_id: mediaType == "tv" ? selectedEpisode : 1,
           status: true,
         });
       }
@@ -583,34 +599,40 @@ export default function WatchNow() {
                         <div className="p-3 px-20">Movie Files</div>
                       ) : (
                         <>
-                          <Dropdown
-                            value={selectedSeason}
-                            onChange={(e: DropdownChangeEvent) =>
-                              handleSeasonChange(e)
+                        <Dropdown
+                          value={selectedSeason}
+                          onChange={(e: DropdownChangeEvent) => {
+                            handleSeasonChange(e); 
+                      
+                            const mediaId = watchDetials.id ? watchDetials.id : watchDetials.imdb_id;
+                      
+                            if (videoRef.current && userId && mediaId && mediaType) {
+                              mutation.mutate({
+                                user_id: Number(userId),
+                                media_id: mediaId.toString(),
+                                media_type: mediaType,
+                                progress_time: "12", 
+                                season_id: mediaType === "tv" ? e.value?.season_number?e.value?.season_number: e.value:1, // Use optional chaining
+                                episode_id: mediaType === "tv" ?selectedEpisode : 1,
+                                status: true,
+                              });
                             }
-                            options={
-                              watchDetials.seasons &&
-                              watchDetials.seasons.length > 0
-                                ? watchDetials.seasons.filter(
-                                    (item: any) => item?.season_number > 0
-                                  )
-                                : []
-                            }
-                            optionLabel="name"
-                            placeholder={
-                              selectedSeason
-                                ? "Season" +
-                                  `\n` +
-                                  `${
-                                    selectedSeason == "undefined"
-                                      ? "1"
-                                      : selectedSeason
-                                  }`
-                                : "Season 1"
-                            }
-                            className="episodeSelection p-3 px-20"
-                          />
-                        </>
+                          }}
+                          options={
+                            watchDetials.seasons && watchDetials.seasons.length > 0
+                              ? watchDetials.seasons.filter((item: any) => item?.season_number > 0)
+                              : []
+                          }
+                          optionLabel="name"
+                          placeholder={
+                            selectedSeason
+                              ? "Season" + `\n` + `${selectedSeason === "undefined" ? "1" : selectedSeason}`
+                              : "Season 1"
+                          }
+                          className="episodeSelection p-3 px-20"
+                        />
+                      </>
+                      
                       )}
                     </section>
                     <section className="episodeLists bg-neutral-950 max-h-[500px] overflow-auto">
@@ -651,8 +673,6 @@ export default function WatchNow() {
                                           setSelectedEpisode(
                                             item?.episode_number
                                           );
-
-                                          // Trigger the API call
                                           const mediaId = watchDetials.id
                                             ? watchDetials.id
                                             : watchDetials.imdb_id;
@@ -670,7 +690,8 @@ export default function WatchNow() {
                                               season_id:
                                                 mediaType == "tv"
                                                   ?
-                                                  selectedSeason&&  selectedSeason.season_number
+                                                  selectedSeason?.season_number ? selectedSeason?.season_number:selectedSeason
+                                                  
                                                   : ""
                                                   ,
                                               episode_id:
