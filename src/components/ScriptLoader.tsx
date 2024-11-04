@@ -66,9 +66,11 @@
 // export default ScriptLoader;
 "use client";
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
-const ScriptLoader = ({ children }:any) => {
+const ScriptLoader = ({ children, excludedPaths, excludedButtonIds }: any) => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(true);
+  const pathname = usePathname();
 
   const loadAdScript = () => {
     if (!document.getElementById('ad-script')) {
@@ -79,33 +81,46 @@ const ScriptLoader = ({ children }:any) => {
       document.body.appendChild(script);
       sessionStorage.setItem('adScriptLoaded', 'true');
     }
-   
+  };
+
+  const removeAdScript = () => {
+    const script = document.getElementById('ad-script');
+    if (script) {
+      document.body.removeChild(script);
+      sessionStorage.removeItem('adScriptLoaded'); // Clear the session storage as well
+    }
   };
 
   const handleClickOverlay = () => {
     setIsOverlayVisible(false);
-    document.body.style.overflow = 'auto';
-    loadAdScript(); 
+    loadAdScript();
   };
 
   useEffect(() => {
     const scriptLoaded = sessionStorage.getItem('adScriptLoaded') === 'true';
+    const shouldLoadScript = !excludedPaths.includes(pathname);
 
-    if (!scriptLoaded) {
+    if (shouldLoadScript && !scriptLoaded) {
       loadAdScript();
+    } else if (!shouldLoadScript && scriptLoaded) {
+      // If on an excluded path and the script is loaded, remove it
+      removeAdScript();
     }
 
-    document.body.style.overflow = 'hidden';
-
     return () => {
-      document.body.style.overflow = 'auto'; 
+      // Clean up effect (not needed for overflow handling)
     };
-  }, []);
+  }, [excludedPaths, pathname]);
 
   useEffect(() => {
     if (isOverlayVisible) {
-      const handleClick = () => {
-        handleClickOverlay();
+      const handleClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        const isExcludedButton = excludedButtonIds.includes(target.id);
+
+        if (!isExcludedButton) {
+          handleClickOverlay();
+        }
       };
 
       document.addEventListener('click', handleClick);
@@ -114,7 +129,7 @@ const ScriptLoader = ({ children }:any) => {
         document.removeEventListener('click', handleClick);
       };
     }
-  }, [isOverlayVisible]);
+  }, [isOverlayVisible, excludedButtonIds]);
 
   return (
     <>
@@ -124,4 +139,3 @@ const ScriptLoader = ({ children }:any) => {
 };
 
 export default ScriptLoader;
-

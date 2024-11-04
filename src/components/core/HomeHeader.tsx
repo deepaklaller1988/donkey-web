@@ -82,7 +82,6 @@ export default function Header() {
 
 
   const handleClick = () => {
-    localStorage.setItem('hasClicked', 'true'); 
        setIsOpen(true);
   };
 
