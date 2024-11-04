@@ -1,81 +1,116 @@
+// "use client";
+
+// import { useEffect, useState } from "react";
+// import { usePathname } from "next/navigation";
+
+// const ScriptLoader = ({ children, onRemoveScript }: { children: React.ReactNode; onRemoveScript: () => void; }) => {
+//   const pathname = usePathname();
+//   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+//   const [suppressAds, setSuppressAds] = useState(false);
+//   const [isUserClicked, setIsUserClicked] = useState(false); // Track if user clicked
+
+//   useEffect(() => {
+//     const noAdPages = ["/profile", "/watch-now"];
+//     const shouldLoadAds = !noAdPages.includes(pathname);
+
+//     if (shouldLoadAds && !isScriptLoaded) {
+//       const script = document.createElement("script");
+//       script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807";
+//       script.async = true;
+//       document.body.appendChild(script);
+//       setIsScriptLoaded(true);
+//       console.log("Ad script loaded.");
+
+//       return () => {
+//         document.body.removeChild(script);
+//         console.log("Ad script removed.");
+//       };
+//     }
+
+//     const handleClick = () => {
+//       if (!isUserClicked) {
+//         setIsUserClicked(true);
+//         console.log("User clicked. Now allowing scroll.");
+//         document.body.style.overflow = 'auto'; // Enable scroll on click
+//       }
+//     };
+
+//     document.addEventListener("click", handleClick);
+
+//     return () => {
+//       document.removeEventListener("click", handleClick);
+//     };
+//   }, [pathname, isScriptLoaded, isUserClicked]);
+
+//   useEffect(() => {
+//     // Prevent scrolling until user clicks
+//     if (!isUserClicked) {
+//       document.body.style.overflow = 'hidden'; // Disable scroll
+//     }
+//   }, [isUserClicked]);
+
+//   useEffect(() => {
+//     if (suppressAds) {
+//       const script = document.getElementById("script");
+//       if (script) {
+//         document.body.removeChild(script);
+//         setIsScriptLoaded(false);
+//         onRemoveScript();
+//       }
+//     }
+//   }, [suppressAds]);
+
+//   return <>{children}</>;
+// };
+
+// export default ScriptLoader;
 "use client";
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-
-const ScriptLoader = ({ children, onRemoveScript }: { children: React.ReactNode; onRemoveScript: () => void; }) => {
+const ScriptLoader = ({ children }: any) => {
   const pathname = usePathname();
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-  const [suppressAds, setSuppressAds] = useState(false); 
+
+  const loadAdScript = () => {
+    if (!document.getElementById('ad-script')) {
+      const script = document.createElement('script');
+      script.src = '//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807'; 
+      script.async = true;
+      script.id = 'ad-script'; 
+      document.body.appendChild(script);
+      sessionStorage.setItem('adScriptLoaded', 'true'); 
+    }
+  };
+
+  const preventAdButtons = ['login-button', 'profile-button','search-button','form-button']; // List of button IDs to prevent script loading
 
   useEffect(() => {
-    const noAdPages = ["/profile", "/watch-now"];
-    const shouldLoadAds = !noAdPages.includes(pathname);
+    const scriptLoaded = sessionStorage.getItem('adScriptLoaded') === 'true'; 
 
-   
-    if (shouldLoadAds && !isScriptLoaded) {
-      const script = document.createElement("script");
-      script.src = "//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807"; 
-      script.async = true;
-      document.body.appendChild(script);
-      setIsScriptLoaded(true);
-      console.log("Ad script loaded."); 
-
-      return () => {
-        document.body.removeChild(script);
-        console.log("Ad script removed."); // Log when the script is removed
-      };
+    if (!scriptLoaded && !['/profile', '/watch-now'].includes(pathname)) {
+      loadAdScript(); 
     }
 
     const handleClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      const adFreeZones = ["login-button", "search-button", "profile-button"];
-      if (!adFreeZones.includes(target.id)) {
-        setSuppressAds(false);  
+
+      if (preventAdButtons.includes(target.id)) {
+        return; 
       }
 
-      if (target.id === "login-button") {
-        setSuppressAds(true); 
-        console.log("Ads suppressed due to login click.");
+      if (!scriptLoaded) {
+        loadAdScript();
       }
     };
 
-    document.addEventListener("click", handleClick);
+    document.addEventListener('click', handleClick);
 
     return () => {
-      document.removeEventListener("click", handleClick);
-      setSuppressAds(false); 
+      document.removeEventListener('click', handleClick);
     };
-  }, [pathname, isScriptLoaded]);
-
-  useEffect(() => {
-    // Logic to prevent ads from displaying if suppressAds is true
-    if (suppressAds) {
-      console.log("Ads are suppressed due to login click");
-      // Here you should interact with the ad script to prevent ads from displaying.
-      // Depending on the ad service, you might need to call a function or set a variable.
-    }
-  }, [suppressAds]);
-
-  // Call the provided function to remove the script
-  const removeScript = () => {
-    const script = document.getElementById("script");
-    if (script) {
-      document.body.removeChild(script);
-      setIsScriptLoaded(false); // Update state
-      onRemoveScript(); // Notify parent component to handle further actions
-    }
-  };
-
-  // Call removeScript when suppressAds is set to true
-  useEffect(() => {
-    if (suppressAds) {
-      removeScript();
-    }
-  }, [suppressAds]);
+  }, [pathname]);
 
   return <>{children}</>;
 };
 
 export default ScriptLoader;
-//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807
