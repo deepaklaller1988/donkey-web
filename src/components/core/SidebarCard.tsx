@@ -56,7 +56,7 @@ function SidebarCard({ movieId, mediaType, index,isPopular }: any) {
             <Image
               height={1000}
               width={1000}
-              quality={100}
+              quality={1000}
               className="rounded-md w-full"
               src={`${
                 cardDetials?.poster_path
