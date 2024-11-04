@@ -358,7 +358,7 @@ export default function WatchNow() {
                 </div>
                 {!isAutoplay && !isPlaying && (
                   <div
-                    className="absolute top-0 left-0 w-full h-full cursor-pointer z-20 bg-[#00000070]"
+                    className="absolute top-0 left-0 w-full h-full cursor-pointer bg-[#00000070]"
                     onClick={handleOverlayClick}
                   ></div>
                 )}

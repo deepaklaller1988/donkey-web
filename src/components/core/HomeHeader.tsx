@@ -1,7 +1,6 @@
 import { HiMenuAlt1 } from "react-icons/hi";
 import HomeSearchbar from "../HomeSearchbar";
 import { FaRegUser } from "react-icons/fa";
-import { VscAccount } from "react-icons/vsc";
 import { FaPlus } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
 import { usePathname, useRouter } from "next/navigation";
@@ -90,9 +89,6 @@ export default function Header() {
   return (
     <>
       <div
-        // className={`header ${
-        //   isHome() ? "" : "bg-white/10"
-        // } p-2 py-3 absolute z-10 w-full top-0 right-0`}
         className={`header ${
           isHome() ? "" : ""
         } p-2 py-3 absolute z-10 w-full top-0 right-0`}
@@ -195,20 +191,7 @@ export default function Header() {
                       {
                         <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                       }
-                    </button>
-                    {/* <button
-                      id="login-button"
-                      className="text-white font-semibold p-2 px-6 rounded-full border-2 border-white transition hover:bg-white hover:text-black"
-                      onClick={() => {
-                        setIsOpen(true);
-                        // setIsScriptActive(false);
-                        // const script = document.createElement("script");
-                        // document.body.removeChild(script);
-
-                      }}
-                    >
-                      Sign in
-                    </button> */}
+                    </button>                  
                     <SignInButton id="login-button" onClick={handleClick} />
                   </div>
                 </>
@@ -222,7 +205,6 @@ export default function Header() {
           isOpen={isOpen}
           handleClose={handleClose}
           ProfileType="profile"
-          // disableAds={handleDisableAds}
         />
       ) : null}
       <NavBar openSideBar={openSideBar} toggleSidebar={toggleSidebar} />

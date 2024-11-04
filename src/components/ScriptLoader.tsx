@@ -65,52 +65,63 @@
 
 // export default ScriptLoader;
 "use client";
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-const ScriptLoader = ({ children }: any) => {
-  const pathname = usePathname();
+const ScriptLoader = ({ children }:any) => {
+  const [isOverlayVisible, setIsOverlayVisible] = useState(true);
 
   const loadAdScript = () => {
     if (!document.getElementById('ad-script')) {
       const script = document.createElement('script');
-      script.src = '//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807'; 
+      script.src = '//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807';
       script.async = true;
-      script.id = 'ad-script'; 
+      script.id = 'ad-script';
       document.body.appendChild(script);
-      sessionStorage.setItem('adScriptLoaded', 'true'); 
+      sessionStorage.setItem('adScriptLoaded', 'true');
     }
+   
   };
 
-  const preventAdButtons = ['login-button', 'profile-button','search-button','form-button']; // List of button IDs to prevent script loading
+  const handleClickOverlay = () => {
+    setIsOverlayVisible(false);
+    document.body.style.overflow = 'auto';
+    loadAdScript(); 
+  };
 
   useEffect(() => {
-    const scriptLoaded = sessionStorage.getItem('adScriptLoaded') === 'true'; 
+    const scriptLoaded = sessionStorage.getItem('adScriptLoaded') === 'true';
 
-    if (!scriptLoaded && !['/profile', '/watch-now'].includes(pathname)) {
-      loadAdScript(); 
+    if (!scriptLoaded) {
+      loadAdScript();
     }
 
-    const handleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-
-      if (preventAdButtons.includes(target.id)) {
-        return; 
-      }
-
-      if (!scriptLoaded) {
-        loadAdScript();
-      }
-    };
-
-    document.addEventListener('click', handleClick);
+    document.body.style.overflow = 'hidden';
 
     return () => {
-      document.removeEventListener('click', handleClick);
+      document.body.style.overflow = 'auto'; 
     };
-  }, [pathname]);
+  }, []);
 
-  return <>{children}</>;
+  useEffect(() => {
+    if (isOverlayVisible) {
+      const handleClick = () => {
+        handleClickOverlay();
+      };
+
+      document.addEventListener('click', handleClick);
+
+      return () => {
+        document.removeEventListener('click', handleClick);
+      };
+    }
+  }, [isOverlayVisible]);
+
+  return (
+    <>
+      {children}
+    </>
+  );
 };
 
 export default ScriptLoader;
+
