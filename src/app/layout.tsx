@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import MainLayout from "@components/core/MainLayout";
 import Provider from "@components/core/Provider";
-import ScriptLoader from "@components/ScriptLoader";
+// import ScriptLoader from "@components/ScriptLoader";
 import ToastProvider from "@components/core/ToasterProvider";
 import Script from "next/script";
 
@@ -39,9 +39,9 @@ export default function RootLayout({
       </head>
       <body>
         <Provider>
-          <ScriptLoader>
+          {/* <ScriptLoader> */}
             <MainLayout>{children}</MainLayout>
-          </ScriptLoader>
+          {/* </ScriptLoader> */}
           <ToastProvider />
         </Provider>
       </body>
