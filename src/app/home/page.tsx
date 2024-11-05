@@ -128,14 +128,13 @@ export default function Home() {
     <div className="w-full">
       <div className="w-full flex flex-col lg:flex-row justify-between homeSliderCZHub">
         <div className="homeSliderCZ relative">
-        <div className="absolute right-0 flex z-10 w-[50px]">
+        <div className="absolute right-0 flex z-10 w-[50px] lg:visible invisible">
           <Image
             height={1000}
             width={1000}
             quality={100}
             className="w-full h-full"
             src="/images/shadow-left.png"
-            // src="/assets/images/slides/1.jpg"
             alt="shadow-left"
           />
         </div>
