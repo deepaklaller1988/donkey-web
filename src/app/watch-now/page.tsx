@@ -155,13 +155,14 @@ export default function WatchNow() {
     seriesId: number,
     season: any
   ) => {
+    console.log(season,"seaosn")
     try {
       if (mediaType === "movie") {
         return [];
       }
       const response = await FetchApi.get(
         `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${seriesId}/season/${
-          season && season.season_number ? season.season_number : 1
+          season && season.season_number ? season.season_number : selectedSeason
         }}?language=en-US&page=1`
       );
       const data = await response.json();
@@ -180,7 +181,6 @@ export default function WatchNow() {
     queryKey: ["similar-lists", movieId, mediaType],
     queryFn: () => fetchSimilarLists(movieId, mediaType),
   });
-
   const { isLoading: isPopularLoading, data: popularList } = useQuery<any>({
     queryKey: ["popular-lists", mediaType],
     queryFn: () => fetchPopularLists(mediaType),
@@ -318,6 +318,8 @@ export default function WatchNow() {
       </div>
     );
   }
+
+  console.log(watchDetials.seasons,"===========")
   return (
     <div className="w-full">
       {watchDetials && (
@@ -351,7 +353,7 @@ export default function WatchNow() {
                       }${
                         mediaType === "tv"
                           ? selectedSeason
-                            ? "/" + (selectedSeason.season_number || 1)
+                            ? "/" + (selectedSeason.season_number || selectedSeason ||1)
                             : "/1"
                           : ""
                       }${
