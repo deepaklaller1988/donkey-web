@@ -14,7 +14,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   const { setToken }: any = useAuth();
   const recaptchaRef = useRef<any>(null);
   const [type, setType] = useState("login");
-  const [captchaValue, setCaptchaValue] = useState(null);
+  // const [captchaValue, setCaptchaValue] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const { setUsername } = useProfileTab();
@@ -22,7 +22,7 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
   useEffect(() => {
     setErrorMessage("");
     setSuccessMessage("");
-    setCaptchaValue(null);
+    // setCaptchaValue(null);
     if (recaptchaRef.current) {
       recaptchaRef.current.reset();
     }
@@ -70,10 +70,10 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
     setErrorMessage("");
     setSuccessMessage("");
 
-    if (!captchaValue) {
-      setErrorMessage("Please complete the CAPTCHA");
-      return;
-    }
+    // if (!captchaValue) {
+    //   setErrorMessage("Please complete the CAPTCHA");
+    //   return;
+    // }
 
     const formData = new FormData(event.target);
     const username: any = formData.get("username")?.toString().trim();
@@ -104,14 +104,14 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
       return;
     }
 
-    formData.set("captcha", captchaValue);
+    // formData.set("captcha", captchaValue);
     mutation.mutate(formData);
   };
 
-  const onCaptchaChange = (value: any) => {
-    setCaptchaValue(value);
-    handleCaptchaChange(value);
-  };
+  // const onCaptchaChange = (value: any) => {
+  //   setCaptchaValue(value);
+  //   handleCaptchaChange(value);
+  // };
 
   // const handleClickOutside = (event:any) => {
   //   if (event.target.closest('.loginRegisterForgotForm')) {
@@ -221,13 +221,13 @@ const AuthForm = ({ handleCaptchaChange, handleClose }: any) => {
           )}
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           {successMessage && <p className="text-green-500">{successMessage}</p>}
-          <div className="w-full text-white py-3 flex justify-center captachSet">
+          {/* <div className="w-full text-white py-3 flex justify-center captachSet">
             <ReCAPTCHA
               ref={recaptchaRef}
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
               onChange={onCaptchaChange}
             />
-          </div>
+          </div> */}
           <div>
             <Button type="submit">
               {type === "login" && "Continue"}
