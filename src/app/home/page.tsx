@@ -128,7 +128,7 @@ export default function Home() {
     <div className="w-full">
       <div className="w-full flex flex-col lg:flex-row justify-between homeSliderCZHub">
         <div className="homeSliderCZ relative">
-        <div className="absolute right-0 flex z-10 w-[50px] lg:visible invisible">
+        <div className="absolute right-0 flex z-10 w-[40px] lg:visible invisible">
           <Image
             height={1000}
             width={1000}
