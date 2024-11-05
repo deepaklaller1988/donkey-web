@@ -232,8 +232,8 @@ export default function HomeSlider() {
               >
                 <Image
                   quality={100}
-                  height={1000}
-                  width={1000}
+                  height={550}
+                  width={550}
                   src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
                   alt="slide"
                 />

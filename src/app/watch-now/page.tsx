@@ -318,7 +318,6 @@ export default function WatchNow() {
       </div>
     );
   }
-
   return (
     <div className="w-full">
       {watchDetials && (

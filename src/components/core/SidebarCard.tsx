@@ -54,9 +54,9 @@ function SidebarCard({ movieId, mediaType, index,isPopular }: any) {
         <section className="flex items-center relative listTop10 bg-white/5  hover:bg-white/10 transition rounded-md">
           <span className="relative min-w-[50px] w-[50px]">
             <Image
-              height={1000}
-              width={1000}
-              quality={100}
+              height={200}
+              width={200}
+              quality={50}
               className="rounded-md w-full"
               src={`${
                 cardDetials?.poster_path
