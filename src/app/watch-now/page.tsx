@@ -319,7 +319,6 @@ export default function WatchNow() {
     );
   }
 
-  console.log(watchDetials.seasons,"===========")
   return (
     <div className="w-full">
       {watchDetials && (
