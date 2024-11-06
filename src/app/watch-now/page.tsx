@@ -176,6 +176,13 @@ export default function WatchNow() {
     initializeValues();
   }, [userId, selectedPlayer,movieId, mediaType, seasonId, episodeId]);
 
+  useEffect(()=>{
+    if (seasonId && episodeId && selectedPlayer !== "vidsrc.dev") {
+      setSelectedSeason(1);
+      setSelectedEpisode(1);
+    }
+  },[selectedPlayer,seasonId,episodeId])
+
   const fetchEpisodesLists = async (
     mediaType: string,
     seriesId: number,
@@ -396,6 +403,7 @@ export default function WatchNow() {
 
     return playerUrls[selectedPlayer] || baseVidSrcUrl;
   };
+
   return (
     <div className="w-full">
       {watchDetials && (
@@ -474,17 +482,18 @@ export default function WatchNow() {
           </div>
           <div className="w-full pt-24">
             <div className="homewrapper">
-              <div className="flex items-center w-full justify-center text-white p-3 rounded-lg font-sans ">
-                <span>Media not loading ? Try another player</span>
-                <div className="w-[100px] bg-[#272727] rounded-lg ml-4 ">
-                  <section className="episodeSelectionMain flex items-center justify-center text-white">
+              <div className="flex items-center w-full justify-center text-white pb-3 rounded-lg text-sm">
+                <span className="text-sm tracking-wider font-light">Media not loading? Try a different player</span>
+                <div className=" bg-[#272727] rounded-lg ml-4 ">
+                  <section className="flex items-center justify-center text-white ">
                     <Dropdown
                       value={selectedPlayer}
                       onChange={onPlayerSelect}
                       options={playerOptions}
                       optionLabel="label"
                       placeholder="Select Player"
-                      className="p-3 px-30"
+                      className="text-[#fea500] p-2 px-3 custom-dropdown-text"
+                       panelClassName="custom-dropdown-panel"
                     />
                   </section>
                 </div>
