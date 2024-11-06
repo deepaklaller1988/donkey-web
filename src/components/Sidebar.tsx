@@ -1,12 +1,11 @@
 "use client";
-import { useQuery, UseQueryOptions  } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import FetchApi from "@lib/FetchApi";
 import SidebarCard from "./core/SidebarCard";
-import { Suspense, useState } from "react";
+import {  useState } from "react";
 import { HiTrendingUp } from "react-icons/hi";
-import Loader from "./core/Loader";
-const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
+const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
 const fetchPopularLists = async (mediaType: string) => {
   const mediaTypeLower = mediaType.toLowerCase();
@@ -44,25 +43,23 @@ const fetchPopularLists = async (mediaType: string) => {
   }
 };
 
-
 export default function Sidebar({ mediaType }: any) {
   const [interval, setInterval] = useState<string>("movies");
+
   const { isLoading: isPopular, data: popular } = useQuery({
     queryKey: ["popular", interval],
     queryFn: () => fetchPopularLists(interval),
     staleTime: 1000 * 60 * 5,
-    });
+  });
 
-  const renderMovies = (items: any[], mediaType: string) => {
+  const renderMovies = (items: any[]) => {
     return items.map((item: any, index: number) => (
-      <Suspense fallback={<Loader/>} key={item.id}>
-      <SidebarCard
-        movieId={item.id}
-        mediaType={mediaType}
-        index={index + 1}
-        isPopular={isPopular}
+        <SidebarCard
+          movieId={item.id}
+          mediaType={interval}
+          index={index + 1}
+          isPopular={isPopular}
         />
-        </Suspense>
     ));
   };
 
@@ -70,16 +67,8 @@ export default function Sidebar({ mediaType }: any) {
     <div className="w-full">
       <div className="flex items-center gap-4 justify-between">
         <h3 className="text-white text-[25px] font-semibold flex items-center gap-1">
-          {mediaType === "Popular" ? (
-            <HiTrendingUp className="text-amber-500 mr-1 w-8 h-8" />
-          ) : (
-            <HiTrendingUp className="mr-1 text-amber-500 w-8 h-8" />
-          )}
-          {mediaType === "Movie"
-            ? "MOVIES"
-            : mediaType === "Popular"
-            ? "TRENDING"
-            : "TV SHOWS"}
+          <HiTrendingUp className="text-amber-500 mr-1 w-8 h-8" />
+          TRENDING
         </h3>
         <section className="flex gap-2">
           <button
@@ -107,10 +96,9 @@ export default function Sidebar({ mediaType }: any) {
       <ul className="flex flex-col gap-3 py-2 mt-[10px]">
         {mediaType === "Popular"
           ? popular && popular.length > 0
-            ? renderMovies(popular.slice(0, 5), interval)
+            ? renderMovies(popular.slice(0, 5))
             : ""
-          : 
-            ""}
+          : ""}
       </ul>
     </div>
   );

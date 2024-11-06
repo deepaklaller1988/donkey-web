@@ -1,7 +1,5 @@
 "use client";
-import { FaRegCirclePlay } from "react-icons/fa6";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { TiDelete } from "react-icons/ti";
 import { useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
 import FetchApi from "@lib/FetchApi";
@@ -15,7 +13,6 @@ import { toasterError, toasterSuccess } from "./Toaster";
 import { HiPlay } from "react-icons/hi2";
 
 import { useEffect, useState } from "react";
-const apiKey = process.env.NEXT_PUBLIC_MDBKEY;
 
 const fetchDetails = async (movieId: number, mediaType: string) => {
   try {
@@ -91,14 +88,6 @@ function Card({
     };
   }, []);
 
-  const handleWatchPopup = () => {
-    if (!User.isUserLoggedIn) {
-      toasterError("You must be signed in to use this feature..", 3000, "id");
-    } else {
-      setIsOpen(!isOpen);
-    }
-  };
-
   const handleBookmark = async (
     mediaID: any,
     mediaType: string,
@@ -128,43 +117,6 @@ function Card({
       }
       setIsOpen(false);
     }
-  };
-
-  const handleUpdateBookmark = async (
-    mediaID: any,
-    mediaType: string,
-    bookmarkType: string
-  ) => {
-    try {
-      let data = {
-        userId: User.id,
-        mediaId: mediaID,
-        mediaType: mediaType,
-        bookmarkType: bookmarkType,
-      };
-
-      const result = await API.put("bookmark", data);
-      if (result.success) {
-        queryClient.invalidateQueries({ queryKey: ["bookmark"] });
-
-        toasterSuccess(
-          `Media added successfully to ${
-            bookmarkType === "watching"
-              ? "Watching"
-              : bookmarkType === "completed"
-              ? "Completed"
-              : "Plan to Watch"
-          } Folder.`,
-          3000,
-          mediaID
-        );
-      } else {
-        toasterError(result?.error?.code, 3000, mediaID);
-      }
-    } catch (error: any) {
-      toasterError(error?.error?.code, 3000, mediaID);
-    }
-    setIsOpen(false);
   };
 
   const handleDeleteBookmark = async (mediaID: any, mediaType: string) => {
@@ -285,12 +237,11 @@ function Card({
                 <label className="absolute z-0 top-1 right-0 font-bold px-1 rounded-l-xl">
                   <div className="relative flex gap-4">
                     <div className="relative flex gap-4">
-                      {/* <TiDelete className=" w-8 h-8 m-1 " color="red" onClick={() => handleDeleteBookmark(movieDetials?.id, mediaType === 'Movie' ? 'movie' : 'tv')} /> */}
                       <Image
                         alt="Image"
                         height={1000}
                         width={1000}
-                        quality={100}
+                        quality={70}
                         className="w-8 h-8"
                         src="/assets/images/cross.png"
                         onClick={() =>

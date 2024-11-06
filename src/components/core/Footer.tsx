@@ -28,7 +28,7 @@ export default function Footer() {
                     <a href="" className="w-[150px] block mb-4"><Image
                     height={1000}
                     width={1000}
-                    quality={100} 
+                    quality={50} 
                     className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a>
                     {/* <div className="w-full flex items-center justify-center md:justify-end gap-4 mb-2 md:mb-0 ">
                         <a href="https://x.com/to_donkey" target="_blank" className="text-white hover:text-yellow-500 transition" title="twitter"><PiXLogoBold className="w-6 h-6"/></a>

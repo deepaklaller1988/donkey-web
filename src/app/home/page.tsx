@@ -1,17 +1,16 @@
 "use client";
 import "./home.css";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import HomeSlider from "@components/HomeSlider";
 import Sidebar from "@components/Sidebar";
 import Card from "@components/core/Card";
 import FetchApi from "@lib/FetchApi";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import useTitle from "@hooks/useTitle";
 import Loader from "@components/core/Loader";
 import Image from "next/image";
 import useRole from "@hooks/useRole";
-import { useAuth } from "context/AuthContext";
 const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
 const fetchTrendingList = async (mediaType: string) => {
@@ -97,16 +96,17 @@ const fetchLatestList = async (mediaType: string) => {
 };
 
 export default function Home() {
-  const router = useRouter();
-  const [roleLoading, roleData] = useRole();
-
-  const { token }: any = useAuth();
   useTitle("Home");
+  const router = useRouter();
+  const [roleLoading] = useRole();
+
   const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
+
   const { isLoading: ispopularLoading, data: popularList } = useQuery({
     queryKey: ["popular", selectedMedia],
     queryFn: () => fetchPopularLists(selectedMedia),
   });
+
   const { isLoading: tvLoading, data: latestTVList } = useQuery({
     queryKey: ["latest-movies", "tv"],
     queryFn: () => fetchTrendingList("tv"),
@@ -128,16 +128,16 @@ export default function Home() {
     <div className="w-full">
       <div className="w-full flex flex-col lg:flex-row justify-between homeSliderCZHub">
         <div className="homeSliderCZ relative">
-        <div className="absolute right-0 flex z-10 w-[40px] lg:visible invisible">
-          <Image
-            height={1000}
-            width={1000}
-            quality={100}
-            className="w-full h-full"
-            src="/images/shadow-left.png"
-            alt="shadow-left"
-          />
-        </div>
+          <div className="absolute right-0 flex z-10 w-[40px] lg:visible invisible">
+            <Image
+              height={1000}
+              width={1000}
+              quality={100}
+              className="w-full h-full"
+              src="/images/shadow-left.png"
+              alt="shadow-left"
+            />
+          </div>
           <HomeSlider />
         </div>
         <div className="lg:min-w-[400px] min-w-100% max-w-100% lg:max-w-[400px] homeSliderCZSidebar">
@@ -262,15 +262,13 @@ export default function Home() {
                           .slice(0, 16)
                           .map((item: any, index: any) => (
                             <>
-                              <Suspense fallback={<Loader />}>
-                                <Card
-                                  index={index}
-                                  key={item.id}
-                                  movieId={item.id}
-                                  mediaType={selectedMedia}
-                                  isLoading={ispopularLoading}
-                                />
-                              </Suspense>
+                              <Card
+                                index={index}
+                                key={item.id}
+                                movieId={item.id}
+                                mediaType={selectedMedia}
+                                isLoading={ispopularLoading}
+                              />
                             </>
                           ))
                       : ""}
