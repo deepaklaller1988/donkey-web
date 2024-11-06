@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import FetchApi from "@lib/FetchApi";
 import SidebarCard from "./core/SidebarCard";
-import {  useState } from "react";
+import { useState } from "react";
 import { HiTrendingUp } from "react-icons/hi";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
@@ -54,12 +54,13 @@ export default function Sidebar({ mediaType }: any) {
 
   const renderMovies = (items: any[]) => {
     return items.map((item: any, index: number) => (
-        <SidebarCard
-          movieId={item.id}
-          mediaType={interval}
-          index={index + 1}
-          isPopular={isPopular}
-        />
+      <SidebarCard
+        key={item.id}
+        movieId={item.id}
+        mediaType={interval}
+        index={index + 1}
+        isPopular={isPopular}
+      />
     ));
   };
 

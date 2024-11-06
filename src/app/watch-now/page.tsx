@@ -483,7 +483,7 @@ export default function WatchNow() {
           <div className="w-full pt-24">
             <div className="homewrapper">
               <div className="flex items-center w-full justify-center text-white pb-3 rounded-lg text-sm">
-                <span className="text-sm tracking-wider font-light">Media not loading? Try a different player</span>
+                <span className="text-sm tracking-wider font-light">Media not loading? Try another player</span>
                 <div className=" bg-[#272727] rounded-lg ml-4 ">
                   <section className="flex items-center justify-center text-white ">
                     <Dropdown
