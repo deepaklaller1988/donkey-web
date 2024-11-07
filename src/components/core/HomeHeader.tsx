@@ -16,6 +16,7 @@ import Image from "next/image";
 import { useAuth } from "context/AuthContext";
 import { GoVideo } from "react-icons/go";
 import SignInButton from "@components/buttons/SignInButton";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Header() {
   const router = useRouter();
@@ -28,6 +29,7 @@ export default function Header() {
   const [OpenSearch, setOpenSearch] = useState(false);
   const [openSideBar, setOpenSidebar] = useState(false);
   const profileRef: any = useRef(null);
+  const queryClient = useQueryClient();
 
   const isHome = () => {
     return route.includes("home") ? true : false;
@@ -62,11 +64,25 @@ export default function Header() {
     toasterSuccess("Signed out Successfully.", 3000, "id");
   };
 
+
+
   const handleProfile = (type: any) => {
+    console.log(type,path,"=========")
+    if (type === "Bookmark") {
+      queryClient.invalidateQueries({ queryKey: ['bookmark'] });
+    }
+
+    // if (type === "watching") {
+    //   queryClient.invalidateQueries({ queryKey: ['mediaprogress'] });
+    // }
+  
     if (path.includes("profile")) {
       setActiveTab(type);
-      setOpenProfile(!OpenProfile);
-    } else {
+      setOpenProfile(!OpenProfile)
+
+    } 
+   
+    else {
       router.push("/profile");
       setOpenProfile(!OpenProfile);
       setActiveTab(type);

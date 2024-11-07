@@ -14,7 +14,7 @@ const fetchMovie = async (userId: any, page: number, limit: number) => {
     const response = await API.get(
       `mediaprogress?user_id=${userId}&page=${page}&limit=${limit}&pagination=${true}`
     );
-    const data = response;
+    const data = response.data;
     return data;
   } catch (error) {
     console.error("Failed to fetch data from the primary API:", error);
@@ -46,15 +46,11 @@ export default function WatchingPage({ type }: any) {
   if (isMediaLoading) {
     <Loader />;
   }
-
   return (
     <>
-      {/* {type == "home" && mediaData && mediaData?.data?.length > 0 &&
-                <h3 className="text-white text-[25px] font-semibold">CONTINUE WATCHING</h3>
-            } */}
       <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
-        {mediaData && mediaData?.data?.length > 0 ? (
-          mediaData?.data?.map((item: any, index: any) => (
+        {mediaData?.length > 0 ? (
+          mediaData?.map((item: any, index: any) => (
             <Card
               index={index}
               key={item?.id}

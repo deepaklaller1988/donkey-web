@@ -73,8 +73,8 @@ const fetchSimilarLists = async (movieId: number, mediaType: string) => {
       `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}/similar?language=en-US`
     );
     const data = await response.json();
-    const filteredResults = data.results.filter(
-      (item: any) => item.backdrop_path !== null
+    const filteredResults = data.results?.filter(
+      (item: any) => item.genre_ids && item.genre_ids.length > 0
     );
     return filteredResults;
   } catch (error) {
@@ -174,14 +174,14 @@ export default function WatchNow() {
     };
 
     initializeValues();
-  }, [userId, selectedPlayer,movieId, mediaType, seasonId, episodeId]);
+  }, [userId, selectedPlayer, movieId, mediaType, seasonId, episodeId]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (seasonId && episodeId && selectedPlayer !== "vidsrc.dev") {
       setSelectedSeason(1);
       setSelectedEpisode(1);
     }
-  },[selectedPlayer,seasonId,episodeId])
+  }, [selectedPlayer, seasonId, episodeId]);
 
   const fetchEpisodesLists = async (
     mediaType: string,
@@ -288,21 +288,40 @@ export default function WatchNow() {
   }, [isAutoplay]);
 
   useEffect(() => {
-    if (isPlaying === true && selectedPlayer === "vidsrc.dev") {
-      const mediaId = watchDetials.id ? watchDetials.id : watchDetials.imdb_id;
-      if (videoRef.current && userId && mediaId && mediaType) {
-        mutation.mutate({
-          user_id: Number(userId),
-          media_id: mediaId.toString(),
-          media_type: mediaType,
-          progress_time: "12",
-          season_id: mediaType == "tv" ? selectedSeason : 1,
-          episode_id: mediaType == "tv" ? selectedEpisode : 1,
-          status: true,
-        });
-      }
+    if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
+      const payload = {
+        user_id: Number(userId),
+        media_id: movieId.toString(),
+        media_type: mediaType,
+        progress_time: "12",
+        status: true,
+        season_id: mediaType === "tv" ? selectedSeason : 1,
+        episode_id: mediaType === "tv" ? selectedEpisode : 1,
+      };
+      mutation.mutate(payload);
     }
-  }, [isPlaying, selectedPlayer]);
+  }, [ selectedPlayer, mediaType, userId, movieId, selectedSeason, selectedEpisode]);
+  
+
+  // useEffect(() => {
+  //   if (selectedPlayer === "vidsrc.dev") {
+  //     const mediaId = mediaType === "tv" ? watchDetials.id || watchDetials.imdb_id : movieId;
+  //     const seasonId = mediaType === "tv" ? selectedSeason : 1;
+  //     const episodeId = mediaType === "tv" ? selectedEpisode : 1;
+
+  //     if (videoRef.current && userId && mediaId && mediaType) {
+  //       mutation.mutate({
+  //         user_id: Number(userId),
+  //         media_id: mediaId.toString(),
+  //         media_type: mediaType,
+  //         progress_time: "12",
+  //         season_id: mediaType ==="tv"?seasonId:"",
+  //         episode_id:  mediaType ==="tv"?episodeId :"",
+  //         status: true,
+  //       });
+  //     }
+  //   }
+  // }, [isPlaying, selectedPlayer, mediaType, movieId, selectedSeason, selectedEpisode]);
 
   const handleBookmark = async (
     mediaID: any,
@@ -372,17 +391,7 @@ export default function WatchNow() {
       mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
     }`;
 
-    // const baseVidSrcmeUrl = `https://vidsrc.xyz/embed/${mediaType}/${
-    //   watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
-    // }${
-    //   mediaType === "tv"
-    //   ? selectedSeason
-    //   ? "/" + (selectedSeason.season_number || selectedSeason || 1)
-    //   : "/1"
-    //   : ""
-    // }${
-    //   mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-    // }`;
+   
     const baseVidSrcmeUrl = `https://vidsrc.me/embed/${mediaType}?${
       watchDetials.imdb_id
         ? "imdb=" + watchDetials.imdb_id
@@ -425,31 +434,7 @@ export default function WatchNow() {
               <div className="w-full h-full absolute top-0 left-0 z-0 pt-[80px]">
                 <div className="homewrapper relative z-10">
                   <div className="w-full">
-                    {/*------- vidsrc.me ----- */}
-                    {/* src={`https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id ? "imdb=" + watchDetials.imdb_id : "tmdb=" + watchDetials.id}${mediaType==='tv' && selectedSeason ? '&season=' + (selectedSeason.season_number || 1) : '&season=1'}${mediaType==='tv' && selectedEpisode ? '&episode=' + selectedEpisode : ''}`}  */}
-
-                    {/* --------- vidsrc.to embed link -------- */}
                     <iframe
-                      // src={`https://vidsrc.dev/embed/${mediaType}/${
-                      //   watchDetials.imdb_id
-                      //     ? watchDetials.imdb_id
-                      //     : watchDetials.id
-                      // }${
-                      //   mediaType === "tv"
-                      //     ? selectedSeason
-                      //       ? "/" +
-                      //         (selectedSeason.season_number ||
-                      //           selectedSeason ||
-                      //           1)
-                      //       : "/1"
-                      //     : ""
-                      // }${
-                      //   mediaType === "tv"
-                      //     ? selectedEpisode
-                      //       ? "/" + selectedEpisode
-                      //       : "/1"
-                      //     : ""
-                      // }`}
                       src={getPlayerUrl()}
                       className="w-full mt-5 rounded-lg videoFrame"
                       title="Vidsrc video player"
@@ -457,6 +442,7 @@ export default function WatchNow() {
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
                       ref={videoRef}
+                      
                       id="myiframe"
                     ></iframe>
                   </div>
@@ -483,7 +469,9 @@ export default function WatchNow() {
           <div className="w-full pt-24">
             <div className="homewrapper">
               <div className="flex items-center w-full justify-center text-white pb-3 rounded-lg text-sm">
-                <span className="text-sm tracking-wider font-light">Media not loading? Try another player</span>
+                <span className="text-sm tracking-wider font-light">
+                  Media not loading? Try another player
+                </span>
                 <div className=" bg-[#272727] rounded-lg ml-4 ">
                   <section className="flex items-center justify-center text-white ">
                     <Dropdown
@@ -493,7 +481,7 @@ export default function WatchNow() {
                       optionLabel="label"
                       placeholder="Select Player"
                       className="text-[#fea500] p-2 px-3 custom-dropdown-text"
-                       panelClassName="custom-dropdown-panel"
+                      panelClassName="custom-dropdown-panel"
                     />
                   </section>
                 </div>

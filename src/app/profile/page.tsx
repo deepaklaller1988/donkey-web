@@ -4,18 +4,19 @@ import { useRouter } from 'next/navigation';
 import BookmarkPage from './Bookmark/page';
 import UserProfile from './userProfile/page';
 import ContinueWatchingPage from './watching/page';
-import SettingsPage from './SettingsPage/page';
 import { FaRegUser, FaPlus } from "react-icons/fa";
 import { GoVideo } from "react-icons/go";
 import { useProfileTab } from 'context/ProfileTabContext';
 import useRole from '@hooks/useRole';
 import Loader from '@components/core/Loader';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function Profile() {
   const { activeTab, setActiveTab, username } = useProfileTab();
   const [roleLoading, roleData] = useRole();
   const router = useRouter();
   const [nameUpdated, setNameUpdated] = useState(null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (roleLoading) return;
@@ -25,8 +26,22 @@ export default function Profile() {
     }
   }, [roleData, roleLoading, router]);
 
+  useEffect(() => {
+    if (activeTab === "Bookmark") {
+      queryClient.invalidateQueries({ queryKey: ['bookmark'] });
+    } else if (activeTab === "watching") {
+      queryClient.invalidateQueries({ queryKey: ['mediaprogress'] });
+    }
+  }, [activeTab]);
+
   const switchProcessorTab = (processorType: string) => {
     setActiveTab(processorType);
+    if (processorType === "Bookmark") {
+      queryClient.invalidateQueries({queryKey:['bookmark']});
+    }
+    // if (processorType === "watching") {
+    //   queryClient.invalidateQueries({queryKey:['mediaprogress']});
+    // }
   };
 
   let content;
@@ -43,9 +58,6 @@ export default function Profile() {
         break;
       case "watching":
         content = <ContinueWatchingPage />;
-        break;
-      case "settings":
-        content = <SettingsPage />;
         break;
       default:
         content = <div>Invalid processor type</div>;
@@ -85,13 +97,6 @@ export default function Profile() {
               >
                 <FaPlus /> My List
               </button>
-              {/* <button
-                onClick={() => switchProcessorTab("settings")}
-                className={`px-2 gap-2 py-1 text-white/50 transition hover:text-white border border-1 border-white/10 hover:border-white rounded-lg flex items-center ${activeTab === "settings" ? "profileActive" : ""
-                  }`}
-              >
-                <IoSettingsOutline /> Settings
-              </button> */}
             </div>
           </div>
         </div>
