@@ -138,7 +138,7 @@ export default function WatchNow() {
     queryKey: ["watch-detials", movieId, mediaType],
     queryFn: () => fetchDetails(movieId, mediaType),
   });
-
+console.log(watchDetials,"=============")
   useEffect(() => {
     const initializeValues = async () => {
       if (userId && selectedPlayer === "vidsrc.dev") {
@@ -563,8 +563,8 @@ export default function WatchNow() {
                             {mediaType === "movie"
                               ? watchDetials?.runtime + " min"
                               : "EP" +
-                                watchDetials?.last_episode_to_air
-                                  ?.episode_number}
+                              watchDetials?.last_episode_to_air?( watchDetials?.last_episode_to_air
+                                  ?.episode_number):" "}
                           </li>
                         </ul>
                         <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
