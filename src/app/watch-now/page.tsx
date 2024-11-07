@@ -104,8 +104,8 @@ const fetchPopularLists = async (mediaType: string, pages = 2) => {
 };
 
 export default function WatchNow() {
-  const [roleLoading, roleData] = useRole();
-  const videoRef: any = useRef(null);
+  const [roleLoading] = useRole();
+  const iframeRef = useRef(null);
   const searchParams = useSearchParams();
   const movieId: any = searchParams.get("id");
   const mediaType: any = searchParams.get("type");
@@ -117,6 +117,8 @@ export default function WatchNow() {
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState("vidsrc.dev");
+  const [iframeMouseOver, setIframeMouseOver] = useState(false);
+
   const userId = User.id;
   const playerOptions = [
     { label: "Player 1", value: "vidsrc.dev" },
@@ -287,41 +289,59 @@ export default function WatchNow() {
     };
   }, [isAutoplay]);
 
-  useEffect(() => {
-    if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-      const payload = {
-        user_id: Number(userId),
-        media_id: movieId.toString(),
-        media_type: mediaType,
-        progress_time: "12",
-        status: true,
-        season_id: mediaType === "tv" ? selectedSeason : 1,
-        episode_id: mediaType === "tv" ? selectedEpisode : 1,
-      };
-      mutation.mutate(payload);
-    }
-  }, [ selectedPlayer, mediaType, userId, movieId, selectedSeason, selectedEpisode]);
-  
-
   // useEffect(() => {
-  //   if (selectedPlayer === "vidsrc.dev") {
-  //     const mediaId = mediaType === "tv" ? watchDetials.id || watchDetials.imdb_id : movieId;
-  //     const seasonId = mediaType === "tv" ? selectedSeason : 1;
-  //     const episodeId = mediaType === "tv" ? selectedEpisode : 1;
-
-  //     if (videoRef.current && userId && mediaId && mediaType) {
-  //       mutation.mutate({
-  //         user_id: Number(userId),
-  //         media_id: mediaId.toString(),
-  //         media_type: mediaType,
-  //         progress_time: "12",
-  //         season_id: mediaType ==="tv"?seasonId:"",
-  //         episode_id:  mediaType ==="tv"?episodeId :"",
-  //         status: true,
-  //       });
-  //     }
+  //   if (  selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
+  //     const payload = {
+  //       user_id: Number(userId),
+  //       media_id: movieId.toString(),
+  //       media_type: mediaType,
+  //       progress_time: "12",
+  //       status: true,
+  //       season_id: mediaType === "tv" ? selectedSeason : 1,
+  //       episode_id: mediaType === "tv" ? selectedEpisode : 1,
+  //     };
+  //     mutation.mutate(payload);
   //   }
-  // }, [isPlaying, selectedPlayer, mediaType, movieId, selectedSeason, selectedEpisode]);
+  // }, [
+  //   selectedPlayer,
+  //   mediaType,
+  //   userId,
+  //   movieId,
+  //   selectedSeason,
+  //   selectedEpisode,
+  // ]);
+
+  useEffect(() => {
+    window.focus();
+    const onWindowBlur = () => {
+      if (iframeMouseOver) {
+        if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
+          const payload = {
+            user_id: Number(userId),
+            media_id: movieId.toString(),
+            media_type: mediaType,
+            progress_time: "12",
+            status: true,
+            season_id: mediaType === "tv" ? selectedSeason : 1,
+            episode_id: mediaType === "tv" ? selectedEpisode : 1,
+          };
+          mutation.mutate(payload);
+        }
+      }
+    };
+    window.addEventListener("blur", onWindowBlur);
+    return () => {
+      window.removeEventListener("blur", onWindowBlur);
+    };
+  }, [
+    iframeMouseOver,
+    selectedPlayer,
+    mediaType,
+    userId,
+    movieId,
+    selectedSeason,
+    selectedEpisode,
+  ]);
 
   const handleBookmark = async (
     mediaID: any,
@@ -391,7 +411,6 @@ export default function WatchNow() {
       mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
     }`;
 
-   
     const baseVidSrcmeUrl = `https://vidsrc.me/embed/${mediaType}?${
       watchDetials.imdb_id
         ? "imdb=" + watchDetials.imdb_id
@@ -411,6 +430,14 @@ export default function WatchNow() {
     };
 
     return playerUrls[selectedPlayer] || baseVidSrcUrl;
+  };
+  const handleOnMouseOver = () => {
+    setIframeMouseOver(true);
+  };
+
+  const handleOnMouseOut = () => {
+    window.focus();
+    setIframeMouseOver(false);
   };
 
   return (
@@ -433,7 +460,11 @@ export default function WatchNow() {
               />
               <div className="w-full h-full absolute top-0 left-0 z-0 pt-[80px]">
                 <div className="homewrapper relative z-10">
-                  <div className="w-full">
+                  <div
+                    className="w-full iframeWrapper"
+                    onMouseOver={handleOnMouseOver}
+                    onMouseOut={handleOnMouseOut}
+                  >
                     <iframe
                       src={getPlayerUrl()}
                       className="w-full mt-5 rounded-lg videoFrame"
@@ -441,8 +472,7 @@ export default function WatchNow() {
                       referrerPolicy="origin"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
-                      ref={videoRef}
-                      
+                      ref={iframeRef}
                       id="myiframe"
                     ></iframe>
                   </div>
@@ -701,12 +731,7 @@ export default function WatchNow() {
                                   ? watchDetials.id
                                   : watchDetials.imdb_id;
 
-                                if (
-                                  videoRef.current &&
-                                  userId &&
-                                  mediaId &&
-                                  mediaType
-                                ) {
+                                if (userId && mediaId && mediaType) {
                                   mutation.mutate({
                                     user_id: Number(userId),
                                     media_id: mediaId.toString(),
@@ -793,7 +818,6 @@ export default function WatchNow() {
                                               ? watchDetials.id
                                               : watchDetials.imdb_id;
                                             if (
-                                              videoRef.current &&
                                               userId &&
                                               mediaId &&
                                               mediaType
