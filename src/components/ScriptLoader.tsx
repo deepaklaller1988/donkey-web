@@ -75,7 +75,7 @@ const ScriptLoader = ({ children, excludedPaths, excludedButtonIds }: any) => {
   const loadAdScript = () => {
     if (!document.getElementById('ad-script')) {
       const script = document.createElement('script');
-      script.src = '//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807';
+      // script.src = '//by.reicezenana.com/r42sXNu9GFHjdSXjY/109807';
       script.async = true;
       script.id = 'ad-script';
       document.body.appendChild(script);
