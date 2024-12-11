@@ -76,10 +76,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta
+        {/* <meta
           name="galaksion-domain-verification"
           content="9c215d0ab770acaa88d7a0fbaadb53947827230566f709ea392f337b98b30058"
-        />
+        /> */}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-7QQKB1XSQF"
