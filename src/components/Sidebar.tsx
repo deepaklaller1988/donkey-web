@@ -53,6 +53,7 @@ export default function Sidebar({ mediaType }: any) {
   });
 
   const renderMovies = (items: any[]) => {
+    console.log("first")
     return items.map((item: any, index: number) => (
       <SidebarCard
         key={item.id}
@@ -63,7 +64,7 @@ export default function Sidebar({ mediaType }: any) {
       />
     ));
   };
-console.log(isPopular,"isPopular=======")
+
   return (
     <div className="w-full">
       <div className="flex items-center gap-4 justify-between">
@@ -95,7 +96,7 @@ console.log(isPopular,"isPopular=======")
         </section>
       </div>
       <ul className="flex flex-col gap-3 py-2 mt-[10px]">
-        {mediaType === "Popular"
+        {mediaType == "Popular"
           ? popular && popular.length > 0
             ? renderMovies(popular.slice(0, 5))
             : ""

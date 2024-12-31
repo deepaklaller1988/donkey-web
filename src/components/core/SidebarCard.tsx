@@ -19,12 +19,14 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
 };
 
 function SidebarCard({ movieId, mediaType, index,isPopular }: any) {
+  console.log("second")
+  const router = useRouter();
   const mediatype = mediaType.replace(/s$/, "");
   const capitalizedMediaType =
     mediatype === "tv"
       ? mediatype.toUpperCase()
       : mediatype.charAt(0).toUpperCase() + mediatype.slice(1);
-  const router = useRouter();
+
   const {
     isLoading,
     error,

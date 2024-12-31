@@ -101,7 +101,7 @@ export default function Home() {
 
   const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
 
-  const { isLoading: ispopularLoading, data: popularList } = useQuery({
+  const { isLoading: ispopularLoading, data: popularList ,isError:errorpopular} = useQuery({
     queryKey: ["popular", selectedMedia],
     queryFn: () => fetchPopularLists(selectedMedia),
   });
@@ -143,9 +143,10 @@ export default function Home() {
 
         </div>
         <div className="lg:min-w-[400px] min-w-100% max-w-100% lg:max-w-[400px] homeSliderCZSidebar">
-          <Suspense fallback={<Loader />}>
-            <Sidebar mediaType={"Popular"} />
-          </Suspense>
+        <Suspense fallback={<Loader />}>
+  {errorpopular ? <p>Error loading sidebar</p> : <Sidebar mediaType={"Popular"} />}
+</Suspense>
+
         </div>
       </div>
       <div className="w-full">
