@@ -124,6 +124,7 @@ export default function Header() {
                   height={57}
                   className="max-w-full"
                   src="/assets/images/logo.png"
+                  priority={true}
                   alt="logo"
                 />
               </Link>
