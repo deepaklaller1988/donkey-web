@@ -125,7 +125,7 @@ export default function WatchNow() {
     { label: "Player 1", value: "vidsrc.vip" },
     { label: "Player 2", value: "embed" },
     { label: "Player 3", value: "vidsrc.me" },
-    { label: "Player 4 (Indian)", value: "flicky.host" },
+    { label: "Indian Player", value: "flicky.host" },
   ];
 
   const onPlayerSelect = (e: any) => {
