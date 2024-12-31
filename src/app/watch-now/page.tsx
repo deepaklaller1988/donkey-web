@@ -1,22 +1,23 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { FaStar } from "react-icons/fa";
-import { IoIosAddCircleOutline, IoIosArrowRoundForward } from "react-icons/io";
-import Recommended from "@components/Recommended";
 import "./album-detail.css";
-import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import { useSearchParams } from "next/navigation";
-import FetchApi from "@lib/FetchApi";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import Loader from "@components/core/Loader";
-import moment from "moment";
-import Card from "@components/core/Card";
+
 import API from "@lib/Api";
-import User from "@lib/User";
-import useRole from "@hooks/useRole";
+import moment from "moment";
 import Link from "next/link";
+import User from "@lib/User";
 import Image from "next/image";
+import useRole from "@hooks/useRole";
+import FetchApi from "@lib/FetchApi";
+import { FaStar } from "react-icons/fa";
+import Card from "@components/core/Card";
+import Loader from "@components/core/Loader";
+import { useSearchParams } from "next/navigation";
+import Recommended from "@components/Recommended";
+import React, { useEffect, useRef, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { toasterError, toasterSuccess } from "@components/core/Toaster";
+import { IoIosAddCircleOutline, IoIosArrowRoundForward } from "react-icons/io";
 
 const fetchDetails = async (movieId: number, mediaType: string) => {
   try {
@@ -27,8 +28,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
     let imdbRating = null;
     try {
       const response = await API.get(
-        `cached/imdb-rating?mediaId=${movieId}&mediaType=${
-          mediaType === "movie" ? "movie" : "tv"
+        `cached/imdb-rating?mediaId=${movieId}&mediaType=${mediaType === "movie" ? "movie" : "tv"
         }`
       );
       // const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}&m=${mediaType==='movie' ? 'movie' : 'show'}`);
@@ -104,6 +104,7 @@ const fetchPopularLists = async (mediaType: string, pages = 2) => {
 };
 
 export default function WatchNow() {
+
   const [roleLoading] = useRole();
   const iframeRef = useRef(null);
   const searchParams = useSearchParams();
@@ -116,14 +117,15 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState("vidsrc.dev");
+  const [selectedPlayer, setSelectedPlayer] = useState("vidsrc.vip");
   const [iframeMouseOver, setIframeMouseOver] = useState(false);
 
   const userId = User.id;
   const playerOptions = [
-    { label: "Player 1", value: "vidsrc.dev" },
+    { label: "Player 1", value: "vidsrc.vip" },
     { label: "Player 2", value: "embed" },
     { label: "Player 3", value: "vidsrc.me" },
+    { label: "Player 4", value: "flicky.host" },
   ];
 
   const onPlayerSelect = (e: any) => {
@@ -138,10 +140,10 @@ export default function WatchNow() {
     queryKey: ["watch-detials", movieId, mediaType],
     queryFn: () => fetchDetails(movieId, mediaType),
   });
-console.log(watchDetials,"=============")
+
   useEffect(() => {
     const initializeValues = async () => {
-      if (userId && selectedPlayer === "vidsrc.dev") {
+      if (userId && selectedPlayer === "vidsrc.vip") {
         try {
           const response = await API.get(
             `mediaprogress/tv?user_id=${userId}&media_type=${mediaType}&media_id=${movieId}`
@@ -156,8 +158,8 @@ console.log(watchDetials,"=============")
               episode_id
                 ? Number(episode_id)
                 : episodeId
-                ? Number(episodeId)
-                : 1
+                  ? Number(episodeId)
+                  : 1
             );
           } else {
             console.error("No progress found, using provided IDs");
@@ -179,11 +181,65 @@ console.log(watchDetials,"=============")
   }, [userId, selectedPlayer, movieId, mediaType, seasonId, episodeId]);
 
   useEffect(() => {
-    if (seasonId && episodeId && selectedPlayer !== "vidsrc.dev") {
+    if (seasonId && episodeId && selectedPlayer !== "vidsrc.vip") {
       setSelectedSeason(1);
       setSelectedEpisode(1);
     }
   }, [selectedPlayer, seasonId, episodeId]);
+
+  useEffect(() => {
+    const handleMessage = (event: any) => {
+      if (event.origin !== "https://vidsrc.vip") return;
+
+      try {
+        const data = event.data;
+        if (data.key === "player-config") {
+          setIsAutoplay(data.data.autoplay);
+          setIsPlaying(data.data.autoplay);
+        }
+      } catch (error) {
+        console.error("Error parsing message data:", error);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, [isAutoplay]);
+
+  useEffect(() => {
+    window.focus();
+    const onWindowBlur = () => {
+      if (iframeMouseOver) {
+        if (selectedPlayer === "vidsrc.vip" && userId && movieId && mediaType) {
+          const payload = {
+            user_id: Number(userId),
+            media_id: movieId.toString(),
+            media_type: mediaType,
+            progress_time: "12",
+            status: true,
+            season_id: mediaType === "tv" ? selectedSeason : 1,
+            episode_id: mediaType === "tv" ? selectedEpisode : 1,
+          };
+          mutation.mutate(payload);
+        }
+      }
+    };
+    window.addEventListener("blur", onWindowBlur);
+    return () => {
+      window.removeEventListener("blur", onWindowBlur);
+    };
+  }, [
+    iframeMouseOver,
+    selectedPlayer,
+    mediaType,
+    userId,
+    movieId,
+    selectedSeason,
+    selectedEpisode,
+  ]);
 
   const fetchEpisodesLists = async (
     mediaType: string,
@@ -195,8 +251,7 @@ console.log(watchDetials,"=============")
         return [];
       }
       const response = await FetchApi.get(
-        `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${seriesId}/season/${
-          season && season.season_number ? season.season_number : selectedSeason
+        `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${seriesId}/season/${season && season.season_number ? season.season_number : selectedSeason
         }}?language=en-US&page=1`
       );
       const data = await response.json();
@@ -205,6 +260,7 @@ console.log(watchDetials,"=============")
       console.log(error);
     }
   };
+
   const { isLoading: isCreditLoading, data: creditDetials } = useQuery<any>({
     queryKey: ["credit-detials", movieId, mediaType],
     queryFn: () => fetchCredits(movieId, mediaType),
@@ -231,7 +287,7 @@ console.log(watchDetials,"=============")
       if (data?.message) {
       }
     },
-    onError: (error: any) => {},
+    onError: (error: any) => { },
   });
 
   const handleSeasonChange = (e: any) => {
@@ -266,82 +322,6 @@ console.log(watchDetials,"=============")
   const handleOverlayClick = () => {
     setIsPlaying(true);
   };
-
-  useEffect(() => {
-    const handleMessage = (event: any) => {
-      if (event.origin !== "https://vidsrc.dev") return;
-
-      try {
-        const data = event.data;
-        if (data.key === "player-config") {
-          setIsAutoplay(data.data.autoplay);
-          setIsPlaying(data.data.autoplay);
-        }
-      } catch (error) {
-        console.error("Error parsing message data:", error);
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, [isAutoplay]);
-
-  // useEffect(() => {
-  //   if (  selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-  //     const payload = {
-  //       user_id: Number(userId),
-  //       media_id: movieId.toString(),
-  //       media_type: mediaType,
-  //       progress_time: "12",
-  //       status: true,
-  //       season_id: mediaType === "tv" ? selectedSeason : 1,
-  //       episode_id: mediaType === "tv" ? selectedEpisode : 1,
-  //     };
-  //     mutation.mutate(payload);
-  //   }
-  // }, [
-  //   selectedPlayer,
-  //   mediaType,
-  //   userId,
-  //   movieId,
-  //   selectedSeason,
-  //   selectedEpisode,
-  // ]);
-
-  useEffect(() => {
-    window.focus();
-    const onWindowBlur = () => {
-      if (iframeMouseOver) {
-        if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-          const payload = {
-            user_id: Number(userId),
-            media_id: movieId.toString(),
-            media_type: mediaType,
-            progress_time: "12",
-            status: true,
-            season_id: mediaType === "tv" ? selectedSeason : 1,
-            episode_id: mediaType === "tv" ? selectedEpisode : 1,
-          };
-          mutation.mutate(payload);
-        }
-      }
-    };
-    window.addEventListener("blur", onWindowBlur);
-    return () => {
-      window.removeEventListener("blur", onWindowBlur);
-    };
-  }, [
-    iframeMouseOver,
-    selectedPlayer,
-    mediaType,
-    userId,
-    movieId,
-    selectedSeason,
-    selectedEpisode,
-  ]);
 
   const handleBookmark = async (
     mediaID: any,
@@ -386,51 +366,56 @@ console.log(watchDetials,"=============")
       </div>
     );
   }
+
   const getPlayerUrl = () => {
-    const baseVidSrcUrl = `https://vidsrc.dev/embed/${mediaType}/${
-      watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
-    }${
-      mediaType === "tv"
+    const baseVidSrcUrl = `https://vidsrc.vip/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+      }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
           : "/1"
         : ""
-    }${
-      mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-    }`;
+      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+      }`;
 
-    const baseEmbedUrl = `https://embed.su/embed/${mediaType}/${
-      watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
-    }${
-      mediaType === "tv"
+    const baseEmbedUrl = `https://embed.su/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+      }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
           : "/1"
         : ""
-    }${
-      mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-    }`;
+      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+      }`;
 
-    const baseVidSrcmeUrl = `https://vidsrc.me/embed/${mediaType}?${
-      watchDetials.imdb_id
+    const baseVidSrcmeUrl = `https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id
         ? "imdb=" + watchDetials.imdb_id
         : "tmdb=" + watchDetials.id
-    }${
-      mediaType === "tv" && selectedSeason
+      }${mediaType === "tv" && selectedSeason
         ? "&season=" + (selectedSeason.season_number || 1)
         : "&season=1"
-    }${
-      mediaType === "tv" && selectedEpisode ? "&episode=" + selectedEpisode : ""
-    }`;
+      }${mediaType === "tv" && selectedEpisode ? "&episode=" + selectedEpisode : ""
+      }`;
+      // https://flicky.host/embed/tv/?id=71446/1/1
+      // https://flicky.host/embed/movie/?id=402431
+
+      const baseVidFlickyHostUrl = `https://flicky.host/embed/${mediaType}/?id=${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+      }${mediaType === "tv"
+        ? selectedSeason
+          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+          : "/1"
+        : ""
+      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+      }`;
 
     const playerUrls: any = {
-      "vidsrc.dev": baseVidSrcUrl,
-      embed: baseEmbedUrl,
+      "vidsrc.vip": baseVidSrcUrl,
+       embed: baseEmbedUrl,
       "vidsrc.me": baseVidSrcmeUrl,
+      "flicky.host":baseVidFlickyHostUrl,
     };
 
     return playerUrls[selectedPlayer] || baseVidSrcUrl;
   };
+
   const handleOnMouseOver = () => {
     setIframeMouseOver(true);
   };
@@ -451,11 +436,10 @@ console.log(watchDetials,"=============")
                 width={1000}
                 quality={70}
                 className="bgAlbumDetail"
-                src={`${
-                  watchDetials?.backdrop_path
+                src={`${watchDetials?.backdrop_path
                     ? `https://image.tmdb.org/t/p/original${watchDetials?.backdrop_path}`
                     : "assets/images/slides/1.jpg"
-                }`}
+                  }`}
                 alt="Video"
               />
               <div className="w-full h-full absolute top-0 left-0 z-0 pt-[80px]">
@@ -563,15 +547,15 @@ console.log(watchDetials,"=============")
                             {mediaType === "movie"
                               ? watchDetials?.runtime + " min"
                               : "EP" +
-                              watchDetials?.last_episode_to_air?( watchDetials?.last_episode_to_air
-                                  ?.episode_number):" "}
+                                watchDetials?.last_episode_to_air ? (watchDetials?.last_episode_to_air
+                                  ?.episode_number) : " "}
                           </li>
                         </ul>
                         <ul className="py-1 flex flex-wrap text-white gap-x-3 font-light items-center">
                           {watchDetials.genres && watchDetials.genres.length > 0
                             ? watchDetials.genres.map((gen: any) => (
-                                <li key={gen.id}>{gen.name}</li>
-                              ))
+                              <li key={gen.id}>{gen.name}</li>
+                            ))
                             : ""}
                         </ul>
                       </section>
@@ -612,23 +596,23 @@ console.log(watchDetials,"=============")
                           Country:{" "}
                           <label className="text-white font-light">
                             {watchDetials?.production_countries &&
-                            watchDetials?.production_countries.length > 0
+                              watchDetials?.production_countries.length > 0
                               ? watchDetials?.production_countries.map(
-                                  (gen: any, index: number) => (
-                                    <span key={index}>
-                                      <Link
-                                        href={`/filters?mediaType=${mediaType}&country=${gen.iso_3166_1}`}
-                                        className="transition hover:text-amber-500"
-                                      >
-                                        {gen.name}
-                                      </Link>
-                                      {index <
-                                        watchDetials.production_countries
-                                          .length -
-                                          1 && ", "}
-                                    </span>
-                                  )
+                                (gen: any, index: number) => (
+                                  <span key={index}>
+                                    <Link
+                                      href={`/filters?mediaType=${mediaType}&country=${gen.iso_3166_1}`}
+                                      className="transition hover:text-amber-500"
+                                    >
+                                      {gen.name}
+                                    </Link>
+                                    {index <
+                                      watchDetials.production_countries
+                                        .length -
+                                      1 && ", "}
+                                  </span>
                                 )
+                              )
                               : ""}
                           </label>
                         </p>
@@ -636,21 +620,21 @@ console.log(watchDetials,"=============")
                           Genre:{" "}
                           <label className="text-white font-light">
                             {watchDetials?.genres &&
-                            watchDetials?.genres.length > 0
+                              watchDetials?.genres.length > 0
                               ? watchDetials?.genres.map(
-                                  (gen: any, index: number) => (
-                                    <span key={index}>
-                                      <Link
-                                        href={`/filters?mediaType=${mediaType}&genre=${gen.id}`}
-                                        className="transition hover:text-amber-500"
-                                      >
-                                        {gen.name}
-                                      </Link>
-                                      {index < watchDetials.genres.length - 1 &&
-                                        ", "}
-                                    </span>
-                                  )
+                                (gen: any, index: number) => (
+                                  <span key={index}>
+                                    <Link
+                                      href={`/filters?mediaType=${mediaType}&genre=${gen.id}`}
+                                      className="transition hover:text-amber-500"
+                                    >
+                                      {gen.name}
+                                    </Link>
+                                    {index < watchDetials.genres.length - 1 &&
+                                      ", "}
+                                  </span>
                                 )
+                              )
                               : ""}
                           </label>
                         </p>
@@ -659,24 +643,24 @@ console.log(watchDetials,"=============")
                           <label className="text-white font-light">
                             {mediaType === "movie"
                               ? moment(watchDetials?.release_date).format(
-                                  "MMM DD, YYYY"
-                                )
+                                "MMM DD, YYYY"
+                              )
                               : moment(watchDetials?.first_air_date).format(
-                                  "MMM DD, YYYY"
-                                )}
+                                "MMM DD, YYYY"
+                              )}
                           </label>
                         </p>
                         <p>
                           Director:{" "}
                           <label className="text-white font-light">
                             {creditDetials?.crew &&
-                            creditDetials?.crew.length > 0
+                              creditDetials?.crew.length > 0
                               ? creditDetials?.crew
-                                  .filter(
-                                    (item: any) => item?.job === "Director"
-                                  )
-                                  .map((gen: any) => gen.name)
-                                  .join(", ")
+                                .filter(
+                                  (item: any) => item?.job === "Director"
+                                )
+                                .map((gen: any) => gen.name)
+                                .join(", ")
                               : ""}
                           </label>
                         </p>
@@ -684,10 +668,10 @@ console.log(watchDetials,"=============")
                           Production:{" "}
                           <label className="text-white font-light">
                             {watchDetials.production_companies &&
-                            watchDetials.production_companies.length > 0
+                              watchDetials.production_companies.length > 0
                               ? watchDetials.production_companies
-                                  .map((gen: any) => gen.name)
-                                  .join(", ")
+                                .map((gen: any) => gen.name)
+                                .join(", ")
                               : ""}
                           </label>
                         </p>
@@ -695,11 +679,11 @@ console.log(watchDetials,"=============")
                           Cast:{" "}
                           <label className="text-white font-light">
                             {creditDetials?.cast &&
-                            creditDetials?.cast.length > 0
+                              creditDetials?.cast.length > 0
                               ? creditDetials?.cast
-                                  .slice(0, 5)
-                                  .map((gen: any) => gen.name)
-                                  .join(", ")
+                                .slice(0, 5)
+                                .map((gen: any) => gen.name)
+                                .join(", ")
                               : ""}
                           </label>
                         </p>
@@ -726,7 +710,7 @@ console.log(watchDetials,"=============")
                             value={selectedSeason}
                             onChange={(e: DropdownChangeEvent) => {
                               handleSeasonChange(e);
-                              if (selectedPlayer === "vidsrc.dev") {
+                              if (selectedPlayer === "vidsrc.vip") {
                                 const mediaId = watchDetials.id
                                   ? watchDetials.id
                                   : watchDetials.imdb_id;
@@ -752,22 +736,21 @@ console.log(watchDetials,"=============")
                             }}
                             options={
                               watchDetials.seasons &&
-                              watchDetials.seasons.length > 0
+                                watchDetials.seasons.length > 0
                                 ? watchDetials.seasons.filter(
-                                    (item: any) => item?.season_number > 0
-                                  )
+                                  (item: any) => item?.season_number > 0
+                                )
                                 : []
                             }
                             optionLabel="name"
                             placeholder={
                               selectedSeason
                                 ? "Season" +
-                                  `\n` +
-                                  `${
-                                    selectedSeason === "undefined"
-                                      ? "1"
-                                      : selectedSeason
-                                  }`
+                                `\n` +
+                                `${selectedSeason === "undefined"
+                                  ? "1"
+                                  : selectedSeason
+                                }`
                                 : "Season 1"
                             }
                             className="episodeSelection p-3 px-20"
@@ -793,67 +776,66 @@ console.log(watchDetials,"=============")
                         ) : (
                           <>
                             {episodesList &&
-                            episodesList.episodes &&
-                            episodesList.episodes.length > 0
+                              episodesList.episodes &&
+                              episodesList.episodes.length > 0
                               ? episodesList.episodes.map((item: any) => (
-                                  <>
-                                    <li key={item?.episode_number}>
-                                      <div
-                                        className={`text-[14px] py-3 px-4 block ${
-                                          selectedEpisode === undefined
-                                            ? item?.episode_number === 1
-                                              ? "episodeActive"
-                                              : ""
-                                            : item?.episode_number ===
-                                              selectedEpisode
+                                <>
+                                  <li key={item?.episode_number}>
+                                    <div
+                                      className={`text-[14px] py-3 px-4 block ${selectedEpisode === undefined
+                                          ? item?.episode_number === 1
+                                            ? "episodeActive"
+                                            : ""
+                                          : item?.episode_number ===
+                                            selectedEpisode
                                             ? "episodeActive"
                                             : ""
                                         }`}
-                                        onClick={() => {
-                                          setSelectedEpisode(
-                                            item?.episode_number
-                                          );
-                                          if (selectedPlayer === "vidsrc.dev") {
-                                            const mediaId = watchDetials.id
-                                              ? watchDetials.id
-                                              : watchDetials.imdb_id;
-                                            if (
-                                              userId &&
-                                              mediaId &&
-                                              mediaType
-                                            ) {
-                                              mutation.mutate({
-                                                user_id: Number(userId),
-                                                media_id: mediaId.toString(),
-                                                media_type: mediaType,
-                                                progress_time: "12",
-                                                season_id:
-                                                  mediaType == "tv"
+                                      onClick={() => {
+                                        setSelectedEpisode(
+                                          item?.episode_number
+                                        );
+                                        if (selectedPlayer === "vidsrc.vip") {
+                                          const mediaId = watchDetials.id
+                                            ? watchDetials.id
+                                            : watchDetials.imdb_id;
+                                          if (
+                                            userId &&
+                                            mediaId &&
+                                            mediaType
+                                          ) {
+                                            mutation.mutate({
+                                              user_id: Number(userId),
+                                              media_id: mediaId.toString(),
+                                              media_type: mediaType,
+                                              progress_time: "12",
+                                              season_id:
+                                                mediaType == "tv"
+                                                  ? selectedSeason?.season_number
                                                     ? selectedSeason?.season_number
-                                                      ? selectedSeason?.season_number
-                                                      : selectedSeason
-                                                    : "",
-                                                episode_id:
-                                                  mediaType === "tv"
-                                                    ? item.episode_number
-                                                    : "",
-                                                status: true,
-                                              });
-                                            }
+                                                    : selectedSeason
+                                                  : "",
+                                              episode_id:
+                                                mediaType === "tv"
+                                                  ? item.episode_number
+                                                  : "",
+                                              status: true,
+                                            });
                                           }
-                                        }}
-                                      >
-                                        Episode {item?.episode_number}:{" "}
-                                        {item?.name}
-                                      </div>
-                                      <span>
-                                        {moment(item?.air_date).format(
-                                          "DD/MM/YYYY"
-                                        )}
-                                      </span>
-                                    </li>
-                                  </>
-                                ))
+                                        }
+                                      }}
+                                    >
+                                      Episode {item?.episode_number}:{" "}
+                                      {item?.name}
+                                    </div>
+                                    <span>
+                                      {moment(item?.air_date).format(
+                                        "DD/MM/YYYY"
+                                      )}
+                                    </span>
+                                  </li>
+                                </>
+                              ))
                               : ""}
                           </>
                         )}
@@ -904,17 +886,17 @@ console.log(watchDetials,"=============")
                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                       {popularList && popularList.length > 0
                         ? popularList
-                            .slice(0, 24)
-                            .map((item: any, index: any) => (
-                              <Card
-                                index={index}
-                                key={item.id}
-                                movieId={item.id}
-                                mediaType={
-                                  mediaType === "movie" ? "Movie" : "TV"
-                                }
-                              />
-                            ))
+                          .slice(0, 24)
+                          .map((item: any, index: any) => (
+                            <Card
+                              index={index}
+                              key={item.id}
+                              movieId={item.id}
+                              mediaType={
+                                mediaType === "movie" ? "Movie" : "TV"
+                              }
+                            />
+                          ))
                         : ""}
                     </ul>
                   </div>

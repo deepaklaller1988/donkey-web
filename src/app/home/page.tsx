@@ -4,9 +4,10 @@ import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import HomeSlider from "@components/HomeSlider";
 import Sidebar from "@components/Sidebar";
-import Card from "@components/core/Card";
+const Card = lazy(() => import('@components/core/Card'));
+
 import FetchApi from "@lib/FetchApi";
-import { Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import useTitle from "@hooks/useTitle";
 import Loader from "@components/core/Loader";
 import Image from "next/image";
@@ -32,8 +33,7 @@ const fetchTrendingList = async (mediaType: string) => {
     const tmdbResponses = await Promise.all(
       imdbIds.map((id: any) =>
         FetchApi.get(
-          `https://api.themoviedb.org/3/${
-            mediaTypeLower === "movies" ? "movie" : "tv"
+          `https://api.themoviedb.org/3/${mediaTypeLower === "movies" ? "movie" : "tv"
           }/${id}?language=en-US`
         )
       )
@@ -48,9 +48,8 @@ const fetchTrendingList = async (mediaType: string) => {
 };
 const fetchPopularLists = async (mediaType: string) => {
   const mediaTypeLower = mediaType.toLowerCase();
-  const url = `https://api.trakt.tv/${
-    mediaTypeLower === "movie" ? "movies" : "shows"
-  }/popular?limit=50`;
+  const url = `https://api.trakt.tv/${mediaTypeLower === "movie" ? "movies" : "shows"
+    }/popular?limit=50`;
 
   try {
     const response = await fetch(url, {
@@ -117,13 +116,13 @@ export default function Home() {
     queryFn: () => fetchLatestList("movie"),
   });
 
-  if (movieLoading || tvLoading || roleLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  }
+  // if (movieLoading || tvLoading || roleLoading) {
+  //   return (
+  //     <div>
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
   return (
     <div className="w-full">
       <div className="w-full flex flex-col lg:flex-row justify-between homeSliderCZHub">
@@ -138,10 +137,15 @@ export default function Home() {
               alt="shadow-left"
             />
           </div>
+          <Suspense fallback={<Loader />}>
           <HomeSlider />
+          </Suspense>
+
         </div>
         <div className="lg:min-w-[400px] min-w-100% max-w-100% lg:max-w-[400px] homeSliderCZSidebar">
-          <Sidebar mediaType={"Popular"} />
+          <Suspense fallback={<Loader />}>
+            <Sidebar mediaType={"Popular"} />
+          </Suspense>
         </div>
       </div>
       <div className="w-full">
@@ -167,8 +171,9 @@ export default function Home() {
                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10 justify-center">
                       {latestMovieList && latestMovieList.length > 0
                         ? latestMovieList
-                            .slice(0, 16)
-                            .map((item: any, index: any) => (
+                          .slice(0, 16)
+                          .map((item: any, index: any) => (
+                            <Suspense fallback={<Loader />} key={item.id}>
                               <Card
                                 index={index}
                                 key={item.id}
@@ -176,7 +181,8 @@ export default function Home() {
                                 mediaType={"Movie"}
                                 isLoading={movieLoading}
                               />
-                            ))
+                            </Suspense>
+                          ))
                         : ""}
                     </ul>
                   </div>
@@ -213,8 +219,9 @@ export default function Home() {
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {latestTVList && latestTVList.length > 0
                       ? latestTVList
-                          .slice(0, 16)
-                          .map((item: any, index: any) => (
+                        .slice(0, 16)
+                        .map((item: any, index: any) => (
+                          // <Suspense fallback={<Loader />}>
                             <Card
                               index={index}
                               key={item.id}
@@ -222,7 +229,8 @@ export default function Home() {
                               mediaType={"TV"}
                               isLoading={tvLoading}
                             />
-                          ))
+                          // </Suspense>
+                        ))
                       : ""}
                   </ul>
                 </div>
@@ -234,21 +242,19 @@ export default function Home() {
                   </h3>
                   <section className="flex gap-2">
                     <button
-                      className={`${
-                        selectedMedia === "Movie"
-                          ? "pbgColor rounded-full text-black px-2"
-                          : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
-                      }`}
+                      className={`${selectedMedia === "Movie"
+                        ? "pbgColor rounded-full text-black px-2"
+                        : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+                        }`}
                       onClick={() => setSelectedMedia("Movie")}
                     >
                       Movies
                     </button>
                     <button
-                      className={`${
-                        selectedMedia === "TV"
-                          ? "pbgColor rounded-full text-black px-2"
-                          : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
-                      }`}
+                      className={`${selectedMedia === "TV"
+                        ? "pbgColor rounded-full text-black px-2"
+                        : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+                        }`}
                       onClick={() => setSelectedMedia("TV")}
                     >
                       TV Shows
@@ -259,18 +265,18 @@ export default function Home() {
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {popularList && popularList.length > 0
                       ? popularList
-                          .slice(0, 16)
-                          .map((item: any, index: any) => (
-                            <>
-                              <Card
-                                index={index}
-                                key={item.id}
-                                movieId={item.id}
-                                mediaType={selectedMedia}
-                                isLoading={ispopularLoading}
-                              />
-                            </>
-                          ))
+                        .slice(0, 16)
+                        .map((item: any, index: any) => (
+                          <Suspense fallback={<Loader />} key={item.id}>
+                            <Card
+                              index={index}
+                              key={item.id}
+                              movieId={item.id}
+                              mediaType={selectedMedia}
+                              isLoading={ispopularLoading}
+                            />
+                          </Suspense>
+                        ))
                       : ""}
                   </ul>
                 </div>

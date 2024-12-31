@@ -11,7 +11,7 @@ const fetchPopularLists = async (mediaType: string) => {
   const mediaTypeLower = mediaType.toLowerCase();
   const url = `https://api.trakt.tv/${
     mediaTypeLower === "movies" ? "movies" : "shows"
-  }/trending?limit=50`;
+  }/trending?limit=20`;
 
   try {
     const response = await fetch(url, {
@@ -63,7 +63,7 @@ export default function Sidebar({ mediaType }: any) {
       />
     ));
   };
-
+console.log(isPopular,"isPopular=======")
   return (
     <div className="w-full">
       <div className="flex items-center gap-4 justify-between">

@@ -226,7 +226,6 @@ export default function HomeSlider() {
           {combinedList &&
             combinedList.length > 0 &&
             combinedList.map((item: any, index: number) => (
-              <>
                 <div
                   key={item.id}
                   className="each-slide-effect slideMain relative"
@@ -333,7 +332,6 @@ export default function HomeSlider() {
                     </div>
                   </div>
                 </div>
-              </>
             ))}
         </Slide>
        
