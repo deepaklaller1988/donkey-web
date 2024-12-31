@@ -25,7 +25,7 @@ const fetchPopularLists = async (mediaType: string) => {
     const imdbIds = data.map((item: any) =>
       mediaTypeLower === "movies" ? item.movie?.ids.imdb : item.show?.ids.tmdb
     );
-    const tmdbResponses = await Promise.all(
+    const tmdbResponses:any = await Promise.allSettled(
       imdbIds.map((id: any) =>
         FetchApi.get(
           `https://api.themoviedb.org/3/${
@@ -35,8 +35,17 @@ const fetchPopularLists = async (mediaType: string) => {
       )
     );
 
-    const tmdbData = await Promise.all(tmdbResponses.map((res) => res.json()));
-    return tmdbData;
+    // const tmdbData = await Promise.all(tmdbResponses.map((res:any) => res.json()));
+    // return tmdbData;
+    const successfulResponses = tmdbResponses
+    .filter((result: any) => result.status === "fulfilled")
+    .map((result: any) => result.value);
+
+  const tmdbData = await Promise.all(
+    successfulResponses.map((res: any) => res.json())
+  );
+
+  return tmdbData;
   } catch (error) {
     console.log("Error fetching popular lists:", error);
     return [];
