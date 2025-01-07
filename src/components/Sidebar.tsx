@@ -79,7 +79,7 @@ export default function Sidebar({ mediaType }: any) {
       <div className="flex items-center gap-4 justify-between">
         <h3 className="text-white text-[25px] font-semibold flex items-center gap-1">
           <HiTrendingUp className="text-amber-500 mr-1 w-8 h-8" />
-          TRENDING
+          TREND
         </h3>
         <section className="flex gap-2">
           <button
