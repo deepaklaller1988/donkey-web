@@ -25,7 +25,7 @@ export default function ResetPassword() {
     onSuccess: (data) => {
       if (data?.message) {
         setSuccessMessage(data.message);
-        router.push("/home");
+        router.push("/");
         toasterSuccess("Password Reset SuccessFully !!", 3000, "id");
       }
     },

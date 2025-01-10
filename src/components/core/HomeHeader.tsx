@@ -60,7 +60,7 @@ export default function Header() {
   const handleLogOut = () => {
     setOpenProfile(false);
     logOut(), setToken(null);
-    router.push("/home");
+    router.push("/");
     toasterSuccess("Signed out Successfully.", 3000, "id");
   };
 
@@ -115,7 +115,7 @@ export default function Header() {
                 <HiMenuAlt1 className="text-[30px] text-white" />
               </button>
               <Link
-                href="/home"
+                href="/"
                 className="w-[120px] md:w-[150px] block m-auto"
               >
                 <Image

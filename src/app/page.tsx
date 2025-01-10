@@ -1,12 +1,11 @@
 "use client";
-
-import Loader from "@components/core/Loader";
+import HomePage from "@components/HomePage";
 
 export default function page() {
-
   return (
     <div>
-      <Loader />
+
+      <HomePage />
     </div>
   );
 }

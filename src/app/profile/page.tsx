@@ -22,7 +22,7 @@ export default function Profile() {
     if (roleLoading) return;
 
     if (!roleData || !roleData.id) {
-      router.push('/home');
+      router.push('/');
     }
   }, [roleData, roleLoading, router]);
 

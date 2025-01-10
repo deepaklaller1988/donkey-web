@@ -26,7 +26,7 @@ export default function Home() {
                         <h1 className="text-[18px] md:text-[26px] font-medium text-center py-5 text-white/40">Watch HD Movies & TV Shows online for Free!</h1>
                         <Searchbar />
                         <div className="w-full text-center">
-                            <a href="/home" className="transition text-lg font-medium p-2 px-6 rounded-lg inline-flex items-center pbgColor m-auto mt-5">Visit Homepage <IoMdArrowDroprightCircle className="ml-1 text-xl" /></a>
+                            <a href="/" className="transition text-lg font-medium p-2 px-6 rounded-lg inline-flex items-center pbgColor m-auto mt-5">Visit Homepage <IoMdArrowDroprightCircle className="ml-1 text-xl" /></a>
                         </div>
                     </div>
                     <div className="w-full py-6 px-2 md:py-6 md:px-2 bg-black/50">

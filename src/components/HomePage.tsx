@@ -1,5 +1,6 @@
 "use client";
-import "./home.css";
+import "../app/home/home.css";
+
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import HomeSlider from "@components/HomeSlider";
@@ -94,14 +95,14 @@ const fetchLatestList = async (mediaType: string) => {
   }
 };
 
-export default function Home() {
+const HomePage = () => {
   useTitle("Home");
   const router = useRouter();
   const [roleLoading] = useRole();
 
   const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
 
-  const { isLoading: ispopularLoading, data: popularList ,isError:errorpopular} = useQuery({
+  const { isLoading: ispopularLoading, data: popularList, isError: errorpopular } = useQuery({
     queryKey: ["popular", selectedMedia],
     queryFn: () => fetchPopularLists(selectedMedia),
   });
@@ -116,13 +117,13 @@ export default function Home() {
     queryFn: () => fetchLatestList("movie"),
   });
 
-  // if (movieLoading || tvLoading || roleLoading) {
-  //   return (
-  //     <div>
-  //       <Loader />
-  //     </div>
-  //   );
-  // }
+  if (movieLoading || tvLoading || roleLoading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
   return (
     <div className="w-full">
       <div className="w-full flex flex-col lg:flex-row justify-between homeSliderCZHub">
@@ -138,14 +139,14 @@ export default function Home() {
             />
           </div>
           <Suspense fallback={<Loader />}>
-          <HomeSlider />
+            <HomeSlider />
           </Suspense>
 
         </div>
         <div className="lg:min-w-[400px] min-w-100% max-w-100% lg:max-w-[400px] homeSliderCZSidebar">
-        <Suspense fallback={<Loader />}>
-  {errorpopular ? <p>Error loading sidebar</p> : <Sidebar mediaType={"Popular"} />}
-</Suspense>
+          <Suspense fallback={<Loader />}>
+            {errorpopular ? <p>Error loading sidebar</p> : <Sidebar mediaType={"Popular"} />}
+          </Suspense>
 
         </div>
       </div>
@@ -223,13 +224,13 @@ export default function Home() {
                         .slice(0, 16)
                         .map((item: any, index: any) => (
                           // <Suspense fallback={<Loader />}>
-                            <Card
-                              index={index}
-                              key={item.id}
-                              movieId={item.id}
-                              mediaType={"TV"}
-                              isLoading={tvLoading}
-                            />
+                          <Card
+                            index={index}
+                            key={item.id}
+                            movieId={item.id}
+                            mediaType={"TV"}
+                            isLoading={tvLoading}
+                          />
                           // </Suspense>
                         ))
                       : ""}
@@ -287,5 +288,7 @@ export default function Home() {
         </div>
       </div>
     </div>
-  );
+  )
 }
+
+export default HomePage

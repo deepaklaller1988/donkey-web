@@ -69,7 +69,7 @@ export default function NavBar({ openSideBar, toggleSidebar }: any) {
         <div className="homewrapper h-0">
           <div className="navSetInner relative top-[80px] left-0 w-[150px] bg-amber-500 flex flex-col rounded-lg py-4 ">
             <Link
-              href="/home"
+              href="/"
               data-key="home"
               className=" p-2 px-4 hover:bg-[#272727] hover:text-amber-500 font-bold text-black transition bg-amber-500 flex gap-4"
             >
