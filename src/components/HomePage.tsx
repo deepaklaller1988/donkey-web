@@ -124,6 +124,7 @@ const HomePage = () => {
       </div>
     );
   }
+  
   return (
     <div className="w-full">
       <div className="w-full flex flex-col lg:flex-row justify-between homeSliderCZHub">
