@@ -17,7 +17,8 @@ const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
 const fetchTrendingList = async (mediaType: string) => {
   const mediaTypeLower = mediaType.toLowerCase();
-  const url = `https://api.trakt.tv/shows/trending?limit=50`;
+  const url = `https://api.trakt.tv/${mediaTypeLower === "movie" ? "movies" : "shows"
+    }/trending?limit=50`;
 
   try {
     const response = await fetch(url, {
