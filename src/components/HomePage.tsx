@@ -1,5 +1,5 @@
 "use client";
-import "../app/home/home.css";
+import "../app/home.css";
 
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
