@@ -117,14 +117,14 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState("vidsrc.dev");
+  const [selectedPlayer, setSelectedPlayer] = useState("vidsrc.vip");
   const [iframeMouseOver, setIframeMouseOver] = useState(false);
 
   const userId = User.id;
   const playerOptions = [
-    { label: "Player 1", value: "vidsrc.dev" },
-    { label: "Player 2", value: "embed" },
-    { label: "Player 3", value: "vidsrc.me" },
+    { label: "Player 1", value: "vidsrc.vip" },
+    { label: "Player 2", value: "vidsrc.cc" },
+    { label: "Player 3", value: "embed" },
     { label: "Indian Player", value: "flicky.host" },
   ];
 
@@ -143,7 +143,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     const initializeValues = async () => {
-      if (userId && selectedPlayer === "vidsrc.dev") {
+      if (userId && selectedPlayer === "vidsrc.vip") {
         try {
           const response = await API.get(
             `mediaprogress/tv?user_id=${userId}&media_type=${mediaType}&media_id=${movieId}`
@@ -181,7 +181,7 @@ export default function WatchNow() {
   }, [userId, selectedPlayer, movieId, mediaType, seasonId, episodeId]);
 
   useEffect(() => {
-    if (seasonId && episodeId && selectedPlayer !== "vidsrc.dev") {
+    if (seasonId && episodeId && selectedPlayer !== "vidsrc.vip") {
       setSelectedSeason(1);
       setSelectedEpisode(1);
     }
@@ -189,7 +189,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     const handleMessage = (event: any) => {
-      if (event.origin !== "https://vidsrc.dev") return;
+      if (event.origin !== "https://vidsrc.vip") return;
 
       try {
         const data = event.data;
@@ -213,7 +213,7 @@ export default function WatchNow() {
     window.focus();
     const onWindowBlur = () => {
       if (iframeMouseOver) {
-        if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
+        if (selectedPlayer === "vidsrc.vip" && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
@@ -368,7 +368,7 @@ export default function WatchNow() {
   }
 
   const getPlayerUrl = () => {
-    const baseVidSrcUrl = `https://vidsrc.dev/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+    const baseVidSrcUrl = `https://vidsrc.vip/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -407,9 +407,9 @@ export default function WatchNow() {
       }`;
 
     const playerUrls: any = {
-      "vidsrc.dev": baseVidSrcUrl,
-       embed: baseEmbedUrl,
-      "vidsrc.me": baseVidSrcmeUrl,
+      "vidsrc.vip": baseVidSrcUrl,
+      "embed": baseEmbedUrl,
+      "vidsrc.cc": baseVidSrcmeUrl,
       "flicky.host":baseVidFlickyHostUrl,
     };
 
@@ -710,7 +710,7 @@ export default function WatchNow() {
                             value={selectedSeason}
                             onChange={(e: DropdownChangeEvent) => {
                               handleSeasonChange(e);
-                              if (selectedPlayer === "vidsrc.dev") {
+                              if (selectedPlayer === "vidsrc.vip") {
                                 const mediaId = watchDetials.id
                                   ? watchDetials.id
                                   : watchDetials.imdb_id;
@@ -795,7 +795,7 @@ export default function WatchNow() {
                                         setSelectedEpisode(
                                           item?.episode_number
                                         );
-                                        if (selectedPlayer === "vidsrc.dev") {
+                                        if (selectedPlayer === "vidsrc.vip") {
                                           const mediaId = watchDetials.id
                                             ? watchDetials.id
                                             : watchDetials.imdb_id;
