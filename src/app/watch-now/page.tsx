@@ -117,15 +117,15 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState("vidsrc.vip");
+  const [selectedPlayer, setSelectedPlayer] = useState("vidsrc.dev");
   const [iframeMouseOver, setIframeMouseOver] = useState(false);
 
   const userId = User.id;
   const playerOptions = [
-    { label: "Player 1", value: "vidsrc.vip" },
-    { label: "Player 2", value: "vidsrc.cc" },
-    { label: "Player 3", value: "embed" },
-    { label: "Indian Player", value: "flicky.host" },
+    { label: "Player 1", value: "vidsrc.dev" },
+    { label: "Player 2", value: "embed" },
+    { label: "Player 3", value: "vidsrc.me" },
+    { label: "Dubbed", value: "player.autoembed" },
   ];
 
   const onPlayerSelect = (e: any) => {
@@ -143,7 +143,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     const initializeValues = async () => {
-      if (userId && selectedPlayer === "vidsrc.vip") {
+      if (userId && selectedPlayer === "vidsrc.dev") {
         try {
           const response = await API.get(
             `mediaprogress/tv?user_id=${userId}&media_type=${mediaType}&media_id=${movieId}`
@@ -172,8 +172,10 @@ export default function WatchNow() {
           setSelectedEpisode(episodeId ? Number(episodeId) : 1);
         }
       } else {
-        setSelectedSeason(seasonId ? Number(seasonId) : 1);
-        setSelectedEpisode(episodeId ? Number(episodeId) : 1);
+        if(!selectedEpisode || !selectedSeason){
+          setSelectedSeason(seasonId ? Number(seasonId) : 1);
+          setSelectedEpisode(episodeId ? Number(episodeId) : 1);
+        }
       }
     };
 
@@ -181,15 +183,17 @@ export default function WatchNow() {
   }, [userId, selectedPlayer, movieId, mediaType, seasonId, episodeId]);
 
   useEffect(() => {
-    if (seasonId && episodeId && selectedPlayer !== "vidsrc.vip") {
-      setSelectedSeason(1);
-      setSelectedEpisode(1);
+    if (seasonId && episodeId && selectedPlayer !== "vidsrc.dev") {
+      if(!selectedEpisode && !selectedSeason){
+        setSelectedSeason(1);
+        setSelectedEpisode(1);
+      }
     }
   }, [selectedPlayer, seasonId, episodeId]);
 
   useEffect(() => {
     const handleMessage = (event: any) => {
-      if (event.origin !== "https://vidsrc.vip") return;
+      if (event.origin !== "https://vidsrc.dev") return;
 
       try {
         const data = event.data;
@@ -213,7 +217,7 @@ export default function WatchNow() {
     window.focus();
     const onWindowBlur = () => {
       if (iframeMouseOver) {
-        if (selectedPlayer === "vidsrc.vip" && userId && movieId && mediaType) {
+        if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
@@ -368,7 +372,7 @@ export default function WatchNow() {
   }
 
   const getPlayerUrl = () => {
-    const baseVidSrcUrl = `https://vidsrc.vip/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+    const baseVidSrcUrl = `https://vidsrc.dev/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -397,7 +401,16 @@ export default function WatchNow() {
       // https://flicky.host/embed/tv/?id=71446/1/1
       // https://flicky.host/embed/movie/?id=402431
 
-      const baseVidFlickyHostUrl = `https://flicky.host/embed/${mediaType}/?id=${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+      // const baseVidFlickyHostUrl = `https://flicky.host/embed/${mediaType}/?id=${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+      // }${mediaType === "tv"
+      //   ? selectedSeason
+      //     ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+      //     : "/1"
+      //   : ""
+      // }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+      // }`;
+
+      const baseAutoEmbedUrl = `https://player.autoembed.cc/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -407,10 +420,10 @@ export default function WatchNow() {
       }`;
 
     const playerUrls: any = {
-      "vidsrc.vip": baseVidSrcUrl,
-      "embed": baseEmbedUrl,
-      "vidsrc.cc": baseVidSrcmeUrl,
-      "flicky.host":baseVidFlickyHostUrl,
+      "vidsrc.dev": baseVidSrcUrl,
+       embed: baseEmbedUrl,
+      "vidsrc.me": baseVidSrcmeUrl,
+      "player.autoembed":baseAutoEmbedUrl,
     };
 
     return playerUrls[selectedPlayer] || baseVidSrcUrl;
@@ -710,7 +723,7 @@ export default function WatchNow() {
                             value={selectedSeason}
                             onChange={(e: DropdownChangeEvent) => {
                               handleSeasonChange(e);
-                              if (selectedPlayer === "vidsrc.vip") {
+                              if (selectedPlayer === "vidsrc.dev") {
                                 const mediaId = watchDetials.id
                                   ? watchDetials.id
                                   : watchDetials.imdb_id;
@@ -795,7 +808,7 @@ export default function WatchNow() {
                                         setSelectedEpisode(
                                           item?.episode_number
                                         );
-                                        if (selectedPlayer === "vidsrc.vip") {
+                                        if (selectedPlayer === "vidsrc.dev") {
                                           const mediaId = watchDetials.id
                                             ? watchDetials.id
                                             : watchDetials.imdb_id;
