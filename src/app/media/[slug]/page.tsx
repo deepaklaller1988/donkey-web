@@ -135,7 +135,7 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
       ? "Results"
       : slug === "recent"
       ? "Recently Updated"
-      : ` ${slug === "movie" ? "Latest Movies" : "Trending Shows"}`
+      : ` ${slug === "movie" ? "Trending Movies" : "Trending Shows"}`
   );
   const searchParams = useSearchParams();
   const searchQuery: any = searchParams.get("query");
@@ -242,7 +242,7 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                   <div className="flex items-center gap-4">
                     <h3 className="text-white text-[25px] font-semibold">
                       {slug === "movie"
-                        ? "LATEST MOVIES"
+                        ? "TRENDING MOVIES"
                         : slug === "tv"
                         ? "TRENDING SHOWS"
                         : slug === "recent"

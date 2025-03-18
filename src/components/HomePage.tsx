@@ -77,23 +77,53 @@ const fetchPopularLists = async (mediaType: string) => {
     return [];
   }
 };
-
 const fetchLatestList = async (mediaType: string) => {
-  let url = "";
-  if (mediaType === "movie") {
-    url = `https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`;
-  } else {
-    url = `https://api.themoviedb.org/3/trending/tv/day?language=en-US`;
-  }
-  try {
-    const response = await FetchApi.get(url);
-    const data = await response.json();
+  const mediaTypeLower = mediaType.toLowerCase();
+  const url = `https://api.trakt.tv/${mediaTypeLower === "movie" ? "movies" : "shows"
+    }/trending?limit=24`;
 
-    return data.results;
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        "trakt-api-version": "2",
+        "trakt-api-key": CLIENT_ID,
+      },
+    });
+    const data = await response.json();
+    const imdbIds = data.map((item: any) => item.movie.ids.tmdb);
+    const tmdbResponses = await Promise.all(
+      imdbIds.map((id: any) =>
+        FetchApi.get(
+          `https://api.themoviedb.org/3/${mediaTypeLower}/${id}?language=en-US`
+        )
+      )
+    );
+
+    const tmdbData = await Promise.all(tmdbResponses.map((res) => res.json()));
+    return tmdbData;
   } catch (error) {
-    console.log(error);
+    console.log("Error fetching popular lists:", error);
+    return [];
   }
 };
+
+// const fetchLatestList = async (mediaType: string) => {
+//   let url = "";
+//   if (mediaType === "movie") {
+//     url = `https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`;
+//   } else {
+//     url = `https://api.themoviedb.org/3/trending/tv/day?language=en-US`;
+//   }
+//   try {
+//     const response = await FetchApi.get(url);
+//     const data = await response.json();
+
+//     return data.results;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 const HomePage = () => {
   useTitle("Home");
@@ -160,7 +190,7 @@ const HomePage = () => {
                 <div className="homewrapper">
                   <div className="flex justify-between  items-center gap-4">
                     <h3 className="text-white text-[25px] font-semibold">
-                      LATEST MOVIES
+                    TRENDING MOVIES
                     </h3>
                     <button
                       className="border border-1 rounded-full text-white px-2 mr-2 hover:bg-white hover:text-black transition"
