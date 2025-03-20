@@ -480,11 +480,13 @@ export default function WatchNow() {
                       src={getPlayerUrl()}
                       className="w-full mt-5 rounded-lg videoFrame"
                       title="Vidsrc video player"
+                      sandbox="allow-scripts allow-same-origin allow-presentation"
                       referrerPolicy="origin"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
                       ref={iframeRef}
                       id="myiframe"
+                      
                     ></iframe>
                   </div>
                 </div>
