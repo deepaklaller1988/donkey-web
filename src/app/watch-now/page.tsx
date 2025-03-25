@@ -174,7 +174,7 @@ export default function WatchNow() {
           setSelectedEpisode(episodeId ? Number(episodeId) : 1);
         }
       } else {
-        if(!selectedEpisode || !selectedSeason){
+        if (!selectedEpisode || !selectedSeason) {
           setSelectedSeason(seasonId ? Number(seasonId) : 1);
           setSelectedEpisode(episodeId ? Number(episodeId) : 1);
         }
@@ -187,7 +187,7 @@ export default function WatchNow() {
   useEffect(() => {
     // if (seasonId && episodeId && selectedPlayer !== "vidsrc.dev") {
     if (seasonId && episodeId && selectedPlayer !== "videasy.net") {
-      if(!selectedEpisode && !selectedSeason){
+      if (!selectedEpisode && !selectedSeason) {
         setSelectedSeason(1);
         setSelectedEpisode(1);
       }
@@ -404,26 +404,26 @@ export default function WatchNow() {
       }`;
 
     const baseVidSrcmeUrl = `https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id
-        ? "imdb=" + watchDetials.imdb_id
-        : "tmdb=" + watchDetials.id
+      ? "imdb=" + watchDetials.imdb_id
+      : "tmdb=" + watchDetials.id
       }${mediaType === "tv" && selectedSeason
         ? "&season=" + (selectedSeason.season_number || 1)
         : "&season=1"
       }${mediaType === "tv" && selectedEpisode ? "&episode=" + selectedEpisode : ""
       }`;
-      // https://flicky.host/embed/tv/?id=71446/1/1
-      // https://flicky.host/embed/movie/?id=402431
+    // https://flicky.host/embed/tv/?id=71446/1/1
+    // https://flicky.host/embed/movie/?id=402431
 
-      // const baseVidFlickyHostUrl = `https://flicky.host/embed/${mediaType}/?id=${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
-      // }${mediaType === "tv"
-      //   ? selectedSeason
-      //     ? "/" + (selectedSeason.season_number || selectedSeason || 1)
-      //     : "/1"
-      //   : ""
-      // }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-      // }`;
+    // const baseVidFlickyHostUrl = `https://flicky.host/embed/${mediaType}/?id=${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+    // }${mediaType === "tv"
+    //   ? selectedSeason
+    //     ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+    //     : "/1"
+    //   : ""
+    // }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+    // }`;
 
-      const baseAutoEmbedUrl = `https://player.autoembed.cc/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+    const baseAutoEmbedUrl = `https://player.autoembed.cc/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -435,9 +435,9 @@ export default function WatchNow() {
     const playerUrls: any = {
       // "vidsrc.dev": baseVidSrcUrl,
       "videasy.net": baseVidSrcUrl,
-       embed: baseEmbedUrl,
+      embed: baseEmbedUrl,
       "vidsrc.me": baseVidSrcmeUrl,
-      "player.autoembed":baseAutoEmbedUrl,
+      "player.autoembed": baseAutoEmbedUrl,
     };
 
     return playerUrls[selectedPlayer] || baseVidSrcUrl;
@@ -464,8 +464,8 @@ export default function WatchNow() {
                 quality={70}
                 className="bgAlbumDetail"
                 src={`${watchDetials?.backdrop_path
-                    ? `https://image.tmdb.org/t/p/original${watchDetials?.backdrop_path}`
-                    : "/assets/images/slides/1.jpg"
+                  ? `https://image.tmdb.org/t/p/original${watchDetials?.backdrop_path}`
+                  : "/assets/images/slides/1.jpg"
                   }`}
                 alt="Video"
               />
@@ -476,7 +476,7 @@ export default function WatchNow() {
                     onMouseOver={handleOnMouseOver}
                     onMouseOut={handleOnMouseOut}
                   >
-                    <iframe
+                    {selectedPlayer === "videasy.net" ? (<iframe
                       src={getPlayerUrl()}
                       className="w-full mt-5 rounded-lg videoFrame"
                       title="Vidsrc video player"
@@ -486,8 +486,18 @@ export default function WatchNow() {
                       allowFullScreen
                       ref={iframeRef}
                       id="myiframe"
-                      
-                    ></iframe>
+                    ></iframe>) : (
+                      <iframe
+                        src={getPlayerUrl()}
+                        className="w-full mt-5 rounded-lg videoFrame"
+                        title="Vidsrc video player"
+                        referrerPolicy="origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        ref={iframeRef}
+                        id="myiframe"
+                      ></iframe>
+                    )}
                   </div>
                 </div>
                 {!isAutoplay && !isPlaying && (
@@ -813,13 +823,13 @@ export default function WatchNow() {
                                   <li key={item?.episode_number}>
                                     <div
                                       className={`text-[14px] py-3 px-4 block cursor-pointer ${selectedEpisode === undefined
-                                          ? item?.episode_number === 1
-                                            ? "episodeActive"
-                                            : ""
-                                          : item?.episode_number ===
-                                            selectedEpisode
-                                            ? "episodeActive"
-                                            : ""
+                                        ? item?.episode_number === 1
+                                          ? "episodeActive"
+                                          : ""
+                                        : item?.episode_number ===
+                                          selectedEpisode
+                                          ? "episodeActive"
+                                          : ""
                                         }`}
                                       onClick={() => {
                                         setSelectedEpisode(
