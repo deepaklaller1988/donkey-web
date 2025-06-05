@@ -20,6 +20,7 @@ const fetchTrendingList = async (mediaType: string) => {
   const url = `https://api.trakt.tv/shows/trending?limit=50`;
 
   try {
+        // console.debug("Fetching trending list of shows from Trakt:", url);
     const response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -28,20 +29,29 @@ const fetchTrendingList = async (mediaType: string) => {
       },
     });
     const data = await response.json();
-    const imdbIds = data.map((item: any) =>
-      mediaTypeLower === "movies" ? item.movie?.ids.imdb : item.show?.ids.tmdb
-    );
+    const imdbIds = data?.map((item: any) =>
+      item.show?.ids.tmdb
+    ).filter(Boolean);
+        // console.debug("Mapped TMDB IDs for shows:", imdbIds);
+
     const tmdbResponses = await Promise.all(
-      imdbIds.map((id: any) =>
-        FetchApi.get(
-          `https://api.themoviedb.org/3/${mediaTypeLower === "movies" ? "movie" : "tv"
-          }/${id}?language=en-US`
-        )
-      )
+      imdbIds?.map(async (id: any) => {
+        try {
+          const tmdbUrl = `https://api.themoviedb.org/3/tv/${id}?language=en-US`;
+          // console.debug("Fetching TMDB detail for shows:", tmdbUrl);
+          const response = await FetchApi.get(tmdbUrl);
+          return await response.json();
+        } catch (err) {
+          console.error("Failed to fetch from TMDB for ID shows:", id, err);
+          return null;
+        }
+      })
     );
 
-    const tmdbData = await Promise.all(tmdbResponses.map((res) => res.json()));
-    return tmdbData;
+  const filteredData = tmdbResponses.filter(Boolean); 
+    // console.debug("Final TMDB Data for shows:", filteredData);
+    return filteredData;
+
   } catch (error) {
     console.log("Error fetching popular lists:", error);
     return [];
@@ -53,6 +63,7 @@ const fetchPopularLists = async (mediaType: string) => {
     }/popular?limit=50`;
 
   try {
+    //  console.debug("Fetching trending list of popular from Trakt:", url);
     const response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -61,17 +72,25 @@ const fetchPopularLists = async (mediaType: string) => {
       },
     });
     const data = await response.json();
-    const imdbIds = data.map((item: any) => item.ids.tmdb);
-    const tmdbResponses = await Promise.all(
-      imdbIds.map((id: any) =>
-        FetchApi.get(
-          `https://api.themoviedb.org/3/${mediaTypeLower}/${id}?language=en-US`
-        )
-      )
+    const imdbIds = data?.map((item: any) => item.ids.tmdb);
+      //  console.debug("Mapped TMDB IDs for popular:", imdbIds);
+  const tmdbResponses = await Promise.all(
+      imdbIds?.map(async (id: any) => {
+        try {
+          const tmdbUrl = `https://api.themoviedb.org/3/tv/${id}?language=en-US`;
+          // console.debug("Fetching TMDB detail for popular:", tmdbUrl);
+          const response = await FetchApi.get(tmdbUrl);
+          return await response.json();
+        } catch (err) {
+          console.error("Failed to fetch from TMDB for ID popular:", id, err);
+          return null;
+        }
+      })
     );
 
-    const tmdbData = await Promise.all(tmdbResponses.map((res) => res.json()));
-    return tmdbData;
+  const filteredData = tmdbResponses.filter(Boolean); 
+    // console.debug("Final TMDB Data for shows:", filteredData);
+    return filteredData;
   } catch (error) {
     console.log("Error fetching popular lists:", error);
     return [];
@@ -79,10 +98,10 @@ const fetchPopularLists = async (mediaType: string) => {
 };
 const fetchLatestList = async (mediaType: string) => {
   const mediaTypeLower = mediaType.toLowerCase();
-  const url = `https://api.trakt.tv/${mediaTypeLower === "movie" ? "movies" : "shows"
-    }/trending?limit=24`;
+  const url = `https://api.trakt.tv/${mediaTypeLower === "movie" ? "movies" : "shows"}/trending?limit=24`;
 
   try {
+    // console.debug("Fetching trending list from Trakt:", url);
     const response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -90,23 +109,38 @@ const fetchLatestList = async (mediaType: string) => {
         "trakt-api-key": CLIENT_ID,
       },
     });
+
     const data = await response.json();
-    const imdbIds = data.map((item: any) => item.movie.ids.tmdb);
+    // console.debug("Received Trakt trending data:", data);
+
+    const ids = data.map((item: any) => item.movie?.ids?.tmdb).filter(Boolean);
+    // console.debug("Mapped TMDB IDs:", ids);
+
     const tmdbResponses = await Promise.all(
-      imdbIds.map((id: any) =>
-        FetchApi.get(
-          `https://api.themoviedb.org/3/${mediaTypeLower}/${id}?language=en-US`
-        )
-      )
+      ids?.map(async (id: any) => {
+        try {
+          const tmdbUrl = `https://api.themoviedb.org/3/${mediaTypeLower}/${id}?language=en-US`;
+          // console.debug("Fetching TMDB detail:", tmdbUrl);
+          const response = await FetchApi.get(tmdbUrl);
+          return await response.json();
+        } catch (err) {
+          console.error("Failed to fetch from TMDB for ID:", id, err);
+          return null;
+        }
+      })
     );
 
-    const tmdbData = await Promise.all(tmdbResponses.map((res) => res.json()));
-    return tmdbData;
+    const filteredData = tmdbResponses.filter(Boolean); 
+    // console.debug("Final TMDB Data:", filteredData);
+
+    return filteredData;
   } catch (error) {
-    console.log("Error fetching popular lists:", error);
+    console.error("Error fetching popular lists:", error);
+    debugger;
     return [];
   }
 };
+
 
 // const fetchLatestList = async (mediaType: string) => {
 //   let url = "";
@@ -138,7 +172,7 @@ const HomePage = () => {
   });
 
   const { isLoading: tvLoading, data: latestTVList } = useQuery({
-    queryKey: ["latest-movies", "tv"],
+    queryKey: ["latest-show", "tv"],
     queryFn: () => fetchTrendingList("tv"),
   });
 

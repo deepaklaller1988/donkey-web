@@ -124,8 +124,10 @@ export default function WatchNow() {
   const playerOptions = [
     // { label: "Player 1", value: "vidsrc.dev" },
     { label: "Player 1", value: "videasy.net" },
-    { label: "Player 2", value: "embed" },
-    { label: "Player 3", value: "vidsrc.me" },
+    { label: "Player 2", value: "vidsrc.co" },
+     { label: "Player 3", value: "vidsrc.cc" },
+    { label: "Player 4", value: "embed" },
+    { label: "Player 5", value: "vidsrc.me" },
     // { label: "Dubbed", value: "player.autoembed" },
   ];
 
@@ -423,6 +425,28 @@ export default function WatchNow() {
     // }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
     // }`;
 
+// autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins
+    // https://player.vidsrc.co/embed
+    
+  const baseVidSrccoUrl = `https://player.vidsrc.co/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+      }${mediaType === "tv"
+        ? selectedSeason
+          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+          : "/1"
+        : ""
+      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+      }?primarycolor=FFA500&secondarycolor=FFD699`;
+
+ 
+       const baseVidSrcccUrl = `https://vidsrc.cc/v2/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+      }${mediaType === "tv"
+        ? selectedSeason
+          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+          : "/1"
+        : ""
+      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+      }`;
+
     const baseAutoEmbedUrl = `https://player.autoembed.cc/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
       }${mediaType === "tv"
         ? selectedSeason
@@ -435,6 +459,8 @@ export default function WatchNow() {
     const playerUrls: any = {
       // "vidsrc.dev": baseVidSrcUrl,
       "videasy.net": baseVidSrcUrl,
+      "vidsrc.co":baseVidSrccoUrl,
+       "vidsrc.cc":baseVidSrcccUrl,
       embed: baseEmbedUrl,
       "vidsrc.me": baseVidSrcmeUrl,
       "player.autoembed": baseAutoEmbedUrl,
@@ -486,7 +512,17 @@ export default function WatchNow() {
                       allowFullScreen
                       ref={iframeRef}
                       id="myiframe"
-                    ></iframe>) : (
+                    ></iframe>):selectedPlayer === "vidsrc.cc" ? (<iframe
+                      src={getPlayerUrl()}
+                      className="w-full mt-5 rounded-lg videoFrame"
+                      title="Vidsrc video player"
+                      sandbox="allow-scripts allow-same-origin allow-presentation"
+                      referrerPolicy="origin"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      ref={iframeRef}
+                      id="myiframe"
+                    ></iframe>): (
                       <iframe
                         src={getPlayerUrl()}
                         className="w-full mt-5 rounded-lg videoFrame"

@@ -5,7 +5,7 @@ headers.append("Content-Type", "application/json;charset=utf-8");
 headers.append("Authorization", `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MmQ4MDdmNzM1OGRjZWE4NTAyOTFkNzM3YWM0Mjg1MiIsIm5iZiI6MTcyMzIwNDQ0Ni4zODQ5NzksInN1YiI6IjY2ODI2ZDA5OWU1MThkYjA1YjFiNzVmNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GuVTSK_Z-CWJOFalwiKu8-FzilqPIBROlQ71-eMBZz0`);
 
 export default {
-  get: async (path: string) => {
+  get: async (path:any) => {
     let options: any = {
       headers: headers,
       method: "GET",
