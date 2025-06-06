@@ -19,13 +19,48 @@ import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { toasterError, toasterSuccess } from "@components/core/Toaster";
 import { IoIosAddCircleOutline, IoIosArrowRoundForward } from "react-icons/io";
 
+
+export default function WatchNow() {
+
+  const [roleLoading] = useRole();
+  const iframeRef = useRef(null);
+  const searchParams = useSearchParams();
+  const movieId: any = searchParams.get("id");
+  const mediaType: any = searchParams.get("type");
+  const seasonId: any = searchParams.get("seasonId");
+  const episodeId: any = searchParams.get("episodeId");
+  const [selectedSeason, setSelectedSeason] = useState<any>(null);
+  const [selectedEpisode, setSelectedEpisode] = useState<any>(null);
+  const [goToEpisode, setGoToEpisode] = useState<any>("");
+  const [isAutoplay, setIsAutoplay] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState<any>("videasy.net");
+  const [iframeMouseOver, setIframeMouseOver] = useState(false);
+
+  const userId = User.id;
+  const playerOptions = [
+    // { label: "Player 1", value: "vidsrc.dev" },
+    { label: "Player 1", value: "videasy.net" },
+    { label: "Player 2", value: "vidsrc.co" },
+     { label: "Player 3", value: "vidsrc.cc" },
+    { label: "Player 4", value: "embed" },
+    { label: "Player 5", value: "vidsrc.me" },
+    // { label: "Dubbed", value: "player.autoembed" },
+  ];
+
+  
 const fetchDetails = async (movieId: number, mediaType: string) => {
   try {
     const response = await FetchApi.get(
       `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}?language=en-US`
     );
-    const data = await response.json();
-    let imdbRating = null;
+const data = await response.json().catch((err) => {
+  console.error("JSON parse failed:", err);
+  return null;
+});
+if (!data) throw new Error("Invalid response data."); 
+
+ let imdbRating = null;
     try {
       const response = await API.get(
         `cached/imdb-rating?mediaId=${movieId}&mediaType=${mediaType === "movie" ? "movie" : "tv"
@@ -49,7 +84,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
       imdb_rating: imdbRating,
     };
 
-    return combinedResults;
+    return combinedResults||{};
   } catch (error) {
     console.error("Failed to fetch data from the primary API:", error);
   }
@@ -60,7 +95,11 @@ const fetchCredits = async (movieId: number, mediaType: string) => {
     const response = await FetchApi.get(
       `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}/credits?language=en-US`
     );
-    const data = await response.json();
+const data = await response.json().catch((err) => {
+  console.error("JSON parse failed:", err);
+  return null;
+});
+if (!data) throw new Error("Invalid response data.");    
     return data;
   } catch (error) {
     console.log(error);
@@ -72,8 +111,13 @@ const fetchSimilarLists = async (movieId: number, mediaType: string) => {
     const response = await FetchApi.get(
       `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${movieId}/similar?language=en-US`
     );
-    const data = await response.json();
-    const filteredResults = data.results?.filter(
+const data = await response.json().catch((err) => {
+  console.error("JSON parse failed:", err);
+  return null;
+});
+if (!data) throw new Error("Invalid response data.");
+
+    const filteredResults = data?.results?.filter(
       (item: any) => item.genre_ids && item.genre_ids.length > 0
     );
     return filteredResults;
@@ -89,8 +133,12 @@ const fetchPopularLists = async (mediaType: string, pages = 2) => {
       const response = await FetchApi.get(
         `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/popular?language=en-US&page=${pages}`
       );
-      const data = await response.json();
-      const filteredResults = data.results?.filter(
+ const data = await response.json().catch((err:any) => {
+  console.error("JSON parse failed:", err);
+  return null;
+});
+if (!data) throw new Error("Invalid response data.");
+      const filteredResults = data?.results?.filter(
         (item: any) => item.genre_ids && item.genre_ids.length > 0
       );
       allResults.push(...filteredResults);
@@ -102,34 +150,6 @@ const fetchPopularLists = async (mediaType: string, pages = 2) => {
     return [];
   }
 };
-
-export default function WatchNow() {
-
-  const [roleLoading] = useRole();
-  const iframeRef = useRef(null);
-  const searchParams = useSearchParams();
-  const movieId: any = searchParams.get("id");
-  const mediaType: any = searchParams.get("type");
-  const seasonId: any = searchParams.get("seasonId");
-  const episodeId: any = searchParams.get("episodeId");
-  const [selectedSeason, setSelectedSeason] = useState<any>(null);
-  const [selectedEpisode, setSelectedEpisode] = useState<any>(null);
-  const [goToEpisode, setGoToEpisode] = useState<any>("");
-  const [isAutoplay, setIsAutoplay] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState("videasy.net");
-  const [iframeMouseOver, setIframeMouseOver] = useState(false);
-
-  const userId = User.id;
-  const playerOptions = [
-    // { label: "Player 1", value: "vidsrc.dev" },
-    { label: "Player 1", value: "videasy.net" },
-    { label: "Player 2", value: "vidsrc.co" },
-     { label: "Player 3", value: "vidsrc.cc" },
-    { label: "Player 4", value: "embed" },
-    { label: "Player 5", value: "vidsrc.me" },
-    // { label: "Dubbed", value: "player.autoembed" },
-  ];
 
   const onPlayerSelect = (e: any) => {
     setSelectedPlayer(e.value);
@@ -152,8 +172,8 @@ export default function WatchNow() {
           const response = await API.get(
             `mediaprogress/tv?user_id=${userId}&media_type=${mediaType}&media_id=${movieId}`
           );
-          if (response.data) {
-            const { season_id, episode_id } = response.data[0];
+          if (response?.data) {
+            const { season_id, episode_id } = response?.data[0];
 
             setSelectedSeason(
               season_id ? Number(season_id) : seasonId ? Number(seasonId) : 1
@@ -204,8 +224,8 @@ export default function WatchNow() {
       try {
         const data = event.data;
         if (data.key === "player-config") {
-          setIsAutoplay(data.data.autoplay);
-          setIsPlaying(data.data.autoplay);
+          setIsAutoplay(data?.data?.autoplay);
+          setIsPlaying(data?.data?.autoplay);
         }
       } catch (error) {
         console.error("Error parsing message data:", error);
@@ -265,8 +285,13 @@ export default function WatchNow() {
         `https://api.themoviedb.org/3/${mediaType.toLowerCase()}/${seriesId}/season/${season && season.season_number ? season.season_number : selectedSeason
         }}?language=en-US&page=1`
       );
-      const data = await response.json();
-      return data;
+const data = await response.json().catch((err) => {
+  console.error("JSON parse failed:", err);
+  return null;
+});
+if (!data) throw new Error("Invalid response data.");   
+
+   return data;
     } catch (error) {
       console.log(error);
     }
@@ -387,7 +412,7 @@ export default function WatchNow() {
     //     : ""
     //   }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
     //   }`;
-    const baseVidSrcUrl = `https://player.videasy.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+    const baseVidSrcUrl:any = `https://player.videasy.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -396,7 +421,7 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }?color=FFA500`;
 
-    const baseEmbedUrl = `https://embed.su/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+     const baseEmbedUrl:any = `https://embed.su/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -405,7 +430,7 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }`;
 
-    const baseVidSrcmeUrl = `https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id
+    const baseVidSrcmeUrl:any = `https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id
       ? "imdb=" + watchDetials.imdb_id
       : "tmdb=" + watchDetials.id
       }${mediaType === "tv" && selectedSeason
@@ -428,7 +453,7 @@ export default function WatchNow() {
 // autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins
     // https://player.vidsrc.co/embed
     
-  const baseVidSrccoUrl = `https://player.vidsrc.co/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+  const baseVidSrccoUrl:any = `https://player.vidsrc.co/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -438,7 +463,7 @@ export default function WatchNow() {
       }?primarycolor=FFA500&secondarycolor=FFD699`;
 
  
-       const baseVidSrcccUrl = `https://vidsrc.cc/v2/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+       const baseVidSrcccUrl:any = `https://vidsrc.cc/v2/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -447,7 +472,7 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }`;
 
-    const baseAutoEmbedUrl = `https://player.autoembed.cc/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+    const baseAutoEmbedUrl:any = `https://player.autoembed.cc/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -466,7 +491,7 @@ export default function WatchNow() {
       "player.autoembed": baseAutoEmbedUrl,
     };
 
-    return playerUrls[selectedPlayer] || baseVidSrcUrl;
+    return playerUrls[selectedPlayer] || playerUrls["videasy.net"];
   };
 
   const handleOnMouseOver = () => {
@@ -478,9 +503,17 @@ export default function WatchNow() {
     setIframeMouseOver(false);
   };
 
+  if (!movieId || !mediaType) {
+  return (
+    <div className="text-red-700 font-semibold text-4xl absolute top-1/2 left-1/2 z-30">
+      Invalid or missing movie ID or media type in the URL.
+    </div>
+  );
+}
   return (
     <div className="w-full">
-      {watchDetials && (
+      {watchDetials && getPlayerUrl() ? 
+      (
         <>
           <div className="w-full ">
             <section className="relative">
@@ -502,39 +535,20 @@ export default function WatchNow() {
                     onMouseOver={handleOnMouseOver}
                     onMouseOut={handleOnMouseOut}
                   >
-                    {selectedPlayer === "videasy.net" ? (<iframe
-                      src={getPlayerUrl()}
-                      className="w-full mt-5 rounded-lg videoFrame"
-                      title="Vidsrc video player"
-                      sandbox="allow-scripts allow-same-origin allow-presentation"
-                      referrerPolicy="origin"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                      ref={iframeRef}
-                      id="myiframe"
-                    ></iframe>):selectedPlayer === "vidsrc.cc" ? (<iframe
-                      src={getPlayerUrl()}
-                      className="w-full mt-5 rounded-lg videoFrame"
-                      title="Vidsrc video player"
-                      sandbox="allow-scripts allow-same-origin allow-presentation"
-                      referrerPolicy="origin"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                      ref={iframeRef}
-                      id="myiframe"
-                    ></iframe>): (
-                      <iframe
-                        src={getPlayerUrl()}
-                        className="w-full mt-5 rounded-lg videoFrame"
-                        title="Vidsrc video player"
-                        referrerPolicy="origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                        ref={iframeRef}
-                        id="myiframe"
-                      ></iframe>
-                    )}
-                  </div>
+                    <iframe
+                     src={getPlayerUrl()}
+                       className="w-full mt-5 rounded-lg videoFrame"
+                       title="Vidsrc video player"
+                       referrerPolicy="origin"
+                         {...(selectedPlayer !== "embed" && {
+                         sandbox: "allow-scripts allow-same-origin allow-presentation"
+                       })}
+                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                       allowFullScreen
+                       ref={iframeRef}
+                       id="myiframe"
+                     />
+                   </div>
                 </div>
                 {!isAutoplay && !isPlaying && (
                   <div
@@ -564,7 +578,7 @@ export default function WatchNow() {
                 <div className=" bg-[#272727] rounded-lg ml-4 ">
                   <section className="flex items-center justify-center text-white ">
                     <Dropdown
-                      value={selectedPlayer}
+                      value={selectedPlayer?selectedPlayer:"selected player is not defined"}
                       onChange={onPlayerSelect}
                       options={playerOptions}
                       optionLabel="label"
@@ -946,7 +960,10 @@ export default function WatchNow() {
             </div>
           </div>
         </>
-      )}
+      ):
+      (<p className="text-red-700 absolute font-semibold top-1/2 left-1/2 z-50">
+        watchDetials is undefined
+      </p>)}
       <div className="w-full">
         <div className="w-full mt-20">
           <div className="homewrapper">
