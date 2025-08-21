@@ -540,7 +540,7 @@ if (!data) throw new Error("Invalid response data.");
                        className="w-full mt-5 rounded-lg videoFrame"
                        title="Vidsrc video player"
                        referrerPolicy="origin"
-                         {...(selectedPlayer !== "embed" && {
+                         {...((selectedPlayer !== "embed" && selectedPlayer !== "videasy.net") && {
                          sandbox: "allow-scripts allow-same-origin allow-presentation"
                        })}
                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
