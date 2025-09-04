@@ -42,24 +42,32 @@ body {
   font-size: 16px;
   outline: none;
 }
+
 .btnBgBlur {
   backdrop-filter: blur(10px);
-  background: rgba(255,255,255,.2);
+  background: rgba(255, 255, 255, .2);
 }
+
 .btnBgBlur:hover {
   backdrop-filter: blur(5px);
-  background: rgba(255,255,255,.15);
+  background: rgba(255, 255, 255, .15);
 }
+
 .pColor {
   color: #fea500 !important;
 }
 
 .pbgColor {
   background-color: #fea500 !important;
+  border: 1px solid #fea500;
+
 }
 
 .pbgColor:hover {
-  background-color: #e99700 !important;
+  /* background-color: #e99700 !important; */
+  background-color: transparent !important;
+  color: #fea500;
+  border: 1px solid #fea500;
 }
 
 .wrapper {
@@ -75,7 +83,11 @@ body {
   width: 100%;
   padding: 0 15px;
 }
-.homeSliderCZ div{height: 100%;}
+
+.homeSliderCZ div {
+  height: 100%;
+}
+
 /* Our Customize css */
 .slideMain {
   /* aspect-ratio: 16/9;
@@ -124,11 +136,21 @@ body {
 .sliderContent {
   width: 100%;
 }
+
 @keyframes sliderContent {
-  0% {opacity:0;}
-  50% {opacity:0;}
-  100% {opacity:1;}
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
+
 .sliderContentSet {
   max-width: 600px;
   animation: sliderContent 1s;
@@ -182,7 +204,11 @@ ul.indicators .indicator.active div {
   transition: .5s;
   opacity: 0;
 }
-.profileActive{ color: #fea500  ; border-color:#fea500 }
+
+.profileActive {
+  color: #fea500;
+  border-color: #fea500
+}
 
 .cardSet:hover span:before,
 .cardSet:hover svg {
@@ -333,9 +359,18 @@ img.bgAlbumDetail {
 } */
 /* .navSet{display: none;  animation: nav .5s ease-in-out;}
 .navSet.navSetOpen{display: block;} */
-.videoFrame{aspect-ratio: 16 / 9;}
-.navSet .closeMenu{display:none;}
-.navSet.navSetOpen .closeMenu{display:block;}
+.videoFrame {
+  aspect-ratio: 16 / 9;
+}
+
+.navSet .closeMenu {
+  display: none;
+}
+
+.navSet.navSetOpen .closeMenu {
+  display: block;
+}
+
 section.closeMenu {
   width: 100%;
   height: 100%;
@@ -344,10 +379,26 @@ section.closeMenu {
   z-index: 0;
   cursor: pointer;
 }
-.navSet {z-index:-1;}
-.navSet.navSetOpen {z-index:20;}
-.navSet div {transition:.5s; max-height: 0px; opacity: 0;}
-.navSet.navSetOpen div {max-height:100vh; opacity: 1;}
+
+.navSet {
+  z-index: -1;
+}
+
+.navSet.navSetOpen {
+  z-index: 20;
+}
+
+.navSet div {
+  transition: .5s;
+  max-height: 0px;
+  opacity: 0;
+}
+
+.navSet.navSetOpen div {
+  max-height: 100vh;
+  opacity: 1;
+}
+
 .navInners section {
   left: 100%;
   width: 400px;
@@ -382,6 +433,7 @@ section.closeMenu {
   padding-top: 6px;
   padding-bottom: 6px;
 }
+
 .profileLinks {
   max-height: 0px;
   transition: .5s;
@@ -391,53 +443,90 @@ section.closeMenu {
 .openProfileLinks.profileLinks {
   max-height: 500px;
 }
-.intellesense{transition:.5s; max-height:0;}
-.intellesense.intellesenseOpen{ max-height:1000px;}
-.intellesense div:last-child{border:none;}
-.p-multiselect-panel{max-width:500px}
-ul.p-multiselect-items{min-width: 200px;}
-@media only screen and (max-width: 1023px){
+
+.intellesense {
+  transition: .5s;
+  max-height: 0;
+}
+
+.intellesense.intellesenseOpen {
+  max-height: 1000px;
+}
+
+.intellesense div:last-child {
+  border: none;
+}
+
+.p-multiselect-panel {
+  max-width: 500px
+}
+
+ul.p-multiselect-items {
+  min-width: 200px;
+}
+
+@media only screen and (max-width: 1023px) {
   .homeSliderCZ {
     max-width: 100% !important;
-}
+  }
+
   .cardSet:hover .albumDetail {
     display: none;
   }
 }
-@media only screen and (max-width: 767px){
-  .navInners section{width:150px}
-  .navInners section a{width:100%;}
+
+@media only screen and (max-width: 767px) {
+  .navInners section {
+    width: 150px
+  }
+
+  .navInners section a {
+    width: 100%;
+  }
+
   .mobileSearch {
     position: absolute;
     left: 0;
     top: 50px;
     display: none;
-}
-.mobileSearch.w-full.openMobileSearch {display: block;}
-.mobileSearch .searchBar {
+  }
+
+  .mobileSearch.w-full.openMobileSearch {
+    display: block;
+  }
+
+  .mobileSearch .searchBar {
     padding: 0 !important;
-}
-.mobileSearch .searchBar section {
+  }
+
+  .mobileSearch .searchBar section {
     max-width: 100%;
-}
-.slideMain{min-height: 600px;}
-ul.indicators {
-  display: none !important;
-}
-.footerSet {
-  height: 350px;
-}
+  }
+
+  .slideMain {
+    min-height: 600px;
+  }
+
+  ul.indicators {
+    display: none !important;
+  }
+
+  .footerSet {
+    height: 350px;
+  }
 }
 
-@media only screen and (max-width: 480px){
+@media only screen and (max-width: 480px) {
   .phoneFooter {
     position: relative;
     top: -60px;
-}
+  }
+
   .footerSet {
     height: 250px;
   }
 }
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 20px;
@@ -449,9 +538,10 @@ ul.indicators {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #fea500 ;
+  background: #fea500;
   border-radius: 100vh;
 }
+
 /* 
 ::-webkit-scrollbar-thumb:hover {
   background: #444;

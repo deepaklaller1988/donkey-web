@@ -20,7 +20,7 @@ const fetchTrendingList = async (mediaType: string) => {
   const url = `https://api.trakt.tv/shows/trending?limit=50`;
 
   try {
-        // console.debug("Fetching trending list of shows from Trakt:", url);
+    // console.debug("Fetching trending list of shows from Trakt:", url);
     const response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ const fetchTrendingList = async (mediaType: string) => {
     const imdbIds = data?.map((item: any) =>
       item.show?.ids.tmdb
     ).filter(Boolean);
-        // console.debug("Mapped TMDB IDs for shows:", imdbIds);
+    // console.debug("Mapped TMDB IDs for shows:", imdbIds);
 
     const tmdbResponses = await Promise.all(
       imdbIds?.map(async (id: any) => {
@@ -48,7 +48,7 @@ const fetchTrendingList = async (mediaType: string) => {
       })
     );
 
-  const filteredData = tmdbResponses.filter(Boolean); 
+    const filteredData = tmdbResponses.filter(Boolean);
     // console.debug("Final TMDB Data for shows:", filteredData);
     return filteredData;
 
@@ -73,8 +73,8 @@ const fetchPopularLists = async (mediaType: string) => {
     });
     const data = await response.json();
     const imdbIds = data?.map((item: any) => item.ids.tmdb);
-      //  console.debug("Mapped TMDB IDs for popular:", imdbIds);
-  const tmdbResponses = await Promise.all(
+    //  console.debug("Mapped TMDB IDs for popular:", imdbIds);
+    const tmdbResponses = await Promise.all(
       imdbIds?.map(async (id: any) => {
         try {
           const tmdbUrl = `https://api.themoviedb.org/3/tv/${id}?language=en-US`;
@@ -88,7 +88,7 @@ const fetchPopularLists = async (mediaType: string) => {
       })
     );
 
-  const filteredData = tmdbResponses.filter(Boolean); 
+    const filteredData = tmdbResponses.filter(Boolean);
     // console.debug("Final TMDB Data for shows:", filteredData);
     return filteredData;
   } catch (error) {
@@ -130,7 +130,7 @@ const fetchLatestList = async (mediaType: string) => {
       })
     );
 
-    const filteredData = tmdbResponses.filter(Boolean); 
+    const filteredData = tmdbResponses.filter(Boolean);
     // console.debug("Final TMDB Data:", filteredData);
 
     return filteredData;
@@ -224,7 +224,7 @@ const HomePage = () => {
                 <div className="homewrapper">
                   <div className="flex justify-between  items-center gap-4">
                     <h3 className="text-white text-[25px] font-semibold">
-                    TRENDING MOVIES
+                      Trending Movies
                     </h3>
                     <button
                       className="border border-1 rounded-full text-white px-2 mr-2 hover:bg-white hover:text-black transition"
@@ -273,7 +273,7 @@ const HomePage = () => {
               <div className="w-full">
                 <div className="flex justify-between items-center gap-4">
                   <h3 className="text-white text-[25px] font-semibold">
-                    TRENDING SHOWS
+                    Trending Shows
                   </h3>
                   <button
                     className="border border-1 rounded-full mr-2 text-white px-2 hover:bg-white hover:text-black transition"
@@ -294,7 +294,7 @@ const HomePage = () => {
                             key={item.id}
                             movieId={item.id}
                             mediaType={"TV"}
-                            isLoading={tvLoading} 
+                            isLoading={tvLoading}
                           />
                           // </Suspense>
                         ))
@@ -305,7 +305,7 @@ const HomePage = () => {
               <div className="w-full pt-10">
                 <div className="flex items-center gap-4">
                   <h3 className="text-white text-[25px] font-semibold">
-                    POPULAR
+                    Popular
                   </h3>
                   <section className="flex gap-2">
                     <button

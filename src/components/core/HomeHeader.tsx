@@ -67,7 +67,7 @@ export default function Header() {
 
 
   const handleProfile = (type: any) => {
-    console.log(type,path,"=========")
+    console.log(type, path, "=========")
     if (type === "Bookmark") {
       queryClient.invalidateQueries({ queryKey: ['bookmark'] });
     }
@@ -75,13 +75,13 @@ export default function Header() {
     // if (type === "watching") {
     //   queryClient.invalidateQueries({ queryKey: ['mediaprogress'] });
     // }
-  
+
     if (path.includes("profile")) {
       setActiveTab(type);
       setOpenProfile(!OpenProfile)
 
-    } 
-   
+    }
+
     else {
       router.push("/profile");
       setOpenProfile(!OpenProfile);
@@ -98,15 +98,14 @@ export default function Header() {
 
 
   const handleClick = () => {
-       setIsOpen(true);
+    setIsOpen(true);
   };
 
   return (
     <>
       <div
-        className={`header ${
-          isHome() ? "" : ""
-        } p-2 py-3 absolute z-10 w-full top-0 right-0`}
+        className={`header ${isHome() ? "" : ""
+          } p-2 py-3 absolute z-10 w-full top-0 right-0`}
       >
         <div className="homewrapper">
           <div className="headerInner flex items-center justify-between relative">
@@ -130,9 +129,8 @@ export default function Header() {
               </Link>
             </section>
             <div
-              className={`mobileSearch w-full ${
-                OpenSearch ? "openMobileSearch" : ""
-              }`}
+              className={`mobileSearch w-full ${OpenSearch ? "openMobileSearch" : ""
+                }`}
             >
               {OpenSearch && <HomeSearchbar path={path} />}
             </div>
@@ -160,9 +158,8 @@ export default function Header() {
                       <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
                     <div
-                      className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${
-                        OpenProfile ? "openProfileLinks" : ""
-                      }`}
+                      className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${OpenProfile ? "openProfileLinks" : ""
+                        }`}
                     >
                       <button
                         id="profile-button"
@@ -188,7 +185,7 @@ export default function Header() {
                       <button
                         id="profile-button"
                         type="button"
-                        className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:text-amber-500 flex items-center gap-2"
+                        className="w-full border-t border-1 border-white/10 p-3 text-white transition hover:!text-amber-500 flex items-center gap-2"
                         onClick={handleLogOut}
                       >
                         <IoLogOutOutline /> Sign out
@@ -207,7 +204,7 @@ export default function Header() {
                       {
                         <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                       }
-                    </button>                  
+                    </button>
                     <SignInButton id="login-button" onClick={handleClick} />
                   </div>
                 </>

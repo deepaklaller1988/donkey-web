@@ -59,16 +59,12 @@ const fetchSearchedData = async (
     const pageNumber = Math.min(page, 500);
     if (selectedOptions.selectedMedia) {
       const response = await FetchApi.get(
-        `https://api.themoviedb.org/3/search/${
-          selectedOptions.selectedMedia
-        }?query=${searched}&include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${
-          selectedOptions.selectedFilter
-        }&${
-          selectedOptions.selectedMedia === "movie"
-            ? "primary_release_year=" + selectedOptions.selectedYear
-            : "first_air_date_year=" + selectedOptions.selectedYear
-        }&region=${selectedOptions.selectedCountry}&with_genres=${
-          selectedOptions.selectedGenres
+        `https://api.themoviedb.org/3/search/${selectedOptions.selectedMedia
+        }?query=${searched}&include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${selectedOptions.selectedFilter
+        }&${selectedOptions.selectedMedia === "movie"
+          ? "primary_release_year=" + selectedOptions.selectedYear
+          : "first_air_date_year=" + selectedOptions.selectedYear
+        }&region=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres
         }`
       );
       const data = await response.json();
@@ -89,8 +85,7 @@ const fetchRecentlyUpdated = async (mediaType: any) => {
   try {
     // const response = await fetch(`https://vidsrc.to/vapi/${mediaType}/add/1`);
     const response = await fetch(
-      `https://vidsrc.xyz/${
-        mediaType === "movie" ? "movies" : "tvshows"
+      `https://vidsrc.xyz/${mediaType === "movie" ? "movies" : "tvshows"
       }/latest/page-1.json`
     );
     const data = await response.json();
@@ -108,16 +103,12 @@ const fetchFilteredData = async (selectedOptions: any, page: number) => {
   try {
     const pageNumber = Math.min(page, 500);
     const response = await FetchApi.get(
-      `https://api.themoviedb.org/3/discover/${
-        selectedOptions.selectedMedia
-      }?include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${
-        selectedOptions.selectedFilter
-      }&${
-        selectedOptions.selectedMedia === "movie"
-          ? "primary_release_year=" + selectedOptions.selectedYear
-          : "first_air_date_year=" + selectedOptions.selectedYear
-      }&with_origin_country=${selectedOptions.selectedCountry}&with_genres=${
-        selectedOptions.selectedGenres
+      `https://api.themoviedb.org/3/discover/${selectedOptions.selectedMedia
+      }?include_adult=false&include_video=false&language=en-US&page=${pageNumber}&sort_by=${selectedOptions.selectedFilter
+      }&${selectedOptions.selectedMedia === "movie"
+        ? "primary_release_year=" + selectedOptions.selectedYear
+        : "first_air_date_year=" + selectedOptions.selectedYear
+      }&with_origin_country=${selectedOptions.selectedCountry}&with_genres=${selectedOptions.selectedGenres
       }`
     );
     const data = await response.json();
@@ -134,8 +125,8 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
     slug === "search"
       ? "Results"
       : slug === "recent"
-      ? "Recently Updated"
-      : ` ${slug === "movie" ? "Trending Movies" : "Trending Shows"}`
+        ? "Recently Updated"
+        : ` ${slug === "movie" ? "Trending Movies" : "Trending Shows"}`
   );
   const searchParams = useSearchParams();
   const searchQuery: any = searchParams.get("query");
@@ -242,12 +233,12 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                   <div className="flex items-center gap-4">
                     <h3 className="text-white text-[25px] font-semibold">
                       {slug === "movie"
-                        ? "TRENDING MOVIES"
+                        ? "Trending Movies"
                         : slug === "tv"
-                        ? "TRENDING SHOWS"
-                        : slug === "recent"
-                        ? "RECENTLY UPDATED"
-                        : "RESULTS"}
+                          ? "Trending Shows"
+                          : slug === "recent"
+                            ? "RECENTLY UPDATED"
+                            : "RESULTS"}
                     </h3>
                   </div>
                   {slug === "search" && (
@@ -271,7 +262,7 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                               movieId={item.id}
                               mediaType={
                                 selectedOptions.selectedMedia === "movie" ||
-                                item.media_type === "movie"
+                                  item.media_type === "movie"
                                   ? "Movie"
                                   : "TV"
                               }
@@ -315,8 +306,8 @@ export default function MediaPage({ params }: { params: { slug: string } }) {
                                 item.quality === "1080p"
                                   ? "HD"
                                   : item.quality === "720p"
-                                  ? "CAM"
-                                  : item.quality
+                                    ? "CAM"
+                                    : item.quality
                               }
                             />
                           ))

@@ -24,8 +24,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
 
     try {
       const response = await API.get(
-        `cached/imdb-rating?mediaId=${movieId}&mediaType=${
-          mediaType.toLowerCase() === "movie" ? "movie" : "tv"
+        `cached/imdb-rating?mediaId=${movieId}&mediaType=${mediaType.toLowerCase() === "movie" ? "movie" : "tv"
         }`
       );
       // const certificateResponse = await fetch(`https://mdblist.com/api/?apikey=${apiKey}&tm=${movieId}&m=${mediaType.toLowerCase() ==='movie' ? 'movie' : 'show'}`);
@@ -187,8 +186,7 @@ function Card({
                 className="relative folderOpened"
                 onClick={() =>
                   router.push(
-                    `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${
-                      seasonId ? seasonId : 1
+                    `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${seasonId ? seasonId : 1
                     }&episodeId=${episodeId ? episodeId : 1}`
                   )
                 }
@@ -200,12 +198,11 @@ function Card({
                   height={100}
                   width={100}
                   className="rounded-xl w-full"
-                  src={`${
+                  src={`${movieDetials?.poster_path
+                    ? "https://image.tmdb.org/t/p/original" +
                     movieDetials?.poster_path
-                      ? "https://image.tmdb.org/t/p/original" +
-                        movieDetials?.poster_path
-                      : "/assets/images/miss.jpg"
-                  }`}
+                    : "/assets/images/miss.jpg"
+                    }`}
                 />
                 {/* <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
                 {quality ? quality : "HD"}
@@ -260,10 +257,10 @@ function Card({
                   {movieDetials?.title && movieDetials.title.length > 40
                     ? movieDetials?.title?.slice(0, 40) + "..."
                     : movieDetials?.name && movieDetials?.name.length > 40
-                    ? movieDetials?.name?.slice(0, 40) + "..."
-                    : movieDetials?.name
-                    ? movieDetials?.name
-                    : movieDetials?.title}
+                      ? movieDetials?.name?.slice(0, 40) + "..."
+                      : movieDetials?.name
+                        ? movieDetials?.name
+                        : movieDetials?.title}
                 </b>
                 <ul className="text-gray-500 flex gap-2">
                   <li className="text-sm">{mediaType}</li>.
@@ -288,11 +285,10 @@ function Card({
                 //     ? "right-full"
                 //     : "left-full"
                 // } z-50 w-[350px]`}
-                className={`albumDetail absolute bg-zinc-800 rounded-xl top-20 ${
-                  (index + 1) % 8 === 7 || (index + 1) % 8 === 0
-                    ? "right-full"
-                    : "left-full"
-                } z-50 w-[350px]`}
+                className={`albumDetail absolute bg-zinc-800 rounded-xl top-20 ${(index + 1) % 8 === 7 || (index + 1) % 8 === 0
+                  ? "right-full"
+                  : "left-full"
+                  } z-50 w-[350px]`}
               >
                 {" "}
                 <div className="w-full p-5 relative">
@@ -316,7 +312,7 @@ function Card({
                             : movieDetials?.vote_average?.toFixed(1)}
                         </label>
                       </li>
-                      <li>
+                      <li className="ml-[-10px]">
                         <Image
                           quality={30}
                           src="/images/imdb-logo.svg"
@@ -329,7 +325,7 @@ function Card({
                         {mediaType === "Movie"
                           ? movieDetials?.runtime + " min"
                           : "EP" +
-                            movieDetials?.last_episode_to_air?.episode_number}
+                          movieDetials?.last_episode_to_air?.episode_number}
                       </li>
 
                       <li>
@@ -349,7 +345,7 @@ function Card({
                   {!isBookmarked && !isMyList && (
                     <label className="absolute cursor-pointer right-5 bottom-1.5">
                       <div
-                        className="relative text-white hover:text-amber-500  flex gap-1"
+                        className="relative flex gap-1 text-white hover:!text-amber-500 cursor-pointer"
                         onClick={() =>
                           handleBookmark(
                             movieDetials?.id,
@@ -358,7 +354,7 @@ function Card({
                           )
                         }
                       >
-                        <IoIosAddCircleOutline className="w-6 h-6" /> My List
+                        <IoIosAddCircleOutline className="w-6 h-6 text-inherit" /> My List
                       </div>
                     </label>
                   )}
@@ -380,7 +376,7 @@ function Card({
                 </p> */}
                   <p className="text-white/50 font-light pt-2">
                     {movieDetials?.overview &&
-                    movieDetials?.overview.length > 150
+                      movieDetials?.overview.length > 150
                       ? movieDetials?.overview.slice(0, 150) + "..."
                       : movieDetials?.overview}
                   </p>

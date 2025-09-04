@@ -9,9 +9,8 @@ const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
 const fetchPopularLists = async (mediaType: string) => {
   const mediaTypeLower = mediaType.toLowerCase();
-  const url = `https://api.trakt.tv/${
-    mediaTypeLower === "movies" ? "movies" : "shows"
-  }/trending?limit=20`;
+  const url = `https://api.trakt.tv/${mediaTypeLower === "movies" ? "movies" : "shows"
+    }/trending?limit=20`;
 
   try {
     const response = await fetch(url, {
@@ -25,11 +24,10 @@ const fetchPopularLists = async (mediaType: string) => {
     const imdbIds = data.map((item: any) =>
       mediaTypeLower === "movies" ? item.movie?.ids.imdb : item.show?.ids.tmdb
     );
-    const tmdbResponses:any = await Promise.allSettled(
+    const tmdbResponses: any = await Promise.allSettled(
       imdbIds.map((id: any) =>
         FetchApi.get(
-          `https://api.themoviedb.org/3/${
-            mediaTypeLower === "movies" ? "movie" : "tv"
+          `https://api.themoviedb.org/3/${mediaTypeLower === "movies" ? "movie" : "tv"
           }/${id}?language=en-US`
         )
       )
@@ -38,14 +36,14 @@ const fetchPopularLists = async (mediaType: string) => {
     // const tmdbData = await Promise.all(tmdbResponses.map((res:any) => res.json()));
     // return tmdbData;
     const successfulResponses = tmdbResponses
-    .filter((result: any) => result.status === "fulfilled")
-    .map((result: any) => result.value);
+      .filter((result: any) => result.status === "fulfilled")
+      .map((result: any) => result.value);
 
-  const tmdbData = await Promise.all(
-    successfulResponses.map((res: any) => res.json())
-  );
+    const tmdbData = await Promise.all(
+      successfulResponses.map((res: any) => res.json())
+    );
 
-  return tmdbData;
+    return tmdbData;
   } catch (error) {
     console.log("Error fetching popular lists:", error);
     return [];
@@ -79,25 +77,23 @@ export default function Sidebar({ mediaType }: any) {
       <div className="flex items-center gap-4 justify-between">
         <h3 className="text-white text-[25px] font-semibold flex items-center gap-1">
           <HiTrendingUp className="text-amber-500 mr-1 w-8 h-8" />
-          TRENDING
+          Trending
         </h3>
         <section className="flex gap-2">
           <button
-            className={`${
-              interval === "movies"
-                ? "pbgColor rounded-full text-black px-2"
-                : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
-            }`}
+            className={`${interval === "movies"
+              ? "pbgColor rounded-full text-black px-2"
+              : "border border-1 rounded-full !cursor-pointer text-white px-2 hover:bg-white hover:text-black transition"
+              }`}
             onClick={() => setInterval("movies")}
           >
             Movies
           </button>
           <button
-            className={`${
-              interval === "tv"
-                ? "pbgColor rounded-full text-black px-2"
-                : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
-            }`}
+            className={`${interval === "tv"
+              ? "pbgColor rounded-full text-black px-2"
+              : "border border-1 rounded-full !cursor-pointer text-white px-2 hover:bg-white hover:text-black transition"
+              }`}
             onClick={() => setInterval("tv")}
           >
             Shows
