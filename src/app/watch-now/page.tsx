@@ -621,7 +621,7 @@ export default function WatchNow() {
                                 <p className="text-white">
                                   {watchDetials?.imdb_rating
                                     ? watchDetials?.imdb_rating?.toFixed(1)
-                                    : watchDetials?.vote_average?.toFixed(1)}
+                                    : "No Rating"}
                                 </p>
                                 <Image
                                   src="/images/imdb-logo.svg"

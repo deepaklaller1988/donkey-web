@@ -309,7 +309,7 @@ function Card({
                           <FaStar className=" text-[#F3C313]" />{" "}
                           {movieDetials?.imdb_rating
                             ? movieDetials?.imdb_rating?.toFixed(1)
-                            : movieDetials?.vote_average?.toFixed(1)}
+                            : "No Rating"}
                         </label>
                       </li>
                       <li className="ml-[-10px]">

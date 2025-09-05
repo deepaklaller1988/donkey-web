@@ -22,8 +22,7 @@ export default function Featured() {
     try {
       const pageNumber = Math.min(page, 500);
       const response = await FetchApi.get(
-        `https://api.themoviedb.org/3/discover/${
-          mediaType === "movie" ? "movie" : "tv"
+        `https://api.themoviedb.org/3/discover/${mediaType === "movie" ? "movie" : "tv"
         }?include_adult=false&include_video=false&language=en-US&page=${pageNumber}`
       );
 
@@ -122,18 +121,18 @@ export default function Featured() {
               <div className="flex items-center gap-4">
                 <h3 className="text-white text-[25px] font-semibold">
                   {mediaType === "movie"
-                    ? "MOVIES"
+                    ? "Movies"
                     : mediaType
-                    ? "TV SHOWS"
-                    : "HOT"}
+                      ? "Tv Shows"
+                      : "Hot"}
                 </h3>
               </div>
               {/* <div className="w-full"> */}
               <div className="w-full py-2">
                 <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                   {filteredData &&
-                  ((mediaType && filteredData.results?.length > 0) ||
-                    (!mediaType && filteredData.length > 0)) ? (
+                    ((mediaType && filteredData.results?.length > 0) ||
+                      (!mediaType && filteredData.length > 0)) ? (
                     (mediaType ? filteredData.results : filteredData).map(
                       (item: any, index: number) => (
                         <Card
@@ -144,8 +143,8 @@ export default function Featured() {
                             !mediaType
                               ? "Movie"
                               : mediaType === "movie"
-                              ? "Movie"
-                              : "TV"
+                                ? "Movie"
+                                : "TV"
                           }
                         />
                       )

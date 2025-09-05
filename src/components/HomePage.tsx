@@ -227,10 +227,10 @@ const HomePage = () => {
                       Trending Movies
                     </h3>
                     <button
-                      className="border border-1 rounded-full text-white px-2 mr-2 hover:bg-white hover:text-black transition"
+                      className="border border-1 rounded-full text-white px-2 mr-2 hover:!text-[#fea500] transition hover:!bg-transparent hover:!border-[#fea500]"
                       onClick={() => router.push(`/media/movie`)}
                     >
-                      View More
+                      +
                     </button>
                   </div>
 
@@ -255,7 +255,7 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-              <div className="share-container py-10 max-w-screen-md sm:mx-auto mx-5">
+              {/* <div className="share-container py-10 max-w-screen-md sm:mx-auto mx-5">
                 <a
                   href="https://www.reddit.com/r/donkey_to/"
                   target="_blank"
@@ -269,17 +269,17 @@ const HomePage = () => {
                     quality={20}
                   />
                 </a>
-              </div>
-              <div className="w-full">
+              </div> */}
+              <div className="w-full mt-10">
                 <div className="flex justify-between items-center gap-4">
                   <h3 className="text-white text-[25px] font-semibold">
                     Trending Shows
                   </h3>
                   <button
-                    className="border border-1 rounded-full mr-2 text-white px-2 hover:bg-white hover:text-black transition"
+                    className="border border-1 rounded-full mr-2 text-white px-2 hover:!bg-transparent  transition hover:!text-[#fea500] hover:!border-[#fea500]"
                     onClick={() => router.push(`/media/tv`)}
                   >
-                    View More
+                    +
                   </button>
                 </div>
                 <div className="w-full py-2">
@@ -324,7 +324,7 @@ const HomePage = () => {
                         }`}
                       onClick={() => setSelectedMedia("TV")}
                     >
-                      TV Shows
+                      Shows
                     </button>
                   </section>
                 </div>

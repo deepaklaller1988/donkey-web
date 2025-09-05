@@ -87,12 +87,12 @@ export default function WatchingPage({ type }: any) {
       {type == "home" && mediaData && mediaData?.data?.length > 0 && (
         <section className="flex justify-center pt-10 mb-10">
           <button
-            className="border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+            className="border border-1 rounded-full text-white px-2 hover:!bg-transparent hover:!text-[#fea500] transition border-[#fea500]"
             onClick={() => {
               setActiveTab("watching"), router.push(`/profile`);
             }}
           >
-            View More
+            +
           </button>
         </section>
       )}
