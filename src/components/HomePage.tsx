@@ -13,6 +13,7 @@ import useTitle from "@hooks/useTitle";
 import Loader from "@components/core/Loader";
 import Image from "next/image";
 import useRole from "@hooks/useRole";
+import useMobile from "@hooks/useMobile";
 const CLIENT_ID = process.env.NEXT_PUBLIC_TRACK_ClientID || "";
 
 const fetchTrendingList = async (mediaType: string) => {
@@ -163,6 +164,7 @@ const HomePage = () => {
   useTitle("Home");
   const router = useRouter();
   const [roleLoading] = useRole();
+  const { isMobile } = useMobile();
 
   const [selectedMedia, setSelectedMedia] = useState<string>("Movie");
 
@@ -221,7 +223,7 @@ const HomePage = () => {
           <div className="containerHub flex gap-5 flex-col lg:flex-row">
             <div className="w-full">
               <div className="w-full">
-                <div className="homewrapper">
+                {/* <div className="homewrapper"> */}
                   <div className="flex justify-between  items-center gap-4">
                     <h3 className="text-white text-[25px] font-semibold">
                       Trending Movies
@@ -238,7 +240,7 @@ const HomePage = () => {
                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10 justify-center">
                       {latestMovieList && latestMovieList.length > 0
                         ? latestMovieList
-                          .slice(0, 16)
+                          .slice(0, isMobile ? 8 : 16)
                           .map((item: any, index: any) => (
                             <Suspense fallback={<Loader />} key={item.id}>
                               <Card
@@ -253,7 +255,7 @@ const HomePage = () => {
                         : ""}
                     </ul>
                   </div>
-                </div>
+                {/* </div> */}
               </div>
               <div className="share-container py-10 max-w-screen-md sm:mx-auto mx-5">
                 <a
@@ -286,7 +288,7 @@ const HomePage = () => {
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {latestTVList && latestTVList.length > 0
                       ? latestTVList
-                        .slice(0, 16)
+                        .slice(0, isMobile ? 8 : 16)
                         .map((item: any, index: any) => (
                           // <Suspense fallback={<Loader />}>
                           <Card
@@ -332,7 +334,7 @@ const HomePage = () => {
                   <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                     {popularList && popularList.length > 0
                       ? popularList
-                        .slice(0, 16)
+                        .slice(0, isMobile ? 8 : 16)
                         .map((item: any, index: any) => (
                           <Suspense fallback={<Loader />} key={item.id}>
                             <Card

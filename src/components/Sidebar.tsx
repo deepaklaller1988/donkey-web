@@ -60,7 +60,6 @@ export default function Sidebar({ mediaType }: any) {
   });
 
   const renderMovies = (items: any[]) => {
-    console.log("first")
     return items.map((item: any, index: number) => (
       <SidebarCard
         key={item.id}
