@@ -19,7 +19,6 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
 };
 
 function SidebarCard({ movieId, mediaType, index,isPopular }: any) {
-  console.log("second")
   const router = useRouter();
   const mediatype = mediaType.replace(/s$/, "");
   const capitalizedMediaType =

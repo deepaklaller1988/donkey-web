@@ -18,11 +18,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { toasterError, toasterSuccess } from "@components/core/Toaster";
 import { IoIosAddCircleOutline, IoIosArrowRoundForward } from "react-icons/io";
+import useMobile from "@hooks/useMobile";
 
 
 export default function WatchNow() {
 
   const [roleLoading] = useRole();
+  const { isMobile } = useMobile();
   const iframeRef = useRef(null);
   const searchParams = useSearchParams();
   const movieId: any = searchParams.get("id");
@@ -980,7 +982,7 @@ export default function WatchNow() {
                     <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10">
                       {popularList && popularList.length > 0
                         ? popularList
-                          .slice(0, 24)
+                          .slice(0, isMobile ? 8 : 24)
                           .map((item: any, index: any) => (
                             <Card
                               index={index}
