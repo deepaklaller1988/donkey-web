@@ -82,7 +82,7 @@ export default function Sidebar({ mediaType }: any) {
           <button
             className={`${interval === "movies"
               ? "pbgColor rounded-full text-black px-2"
-              : "border border-1 rounded-full !cursor-pointer text-white px-2 hover:bg-white hover:text-black transition"
+              : "border border-1 rounded-full !cursor-pointer text-white px-2 hover:!bg-transparent hover:!text-[#fea500] transition hover:!border-[#fea500]"
               }`}
             onClick={() => setInterval("movies")}
           >
@@ -91,7 +91,7 @@ export default function Sidebar({ mediaType }: any) {
           <button
             className={`${interval === "tv"
               ? "pbgColor rounded-full text-black px-2"
-              : "border border-1 rounded-full !cursor-pointer text-white px-2 hover:bg-white hover:text-black transition"
+              : "border border-1 rounded-full !cursor-pointer text-white px-2 hover:!bg-transparent hover:!text-[#fea500] transition hover:!border-[#fea500]"
               }`}
             onClick={() => setInterval("tv")}
           >

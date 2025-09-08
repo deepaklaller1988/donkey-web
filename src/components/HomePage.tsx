@@ -224,37 +224,37 @@ const HomePage = () => {
             <div className="w-full">
               <div className="w-full">
                 {/* <div className="homewrapper"> */}
-                  <div className="flex justify-between  items-center gap-4">
-                    <h3 className="text-white text-[25px] font-semibold">
-                      Trending Movies
-                    </h3>
-                    <button
-                      className="border border-1 rounded-full text-white px-2 mr-2 hover:!text-[#fea500] transition hover:!bg-transparent hover:!border-[#fea500]"
-                      onClick={() => router.push(`/media/movie`)}
-                    >
-                      +
-                    </button>
-                  </div>
+                <div className="flex justify-between  items-center gap-4">
+                  <h3 className="text-white text-[25px] font-semibold">
+                    Trending Movies
+                  </h3>
+                  <button
+                    className="border border-1 rounded-full text-white px-2 mr-2 hover:!text-[#fea500] transition hover:!bg-transparent hover:!border-[#fea500]"
+                    onClick={() => router.push(`/media/movie`)}
+                  >
+                    +
+                  </button>
+                </div>
 
-                  <div className="w-fullSearch">
-                    <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10 justify-center">
-                      {latestMovieList && latestMovieList.length > 0
-                        ? latestMovieList
-                          .slice(0, isMobile ? 8 : 16)
-                          .map((item: any, index: any) => (
-                            <Suspense fallback={<Loader />} key={item.id}>
-                              <Card
-                                index={index}
-                                key={item.id}
-                                movieId={item.id}
-                                mediaType={"Movie"}
-                                isLoading={movieLoading}
-                              />
-                            </Suspense>
-                          ))
-                        : ""}
-                    </ul>
-                  </div>
+                <div className="w-fullSearch">
+                  <ul className="w-full flex flex-wrap gap-y-5 md:gap-y-10 justify-center">
+                    {latestMovieList && latestMovieList.length > 0
+                      ? latestMovieList
+                        .slice(0, isMobile ? 8 : 16)
+                        .map((item: any, index: any) => (
+                          <Suspense fallback={<Loader />} key={item.id}>
+                            <Card
+                              index={index}
+                              key={item.id}
+                              movieId={item.id}
+                              mediaType={"Movie"}
+                              isLoading={movieLoading}
+                            />
+                          </Suspense>
+                        ))
+                      : ""}
+                  </ul>
+                </div>
                 {/* </div> */}
               </div>
               {/* <div className="share-container py-10 max-w-screen-md sm:mx-auto mx-5">
@@ -313,7 +313,7 @@ const HomePage = () => {
                     <button
                       className={`${selectedMedia === "Movie"
                         ? "pbgColor rounded-full text-black px-2"
-                        : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+                        : "border border-1 rounded-full text-white px-2 hover:!bg-transparent hover:!text-[#fea500] transition hover:!border-[#fea500]"
                         }`}
                       onClick={() => setSelectedMedia("Movie")}
                     >
@@ -322,7 +322,7 @@ const HomePage = () => {
                     <button
                       className={`${selectedMedia === "TV"
                         ? "pbgColor rounded-full text-black px-2"
-                        : "border border-1 rounded-full text-white px-2 hover:bg-white hover:text-black transition"
+                        : "border border-1 rounded-full text-white px-2 hover:!bg-transparent hover:!text-[#fea500] transition hover:!border-[#fea500]"
                         }`}
                       onClick={() => setSelectedMedia("TV")}
                     >

@@ -120,7 +120,6 @@ export default function HomeSlider() {
   const router = useRouter();
   const [roleLoading, roleData] = useRole();
   const [isOpen, setIsOpen] = useState(false);
-
   const { isLoading, data: products } = useQuery({
     queryKey: ["products"],
     queryFn: fetchTopAll,
@@ -240,7 +239,7 @@ export default function HomeSlider() {
                         <img
                           src={logos[item.id] as string}
                           alt={item.title || item.name}
-                          className="max-h-[80px] object-contain"
+                          className="!max-h-[80px] !object-fill !w-[250px]"
                         />
                       ) : (
                         item.title || item.name
