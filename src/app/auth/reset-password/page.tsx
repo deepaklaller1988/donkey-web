@@ -2,7 +2,7 @@
 import Button from "@components/buttons/Button";
 import API from "@lib/Api";
 import { useMutation } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toasterError, toasterSuccess } from "@components/core/Toaster";
 import { handleError } from "@lib/errorHandler";
