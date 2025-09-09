@@ -170,7 +170,7 @@ function Card({
         <>
           <li
             key={movieId}
-            className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-[12.5%]  cursor-pointer cardSet relative"
+            className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-[12.5%] cursor-pointer cardSet relative"
           >
             <div
               className="relative w-full"
@@ -186,7 +186,7 @@ function Card({
                 `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${seasonId ? seasonId : 1
                 }&episodeId=${episodeId ? episodeId : 1}`
               )
-            }>
+            } >
                 <span
                   className="relative folderOpened"
 
@@ -212,7 +212,7 @@ function Card({
               </div>
 
               {isMyList && isDeletable && (
-                <label className="absolute z-0 top-1 right-0 font-bold px-1 rounded-l-xl">
+                <label className="absolute top-1 right-0 font-bold px-1 rounded-l-xl z-30">
                   <div className="relative flex gap-4 hover:cursor-pointer">
                     <Image
                       alt="image"
@@ -233,7 +233,7 @@ function Card({
               )}
 
               {isBookmarked && isDeletable && (
-                <label className="absolute z-0 top-1 right-0 font-bold px-1 rounded-l-xl">
+                <label className="absolute top-1 right-0 font-bold px-1 rounded-l-xl z-30 hover:cursor-pointer">
                   <div className="relative flex gap-4">
                     <div className="relative flex gap-4">
                       <Image
