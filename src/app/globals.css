@@ -58,7 +58,8 @@ body {
 }
 
 .pbgColor {
-  background-color: #fea500 !important;
+  background-color: transparent !important;
+  color: #fea500;
   border: 1px solid #fea500;
 
 }
@@ -189,7 +190,7 @@ ul.indicators .indicator.active div {
   display: block;
 }
 
-.cardSet span:before {
+.cardSet div.gradient:before {
   background: rgb(0, 0, 0);
   background: -moz-linear-gradient(180deg, rgba(0, 0, 0, 0) 43%, rgba(233, 200, 37, 1) 100%);
   background: -webkit-linear-gradient(180deg, rgba(0, 0, 0, 0) 43%, rgba(233, 200, 37, 1) 100%);
@@ -203,6 +204,7 @@ ul.indicators .indicator.active div {
   border-radius: 12px;
   transition: .5s;
   opacity: 0;
+  z-index: 1;
 }
 
 .profileActive {
@@ -210,7 +212,11 @@ ul.indicators .indicator.active div {
   border-color: #fea500
 }
 
-.cardSet:hover span:before,
+div.gradient {
+  position: relative;
+}
+
+.cardSet:hover div.gradient:before,
 .cardSet:hover svg {
   opacity: 1;
 }

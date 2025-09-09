@@ -18,7 +18,7 @@ const fetchDetails = async (movieId: number, mediaType: string) => {
   }
 };
 
-function SidebarCard({ movieId, mediaType, index,isPopular }: any) {
+function SidebarCard({ movieId, mediaType, index, isPopular }: any) {
   const router = useRouter();
   const mediatype = mediaType.replace(/s$/, "");
   const capitalizedMediaType =
@@ -46,8 +46,7 @@ function SidebarCard({ movieId, mediaType, index,isPopular }: any) {
         className={`cursor-pointer ${index ? "pl-[15px]" : ""}`}
         onClick={() =>
           router.push(
-            `/watch-now?type=${
-              capitalizedMediaType?.toLowerCase() == "movie" ? "movie" : "tv"
+            `/watch-now?type=${capitalizedMediaType?.toLowerCase() == "movie" ? "movie" : "tv"
             }&id=${movieId}`
           )
         }
@@ -59,12 +58,11 @@ function SidebarCard({ movieId, mediaType, index,isPopular }: any) {
               width={200}
               quality={50}
               className="rounded-md w-full"
-              src={`${
-                cardDetials?.poster_path
+              src={`${cardDetials?.poster_path
                   ? "https://image.tmdb.org/t/p/original" +
-                    cardDetials?.poster_path
+                  cardDetials?.poster_path
                   : "/assets/images/miss.jpg"
-              }`}
+                }`}
               alt="album"
             />
           </span>
@@ -74,14 +72,14 @@ function SidebarCard({ movieId, mediaType, index,isPopular }: any) {
             </b>
           )}
           <div className="w-full relative pr-16 pl-4">
-            <h4 className="text-sm md:text-[16px] text-white uppercase font-semibold transition">
+            <h4 className="text-sm md:text-[16px] text-white capitalize font-semibold transition">
               {cardDetials?.title && cardDetials.title.length > 20
                 ? cardDetials?.title?.slice(0, 20) + "..."
                 : cardDetials?.name && cardDetials?.name.length > 20
-                ? cardDetials?.name?.slice(0, 20) + "..."
-                : cardDetials?.name
-                ? cardDetials?.name
-                : cardDetials?.title}
+                  ? cardDetials?.name?.slice(0, 20) + "..."
+                  : cardDetials?.name
+                    ? cardDetials?.name
+                    : cardDetials?.title}
             </h4>
             <ul className="text-white/40 flex gap-2">
               <li className="text-sm">{capitalizedMediaType}</li>
@@ -106,8 +104,8 @@ function SidebarCard({ movieId, mediaType, index,isPopular }: any) {
               {capitalizedMediaType === "Movie"
                 ? moment(cardDetials?.release_date).year()
                 : cardDetials?.last_air_date
-                ? new Date(cardDetials.last_air_date).getFullYear()
-                : ""}
+                  ? new Date(cardDetials.last_air_date).getFullYear()
+                  : ""}
             </label>
           </div>
         </section>

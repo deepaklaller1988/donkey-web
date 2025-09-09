@@ -181,33 +181,35 @@ function Card({
                 setIsDeletable(false);
                 setIsOpen(false);
               }}
-            >
-              <span
-                className="relative folderOpened"
-                onClick={() =>
-                  router.push(
-                    `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${seasonId ? seasonId : 1
-                    }&episodeId=${episodeId ? episodeId : 1}`
-                  )
-                }
-              >
-                {/* <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" /> */}
-                <Image
-                  alt="image"
-                  quality={100}
-                  height={100}
-                  width={100}
-                  className="rounded-xl w-full"
-                  src={`${movieDetials?.poster_path
-                    ? "https://image.tmdb.org/t/p/original" +
-                    movieDetials?.poster_path
-                    : "/assets/images/miss.jpg"
-                    }`}
-                />
-                {/* <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
+            ><div className="gradient" onClick={() =>
+              router.push(
+                `/watch-now?type=${mediaType?.toLowerCase()}&id=${movieId}&seasonId=${seasonId ? seasonId : 1
+                }&episodeId=${episodeId ? episodeId : 1}`
+              )
+            }>
+                <span
+                  className="relative folderOpened"
+
+                >
+
+                  {/* <FaPlayCircle className="opacity-0 transition absolute text-black -mt-5 top-1/2 text-[30px] -ml-5 left-1/2" /> */}
+                  <Image
+                    alt="image"
+                    quality={100}
+                    height={100}
+                    width={100}
+                    className="rounded-xl w-full"
+                    src={`${movieDetials?.poster_path
+                      ? "https://image.tmdb.org/t/p/original" +
+                      movieDetials?.poster_path
+                      : "/assets/images/miss.jpg"
+                      }`}
+                  />
+                  {/* <label className="absolute z-0 pbgColor top-5 left-0 font-bold px-2 rounded-r-xl">
                 {quality ? quality : "HD"}
               </label> */}
-              </span>
+                </span>
+              </div>
 
               {isMyList && isDeletable && (
                 <label className="absolute z-0 top-1 right-0 font-bold px-1 rounded-l-xl">

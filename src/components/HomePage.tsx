@@ -78,7 +78,7 @@ const fetchPopularLists = async (mediaType: string) => {
     const tmdbResponses = await Promise.all(
       imdbIds?.map(async (id: any) => {
         try {
-          const tmdbUrl = `https://api.themoviedb.org/3/tv/${id}?language=en-US`;
+          const tmdbUrl = `https://api.themoviedb.org/3/${mediaTypeLower}/${id}?language=en-US`;
           // console.debug("Fetching TMDB detail for popular:", tmdbUrl);
           const response = await FetchApi.get(tmdbUrl);
           return await response.json();
