@@ -474,23 +474,23 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }?true&autonext=true&download=false`;
 
-    const baseAutoEmbedUrl: any = `https://player.autoembed.cc/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
-      }${mediaType === "tv"
-        ? selectedSeason
-          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
-          : "/1"
-        : ""
-      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-      }`;
+    // const baseAutoEmbedUrl: any = `https://player.autoembed.cc/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+    //   }${mediaType === "tv"
+    //     ? selectedSeason
+    //       ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+    //       : "/1"
+    //     : ""
+    //   }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+    //   }`;
 
     const playerUrls: any = {
       // "vidsrc.dev": baseVidSrcUrl,
       "vidplus.to": baseVidSrccoUrl,
       "videasy.net": baseVidSrcUrl,
       "vidsrc.cc": baseVidSrcccUrl,
-      embed: baseEmbedUrl,
+      "embed": baseEmbedUrl,
       "vidsrc.me": baseVidSrcmeUrl,
-      "player.autoembed": baseAutoEmbedUrl,
+      // "player.autoembed": baseAutoEmbedUrl,
     };
 
     return playerUrls[selectedPlayer] || playerUrls["vidplus.to"];
