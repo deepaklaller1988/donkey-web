@@ -542,7 +542,7 @@ export default function WatchNow() {
                         className="w-full mt-5 rounded-lg videoFrame"
                         title="Vidsrc video player"
                         referrerPolicy="origin"
-                        {...((selectedPlayer !== "vidplus.to" && selectedPlayer !== "videasy.net") && {
+                        {...((selectedPlayer !== "vidplus.to" && selectedPlayer !== "videasy.net" && selectedPlayer !== "vidsrc.cc" && selectedPlayer !== "vidsrc.me") && {
                           sandbox: "allow-scripts allow-same-origin allow-presentation"
                         })}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
