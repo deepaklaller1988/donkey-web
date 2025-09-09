@@ -246,7 +246,7 @@ export default function WatchNow() {
     const onWindowBlur = () => {
       if (iframeMouseOver) {
         // if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-        if (selectedPlayer === "vvidplus.to" && userId && movieId && mediaType) {
+        if (selectedPlayer === "vidplus.to" && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
