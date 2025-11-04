@@ -36,18 +36,16 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState<any>("vidplus.to");
+  const [selectedPlayer, setSelectedPlayer] = useState<any>("videasy.net");
   const [iframeMouseOver, setIframeMouseOver] = useState(false);
 
   const userId = User.id;
   const playerOptions = [
-    // { label: "Player 1", value: "vidsrc.dev" },
-    { label: "Player 1", value: "vidplus.to" },
-    { label: "Player 2", value: "videasy.net" },
-    { label: "Player 3", value: "vidsrc.cc" },
-    { label: "Player 4", value: "embed" },
-    { label: "Player 5", value: "vidsrc.me" },
-    // { label: "Dubbed", value: "player.autoembed" },
+    { label: "Player 1", value: "videasy.net" },
+    { label: "Player 2", value: "vidking.net" },
+    { label: "Player 3", value: "vidplus.to" },
+    { label: "Player 4", value: "vidrock.net" },
+    { label: "Player 5", value: "vidsrc.cc" },
   ];
 
 
@@ -406,14 +404,6 @@ export default function WatchNow() {
   }
 
   const getPlayerUrl = () => {
-    // const baseVidSrcUrl = `https://vidsrc.dev/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
-    //   }${mediaType === "tv"
-    //     ? selectedSeason
-    //       ? "/" + (selectedSeason.season_number || selectedSeason || 1)
-    //       : "/1"
-    //     : ""
-    //   }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-    //   }`;
     const baseVidSrcUrl: any = `https://player.videasy.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
@@ -432,29 +422,6 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }`;
 
-    const baseVidSrcmeUrl: any = `https://vidsrc.me/embed/${mediaType}?${watchDetials.imdb_id
-      ? "imdb=" + watchDetials.imdb_id
-      : "tmdb=" + watchDetials.id
-      }${mediaType === "tv" && selectedSeason
-        ? "&season=" + (selectedSeason.season_number || 1)
-        : "&season=1"
-      }${mediaType === "tv" && selectedEpisode ? "&episode=" + selectedEpisode : ""
-      }`;
-    // https://flicky.host/embed/tv/?id=71446/1/1
-    // https://flicky.host/embed/movie/?id=402431
-
-    // const baseVidFlickyHostUrl = `https://flicky.host/embed/${mediaType}/?id=${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
-    // }${mediaType === "tv"
-    //   ? selectedSeason
-    //     ? "/" + (selectedSeason.season_number || selectedSeason || 1)
-    //     : "/1"
-    //   : ""
-    // }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-    // }`;
-
-    // autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins
-    // https://player.vidsrc.co/embed
-
     const baseVidSrccoUrl: any = `https://player.vidplus.to/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
@@ -463,7 +430,6 @@ export default function WatchNow() {
         : ""
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }?autoplay=true&poster=true&title=true&watchparty=false&chromecast=true&servericon=true&setting=true&pip=true&hideprimarycolor=true&hidesecondarycolor=true&hideiconcolor=true&hideprogresscontrol=true&hideiconset=true&hideautonext=true&hideautoplay=true&hidenextbutton=true&hideposter=true&hidetitle=true&hidechromecast=true&hideepisodelist=true&hideservericon=true&hidepip=true&primarycolor=FFA500&secondarycolor=FFFFFF&iconcolor=FFFFFF&font=Arial&fontcolor=FFFFFF&fontsize=20&opacity=0.5`;
-
 
     const baseVidSrcccUrl: any = `https://vidrock.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
@@ -474,26 +440,24 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }?true&autonext=true&download=false`;
 
-    // const baseAutoEmbedUrl: any = `https://player.autoembed.cc/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
-    //   }${mediaType === "tv"
-    //     ? selectedSeason
-    //       ? "/" + (selectedSeason.season_number || selectedSeason || 1)
-    //       : "/1"
-    //     : ""
-    //   }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-    //   }`;
+    const basevidkingUrl: any = `https://player.vidplus.to/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+      }${mediaType === "tv"
+        ? selectedSeason
+          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+          : "/1"
+        : ""
+      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+      }?${mediaType !== "tv" ? 'primarycolor=FFA500&secondarycolor=FFFFFF&autoplay=true&poster=true&title=true&icons=netflix&download=true' : 'primarycolor=FFA500&secondarycolor=FFFFFF&autoplay=true&autonext=true&nextbutton=true&poster=true&title=true&icons=netflix&download=true'}`;
 
     const playerUrls: any = {
-      // "vidsrc.dev": baseVidSrcUrl,
-      "vidplus.to": baseVidSrccoUrl,
       "videasy.net": baseVidSrcUrl,
-      "vidsrc.cc": baseVidSrcccUrl,
-      "embed": baseEmbedUrl,
-      "vidsrc.me": baseVidSrcmeUrl,
-      // "player.autoembed": baseAutoEmbedUrl,
+      "vidking.net": basevidkingUrl,
+      "vidplus.to": baseVidSrccoUrl,
+      "vidrock.net": baseVidSrcccUrl,
+      "vidsrc.cc": baseEmbedUrl,
     };
 
-    return playerUrls[selectedPlayer] || playerUrls["vidplus.to"];
+    return playerUrls[selectedPlayer] || playerUrls["videasy.net"];
   };
 
   const handleOnMouseOver = () => {
@@ -542,9 +506,10 @@ export default function WatchNow() {
                         className="w-full mt-5 rounded-lg videoFrame"
                         title="Vidsrc video player"
                         referrerPolicy="origin"
-                        {...((selectedPlayer !== "vidplus.to" && selectedPlayer !== "videasy.net" && selectedPlayer !== "vidsrc.cc" && selectedPlayer !== "vidsrc.me") && {
-                          sandbox: "allow-scripts allow-same-origin allow-presentation"
-                        })}
+
+                        // {...((selectedPlayer !== "vidplus.to" && selectedPlayer !== "videasy.net" && selectedPlayer !== "vidsrc.cc" && selectedPlayer !== "vidsrc.me") && {
+                        //   sandbox: "allow-scripts allow-same-origin allow-presentation"
+                        // })}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
                         ref={iframeRef}
