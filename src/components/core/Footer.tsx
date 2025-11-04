@@ -35,12 +35,12 @@ export default function Footer() {
                         className="max-w-full" src="/assets/images/logo.png" alt="logo" /></a> */}
                     <div className="w-full flex items-center justify-center md:justify-end gap-4  lg:mb-3 mb-0 ">
                         <Link href="https://t.me/donkey_to" target="_blank" className="text-white hover:text-yellow-500 transition" title="telegram"><PiTelegramLogoDuotone className="w-7 h-7" /></Link>
-                        <Link href="https://www.reddit.com/r/donkey_to/" target="_blank" className="text-white hover:text-yellow-500 transition" title="Reddit"><FaRedditAlien className="w-7 h-7" /></Link>
+                        {/* <Link href="https://www.reddit.com/r/donkey_to/" target="_blank" className="text-white hover:text-yellow-500 transition" title="Reddit"><FaRedditAlien className="w-7 h-7" /></Link> */}
                     </div>
                 </section>
             </div>
             <div className="w-full text-center borderSet">
-                <p className="text-white font-light text-sm text-white/50 pb-2">We do not store any files on our server; media files are hosted by non-affiliated third-party services.</p>
+                <p className="text-white font-light text-sm text-white/50 pb-2">We don’t host any files on our servers. All media content is provided by non-affiliated third-party services.</p>
                 {/* <b className="pColor font-semibold text-sm">We do not store any files on our server, media files are hosted via third-party services.</b> */}
             </div>
         </div>
