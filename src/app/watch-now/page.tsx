@@ -472,7 +472,7 @@ export default function WatchNow() {
   if (!movieId || !mediaType) {
     return (
       <div className="text-red-700 font-semibold text-4xl absolute top-1/2 left-1/2 z-30">
-        Invalid or missing movie ID or media type in the URL.
+        Invalid or missing movie ID or media type in the URL
       </div>
     );
   }
