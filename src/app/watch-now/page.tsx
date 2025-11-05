@@ -45,7 +45,7 @@ export default function WatchNow() {
     { label: "Player 2", value: "vidking.net" },
     { label: "Player 3", value: "vidplus.to" },
     { label: "Player 4", value: "vidrock.net" },
-    { label: "Player 5", value: "vidsrc.cc" },
+    { label: "Player 5", value: "vidsrc.me" },
   ];
 
 
@@ -413,7 +413,7 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }?color=FFA500`;
 
-    const baseEmbedUrl: any = `https://vidsrc.cc/v2/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+    const baseEmbedUrl: any = `https://vidsrc.me/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -453,7 +453,7 @@ export default function WatchNow() {
       "vidking.net": basevidkingUrl,
       "vidplus.to": baseVidSrccoUrl,
       "vidrock.net": baseVidSrcccUrl,
-      "vidsrc.cc": baseEmbedUrl,
+      "vidsrc.me": baseEmbedUrl,
     };
 
     return playerUrls[selectedPlayer] || playerUrls["videasy.net"];
