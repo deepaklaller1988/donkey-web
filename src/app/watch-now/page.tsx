@@ -429,7 +429,7 @@ export default function WatchNow() {
           : "/1"
         : ""
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-      }?autoplay=true&poster=true&title=true&watchparty=false&chromecast=true&servericon=true&setting=true&pip=true&hideprimarycolor=true&hidesecondarycolor=true&hideiconcolor=true&hideprogresscontrol=true&hideiconset=true&hideautonext=true&hideautoplay=true&hidenextbutton=true&hideposter=true&hidetitle=true&hidechromecast=true&hideepisodelist=true&hideservericon=true&hidepip=true&primarycolor=FFA500&secondarycolor=FFFFFF&iconcolor=FFFFFF&font=Arial&fontcolor=FFFFFF&fontsize=20&opacity=0.5`;
+      }?autoplay=true&download=true&poster=true&title=true&watchparty=false&chromecast=true&servericon=true&setting=true&pip=true&hideprimarycolor=true&hidesecondarycolor=true&hideiconcolor=true&hideprogresscontrol=true&hideiconset=true&hideautonext=true&hideautoplay=true&hidenextbutton=true&hideposter=true&hidetitle=true&hidechromecast=true&hideepisodelist=true&hideservericon=true&hidepip=true&primarycolor=FFA500&secondarycolor=FFFFFF&iconcolor=FFFFFF&font=Arial&fontcolor=FFFFFF&fontsize=20&opacity=0.5`;
 
     const baseVidSrcccUrl: any = `https://vidrock.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
@@ -440,14 +440,14 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }?true&autonext=true&download=false`;
 
-    const basevidkingUrl: any = `https://player.vidplus.to/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+    const basevidkingUrl: any = `https://www.vidking.net/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
           : "/1"
         : ""
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-      }?${mediaType !== "tv" ? 'primarycolor=FFA500&secondarycolor=FFFFFF&autoplay=true&poster=true&title=true&icons=netflix&download=true' : 'primarycolor=FFA500&secondarycolor=FFFFFF&autoplay=true&autonext=true&nextbutton=true&poster=true&title=true&icons=netflix&download=true'}`;
+      }?color=ffa500`;
 
     const playerUrls: any = {
       "videasy.net": baseVidSrcUrl,
