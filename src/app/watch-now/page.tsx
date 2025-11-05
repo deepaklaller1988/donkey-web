@@ -439,7 +439,6 @@ export default function WatchNow() {
         : ""
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }?true&autonext=true&download=false`;
-
     const basevidkingUrl: any = `https://www.vidking.net/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
