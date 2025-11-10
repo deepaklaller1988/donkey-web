@@ -163,30 +163,24 @@ export default function WatchNow() {
     queryKey: ["watch-detials", movieId, mediaType],
     queryFn: () => fetchDetails(movieId, mediaType),
   });
-
   useEffect(() => {
     const initializeValues = async () => {
-      // if (userId && selectedPlayer === "vidsrc.dev") {
-      if (userId && selectedPlayer === "vidplus.to") {
+      // Only proceed with fetching if userId and selectedPlayer are valid
+      if (userId && (["videasy.net", "vidking.net", "vidplus.to", "vidrock.net", "vidsrc.me"].includes(selectedPlayer))) {
         try {
+          // Make the API request for media progress
           const response = await API.get(
             `mediaprogress/tv?user_id=${userId}&media_type=${mediaType}&media_id=${movieId}`
           );
-          if (response?.data) {
-            const { season_id, episode_id } = response?.data[0];
 
-            setSelectedSeason(
-              season_id ? Number(season_id) : seasonId ? Number(seasonId) : 1
-            );
-            setSelectedEpisode(
-              episode_id
-                ? Number(episode_id)
-                : episodeId
-                  ? Number(episodeId)
-                  : 1
-            );
+          if (response?.data && response.data.length > 0) {
+            const { season_id, episode_id } = response.data[0];
+
+            // Set season and episode based on the response or fallback to default values
+            setSelectedSeason(season_id ? Number(season_id) : seasonId ? Number(seasonId) : 1);
+            setSelectedEpisode(episode_id ? Number(episode_id) : episodeId ? Number(episodeId) : 1);
           } else {
-            console.error("No progress found, using provided IDs");
+            console.error("No progress found, using default IDs");
             setSelectedSeason(seasonId ? Number(seasonId) : 1);
             setSelectedEpisode(episodeId ? Number(episodeId) : 1);
           }
@@ -196,6 +190,7 @@ export default function WatchNow() {
           setSelectedEpisode(episodeId ? Number(episodeId) : 1);
         }
       } else {
+        // If no player match, fall back to the provided season and episode IDs
         if (!selectedEpisode || !selectedSeason) {
           setSelectedSeason(seasonId ? Number(seasonId) : 1);
           setSelectedEpisode(episodeId ? Number(episodeId) : 1);
@@ -203,8 +198,10 @@ export default function WatchNow() {
       }
     };
 
+    // Call the initialization function on player change, userId, or movieId update
     initializeValues();
   }, [userId, selectedPlayer, movieId, mediaType, seasonId, episodeId]);
+
 
   useEffect(() => {
     // if (seasonId && episodeId && selectedPlayer !== "vidsrc.dev") {
@@ -244,7 +241,7 @@ export default function WatchNow() {
     const onWindowBlur = () => {
       if (iframeMouseOver) {
         // if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-        if (selectedPlayer === "vidplus.to" && userId && movieId && mediaType) {
+        if ((["videasy.net", "vidking.net", "vidplus.to", "vidrock.net", "vidsrc.me"].includes(selectedPlayer)) && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
@@ -766,7 +763,7 @@ export default function WatchNow() {
                               onChange={(e: DropdownChangeEvent) => {
                                 handleSeasonChange(e);
                                 // if (selectedPlayer === "vidsrc.dev") {
-                                if (selectedPlayer === "vidplus.to") {
+                                if ((["videasy.net", "vidking.net", "vidplus.to", "vidrock.net", "vidsrc.me"].includes(selectedPlayer))) {
                                   const mediaId = watchDetials.id
                                     ? watchDetials.id
                                     : watchDetials.imdb_id;
@@ -852,7 +849,7 @@ export default function WatchNow() {
                                             item?.episode_number
                                           );
                                           // if (selectedPlayer === "vidsrc.dev") {
-                                          if (selectedPlayer === "vidplus.to") {
+                                          if ((["videasy.net", "vidking.net", "vidplus.to", "vidrock.net", "vidsrc.me"].includes(selectedPlayer))) {
                                             const mediaId = watchDetials.id
                                               ? watchDetials.id
                                               : watchDetials.imdb_id;
