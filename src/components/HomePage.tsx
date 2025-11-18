@@ -27,6 +27,7 @@ const fetchTrendingList = async (mediaType: string) => {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
         "trakt-api-key": CLIENT_ID,
+        "User-Agent": "my-trakt-app"
       },
     });
     const data = await response.json();
@@ -70,6 +71,7 @@ const fetchPopularLists = async (mediaType: string) => {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
         "trakt-api-key": CLIENT_ID,
+        "User-Agent": "my-trakt-app"
       },
     });
     const data = await response.json();
@@ -108,6 +110,7 @@ const fetchLatestList = async (mediaType: string) => {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
         "trakt-api-key": CLIENT_ID,
+        "User-Agent": "my-trakt-app"
       },
     });
 
