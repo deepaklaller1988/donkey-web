@@ -16,9 +16,8 @@ const fetchPopularLists = async (mediaType: string) => {
     const response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
-        "User-Agent": "donkey.to",
+        "trakt-api-version": "2",
         "trakt-api-key": CLIENT_ID,
-        "trakt-api-version": "2"
       },
     });
     const data = await response.json();
