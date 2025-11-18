@@ -26,7 +26,7 @@ const fetchTrendingList = async (mediaType: string) => {
       headers: {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
-        "trakt-api-key": CLIENT_ID,
+        "trakt-api-key": CLIENT_ID
       },
     });
     const data = await response.json();
@@ -69,7 +69,7 @@ const fetchPopularLists = async (mediaType: string) => {
       headers: {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
-        "trakt-api-key": CLIENT_ID,
+        "trakt-api-key": CLIENT_ID
       },
     });
     const data = await response.json();
@@ -107,7 +107,7 @@ const fetchLatestList = async (mediaType: string) => {
       headers: {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
-        "trakt-api-key": CLIENT_ID,
+        "trakt-api-key": CLIENT_ID
       },
     });
 
