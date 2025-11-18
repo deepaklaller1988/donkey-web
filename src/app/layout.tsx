@@ -102,7 +102,7 @@ export default function RootLayout({
             <MainLayout>{children}</MainLayout>
 
           </ScriptLoader>
-          <AdScript />
+          {/* <AdScript /> */}
           <ToastProvider />
         </Provider>
       </body>
