@@ -1,58 +1,36 @@
 "use client";
 import { useEffect } from "react";
 
-// Fix TypeScript: declare aclib on window
-declare global {
-  interface Window {
-    aclib?: any;
-  }
-}
-
 const AdScript = () => {
-  // ✅ Monetag (KEEP ONLY THIS ONE)
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://ptichoolsougn.net/401/9136325";
+    const scripts: HTMLScriptElement[] = [];
 
-    try {
+    const loadScript = (src: string) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.setAttribute("data-cfasync", "false");
+
       (document.body || document.documentElement).appendChild(script);
-    } catch (error) {
-      console.error("Error loading Monetag:", error);
-    }
-
-    return () => {
-      try {
-        (document.body || document.documentElement).removeChild(script);
-      } catch { }
-    };
-  }, []);
-
-  // ✅ Adcash (Popunders + Video Slider) → load aclib.js once
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.id = "aclib-main";
-    script.src = "//acscdn.com/script/aclib.js";
-
-    script.onload = () => {
-      if (window.aclib) {
-        // Adcash Popunder
-        window.aclib.runPop({
-          zoneId: "10622330",
-        });
-
-        // Adcash Video Slider
-        window.aclib.runVideoSlider({
-          zoneId: "10622338",
-        });
-      }
+      scripts.push(script);
     };
 
-    document.body.appendChild(script);
+    // ✅ Galaksion Popunder
+    loadScript("//sa.shanksmagh.com/rvUKZVqmljmA/NgvMR");
+
+    // ✅ Galaksion Native Shufflebox (Vignette)
+    loadScript("//ph.mislucktinean.com/sACMVWVZf46BJo/134505");
+
+    // ✅ Galaksion Video Ad
+    loadScript("//bx.simulasending.com/vtZj1yeasXrJq/134507");
 
     return () => {
-      try {
-        document.body.removeChild(script);
-      } catch { }
+      // Cleanup on unmount
+      scripts.forEach((script) => {
+        try {
+          script.remove();
+        } catch {}
+      });
     };
   }, []);
 
