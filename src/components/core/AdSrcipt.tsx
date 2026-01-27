@@ -16,7 +16,8 @@ const AdScript = () => {
     };
 
     // ✅ Galaksion Popunder
-    loadScript("//sa.shanksmagh.com/rvUKZVqmljmA/NgvMR");
+    // loadScript("//sa.shanksmagh.com/rvUKZVqmljmA/NgvMR");
+    loadScript("//jh.threerosine.com/r772AZhfpHw7CqW/NgvMR");
 
     // ✅ Galaksion Native Shufflebox (Vignette)
     loadScript("//ph.mislucktinean.com/sACMVWVZf46BJo/134505");
