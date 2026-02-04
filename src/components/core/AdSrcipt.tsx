@@ -17,10 +17,10 @@ const AdScript = () => {
 
     // ✅ Galaksion Popunder
     // loadScript("//sa.shanksmagh.com/rvUKZVqmljmA/NgvMR");
-    loadScript("//jh.threerosine.com/r772AZhfpHw7CqW/NgvMR");
+    loadScript("//ob.algatyramin.com/rhDqkYurFPBdK2ten/134504");
 
     // ✅ Galaksion Native Shufflebox (Vignette)
-    loadScript("//ph.mislucktinean.com/sACMVWVZf46BJo/134505");
+    loadScript("//iz.solionenzymes.com/s5cjs9YKq8l/134505");
 
     // ✅ Galaksion Video Ad
     loadScript("//bx.simulasending.com/vtZj1yeasXrJq/134507");
