@@ -5,11 +5,17 @@ const AdScript = () => {
   useEffect(() => {
     const scripts: HTMLScriptElement[] = [];
 
-    const loadScript = (src: string) => {
+    const loadScript = (src: string, dataset?: Record<string, string>) => {
       const script = document.createElement("script");
       script.src = src;
       script.async = true;
       script.setAttribute("data-cfasync", "false");
+
+      if (dataset) {
+        Object.entries(dataset).forEach(([key, value]) => {
+          script.dataset[key] = value;
+        });
+      }
 
       (document.body || document.documentElement).appendChild(script);
       scripts.push(script);
@@ -24,7 +30,18 @@ const AdScript = () => {
 
     // // ✅ Galaksion Video Ad
     // loadScript("//bx.simulasending.com/vtZj1yeasXrJq/134507");
-    loadScript("//d33f51dyacx7bd.cloudfront.net/?aydfd=1241784");
+    
+    // loadScript("//d33f51dyacx7bd.cloudfront.net/?aydfd=1241784");
+
+    // ✅ Pops Ad
+    loadScript("https://bvtpk.com/tag.min.js", {
+      zone: "10620513",
+    });
+
+    // ✅ Vignette Ad
+    loadScript("https://dd133.com/vignette.min.js", {
+      zone: "10620518",
+    });
 
     return () => {
       // Cleanup on unmount
