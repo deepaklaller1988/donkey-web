@@ -5,7 +5,7 @@ const AdScript = () => {
   useEffect(() => {
     const scripts: HTMLScriptElement[] = [];
 
-    const loadScript = (src: string, dataset?: Record<string, string>) => {
+    const loadScript = (src: string, dataset?: Record<string, string>,containerId?: string) => {
       const script = document.createElement("script");
       script.src = src;
       script.async = true;
@@ -17,10 +17,15 @@ const AdScript = () => {
         });
       }
 
-      (document.body || document.documentElement).appendChild(script);
+      if (containerId) {
+        const container = document.getElementById(containerId);
+        (container || document.body).appendChild(script);
+      } else {
+        document.body.appendChild(script);
+      }
+
       scripts.push(script);
     };
-
     // // ✅ Galaksion Popunder
     // // loadScript("//sa.shanksmagh.com/rvUKZVqmljmA/NgvMR");
     // loadScript("//ob.algatyramin.com/rhDqkYurFPBdK2ten/134504");
@@ -42,6 +47,13 @@ const AdScript = () => {
     loadScript("https://dd133.com/vignette.min.js", {
       zone: "10620518",
     });
+
+    // ✅ Native Bottom Banner
+    loadScript(
+      "//vb.lobbecalm.com/tkN4IVyz38weqhzH/136372",
+      undefined,
+      "native-bottom-banner"
+    );
 
     return () => {
       // Cleanup on unmount

@@ -28,6 +28,11 @@ export default function MainLayout({ children }: any) {
           {/* <AdComponent /> */}
             <Header />
             {children}
+          <div className="w-full flex justify-center mt-5">
+            <div className="w-full max-w-5xl">
+              <div id="native-bottom-banner" className="flex justify-center" />
+            </div>
+          </div>
             <Footer />
           </div>
         </>
