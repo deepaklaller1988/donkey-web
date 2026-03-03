@@ -50,7 +50,7 @@ const AdScript = () => {
 
     // ✅ Native Bottom Banner
     loadScript(
-      "//vb.lobbecalm.com/tkN4IVyz38weqhzH/136372",
+      "//jo.cashooshut.com/tPrJqy226L0pdctvD/136372",
       undefined,
       "native-bottom-banner"
     );
