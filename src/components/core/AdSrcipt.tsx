@@ -50,7 +50,7 @@ const AdScript = () => {
 
     // ✅ Native Bottom Banner
     loadScript(
-      "//jo.cashooshut.com/tPrJqy226L0pdctvD/136372",
+      "//zn.novaleelds.com/t1Rp01TbX9Aq1P52/136372",
       undefined,
       "native-bottom-banner"
     );
