@@ -36,12 +36,12 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState<any>("rivestream.org");
+  const [selectedPlayer, setSelectedPlayer] = useState<any>("embed.7xstream.tv");
   const [iframeMouseOver, setIframeMouseOver] = useState(false);
 
   const userId = User.id;
   const playerOptions = [
-    { label: "Primary", value: "rivestream.org" },
+    { label: "Primary", value: "embed.7xstream.tv" },
     { label: "Secondary", value: "videasy.net" },
     { label: "Backup", value: "vsembed.ru" },
     // { label: "Player 2", value: "vidking.net" },
@@ -167,7 +167,7 @@ export default function WatchNow() {
   useEffect(() => {
     const initializeValues = async () => {
       // Only proceed with fetching if userId and selectedPlayer are valid
-      if (userId && (["rivestream.org", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+      if (userId && (["embed.7xstream.tv", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
         try {
           // Make the API request for media progress
           const response = await API.get(
@@ -242,7 +242,7 @@ export default function WatchNow() {
     const onWindowBlur = () => {
       if (iframeMouseOver) {
         // if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-        if ((["rivestream.org", "videasy.net", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
+        if ((["embed.7xstream.tv", "videasy.net", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
@@ -402,14 +402,14 @@ export default function WatchNow() {
   }
 
   const getPlayerUrl = () => {
-    const baseRiveStreamUrl: any = `https://rivestream.org/embed?type=${mediaType}&id=${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+    const base7xStreamUrl: any = `https://embed.7xstream.tv/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
-          ? "&season=" + (selectedSeason.season_number || selectedSeason || 1)
-          : "1"
+          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+          : "/1"
         : ""
-      }${mediaType === "tv" ? (selectedEpisode ? "&episode=" + selectedEpisode : "1") : ""
-      }&color=FFA500`;
+      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+      }`;
 
 
     const baseVidSrcUrl: any = `https://player.videasy.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
@@ -457,7 +457,7 @@ export default function WatchNow() {
     //   }?color=ffa500`;
 
     const playerUrls: any = {
-      "rivestream.org": baseRiveStreamUrl,
+      "embed.7xstream.tv": base7xStreamUrl,
       "videasy.net": baseVidSrcUrl,
       // "vidking.net": basevidkingUrl,
       // "vidplus.to": baseVidSrccoUrl,
@@ -465,7 +465,7 @@ export default function WatchNow() {
       "vsembed.ru": baseEmbedUrl,
     };
 
-    return playerUrls[selectedPlayer] || playerUrls["rivestream.org"];
+    return playerUrls[selectedPlayer] || playerUrls["embed.7xstream.tv"];
   };
 
   const handleOnMouseOver = () => {
@@ -512,12 +512,12 @@ export default function WatchNow() {
                       <iframe
                         src={getPlayerUrl()}
                         className="w-full mt-5 rounded-lg videoFrame"
-                        title="Vidsrc video player"
+                        title="video player"
                         referrerPolicy="origin"
 
-                        {...((selectedPlayer == "rivestream.org") && {
-                          sandbox: "allow-scripts allow-same-origin allow-presentation"
-                        })}
+                        // {...((selectedPlayer == "embed.7xstream.tv") && {
+                        //   sandbox: "allow-scripts allow-same-origin allow-presentation"
+                        // })}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
                         ref={iframeRef}
@@ -775,7 +775,7 @@ export default function WatchNow() {
                               onChange={(e: DropdownChangeEvent) => {
                                 handleSeasonChange(e);
                                 // if (selectedPlayer === "vidsrc.dev") {
-                                if ((["rivestream.org", "videasy.net","vsembed.ru"].includes(selectedPlayer))) {
+                                if ((["embed.7xstream.tv", "videasy.net","vsembed.ru"].includes(selectedPlayer))) {
                                   const mediaId = watchDetials.id
                                     ? watchDetials.id
                                     : watchDetials.imdb_id;
@@ -861,7 +861,7 @@ export default function WatchNow() {
                                             item?.episode_number
                                           );
                                           // if (selectedPlayer === "vidsrc.dev") {
-                                          if ((["rivestream.org", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+                                          if ((["embed.7xstream.tv", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
                                             const mediaId = watchDetials.id
                                               ? watchDetials.id
                                               : watchDetials.imdb_id;

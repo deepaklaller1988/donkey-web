@@ -6,6 +6,8 @@ const AdScript = () => {
     const scripts: HTMLScriptElement[] = [];
 
     const loadScript = (src: string, dataset?: Record<string, string>,containerId?: string) => {
+      // duplicate load
+      if (document.querySelector(`script[src="${src}"]`)) return;
       const script = document.createElement("script");
       script.src = src;
       script.async = true;
