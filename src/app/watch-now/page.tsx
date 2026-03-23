@@ -36,13 +36,13 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState<any>("embed.7xstream.tv");
+  const [selectedPlayer, setSelectedPlayer] = useState<any>("videasy.net");
   const [iframeMouseOver, setIframeMouseOver] = useState(false);
 
   const userId = User.id;
   const playerOptions = [
-    { label: "Primary", value: "embed.7xstream.tv" },
-    { label: "Secondary", value: "videasy.net" },
+    { label: "Primary", value: "videasy.net"},
+    { label: "Secondary",  value: "embed.7xstream.tv"},
     { label: "Backup", value: "vsembed.ru" },
     // { label: "Player 2", value: "vidking.net" },
     // { label: "Player 3", value: "vidplus.to" },
@@ -167,7 +167,7 @@ export default function WatchNow() {
   useEffect(() => {
     const initializeValues = async () => {
       // Only proceed with fetching if userId and selectedPlayer are valid
-      if (userId && (["embed.7xstream.tv", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+      if (userId && (["videasy.net", "embed.7xstream.tv", "vsembed.ru"].includes(selectedPlayer))) {
         try {
           // Make the API request for media progress
           const response = await API.get(
@@ -242,7 +242,7 @@ export default function WatchNow() {
     const onWindowBlur = () => {
       if (iframeMouseOver) {
         // if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-        if ((["embed.7xstream.tv", "videasy.net", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
+        if ((["videasy.net", "embed.7xstream.tv", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
@@ -402,16 +402,6 @@ export default function WatchNow() {
   }
 
   const getPlayerUrl = () => {
-    const base7xStreamUrl: any = `https://embed.7xstream.tv/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
-      }${mediaType === "tv"
-        ? selectedSeason
-          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
-          : "/1"
-        : ""
-      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-      }`;
-
-
     const baseVidSrcUrl: any = `https://player.videasy.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
@@ -420,6 +410,15 @@ export default function WatchNow() {
         : ""
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }?color=FFA500`;
+
+    const base7xStreamUrl: any = `https://embed.7xstream.tv/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+      }${mediaType === "tv"
+        ? selectedSeason
+          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+          : "/1"
+        : ""
+      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+      }`;
 
     const baseEmbedUrl: any = `https://vsembed.ru/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
       }${mediaType === "tv"
@@ -457,15 +456,15 @@ export default function WatchNow() {
     //   }?color=ffa500`;
 
     const playerUrls: any = {
-      "embed.7xstream.tv": base7xStreamUrl,
       "videasy.net": baseVidSrcUrl,
+      "embed.7xstream.tv": base7xStreamUrl,
       // "vidking.net": basevidkingUrl,
       // "vidplus.to": baseVidSrccoUrl,
       // "vidrock.net": baseVidSrcccUrl,
       "vsembed.ru": baseEmbedUrl,
     };
 
-    return playerUrls[selectedPlayer] || playerUrls["embed.7xstream.tv"];
+    return playerUrls[selectedPlayer] || playerUrls["videasy.net"];
   };
 
   const handleOnMouseOver = () => {
@@ -775,7 +774,7 @@ export default function WatchNow() {
                               onChange={(e: DropdownChangeEvent) => {
                                 handleSeasonChange(e);
                                 // if (selectedPlayer === "vidsrc.dev") {
-                                if ((["embed.7xstream.tv", "videasy.net","vsembed.ru"].includes(selectedPlayer))) {
+                                if (([ "videasy.net", "embed.7xstream.tv","vsembed.ru"].includes(selectedPlayer))) {
                                   const mediaId = watchDetials.id
                                     ? watchDetials.id
                                     : watchDetials.imdb_id;
@@ -861,7 +860,7 @@ export default function WatchNow() {
                                             item?.episode_number
                                           );
                                           // if (selectedPlayer === "vidsrc.dev") {
-                                          if ((["embed.7xstream.tv", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+                                          if ((["videasy.net", "embed.7xstream.tv", "vsembed.ru"].includes(selectedPlayer))) {
                                             const mediaId = watchDetials.id
                                               ? watchDetials.id
                                               : watchDetials.imdb_id;
