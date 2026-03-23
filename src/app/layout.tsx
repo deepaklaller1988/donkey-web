@@ -95,13 +95,13 @@ export default function RootLayout({
       </head>
       <body>
         <Provider>
-          <ScriptLoader
+          {/* <ScriptLoader
             excludedPaths={["/watch-now", "/profile"]}
             excludedButtonIds={["login-button", "search-id", "form-button", "profile-button"]}
-          >
+          > */}
             <MainLayout>{children}</MainLayout>
 
-          </ScriptLoader>
+          {/* </ScriptLoader> */}
           <AdScript />
           <ToastProvider />
         </Provider>
