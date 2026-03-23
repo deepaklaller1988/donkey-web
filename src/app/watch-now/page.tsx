@@ -36,16 +36,17 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState<any>("videasy.net");
+  const [selectedPlayer, setSelectedPlayer] = useState<any>("rivestream.org");
   const [iframeMouseOver, setIframeMouseOver] = useState(false);
 
   const userId = User.id;
   const playerOptions = [
-    { label: "Player 1", value: "videasy.net" },
-    { label: "Player 2", value: "vidking.net" },
-    { label: "Player 3", value: "vidplus.to" },
-    { label: "Player 4", value: "vidrock.net" },
-    { label: "Player 5", value: "vidsrc.me" },
+    { label: "Primary", value: "rivestream.org" },
+    { label: "Secondary", value: "videasy.net" },
+    { label: "Backup", value: "vsembed.ru" },
+    // { label: "Player 2", value: "vidking.net" },
+    // { label: "Player 3", value: "vidplus.to" },
+    // { label: "Player 4", value: "vidrock.net" },
   ];
 
 
@@ -166,7 +167,7 @@ export default function WatchNow() {
   useEffect(() => {
     const initializeValues = async () => {
       // Only proceed with fetching if userId and selectedPlayer are valid
-      if (userId && (["videasy.net", "vidking.net", "vidplus.to", "vidrock.net", "vidsrc.me"].includes(selectedPlayer))) {
+      if (userId && (["rivestream.org", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
         try {
           // Make the API request for media progress
           const response = await API.get(
@@ -241,7 +242,7 @@ export default function WatchNow() {
     const onWindowBlur = () => {
       if (iframeMouseOver) {
         // if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-        if ((["videasy.net", "vidking.net", "vidplus.to", "vidrock.net", "vidsrc.me"].includes(selectedPlayer)) && userId && movieId && mediaType) {
+        if ((["rivestream.org", "videasy.net", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
@@ -401,6 +402,16 @@ export default function WatchNow() {
   }
 
   const getPlayerUrl = () => {
+    const baseRiveStreamUrl: any = `https://rivestream.org/embed?type=${mediaType}&id=${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+      }${mediaType === "tv"
+        ? selectedSeason
+          ? "&season=" + (selectedSeason.season_number || selectedSeason || 1)
+          : "1"
+        : ""
+      }${mediaType === "tv" ? (selectedEpisode ? "&episode=" + selectedEpisode : "1") : ""
+      }&color=FFA500`;
+
+
     const baseVidSrcUrl: any = `https://player.videasy.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
@@ -410,7 +421,7 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }?color=FFA500`;
 
-    const baseEmbedUrl: any = `https://vidsrc.me/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+    const baseEmbedUrl: any = `https://vsembed.ru/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -419,41 +430,42 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }`;
 
-    const baseVidSrccoUrl: any = `https://player.vidplus.to/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
-      }${mediaType === "tv"
-        ? selectedSeason
-          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
-          : "/1"
-        : ""
-      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-      }?autoplay=true&download=true&poster=true&title=true&watchparty=false&chromecast=true&servericon=true&setting=true&pip=true&hideprimarycolor=true&hidesecondarycolor=true&hideiconcolor=true&hideprogresscontrol=true&hideiconset=true&hideautonext=true&hideautoplay=true&hidenextbutton=true&hideposter=true&hidetitle=true&hidechromecast=true&hideepisodelist=true&hideservericon=true&hidepip=true&primarycolor=FFA500&secondarycolor=FFFFFF&iconcolor=FFFFFF&font=Arial&fontcolor=FFFFFF&fontsize=20&opacity=0.5`;
+    // const baseVidSrccoUrl: any = `https://player.vidplus.to/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+    //   }${mediaType === "tv"
+    //     ? selectedSeason
+    //       ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+    //       : "/1"
+    //     : ""
+    //   }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+    //   }?autoplay=true&download=true&poster=true&title=true&watchparty=false&chromecast=true&servericon=true&setting=true&pip=true&hideprimarycolor=true&hidesecondarycolor=true&hideiconcolor=true&hideprogresscontrol=true&hideiconset=true&hideautonext=true&hideautoplay=true&hidenextbutton=true&hideposter=true&hidetitle=true&hidechromecast=true&hideepisodelist=true&hideservericon=true&hidepip=true&primarycolor=FFA500&secondarycolor=FFFFFF&iconcolor=FFFFFF&font=Arial&fontcolor=FFFFFF&fontsize=20&opacity=0.5`;
 
-    const baseVidSrcccUrl: any = `https://vidrock.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
-      }${mediaType === "tv"
-        ? selectedSeason
-          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
-          : "/1"
-        : ""
-      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-      }?true&autonext=true&download=false`;
-    const basevidkingUrl: any = `https://www.vidking.net/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
-      }${mediaType === "tv"
-        ? selectedSeason
-          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
-          : "/1"
-        : ""
-      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-      }?color=ffa500`;
+    // const baseVidSrcccUrl: any = `https://vidrock.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+    //   }${mediaType === "tv"
+    //     ? selectedSeason
+    //       ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+    //       : "/1"
+    //     : ""
+    //   }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+    //   }?true&autonext=true&download=false`;
+    // const basevidkingUrl: any = `https://www.vidking.net/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+    //   }${mediaType === "tv"
+    //     ? selectedSeason
+    //       ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+    //       : "/1"
+    //     : ""
+    //   }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+    //   }?color=ffa500`;
 
     const playerUrls: any = {
+      "rivestream.org": baseRiveStreamUrl,
       "videasy.net": baseVidSrcUrl,
-      "vidking.net": basevidkingUrl,
-      "vidplus.to": baseVidSrccoUrl,
-      "vidrock.net": baseVidSrcccUrl,
-      "vidsrc.me": baseEmbedUrl,
+      // "vidking.net": basevidkingUrl,
+      // "vidplus.to": baseVidSrccoUrl,
+      // "vidrock.net": baseVidSrcccUrl,
+      "vsembed.ru": baseEmbedUrl,
     };
 
-    return playerUrls[selectedPlayer] || playerUrls["videasy.net"];
+    return playerUrls[selectedPlayer] || playerUrls["rivestream.org"];
   };
 
   const handleOnMouseOver = () => {
@@ -503,9 +515,9 @@ export default function WatchNow() {
                         title="Vidsrc video player"
                         referrerPolicy="origin"
 
-                        // {...((selectedPlayer !== "vidplus.to" && selectedPlayer !== "videasy.net" && selectedPlayer !== "vidsrc.cc" && selectedPlayer !== "vidsrc.me") && {
-                        //   sandbox: "allow-scripts allow-same-origin allow-presentation"
-                        // })}
+                        {...((selectedPlayer == "rivestream.org") && {
+                          sandbox: "allow-scripts allow-same-origin allow-presentation"
+                        })}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
                         ref={iframeRef}
@@ -763,7 +775,7 @@ export default function WatchNow() {
                               onChange={(e: DropdownChangeEvent) => {
                                 handleSeasonChange(e);
                                 // if (selectedPlayer === "vidsrc.dev") {
-                                if ((["videasy.net", "vidking.net", "vidplus.to", "vidrock.net", "vidsrc.me"].includes(selectedPlayer))) {
+                                if ((["rivestream.org", "videasy.net","vsembed.ru"].includes(selectedPlayer))) {
                                   const mediaId = watchDetials.id
                                     ? watchDetials.id
                                     : watchDetials.imdb_id;
@@ -849,7 +861,7 @@ export default function WatchNow() {
                                             item?.episode_number
                                           );
                                           // if (selectedPlayer === "vidsrc.dev") {
-                                          if ((["videasy.net", "vidking.net", "vidplus.to", "vidrock.net", "vidsrc.me"].includes(selectedPlayer))) {
+                                          if ((["rivestream.org", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
                                             const mediaId = watchDetials.id
                                               ? watchDetials.id
                                               : watchDetials.imdb_id;
