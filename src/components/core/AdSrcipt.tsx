@@ -58,7 +58,7 @@ const AdScript = () => {
     // );
 
     // Shuffle ad
-    loadScript("//du.gothicspowdry.com/syihs7f7Ol8U/134505")
+    loadScript("//iy.nasutustinkles.com/sOiKZObDTJk/134505")
 
     return () => {
       // Cleanup on unmount
