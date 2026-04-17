@@ -409,7 +409,7 @@ export default function WatchNow() {
           : "/1"
         : ""
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-      }?color=FFA500`;
+      }?accent=FFA500`;
 
     const baseVidSrcUrl: any = `https://player.videasy.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
