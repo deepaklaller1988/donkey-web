@@ -106,13 +106,24 @@ const fetchTopAll = async () => {
 
 const getDetail = async (item: any) => {
   try {
+    if (!item?.media_type || !item?.id) {
+      console.warn("getDetail: missing media_type or id", item);
+      return null;
+    }
     const response = await FetchApi.get(
       `https://api.themoviedb.org/3/${item.media_type}/${item.id}?language=en-US`
     );
+
+    if (!response.ok) {
+      console.warn(`getDetail: bad response ${response.status} for`, item);
+      return null;
+    }
+
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
+    console.log("getDetail error:", error);
+    return null; 
   }
 };
 

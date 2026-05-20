@@ -39,9 +39,13 @@ const fetchPopularLists = async (mediaType: string) => {
       .filter((result: any) => result.status === "fulfilled")
       .map((result: any) => result.value);
 
-    const tmdbData = await Promise.all(
-      successfulResponses.map((res: any) => res.json())
-    );
+      const tmdbData = (
+        await Promise.allSettled(
+          successfulResponses.map((res: any) => res.json())
+        )
+      )
+        .filter((r: any) => r.status === "fulfilled")
+        .map((r: any) => r.value);
 
     return tmdbData;
   } catch (error) {
