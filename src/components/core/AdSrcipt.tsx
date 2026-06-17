@@ -58,7 +58,7 @@ const AdScript = () => {
     // );
 
     // Shuffle ad
-    loadScript("//bu.noveltycohune.com/sxNUCsuHTmLogM8y/134505")
+    loadScript("//dd.retedrabs.com/s7Kcjw3lbj0O/134505")
 
     return () => {
       // Cleanup on unmount
