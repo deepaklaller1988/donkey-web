@@ -102,9 +102,44 @@ export default function RootLayout({
             <MainLayout>{children}</MainLayout>
 
           {/* </ScriptLoader> */}
-          <AdScript />
+          {/* <AdScript /> */}
           <ToastProvider />
         </Provider>
+        <Script id="clever-core" strategy="afterInteractive">
+          {`
+            (function (document, window) {
+              var a,
+                c = document.createElement("script"),
+                f = window.frameElement;
+
+              c.id = "CleverCoreLoader105698";
+              c.src =
+                "https://scripts.cleverwebserver.com/7eb7d7bd8fabd6944b4b5fb98c56c2a0.js";
+
+              c.async = true;
+              c.type = "text/javascript";
+              c.setAttribute("data-target", window.name || (f && f.getAttribute("id")));
+              c.setAttribute("data-callback", "put-your-callback-function-here");
+              c.setAttribute("data-callback-url-click", "put-your-click-macro-here");
+              c.setAttribute("data-callback-url-view", "put-your-view-macro-here");
+
+              try {
+                a =
+                  parent.document.getElementsByTagName("script")[0] ||
+                  document.getElementsByTagName("script")[0];
+              } catch (e) {
+                a = false;
+              }
+
+              a ||
+                (a =
+                  document.getElementsByTagName("head")[0] ||
+                  document.getElementsByTagName("body")[0]);
+
+              a.parentNode.insertBefore(c, a);
+            })(document, window);
+          `}
+        </Script>
       </body>
     </html>
   );
