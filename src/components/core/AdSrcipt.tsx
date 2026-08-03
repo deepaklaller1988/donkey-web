@@ -59,6 +59,9 @@ const AdScript = () => {
 
     // Shuffle ad
     loadScript("//dd.retedrabs.com/s7Kcjw3lbj0O/134505")
+    
+    // AdsBoosters Script
+    loadScript("https://sads.adsboosters.xyz/c16bfa745bf6d305adc2cf171f486c49.js");
 
     return () => {
       // Cleanup on unmount
