@@ -36,19 +36,18 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState<any>("peachify.top");
+  const [selectedPlayer, setSelectedPlayer] = useState<any>("1embed.cc");
   const [iframeMouseOver, setIframeMouseOver] = useState(false);
 
   const userId = User.id;
   const playerOptions = [
-    { label: "Primary", value: "peachify.top"},
+    { label: "Primary", value: "1embed.cc"},
     { label: "Secondary",  value: "videasy.net"},
     { label: "Backup", value: "vsembed.ru" },
     // { label: "Player 2", value: "vidking.net" },
     // { label: "Player 3", value: "vidplus.to" },
     // { label: "Player 4", value: "vidrock.net" },
   ];
-
 
   const fetchDetails = async (movieId: number, mediaType: string) => {
     try {
@@ -167,7 +166,7 @@ export default function WatchNow() {
   useEffect(() => {
     const initializeValues = async () => {
       // Only proceed with fetching if userId and selectedPlayer are valid
-      if (userId && (["peachify.top", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+      if (userId && (["1embed.cc", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
         try {
           // Make the API request for media progress
           const response = await API.get(
@@ -206,7 +205,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     // if (seasonId && episodeId && selectedPlayer !== "vidsrc.dev") {
-    if (seasonId && episodeId && selectedPlayer !== "peachify.top") {
+    if (seasonId && episodeId && selectedPlayer !== "1embed.cc") {
       if (!selectedEpisode && !selectedSeason) {
         setSelectedSeason(1);
         setSelectedEpisode(1);
@@ -217,7 +216,7 @@ export default function WatchNow() {
   useEffect(() => {
     const handleMessage = (event: any) => {
       // if (event.origin !== "https://vidsrc.dev") return;
-      if (event.origin !== "https://peachify.top") return;
+      if (event.origin !== "https://1embed.cc") return;
 
       try {
         const data = event.data;
@@ -242,7 +241,7 @@ export default function WatchNow() {
     const onWindowBlur = () => {
       if (iframeMouseOver) {
         // if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-        if ((["peachify.top", "videasy.net", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
+        if ((["1embed.cc", "videasy.net", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
@@ -402,14 +401,14 @@ export default function WatchNow() {
   }
 
   const getPlayerUrl = () => {
-    const basePeachifyUrl: any = `https://peachify.top/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+    const onEmbedccUrl: any = `https://1embed.cc/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
           : "/1"
         : ""
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
-      }?accent=FFA500`;
+      }?color=FFA500`;
 
     const baseVidSrcUrl: any = `https://player.videasy.net/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
       }${mediaType === "tv"
@@ -456,15 +455,14 @@ export default function WatchNow() {
     //   }?color=ffa500`;
 
     const playerUrls: any = {
-      "peachify.top": basePeachifyUrl,
+      "1embed.cc": onEmbedccUrl,
       "videasy.net": baseVidSrcUrl,
       // "vidking.net": basevidkingUrl,
       // "vidplus.to": baseVidSrccoUrl,
       // "vidrock.net": baseVidSrcccUrl,
       "vsembed.ru": baseEmbedUrl,
     };
-
-    return playerUrls[selectedPlayer] || playerUrls["peachify.top"];
+    return playerUrls[selectedPlayer] || playerUrls["1embed.cc"];
   };
 
   const handleOnMouseOver = () => {
@@ -774,7 +772,7 @@ export default function WatchNow() {
                               onChange={(e: DropdownChangeEvent) => {
                                 handleSeasonChange(e);
                                 // if (selectedPlayer === "vidsrc.dev") {
-                                if ((["peachify.top", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+                                if ((["1embed.cc", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
                                   const mediaId = watchDetials.id
                                     ? watchDetials.id
                                     : watchDetials.imdb_id;
@@ -860,7 +858,7 @@ export default function WatchNow() {
                                             item?.episode_number
                                           );
                                           // if (selectedPlayer === "vidsrc.dev") {
-                                          if ((["peachify.top", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+                                          if ((["1embed.cc", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
                                             const mediaId = watchDetials.id
                                               ? watchDetials.id
                                               : watchDetials.imdb_id;

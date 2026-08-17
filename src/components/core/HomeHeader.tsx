@@ -17,6 +17,8 @@ import { useAuth } from "context/AuthContext";
 import { GoVideo } from "react-icons/go";
 import SignInButton from "@components/buttons/SignInButton";
 import { useQueryClient } from "@tanstack/react-query";
+import { VscSettings } from "react-icons/vsc";
+import { useAdStatus } from "context/AdStatusContext";
 
 export default function Header() {
   const router = useRouter();
@@ -25,11 +27,14 @@ export default function Header() {
   const { setActiveTab } = useProfileTab();
   const { token, setToken }: any = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [OpenSearch, setOpenSearch] = useState(false);
   const [openSideBar, setOpenSidebar] = useState(false);
   const profileRef: any = useRef(null);
+  const statusRef:any = useRef(null);
   const queryClient = useQueryClient();
+  const { adStatus, toggleAdStatus } = useAdStatus();
 
   const isHome = () => {
     return route.includes("home") ? true : false;
@@ -37,11 +42,23 @@ export default function Header() {
 
   const toggleProfile = () => {
     setOpenProfile(!OpenProfile);
+    setOpenSettings(false);
+  };
+
+  const toggleSettings = () => {
+    setOpenSettings((prev) => !prev);
+    setOpenProfile(false);
   };
 
   const handleClickOutside = (event: any) => {
     if (profileRef.current && !profileRef.current.contains(event.target)) {
       setOpenProfile(false);
+    }
+  };
+
+  const handleStatusRefOutside = (event: any) => {
+    if (statusRef.current && !statusRef.current.contains(event.target)) {
+      setOpenSettings(false);
     }
   };
 
@@ -96,6 +113,13 @@ export default function Header() {
     };
   }, []);
 
+  useEffect(()=> {
+    document.addEventListener("mousedown", handleStatusRefOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleStatusRefOutside);
+    };
+  },[])
+
 
   const handleClick = () => {
     setIsOpen(true);
@@ -140,26 +164,81 @@ export default function Header() {
             >
               {token ? (
                 <>
-                  <div className="relative flex gap-4">
+                  <div className="flex gap-4">
+                    <div className="relative"
+                    ref={statusRef}>
+                      <button
+                        id="setting-button"
+                        type="button"
+                        onClick={toggleSettings}
+                        className="text-white pt-2"
+                      >
+                        <VscSettings className="w-6 h-6 hover:text-amber-500 transition" />
+                      </button>
+
+                      {openSettings && (
+                        <div className="absolute top-[42px] right-0 z-50">
+                          <div className="absolute -top-[6px] right-[6px] w-3 h-3 rotate-45 bg-zinc-900 border-l border-t border-white/10" />
+                          <div className="relative min-w-[225px] rounded-lg border border-white/10 bg-zinc-900 px-4 py-3 shadow-xl">
+                            <div className="flex items-center justify-between gap-6">
+                              <span className="text-sm font-medium text-white">
+                                Ad Status
+                              </span>
+
+                              <button
+                                type="button"
+                                onClick={toggleAdStatus}
+                                aria-label="Toggle Ad Status"
+                                className={`relative flex h-7 w-[76px] items-center rounded-full border transition-all duration-200 ${
+                                  adStatus
+                                    ? "border-amber-500 bg-amber-500/20"
+                                    : "border-white/20 bg-zinc-800"
+                                }`}
+                              >
+                                <span
+                                  className={`absolute h-6 w-6 rounded-full border transition-all duration-200 ${
+                                    adStatus
+                                      ? "left-[48px] border-amber-400 bg-amber-400"
+                                      : "left-[2px] border-white/30 bg-zinc-500"
+                                  }`}
+                                />
+
+                                <span
+                                  className={`absolute text-[10px] font-medium ${
+                                    adStatus
+                                      ? "left-[10px] text-amber-400"
+                                      : "right-[9px] text-white/70"
+                                  }`}
+                                >
+                                  {adStatus ? "ON" : "OFF"}
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
                     <button
                       id="search-button"
+                      type="button"
                       onClick={toggleSearch}
                       className="text-white"
                     >
-                      {
-                        <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
-                      }
+                      <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                     </button>
                     <button
                       id="profile-button"
+                      type="button"
                       onClick={toggleProfile}
                       className="text-white"
                     >
                       <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
                     <div
-                      className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${OpenProfile ? "openProfileLinks" : ""
-                        }`}
+                      className={`profileLinks top-[70px] absolute bg-zinc-800 rounded-lg right-0 min-w-[200px] ${
+                        OpenProfile ? "openProfileLinks" : ""
+                      }`}
                     >
                       <button
                         id="profile-button"
@@ -196,6 +275,59 @@ export default function Header() {
               ) : (
                 <>
                   <div className="flex gap-4">
+                    <div className="relative"
+                    ref={statusRef}>
+                      <button
+                        id="setting-button"
+                        type="button"
+                        onClick={toggleSettings}
+                        className="text-white pt-2"
+                      >
+                        <VscSettings className="w-6 h-6 hover:text-amber-500 transition" />
+                      </button>
+
+                      {openSettings && (
+                        <div className="absolute top-[42px] right-0 z-50">
+                          <div className="absolute -top-[6px] right-[6px] w-3 h-3 rotate-45 bg-zinc-900 border-l border-t border-white/10" />
+                          <div className="relative min-w-[225px] rounded-lg border border-white/10 bg-zinc-900 px-4 py-3 shadow-xl">
+                            <div className="flex items-center justify-between gap-6">
+                              <span className="text-sm font-medium text-white">
+                                Ad Status
+                              </span>
+
+                              <button
+                                type="button"
+                                onClick={toggleAdStatus}
+                                aria-label="Toggle Ad Status"
+                                className={`relative flex h-7 w-[76px] items-center rounded-full border transition-all duration-200 ${
+                                  adStatus
+                                    ? "border-amber-500 bg-amber-500/20"
+                                    : "border-white/20 bg-zinc-800"
+                                }`}
+                              >
+                                <span
+                                  className={`absolute h-6 w-6 rounded-full border transition-all duration-200 ${
+                                    adStatus
+                                      ? "left-[48px] border-amber-400 bg-amber-400"
+                                      : "left-[2px] border-white/30 bg-zinc-500"
+                                  }`}
+                                />
+
+                                <span
+                                  className={`absolute text-[10px] font-medium ${
+                                    adStatus
+                                      ? "left-[10px] text-amber-400"
+                                      : "right-[9px] text-white/70"
+                                  }`}
+                                >
+                                  {adStatus ? "ON" : "OFF"}
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     <button
                       id="search-button"
                       onClick={toggleSearch}

@@ -61,6 +61,7 @@ import ScriptLoader from "@components/ScriptLoader";
 import ToastProvider from "@components/core/ToasterProvider";
 import Script from "next/script";
 import AdScript from "@components/core/AdSrcipt";
+import { AdStatusProvider } from "context/AdStatusContext";
 
 export const metadata: Metadata = {
   title: "Donkey | Watch Free Movies Online",
@@ -95,6 +96,7 @@ export default function RootLayout({
       </head>
       <body>
         <Provider>
+          <AdStatusProvider>
           {/* <ScriptLoader
             excludedPaths={["/watch-now", "/profile"]}
             excludedButtonIds={["login-button", "search-id", "form-button", "profile-button"]}
@@ -102,10 +104,11 @@ export default function RootLayout({
             <MainLayout>{children}</MainLayout>
 
           {/* </ScriptLoader> */}
-          <AdScript />
+            <AdScript />
           <ToastProvider />
+          </AdStatusProvider>
         </Provider>
-        <Script id="clever-core" strategy="afterInteractive">
+        {/* <Script id="clever-core" strategy="afterInteractive">
           {`
             (function (document, window) {
               var a,
@@ -139,7 +142,7 @@ export default function RootLayout({
               a.parentNode.insertBefore(c, a);
             })(document, window);
           `}
-        </Script>
+        </Script> */}
       </body>
     </html>
   );
