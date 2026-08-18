@@ -164,16 +164,15 @@ export default function Header() {
             >
               {token ? (
                 <>
-                  <div className="flex gap-4">
-                    <div className="relative"
-                    ref={statusRef}>
+                  <div className="flex items-center gap-4">
+                    <div className="relative" ref={statusRef}>
                       <button
                         id="setting-button"
                         type="button"
                         onClick={toggleSettings}
-                        className="text-white pt-2"
+                        className="text-white flex items-center justify-center"
                       >
-                        <VscSettings className="w-6 h-6 hover:text-amber-500 transition" />
+                        <VscSettings className="w-[25px] h-[25px] hover:text-amber-500 transition" />
                       </button>
 
                       {openSettings && (
@@ -223,15 +222,16 @@ export default function Header() {
                       id="search-button"
                       type="button"
                       onClick={toggleSearch}
-                      className="text-white"
+                      className="text-white flex items-center justify-center"
                     >
                       <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                     </button>
+
                     <button
                       id="profile-button"
                       type="button"
                       onClick={toggleProfile}
-                      className="text-white"
+                      className="text-white flex items-center justify-center"
                     >
                       <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
                     </button>
@@ -274,17 +274,16 @@ export default function Header() {
                 </>
               ) : (
                 <>
-                  <div className="flex gap-4">
-                    <div className="relative"
-                    ref={statusRef}>
-                      <button
-                        id="setting-button"
-                        type="button"
-                        onClick={toggleSettings}
-                        className="text-white pt-2"
-                      >
-                        <VscSettings className="w-6 h-6 hover:text-amber-500 transition" />
-                      </button>
+                <div className="flex items-center gap-4">
+                  <div className="relative" ref={statusRef}>
+                    <button
+                      id="setting-button"
+                      type="button"
+                      onClick={toggleSettings}
+                      className="text-white flex items-center justify-center"
+                    >
+                      <VscSettings className="w-[25px] h-[25px] hover:text-amber-500 transition" />
+                    </button>
 
                       {openSettings && (
                         <div className="absolute top-[42px] right-0 z-50">
@@ -330,14 +329,21 @@ export default function Header() {
                     </div>
                     <button
                       id="search-button"
+                      type="button"
                       onClick={toggleSearch}
-                      className="text-white"
+                      className="text-white flex items-center justify-center"
                     >
-                      {
-                        <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
-                      }
+                      <IoSearch className="w-6 h-6 hover:text-amber-500 transition" />
                     </button>
-                    <SignInButton id="login-button" onClick={handleClick} />
+
+                    <button
+                      id="login-button"
+                      type="button"
+                      onClick={handleClick}
+                      className="text-white flex items-center justify-center"
+                    >
+                      <FaRegUser className="w-5 h-5 hover:text-amber-500 transition" />
+                    </button>
                   </div>
                 </>
               )}
