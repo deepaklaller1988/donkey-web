@@ -36,13 +36,13 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState<any>("1embed.cc");
+  const [selectedPlayer, setSelectedPlayer] = useState<any>("videasy.net");
   const [iframeMouseOver, setIframeMouseOver] = useState(false);
 
   const userId = User.id;
   const playerOptions = [
-    { label: "Primary", value: "1embed.cc"},
-    { label: "Secondary",  value: "videasy.net"},
+    // { label: "Primary", value: "1embed.cc"},
+    { label: "Primary",  value: "videasy.net"},
     { label: "Backup", value: "vsembed.ru" },
     // { label: "Player 2", value: "vidking.net" },
     // { label: "Player 3", value: "vidplus.to" },
@@ -166,7 +166,7 @@ export default function WatchNow() {
   useEffect(() => {
     const initializeValues = async () => {
       // Only proceed with fetching if userId and selectedPlayer are valid
-      if (userId && (["1embed.cc", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+      if (userId && (["videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
         try {
           // Make the API request for media progress
           const response = await API.get(
@@ -205,7 +205,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     // if (seasonId && episodeId && selectedPlayer !== "vidsrc.dev") {
-    if (seasonId && episodeId && selectedPlayer !== "1embed.cc") {
+    if (seasonId && episodeId && selectedPlayer !== "videasy.net") {
       if (!selectedEpisode && !selectedSeason) {
         setSelectedSeason(1);
         setSelectedEpisode(1);
@@ -216,7 +216,7 @@ export default function WatchNow() {
   useEffect(() => {
     const handleMessage = (event: any) => {
       // if (event.origin !== "https://vidsrc.dev") return;
-      if (event.origin !== "https://1embed.cc") return;
+      if (event.origin !== "https://videasy.net") return;
 
       try {
         const data = event.data;
@@ -241,7 +241,7 @@ export default function WatchNow() {
     const onWindowBlur = () => {
       if (iframeMouseOver) {
         // if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-        if ((["1embed.cc", "videasy.net", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
+        if ((["videasy.net", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
@@ -455,14 +455,14 @@ export default function WatchNow() {
     //   }?color=ffa500`;
 
     const playerUrls: any = {
-      "1embed.cc": onEmbedccUrl,
+      // "1embed.cc": onEmbedccUrl,
       "videasy.net": baseVidSrcUrl,
       // "vidking.net": basevidkingUrl,
       // "vidplus.to": baseVidSrccoUrl,
       // "vidrock.net": baseVidSrcccUrl,
       "vsembed.ru": baseEmbedUrl,
     };
-    return playerUrls[selectedPlayer] || playerUrls["1embed.cc"];
+    return playerUrls[selectedPlayer] || playerUrls["videasy.net"];
   };
 
   const handleOnMouseOver = () => {
@@ -772,7 +772,7 @@ export default function WatchNow() {
                               onChange={(e: DropdownChangeEvent) => {
                                 handleSeasonChange(e);
                                 // if (selectedPlayer === "vidsrc.dev") {
-                                if ((["1embed.cc", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+                                if ((["videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
                                   const mediaId = watchDetials.id
                                     ? watchDetials.id
                                     : watchDetials.imdb_id;
@@ -858,7 +858,7 @@ export default function WatchNow() {
                                             item?.episode_number
                                           );
                                           // if (selectedPlayer === "vidsrc.dev") {
-                                          if ((["1embed.cc", "videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+                                          if ((["videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
                                             const mediaId = watchDetials.id
                                               ? watchDetials.id
                                               : watchDetials.imdb_id;
