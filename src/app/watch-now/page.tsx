@@ -36,13 +36,14 @@ export default function WatchNow() {
   const [goToEpisode, setGoToEpisode] = useState<any>("");
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState<any>("videasy.net");
+  const [selectedPlayer, setSelectedPlayer] = useState<any>("vidy.st");
   const [iframeMouseOver, setIframeMouseOver] = useState(false);
 
   const userId = User.id;
   const playerOptions = [
     // { label: "Primary", value: "1embed.cc"},
-    { label: "Primary",  value: "videasy.net"},
+    // { label: "Primary",  value: "videasy.net"},
+    { label: "Primary",  value: "vidy.st"},
     { label: "Backup", value: "vsembed.ru" },
     // { label: "Player 2", value: "vidking.net" },
     // { label: "Player 3", value: "vidplus.to" },
@@ -166,7 +167,7 @@ export default function WatchNow() {
   useEffect(() => {
     const initializeValues = async () => {
       // Only proceed with fetching if userId and selectedPlayer are valid
-      if (userId && (["videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+      if (userId && (["vidy.st", "vsembed.ru"].includes(selectedPlayer))) {
         try {
           // Make the API request for media progress
           const response = await API.get(
@@ -205,7 +206,7 @@ export default function WatchNow() {
 
   useEffect(() => {
     // if (seasonId && episodeId && selectedPlayer !== "vidsrc.dev") {
-    if (seasonId && episodeId && selectedPlayer !== "videasy.net") {
+    if (seasonId && episodeId && selectedPlayer !== "vidy.st") {
       if (!selectedEpisode && !selectedSeason) {
         setSelectedSeason(1);
         setSelectedEpisode(1);
@@ -216,7 +217,7 @@ export default function WatchNow() {
   useEffect(() => {
     const handleMessage = (event: any) => {
       // if (event.origin !== "https://vidsrc.dev") return;
-      if (event.origin !== "https://videasy.net") return;
+      if (event.origin !== "https://vidy.st") return;
 
       try {
         const data = event.data;
@@ -241,7 +242,7 @@ export default function WatchNow() {
     const onWindowBlur = () => {
       if (iframeMouseOver) {
         // if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-        if ((["videasy.net", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
+        if ((["vidy.st", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
@@ -428,6 +429,15 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }`;
 
+    const baseVidySt: any = `https://vidy.st/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
+      }${mediaType === "tv"
+        ? selectedSeason
+          ? "/" + (selectedSeason.season_number || selectedSeason || 1)
+          : "/1"
+        : ""
+      }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
+      }?color=FFA500`;
+
     // const baseVidSrccoUrl: any = `https://player.vidplus.to/embed/${mediaType}/${watchDetials.id ? watchDetials.id : watchDetials.imdb_id
     //   }${mediaType === "tv"
     //     ? selectedSeason
@@ -456,13 +466,14 @@ export default function WatchNow() {
 
     const playerUrls: any = {
       // "1embed.cc": onEmbedccUrl,
-      "videasy.net": baseVidSrcUrl,
+      // "videasy.net": baseVidSrcUrl,
+      "vidy.st": baseVidySt,
       // "vidking.net": basevidkingUrl,
       // "vidplus.to": baseVidSrccoUrl,
       // "vidrock.net": baseVidSrcccUrl,
       "vsembed.ru": baseEmbedUrl,
     };
-    return playerUrls[selectedPlayer] || playerUrls["videasy.net"];
+    return playerUrls[selectedPlayer] || playerUrls["vidy.st"];
   };
 
   const handleOnMouseOver = () => {
@@ -772,7 +783,7 @@ export default function WatchNow() {
                               onChange={(e: DropdownChangeEvent) => {
                                 handleSeasonChange(e);
                                 // if (selectedPlayer === "vidsrc.dev") {
-                                if ((["videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+                                if ((["vidy.st", "vsembed.ru"].includes(selectedPlayer))) {
                                   const mediaId = watchDetials.id
                                     ? watchDetials.id
                                     : watchDetials.imdb_id;
@@ -858,7 +869,7 @@ export default function WatchNow() {
                                             item?.episode_number
                                           );
                                           // if (selectedPlayer === "vidsrc.dev") {
-                                          if ((["videasy.net", "vsembed.ru"].includes(selectedPlayer))) {
+                                          if ((["vidy.st", "vsembed.ru"].includes(selectedPlayer))) {
                                             const mediaId = watchDetials.id
                                               ? watchDetials.id
                                               : watchDetials.imdb_id;
