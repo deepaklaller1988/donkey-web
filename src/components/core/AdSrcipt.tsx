@@ -79,10 +79,13 @@ const AdScript = () => {
     // loadScript("//d33f51dyacx7bd.cloudfront.net/?aydfd=1241784");
 
 
-    // Pops Ad
-    loadScript("https://bvtpk.com/tag.min.js", {
-      zone: "10620513",
-    });
+    // Monetag Pops Ad
+    // loadScript("https://bvtpk.com/tag.min.js", {
+    //   zone: "10620513",
+    // });
+
+    // Pops Ad - ProfitOn
+      loadScript("https://kb.vowedforlain.com/rBPRumkeJ97/134504");
 
     // Vignette Ad
     // loadScript("https://dd133.com/vignette.min.js", {
