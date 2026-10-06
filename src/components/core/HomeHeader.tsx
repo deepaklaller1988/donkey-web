@@ -84,7 +84,6 @@ export default function Header() {
 
 
   const handleProfile = (type: any) => {
-    console.log(type, path, "=========")
     if (type === "Bookmark") {
       queryClient.invalidateQueries({ queryKey: ['bookmark'] });
     }
@@ -181,13 +180,13 @@ export default function Header() {
                           <div className="relative min-w-[225px] rounded-lg border border-white/10 bg-zinc-900 px-4 py-3 shadow-xl">
                             <div className="flex items-center justify-between gap-6">
                               <span className="text-sm font-medium text-white">
-                                Extra Ads
+                                Ads
                               </span>
 
                               <button
                                 type="button"
                                 onClick={toggleAdStatus}
-                                aria-label="Toggle Extra Ads"
+                                aria-label="Toggle Ads"
                                 className={`relative flex h-7 w-[76px] items-center rounded-full border transition-all duration-200 ${
                                   adStatus
                                     ? "border-amber-500 bg-amber-500/20"
@@ -291,13 +290,13 @@ export default function Header() {
                           <div className="relative min-w-[225px] rounded-lg border border-white/10 bg-zinc-900 px-4 py-3 shadow-xl">
                             <div className="flex items-center justify-between gap-6">
                               <span className="text-sm font-medium text-white">
-                                Extra Ads
+                                Ads
                               </span>
 
                               <button
                                 type="button"
                                 onClick={toggleAdStatus}
-                                aria-label="Toggle Extra Ads"
+                                aria-label="Toggle Ads"
                                 className={`relative flex h-7 w-[76px] items-center rounded-full border transition-all duration-200 ${
                                   adStatus
                                     ? "border-amber-500 bg-amber-500/20"
