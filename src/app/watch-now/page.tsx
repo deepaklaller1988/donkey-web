@@ -45,7 +45,7 @@ export default function WatchNow() {
     // { label: "Primary",  value: "videasy.net"},
     { label: "Main", value: "vidstuck.xyz"},
     { label: "Secondary", value: "vidy.st"},
-    { label: "Backup", value: "vsembed.ru" },
+    { label: "Backup", value: "vidsrc.sh" },
     // { label: "Player 2", value: "vidking.net" },
     // { label: "Player 3", value: "vidplus.to" },
     // { label: "Player 4", value: "vidrock.net" },
@@ -168,7 +168,7 @@ export default function WatchNow() {
   useEffect(() => {
     const initializeValues = async () => {
       // Only proceed with fetching if userId and selectedPlayer are valid
-      if (userId && (["vidstuck.xyz", "vidy.st", "vsembed.ru"].includes(selectedPlayer))) {
+      if (userId && (["vidstuck.xyz", "vidy.st", "vidsrc.sh"].includes(selectedPlayer))) {
         try {
           // Make the API request for media progress
           const response = await API.get(
@@ -243,7 +243,7 @@ export default function WatchNow() {
     const onWindowBlur = () => {
       if (iframeMouseOver) {
         // if (selectedPlayer === "vidsrc.dev" && userId && movieId && mediaType) {
-        if ((["vidstuck.xyz", "vidy.st", "vsembed.ru"].includes(selectedPlayer)) && userId && movieId && mediaType) {
+        if ((["vidstuck.xyz", "vidy.st", "vidsrc.sh"].includes(selectedPlayer)) && userId && movieId && mediaType) {
           const payload = {
             user_id: Number(userId),
             media_id: movieId.toString(),
@@ -421,7 +421,7 @@ export default function WatchNow() {
       }${mediaType === "tv" ? (selectedEpisode ? "/" + selectedEpisode : "/1") : ""
       }?color=FFA500`;
 
-    const baseEmbedUrl: any = `https://vsembed.ru/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
+    const baseEmbedUrl: any = `https://vidsrc.sh/embed/${mediaType}/${watchDetials.imdb_id ? watchDetials.imdb_id : watchDetials.id
       }${mediaType === "tv"
         ? selectedSeason
           ? "/" + (selectedSeason.season_number || selectedSeason || 1)
@@ -482,8 +482,10 @@ export default function WatchNow() {
       // "vidking.net": basevidkingUrl,
       // "vidplus.to": baseVidSrccoUrl,
       // "vidrock.net": baseVidSrcccUrl,
-      "vsembed.ru": baseEmbedUrl,
+      "vidsrc.sh": baseEmbedUrl,
     };
+
+    console.log(baseEmbedUrl)
     return playerUrls[selectedPlayer] || playerUrls["vidstuck.xyz"];
   };
 
@@ -794,7 +796,7 @@ export default function WatchNow() {
                               onChange={(e: DropdownChangeEvent) => {
                                 handleSeasonChange(e);
                                 // if (selectedPlayer === "vidsrc.dev") {
-                                if ((["vidstuck.xyz", "vidy.st", "vsembed.ru"].includes(selectedPlayer))) {
+                                if ((["vidstuck.xyz", "vidy.st", "vidsrc.sh"].includes(selectedPlayer))) {
                                   const mediaId = watchDetials.id
                                     ? watchDetials.id
                                     : watchDetials.imdb_id;
@@ -880,7 +882,7 @@ export default function WatchNow() {
                                             item?.episode_number
                                           );
                                           // if (selectedPlayer === "vidsrc.dev") {
-                                          if ((["vidstuck.xyz", "vidy.st", "vsembed.ru"].includes(selectedPlayer))) {
+                                          if ((["vidstuck.xyz", "vidy.st", "vidsrc.sh"].includes(selectedPlayer))) {
                                             const mediaId = watchDetials.id
                                               ? watchDetials.id
                                               : watchDetials.imdb_id;
