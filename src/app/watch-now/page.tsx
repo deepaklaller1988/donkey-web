@@ -44,7 +44,7 @@ export default function WatchNow() {
     // { label: "Primary", value: "1embed.cc"},
     // { label: "Primary",  value: "videasy.net"},
     // { label: "Main", value: "vidstuck.xyz"},
-    { label: "Main", value: "vidy.st"},
+    { label: "Primary", value: "vidy.st"},
     { label: "Backup", value: "vidsrc.sh" },
     // { label: "Player 2", value: "vidking.net" },
     // { label: "Player 3", value: "vidplus.to" },
