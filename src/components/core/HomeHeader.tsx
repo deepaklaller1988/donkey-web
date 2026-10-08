@@ -208,7 +208,7 @@ export default function Header() {
                                       : "right-[9px] text-white/70"
                                   }`}
                                 >
-                                  {adStatus ? "ON" : "OFF"}
+                                  {adStatus ? "HIGH" : "LOW"}
                                 </span>
                               </button>
                             </div>
@@ -318,7 +318,7 @@ export default function Header() {
                                       : "right-[9px] text-white/70"
                                   }`}
                                 >
-                                  {adStatus ? "ON" : "OFF"}
+                                  {adStatus ? "HIGH" : "LOW"}
                                 </span>
                               </button>
                             </div>
