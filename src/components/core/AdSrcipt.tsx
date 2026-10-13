@@ -85,7 +85,7 @@ const AdScript = () => {
     // });
 
     // Pops Ad - ProfitOn
-      loadScript("https://kb.vowedforlain.com/rBPRumkeJ97/134504");
+      loadScript("https://s0-greate.net/p/3289808");
 
     // Vignette Ad
     // loadScript("https://dd133.com/vignette.min.js", {
@@ -100,7 +100,7 @@ const AdScript = () => {
     // );
 
     // Shuffle ad
-    loadScript("//te.domineehexer.com/sEePh5Gi26IE7/134505");
+    loadScript("//hj.doebirddrowner.com/sF3C3PaC1M4/134505");
 
     // AdsBoosters Script
     // loadScript("https://sads.adsboosters.xyz/c16bfa745bf6d305adc2cf171f486c49.js");
