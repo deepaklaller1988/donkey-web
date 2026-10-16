@@ -85,7 +85,7 @@ const AdScript = () => {
     // });
 
     // Pops Ad - ProfitOn
-      loadScript("https://s0-greate.net/p/3289808");
+      loadScript("//yj.chymiadolors.com/rU9wIwkS7MMzHlPs/134504");
 
     // Vignette Ad
     // loadScript("https://dd133.com/vignette.min.js", {
